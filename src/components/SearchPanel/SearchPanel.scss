@@ -66,7 +66,7 @@
     -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    background: url(https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=18&height=18); /* новый вид крестика */
+    background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=18&height=18');
     right: 7px;
     top: 15px;
     cursor: pointer;
@@ -94,7 +94,7 @@
 }
 
 .find-input-img_search {
-  background-image: url('src/assets/img/magnifying-glass.svg');
+  background-image: url('../../assets/img/magnifying-glass.svg');
   width: 15px;
   height: 15px;
   top: 17px;
@@ -112,7 +112,7 @@
   width: 100%;
 
   &__snow1 {
-    background-image: url('src/assets/img//snow1.png');
+    background-image: url('../../assets/img//snow1.png');
     position: absolute;
     width: 100%;
     height: 152px;
@@ -120,7 +120,7 @@
   }
 
   &__snow2 {
-    background-image: url('src/assets/img/snow2.png'), url('src/assets/img/snow3.png');
+    background-image: url('../../assets/img/snow2.png'), url('src/assets/img/snow3.png');
     animation: snow2 10s linear infinite;
     width: 100%;
     height: 152px;
