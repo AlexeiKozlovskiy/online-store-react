@@ -1,0 +1,19 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 20px 0;
+  background: #f1f1f1;
+  width: 100%;
+}
+
+.header-nav {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.header-nav-list {
+  padding: 0;
+  display: flex;
+  gap: 20px;
+}
