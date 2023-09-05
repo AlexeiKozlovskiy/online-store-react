@@ -1,0 +1,21 @@
+@import './assets//styles/common.scss';
+
+a {
+  text-decoration: none;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  min-width: 320px;
+}
+
+.App {
+  max-width: 1440px;
+}
+
+.wrapper {
+  margin: 0 auto;
+}
