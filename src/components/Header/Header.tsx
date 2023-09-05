@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Header.scss';
 
-function Header() {
+export function Header() {
   return (
     <header className="header">
       <div className="header__container wrapper">
@@ -23,5 +23,3 @@ function Header() {
     </header>
   );
 }
-
-export default Header;

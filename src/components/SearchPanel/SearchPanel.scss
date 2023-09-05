@@ -1,0 +1,129 @@
+@import 'src/assets/styles/common.scss';
+
+.find-container {
+  background-color: $oliva;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: 450px) {
+    height: 120px;
+  }
+
+  @media screen and (max-width: 360px) {
+    height: 100px;
+  }
+}
+
+.find-title {
+  width: 550px;
+  font: 1.8rem $Roboto;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.5em;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px;
+
+  @media screen and (max-width: 600px) {
+    width: 380px;
+    font-size: 1.2rem;
+  }
+
+  @media screen and (max-width: 450px) {
+    width: 315px;
+    font-size: 1rem;
+  }
+
+  @media screen and (max-width: 360px) {
+    width: 300px;
+    font-size: 0.8rem;
+  }
+}
+
+.find-input-wrapper {
+  position: relative;
+  width: 230px;
+  padding-top: 10px;
+}
+
+.find-input {
+  padding-left: 5px;
+  width: 100%;
+  height: 28px;
+  border-radius: 3px;
+  border: none;
+  text-align: start;
+  font: 1rem $Roboto;
+  color: #888;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=18&height=18');
+    right: 7px;
+    top: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.15);
+      transition: transform 0.2s;
+    }
+
+    &:active {
+      transform: scale(1);
+      transition: transform 0.1s;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    font-size: 0.8em;
+  }
+}
+
+.find-input-img_search {
+  background-size: contain;
+  position: absolute;
+}
+
+.find-input-img_search {
+  background-image: url('../../assets/img/magnifying-glass.svg');
+  width: 15px;
+  height: 15px;
+  top: 17px;
+  right: 7px;
+}
+
+.find-input:not(:placeholder-shown) ~ .find-input-img_search {
+  display: none;
+}
+.find-input:placeholder-shown ~ .find-input-img_search {
+  display: block;
+}
+
+.snow-blocks {
+  width: 100%;
+
+  &__snow1 {
+    background-image: url('../../assets/img//snow1.png');
+    position: absolute;
+    width: 100%;
+    height: 152px;
+    animation: snow1 18s linear infinite;
+  }
+
+  &__snow2 {
+    background-image: url('../../assets/img/snow2.png'), url('src/assets/img/snow3.png');
+    animation: snow2 10s linear infinite;
+    width: 100%;
+    height: 152px;
+    position: absolute;
+  }
+}
