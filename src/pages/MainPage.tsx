@@ -1,5 +1,9 @@
-function MainPage() {
-  return <div className="MainPage-container">Home page contents</div>;
-}
+import { SearchPanel } from '../components/SearchPanel/SearchPanel';
 
-export default MainPage;
+export function MainPage() {
+  return (
+    <div className="MainPage-container">
+      <SearchPanel />
+    </div>
+  );
+}

@@ -1,4 +1,4 @@
-@import '../assets/styles/common.scss';
+@import 'src/assets/styles/common.scss';
 
 .header {
   background-color: #fff;
@@ -76,7 +76,7 @@
   cursor: pointer;
 
   &__img {
-    background: url('../assets/img/cart-header.svg') no-repeat center;
+    background: url('src/assets/img/cart-header.svg') no-repeat center;
     width: 80px;
     height: 80px;
 
