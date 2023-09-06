@@ -1,5 +1,5 @@
 import './SideFilter.scss';
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import ReactSlider from 'react-slider';
 
 const PRICE_MIN = 1.99;
@@ -32,8 +32,6 @@ export function SideFilter() {
   const [[valMinPrice, valMaxPrice], setValuesPrice] = useState<any[]>([PRICE_MIN, PRICE_MAX]);
   const [[valMinSize, valMaxSize], setValuesSize] = useState<any[]>([SIZE_MIN, SIZE_MAX]);
   const [[valMinStock, valMaxStock], setValuesStock] = useState<any[]>([STOCK_MIN, STOCK_MAX]);
-
-  const [valuess, setValuess] = useState(PRICE_MIN.toString());
 
   function handleColorClick(color: string) {
     if (selectedColors.includes(color)) {
