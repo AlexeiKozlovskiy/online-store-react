@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
-import { Page404 } from './pages/Page404';
-import { MainPage } from './pages/MainPage';
-import { CartPage } from './pages/CartPage';
+import { Page404 } from './pages/Page404/Page404';
+import { MainPage } from './pages/MainPage/MainPage';
+import { CartPage } from './pages/CartPage/CartPage';
 import { Header } from './components/Header/Header';
 
 function App() {
