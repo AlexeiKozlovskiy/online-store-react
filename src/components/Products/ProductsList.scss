@@ -1,0 +1,26 @@
+@import 'src/assets/styles/common.scss';
+
+.main-catalog {
+  &__products {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 50px 30px;
+
+    @media screen and (max-width: 1145px) {
+      justify-content: center;
+    }
+
+    @media screen and (max-width: 768px) {
+      justify-content: space-evenly;
+    }
+  }
+}
+
+.empty-catalog {
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: center;
+  font-family: $Roboto;
+  padding-top: 20px;
+}
