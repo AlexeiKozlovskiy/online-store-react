@@ -1,6 +1,5 @@
 import { ProductItem } from './Product';
 import './ProductsList.scss';
-
 import products from '../../assets/data/products.json';
 
 export function ProductsList() {

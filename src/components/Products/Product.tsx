@@ -13,9 +13,11 @@ export function ProductItem({
   category,
   images,
 }: Product) {
+  const image = new URL(images[0], import.meta.url).href;
+
   return (
     <Link to="/product" className="product-item" data-id={id}>
-      <img className="product-item__img" data-id={id} src={images[0]} alt="product image" />
+      <img className="product-item__img" data-id={id} src={image} alt="product image" />
       <div className="product-item__text-wrapper">
         <div className="product-item__cart-add" data-id={id}>
           Add to cart
