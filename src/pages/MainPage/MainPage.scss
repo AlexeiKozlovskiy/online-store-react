@@ -1,0 +1,9 @@
+@import 'src/assets/styles/common.scss';
+
+.main-catalog {
+  padding: 50px 20px;
+  color: $mainBlack;
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+}

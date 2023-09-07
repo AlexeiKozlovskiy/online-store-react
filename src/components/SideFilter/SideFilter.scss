@@ -1,0 +1,480 @@
+@import 'src/assets/styles/common.scss';
+
+// @import url('nouislider/dist/nouislider.css');
+
+.filters input {
+  color: $darkGray;
+  text-align: center;
+}
+
+._hidden {
+  display: none;
+}
+
+.main-catalog {
+  padding: 50px 20px;
+  color: $mainBlack;
+  margin-bottom: 50px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__bread-crumbs {
+    margin: 20px 0 40px 0;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 3;
+
+    @media screen and (max-width: 768px) {
+      margin: 20px 0 20px 0;
+    }
+  }
+}
+
+.bread-crumbs {
+  display: flex;
+
+  &__path {
+    font-family: $Roboto;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    color: $darkGray;
+    font-size: 1rem;
+
+    &:not(:last-child):after {
+      content: url('https://api.iconify.design/ic/round-keyboard-arrow-right.svg?color=%23888&width=18&height=18');
+      width: 18px;
+      height: 18px;
+    }
+
+    @media screen and (max-width: 767px) {
+      font-size: 0.7rem;
+    }
+  }
+}
+
+.filter-btn {
+  display: flex;
+  padding: 10px 0;
+  gap: 5px;
+  align-items: center;
+
+  &__icon {
+    content: url('https://api.iconify.design/mdi/mixer-settings.svg?color=%238b9d93');
+    width: 24px;
+    height: 24px;
+    color: $oliva;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__title {
+    font-size: 1em;
+    font-weight: 500;
+  }
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  margin-right: 50px;
+  position: relative;
+
+  @media screen and (max-width: 900px) {
+    margin-right: 20px;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+    align-items: center;
+    padding-top: 25px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255);
+    margin-right: 0;
+  }
+
+  &[data-show='true'] {
+    display: flex;
+  }
+
+  &__close-btn {
+    @media screen and (max-width: 768px) {
+      width: 36px;
+      height: 36px;
+      position: absolute;
+      background: white
+        url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
+        no-repeat center;
+      right: 25px;
+      top: 5px;
+      display: none;
+
+      &:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  &[data-show='true'] &__close-btn {
+    @media screen and (max-width: 768px) {
+      display: block;
+    }
+  }
+}
+
+.filters-item {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  border-top: solid 1px $greyBorder;
+
+  &:not(:last-child) {
+    margin-bottom: 30px;
+  }
+
+  &__title {
+    font-family: $Roboto;
+    font-weight: 600;
+    font-size: 1em;
+    padding-top: 10px;
+    margin-bottom: 15px;
+  }
+}
+
+.colors {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 23px;
+}
+
+.colors__color {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: solid 0.5px lightgray;
+
+  &:hover {
+    cursor: pointer;
+
+    &:after {
+      position: absolute;
+      top: 29px;
+      left: 0;
+      z-index: 1;
+      font-size: 12px;
+    }
+  }
+}
+
+.is-black {
+  &:hover {
+    &:after {
+      content: 'black';
+    }
+  }
+  background-color: black;
+}
+.is-silver {
+  &:hover {
+    &:after {
+      content: 'silver';
+    }
+  }
+  background-color: silver;
+}
+.is-white {
+  &:hover {
+    &:after {
+      content: 'white';
+    }
+  }
+  background-color: white;
+}
+.is-yellow {
+  &:hover {
+    &:after {
+      content: 'yellow';
+    }
+  }
+  background-color: rgb(219, 213, 90);
+}
+.is-green {
+  &:hover {
+    &:after {
+      content: 'green';
+    }
+  }
+  background-color: darkgreen;
+}
+.is-pink {
+  &:hover {
+    &:after {
+      content: 'pink';
+      left: 2px;
+    }
+  }
+  background-color: hotpink;
+}
+.is-red {
+  &:hover {
+    &:after {
+      content: 'red';
+      left: 5px;
+    }
+  }
+  background-color: darkred;
+}
+.is-purple {
+  &:hover {
+    &:after {
+      content: 'purple';
+    }
+  }
+  background-color: purple;
+}
+.is-blue {
+  &:hover {
+    &:after {
+      content: 'blue';
+      left: 2px;
+    }
+  }
+  background-color: darkblue;
+}
+.is-brown {
+  &:hover {
+    &:after {
+      content: 'brown';
+    }
+  }
+  background-color: saddlebrown;
+}
+
+.collection {
+  display: flex;
+  gap: 30px;
+
+  &__year {
+    background-color: lightgray;
+    width: 45px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 10px;
+    transition: all 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      background-color: $oliva;
+      color: white;
+      transition: all 0.2s;
+    }
+  }
+}
+
+.is-selected.collection__year {
+  background-color: $oliva;
+  color: white;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $olivaHover;
+  }
+}
+
+.colors__color.is-selected {
+  &:before {
+    content: url('https://api.iconify.design/material-symbols/check-small-rounded.svg?color=white&width=26&height=26');
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    z-index: 6;
+  }
+}
+
+.colors__color.is-selected.is-white {
+  &:before {
+    content: url('https://api.iconify.design/material-symbols/check-small-rounded.svg?color=black&width=26&height=26');
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    z-index: 6;
+  }
+}
+
+.price,
+.stock,
+.size {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.item-content-position {
+  &__end,
+  &__start {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: $Roboto;
+    color: $darkGray;
+    font-size: 0.9rem;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  &__end {
+    right: 20px;
+  }
+
+  &__start {
+    right: 140px;
+  }
+}
+
+.price,
+.size,
+.stock {
+  position: relative;
+}
+
+.box-start,
+.box-end {
+  width: 80px;
+  height: 30px;
+  overflow: hidden;
+  padding-right: 15px;
+}
+
+.dual-range {
+  padding: 0 10px;
+}
+
+.noUi-connect {
+  background: $oliva;
+  border-radius: 0;
+}
+
+.noUi-horizontal {
+  height: 6px;
+}
+
+.noUi-target {
+  box-shadow: none;
+  background: #d0d7d3;
+  border: none;
+  cursor: pointer;
+}
+
+.noUi-handle {
+  border-radius: 50%;
+  background: $oliva;
+  box-shadow: none;
+  border: none;
+  cursor: pointer;
+}
+
+.noUi-horizontal .noUi-handle {
+  width: 14px;
+  height: 14px;
+  right: -8px;
+  top: -4px;
+}
+
+.noUi-handle::after,
+.noUi-handle::before {
+  display: none;
+}
+
+.category {
+  display: flex;
+  margin-bottom: 10px;
+
+  &__label {
+    font-family: $Roboto;
+    color: $darkGray;
+    margin-right: 5px;
+
+    &:hover {
+      cursor: pointer;
+      color: $greyBorder;
+      transition: 0.3ms ease-in-out;
+    }
+  }
+
+  &__count {
+    color: $darkGray;
+  }
+
+  &__checkbox {
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    margin-left: auto;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.example-track {
+  background-color: black;
+  background: black;
+}
+
+.slider {
+  width: 100%;
+}
+
+.track {
+  height: 6px;
+  border-radius: 2px;
+  background: $oliva;
+}
+
+.track-0,
+.track-2 {
+  background: $greyBorder;
+}
+
+.thumb {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border-radius: 50px;
+  border: 2px solid $darkGray;
+  top: -6px;
+  background: #fff;
+
+  &:hover {
+    filter: brightness(0.85);
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
