@@ -27,8 +27,8 @@ type setStateType = {
 };
 
 export function SideFilter() {
-  const [selectedColors, setSelectedColors] = useState<String[]>([]);
-  const [selectedCollections, setSelectedCollections] = useState<String[]>([]);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const [[valMinPrice, valMaxPrice], setValuesPrice] = useState<any[]>([PRICE_MIN, PRICE_MAX]);
   const [[valMinSize, valMaxSize], setValuesSize] = useState<any[]>([SIZE_MIN, SIZE_MAX]);
   const [[valMinStock, valMaxStock], setValuesStock] = useState<any[]>([STOCK_MIN, STOCK_MAX]);
