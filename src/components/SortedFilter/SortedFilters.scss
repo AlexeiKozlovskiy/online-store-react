@@ -119,3 +119,33 @@
   color: $darkGray;
   height: 36px;
 }
+
+.switch-view {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+
+  @media screen and (max-width: 780px) {
+    margin-left: 0;
+  }
+
+  &__line,
+  &__block {
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+  }
+
+  &__line {
+    background: url('../../assets/img/view_switching_string.svg') no-repeat center center / contain;
+  }
+
+  &__block {
+    background: url('../../assets/img/view_switching_block.svg') no-repeat center center / contain;
+  }
+
+  .switch-active {
+    filter: invert(44%) sepia(10%) saturate(19%) hue-rotate(42deg) brightness(96%) contrast(89%);
+  }
+}
