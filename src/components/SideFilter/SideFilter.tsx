@@ -22,11 +22,16 @@ const CATEGORIES = [
   { category: 'Christmas lights', products: 3 },
 ];
 
-type setStateType = {
+interface setStateType {
   (values: [number | null, number | null]): void;
-};
+}
 
-export function SideFilter() {
+interface ISideFilter {
+  showFilters: boolean;
+  onClickHideFilter: (event: React.MouseEvent) => void;
+}
+
+export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
   const [[valMinPrice, valMaxPrice], setValuesPrice] = useState<any[]>([PRICE_MIN, PRICE_MAX]);
@@ -54,7 +59,7 @@ export function SideFilter() {
   }
 
   return (
-    <div className="filters">
+    <div className="filters" data-show={showFilters}>
       <div className="filters__item filters-item">
         <div className="filters-item__title">Color</div>
         <div className="filters-item__content item-content">
@@ -201,7 +206,7 @@ export function SideFilter() {
           />
         </div>
       </div>
-      <div className="filters__close-btn"></div>
+      <div className="filters__close-btn" onClick={onClickHideFilter}></div>
     </div>
   );
 }
