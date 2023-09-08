@@ -1,20 +1,26 @@
 import './SortedFilters.scss';
 
+const sortOptions = [
+  'Recommended',
+  'Name',
+  'Price ascending',
+  'Price descending',
+  'Stock ascending',
+  'Stock descending',
+];
+
+const itemsInPage = [5, 10, 20, 30, 0];
+
 interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
+  onClickSwitcher: (string: string) => void;
+  swichedView: string;
 }
 
-export function SortedFilters({ onClickShowFilter }: ISortedFilters) {
-  const sortOptions = [
-    'Recommended',
-    'Name',
-    'Price ascending',
-    'Price descending',
-    'Stock ascending',
-    'Stock descending',
-  ];
-
-  const itemsInPage = [5, 10, 20, 30, 0];
+export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
+  function switcherView(view: string) {
+    view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
+  }
 
   return (
     <div className="main-center-section__sorted sorted-filters">
@@ -44,8 +50,14 @@ export function SortedFilters({ onClickShowFilter }: ISortedFilters) {
         </div>
       </div>
       <div className="sorted-filters__switch-view switch-view">
-        <div className="switch-view__line"></div>
-        <div className="switch-view__block switch-active"></div>
+        <div
+          className={`switch-view__line ${swichedView === 'line' ? 'switch-active' : ''} `}
+          onClick={() => switcherView('line')}
+        ></div>
+        <div
+          className={`switch-view__block ${swichedView === 'block' ? 'switch-active' : ''} `}
+          onClick={() => switcherView('block')}
+        ></div>
       </div>
     </div>
   );
