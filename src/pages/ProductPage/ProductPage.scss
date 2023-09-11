@@ -1,1 +1,301 @@
 @import 'src/assets/styles/common.scss';
+
+a {
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+}
+
+.product-page__bread-crumbs.bread-crumbs {
+  align-items: center;
+  padding: 30px 0 0 20px;
+  margin-bottom: 30px;
+}
+
+.bread-crumbs {
+  &__home-link {
+    font-family: $Roboto;
+    color: $mainBlack;
+    display: flex;
+    align-items: center;
+    line-height: 18px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: scale 0.3s;
+
+    @media screen and (max-width: 767px) {
+      font-size: 0.7rem;
+    }
+
+    &:hover {
+      scale: 1.1;
+      transition: scale 0.3s;
+    }
+  }
+}
+
+.product-page {
+  height: 650px;
+  width: 80%;
+  padding: 0px 30px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  grid-template-rows: 1fr 1fr 2fr;
+  position: relative;
+
+  @media screen and (max-width: 1070px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 3fr 1fr 1fr 1fr;
+    height: 1350px;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 767px) {
+    padding: 0px 5px;
+    width: 95%;
+    height: 900px;
+  }
+
+  &__arrow-back {
+    background: url('https://api.iconify.design/ic/outline-arrow-back.svg?color=%239aab9f&width=60&height=60')
+      no-repeat center;
+    width: 70px;
+    height: 70px;
+    transition: transform 0.1s;
+    cursor: pointer;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+
+    &:hover {
+      animation: 0.7s ease-in-out 0s normal none infinite running arrow-animation;
+    }
+
+    @media screen and (max-width: 1070px) {
+      width: 55px;
+      height: 55px;
+      background-size: contain;
+    }
+
+    @media screen and (max-width: 767px) {
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  &__img-container {
+    grid-row: 1 / 4;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    @media screen and (max-width: 1070px) {
+      grid-column: 1;
+      grid-row: 2 / 4;
+      flex-direction: column-reverse;
+    }
+  }
+
+  &__img-main {
+    width: 70%;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 8px;
+
+    @media screen and (max-width: 1070px) {
+      width: 600px;
+      height: 600px;
+    }
+
+    @media screen and (max-width: 767px) {
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+    }
+  }
+
+  &__summaru-item {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    font: 1.5rem $Roboto;
+
+    @media screen and (max-width: 1070px) {
+      grid-column: 1;
+      grid-row: 1 / 2;
+      margin: 0 auto;
+    }
+
+    @media screen and (max-width: 767px) {
+      font: 1.2rem $Roboto;
+      padding-left: 50px;
+    }
+  }
+
+  &__cart-container {
+    justify-content: space-between;
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    align-items: center;
+    height: 60px;
+
+    @media screen and (max-width: 1070px) {
+      grid-column: 1;
+      grid-row: 4 / 5;
+    }
+  }
+
+  &__specifications-container {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @media screen and (max-width: 1070px) {
+      grid-column: 1;
+      grid-row: 5 / 6;
+    }
+  }
+}
+
+.product-summary {
+  &__description {
+    margin-bottom: 20px;
+  }
+
+  &__state-in-cart {
+    text-align: center;
+    background: $oliva;
+    padding: 3px;
+    border-radius: 5px;
+    color: white;
+    width: 80px;
+    font-size: 1.3rem;
+
+    @media screen and (max-width: 1070px) {
+      width: 60px;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+.product-page-img-min {
+  width: 87px;
+  height: 87px;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 2px solid #d9d9d9;
+
+  @media screen and (max-width: 767px) {
+    width: 47px;
+    height: 47px;
+  }
+
+  &:hover {
+    box-shadow: 0px -2px 43px -7px rgba(34, 60, 80, 0.2);
+    transition: 0.3s;
+    transform: scale(1.07);
+  }
+}
+
+.active-img {
+  border-bottom: 2px solid #8b9d93;
+}
+
+.img-container__slider {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media screen and (max-width: 1070px) {
+    flex-direction: row;
+  }
+}
+
+.specifications {
+  &__title {
+    width: 100%;
+    font: 1.2rem $Roboto;
+    font-weight: 700;
+    border-bottom: 1px solid $greyBorder;
+
+    @media screen and (max-width: 767px) {
+      font: 1rem $Roboto;
+    }
+  }
+
+  &__name-content-container {
+    width: 100%;
+    height: 215px;
+    display: flex;
+    gap: 95px;
+    font: 1rem $Roboto;
+
+    @media screen and (max-width: 767px) {
+      font: 0.8rem $Roboto;
+    }
+  }
+
+  &__content-container,
+  &__name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__name-title {
+    font-weight: 700;
+  }
+}
+
+.button-add-cart {
+  width: 76%;
+  height: 60px;
+  border-radius: 4px;
+  background-color: $oliva;
+  border: none;
+  font: 1rem $Roboto;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  @media screen and (max-width: 768px) {
+    height: 45px;
+  }
+}
+
+.button-buy-now {
+  margin-top: 20px;
+  width: 100%;
+  height: 60px;
+  border-radius: 4px;
+  background-color: $oliva;
+  font: 1rem $Roboto;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  @media screen and (max-width: 768px) {
+    height: 45px;
+  }
+}
+
+.button-add-cart:hover,
+.button-buy-now:hover {
+  background-color: $olivaHover;
+  transition: all 0.3s;
+}
+
+.button-add-cart:active,
+.button-buy-now:active {
+  transform: scale(98%);
+  transition: all 0.3s;
+}
+
+.shake-product {
+  animation: 1s ease-in-out 0s normal none infinite running shake-animation-product;
+}

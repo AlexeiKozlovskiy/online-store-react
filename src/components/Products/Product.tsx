@@ -1,6 +1,7 @@
 import { Product } from '../types/product';
 import { Link } from 'react-router-dom';
 import './Product.scss';
+import { useMyIdContext } from '../Context/ContextClickID';
 
 export function ProductItem({
   id,
@@ -13,8 +14,19 @@ export function ProductItem({
   category,
   images,
 }: Product) {
+  const { setClickId } = useMyIdContext();
+
+  function productItemHandelClick(id: number) {
+    setClickId(id);
+  }
+
   return (
-    <Link to="/product" className="product-item" data-id={id}>
+    <Link
+      to={`/product/${id}`}
+      onClick={() => productItemHandelClick(id)}
+      className="product-item"
+      data-id={id}
+    >
       <img className="product-item__img" data-id={id} src={images[0]} alt="product image" />
       <div className="product-item__text-wrapper">
         <div className="product-item__cart-add" data-id={id}>
