@@ -6,7 +6,7 @@ export type Product = {
   stock: number;
   color: string;
   size: number;
-  favorite: boolean;
+  favorite?: boolean;
   category: string;
   images: string[];
 };
