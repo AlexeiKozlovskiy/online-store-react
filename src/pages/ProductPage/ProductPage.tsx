@@ -9,7 +9,7 @@ import { Product } from '../../components/types/product';
 
 export function ProductPage() {
   const [curImage, setCurImage] = useState(0);
-  const [isInCart, setIsInCart] = useState(false);
+  const [isInCart] = useState(false);
   const { clickId } = useMyIdContext();
   const [{ id, name, price, collection, stock, color, size, category, images }, setProduct] =
     useState<Product>({
