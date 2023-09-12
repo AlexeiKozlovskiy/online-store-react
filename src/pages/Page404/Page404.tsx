@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
+import './Page404.scss';
 
 export function Page404() {
   return (
-    <div className="page404-container">
-      <p className="page404-bigTxt">Whoops!</p>
-      <p className="page404-mainTxt">Looks like you got lost.</p>
-      <p className="page404-subTxt">
+    <div className="page404__container wrapper">
+      <p className="page404__bigTxt">Whoops!</p>
+      <p className="page404__mainTxt">Looks like you got lost.</p>
+      <p className="page404__subTxt">
         Go back to the <Link to="/">home</Link> page?
       </p>
     </div>

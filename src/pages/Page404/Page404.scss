@@ -1,0 +1,9 @@
+@import 'src/assets/styles/common.scss';
+
+.page404 {
+  &__container {
+    text-align: center;
+    font-family: $Roboto;
+    font-size: 1rem;
+  }
+}
