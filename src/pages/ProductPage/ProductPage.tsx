@@ -3,14 +3,16 @@ import './ProductPage.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../components/helpers/helpers';
-import { useMyIdContext } from '../../components/Context/ContextClickID';
 import products from '../../assets/data/products.json';
 import { Product } from '../../components/types/product';
 
-export function ProductPage() {
+interface IProductPage {
+  clickId: number;
+}
+
+export function ProductPage({ clickId }: IProductPage) {
   const [curImage, setCurImage] = useState(0);
   const [isInCart] = useState(false);
-  const { clickId } = useMyIdContext();
   const [{ id, name, price, collection, stock, color, size, category, images }, setProduct] =
     useState<Product>({
       id: 1,
@@ -23,6 +25,7 @@ export function ProductPage() {
       price: 1,
       images: ['', ''],
     });
+  const [firstImg, secondImg] = images;
 
   useEffect(() => {
     const foundProductClick = products.find((el) => el.id === clickId);
@@ -66,13 +69,13 @@ export function ProductPage() {
           <div className="img-container__slider">
             <img
               className={`product-page-img-min ${!curImage ? 'active-img' : ''}`}
-              src={images[0]}
+              src={firstImg}
               alt="product image"
               onClick={() => handelImageClick(0)}
             />
             <img
               className={`product-page-img-min ${curImage ? 'active-img' : ''}`}
-              src={images[1]}
+              src={secondImg}
               alt="product image"
               onClick={() => handelImageClick(1)}
             />
