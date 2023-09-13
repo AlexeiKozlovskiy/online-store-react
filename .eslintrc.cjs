@@ -48,5 +48,10 @@ module.exports = {
       pragma: 'React',
       version: 'detect',
     },
+    'import/resolver': {
+      typescript: {
+        project: './tsconfig.json',
+      },
+    },
   },
 };

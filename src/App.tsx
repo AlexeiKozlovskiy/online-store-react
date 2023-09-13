@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import { Page404 } from './pages/Page404/Page404';
-import { MainPage } from './pages/MainPage/MainPage';
-import { CartPage } from './pages/CartPage/CartPage';
-import { Header } from './components/Header/Header';
-import { ProductPage } from './pages/ProductPage/ProductPage';
-import { useMyIdContext } from './components/Context/ContextClickID';
-import products from './assets/data/products.json';
 import { useEffect, useState } from 'react';
+import { Page404 } from '@/pages/Page404/Page404';
+import { MainPage } from '@/pages/MainPage/MainPage';
+import { CartPage } from '@/pages/CartPage/CartPage';
+import { Header } from '@/components/Header/Header';
+import { ProductPage } from '@/pages/ProductPage/ProductPage';
+import { useMyIdContext } from '@/components/Context/ContextClickID';
+import products from '@/assets/data/products.json';
 
 function App() {
   const { clickId } = useMyIdContext();
