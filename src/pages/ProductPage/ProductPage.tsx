@@ -1,10 +1,10 @@
-import { QuantityPieces } from '../../components/QuantityPieces/QuantityPieces';
 import './ProductPage.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { formatPrice } from '../../components/helpers/helpers';
-import products from '../../assets/data/products.json';
-import { Product } from '../../components/types/product';
+import { QuantityPieces } from '@/components/QuantityPieces/QuantityPieces';
+import { formatPrice } from '@/components/helpers/helpers';
+import { Product } from '@/components/types/product';
+import products from '@/assets/data/products.json';
 
 interface IProductPage {
   clickId: number;

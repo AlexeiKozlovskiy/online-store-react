@@ -1,6 +1,6 @@
 import './ProductsList.scss';
 import { ProductItem } from './Product';
-import products from '../../assets/data/products.json';
+import products from '@/assets/data/products.json';
 
 interface IProductsList {
   swichedView: string;

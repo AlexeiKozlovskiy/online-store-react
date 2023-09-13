@@ -1,9 +1,9 @@
 import './MainPage.scss';
 import { useState } from 'react';
-import { SortedFilters } from '../../components/SortedFilter/SortedFilters';
-import { ProductsList } from '../../components/Products/ProductsList';
-import { SearchPanel } from '../../components/SearchPanel/SearchPanel';
-import { SideFilter } from '../../components/SideFilter/SideFilter';
+import { SortedFilters } from '@/components/SortedFilter/SortedFilters';
+import { ProductsList } from '@/components/Products/ProductsList';
+import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
+import { SideFilter } from '@/components/SideFilter/SideFilter';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
