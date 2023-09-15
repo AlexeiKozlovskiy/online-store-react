@@ -1,6 +1,6 @@
 import './Product.scss';
 import { Link } from 'react-router-dom';
-import { Product } from '@/components/types/product';
+import { Product } from '@/components/types/types';
 import { useMyIdContext } from '@/components/Context/ContextClickID';
 
 export function ProductItem({

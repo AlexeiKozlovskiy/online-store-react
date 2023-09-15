@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QuantityPieces } from '@/components/QuantityPieces/QuantityPieces';
 import { formatPrice } from '@/components/helpers/helpers';
-import { Product } from '@/components/types/product';
+import { Product } from '@/components/types/types';
 import products from '@/assets/data/products.json';
 
 interface IProductPage {
