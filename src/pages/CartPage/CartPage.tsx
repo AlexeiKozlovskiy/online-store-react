@@ -1,12 +1,12 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { Promocode, CartItem } from '@/components/types/types';
+import { Promocode, CartItemReducerProps, CartItem } from '@/components/types/types';
 import { CartListItem } from './CartListItem';
-import products from '@/assets/data/products.json';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 // Test data
 const itemsInPage = [1, 3, 5, 10, 0];
-const productCount = 2;
 const availablePromocodes: Promocode[] = [
   {
     id: 1,
@@ -19,23 +19,23 @@ const availablePromocodes: Promocode[] = [
     discount: 15,
   },
 ];
-const cartItems: CartItem[] = [
-  {
-    id: 1,
-    quantity: 1,
-    product: products[2],
-  },
-  {
-    id: 2,
-    quantity: 1,
-    product: products[3],
-  },
-];
 
 export function CartPage() {
+  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+
+  const [productCount, setProductCount] = useState(0);
+  const [productAmount, setProductAmount] = useState(0);
+
+  useEffect(() => {
+    setProductCount(cartItems.reduce((count, cartItem) => count + cartItem.quantity, 0));
+    setProductAmount(
+      cartItems.reduce((count, cartItem) => count + cartItem.product.price * cartItem.quantity, 0)
+    );
+  }, [cartItems]);
+
   return (
     <>
-      {!cartItems.length ? (
+      {!cartItems ? (
         <main>
           <div className="shopping-cart__empty">
             <div className="shopping-cart__empty-title">SHOPPING CART</div>
@@ -67,7 +67,7 @@ export function CartPage() {
               <span>Subtotal</span>
             </div>
             <div className="shopping-cart__list">
-              {cartItems.map((cartItem) => (
+              {cartItems.map((cartItem: CartItem) => (
                 <CartListItem key={cartItem.id} {...cartItem} />
               ))}
             </div>
@@ -82,7 +82,7 @@ export function CartPage() {
                     </div>
                     <div className="order-container__total-count total-count">
                       <div className="total-count__text">Order Total</div>
-                      <div className="total-count__total-value">$22</div>
+                      <div className="total-count__total-value">${productAmount.toFixed(2)}</div>
                     </div>
                   </div>
                   <div className="order-container__promocode promocode-order"></div>

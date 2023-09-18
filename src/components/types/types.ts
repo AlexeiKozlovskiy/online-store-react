@@ -31,6 +31,10 @@ export type CartItem = CartItemArg & {
   id: number;
 };
 
+export interface CartItemReducerProps {
+  cart: CartItem;
+}
+
 export type PaginationData = {
   page: number;
   perPage: number;
