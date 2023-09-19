@@ -1,7 +1,21 @@
 import { Link } from 'react-router-dom';
 import './Header.scss';
+import { useSelector } from 'react-redux';
+import { CartItemReducerProps, CartItem } from '@/components/types/types';
+import { useEffect, useState } from 'react';
 
 export function Header() {
+  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+  const [productCount, setProductCount] = useState(0);
+  const [productAmount, setProductAmount] = useState(0);
+
+  useEffect(() => {
+    setProductCount(cartItems.reduce((count, cartItem) => count + cartItem.quantity, 0));
+    setProductAmount(
+      cartItems.reduce((count, cartItem) => count + cartItem.product.price * cartItem.quantity, 0)
+    );
+  }, [cartItems]);
+
   return (
     <header className="header">
       <div className="header__container wrapper">
@@ -15,9 +29,9 @@ export function Header() {
         <Link to="/cart" className="header-cart">
           <div className="header-cart__img"></div>
           <div className="header-cart__amount-container">
-            <p className="header-cart__amount">{0}</p>
+            <p className="header-cart__amount">{productCount}</p>
           </div>
-          <div className="header-cart__num">${0}</div>
+          <div className="header-cart__num">${productAmount.toFixed(2)}</div>
         </Link>
       </div>
     </header>
