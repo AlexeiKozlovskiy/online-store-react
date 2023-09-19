@@ -1,10 +1,10 @@
-import './QuantityPieces.scss';
 import { useEffect, useState } from 'react';
 import {
   addProductsToCart,
   removeProductsFromCart,
   setProductsQuantityInCart,
 } from '@/components/reducers/controller';
+import { QuantityPieces } from './QuantityPieces';
 
 interface IQuantity {
   id: number;
@@ -13,53 +13,43 @@ interface IQuantity {
 }
 
 export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
-  const [valuesPriceInput, setValuesPriceInput] = useState(quantity.toString());
+  const [inputValue, setInputValue] = useState(quantity.toString());
 
   useEffect(() => {
     if (quantity >= 1) {
-      setValuesPriceInput(quantity.toString());
+      setInputValue(quantity.toString());
     }
   }, [quantity]);
 
   function handelArrowAppClick() {
-    addProductsToCart(Number(id));
+    addProductsToCart(id);
   }
 
   function handelArrowDownClick() {
-    removeProductsFromCart(Number(id));
+    removeProductsFromCart(id);
   }
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
 
     if (+value < 0) {
-      setValuesPriceInput('1');
-      addProductsToCart(Number(id));
+      setInputValue('1');
+      addProductsToCart(id);
     } else if (+value >= stock) {
-      setValuesPriceInput(stock.toString());
-      setProductsQuantityInCart(Number(id), stock);
+      setInputValue(stock.toString());
+      setProductsQuantityInCart(id, stock);
     } else {
-      setValuesPriceInput(value);
-      setProductsQuantityInCart(Number(id), Number(value));
+      setInputValue(value);
+      setProductsQuantityInCart(id, +value);
     }
   }
 
   return (
-    <div className="cart-item__qty">
-      <div className="cart-item-qty__value-container">
-        <input
-          className="cart-item-qty__value-container quantity-input"
-          type="number"
-          value={valuesPriceInput}
-          onChange={handelInput}
-        />
-      </div>
-      <div className="cart-item-qty__arrow-container arrow-up" onClick={handelArrowAppClick}>
-        <div className="cart-item-qty__arrow-up"></div>
-      </div>
-      <div className="cart-item-qty__arrow-container arrow-down" onClick={handelArrowDownClick}>
-        <div className="cart-item-qty__arrow-down"></div>
-      </div>
-    </div>
+    <QuantityPieces
+      inputValue={inputValue}
+      handelInput={handelInput}
+      handelArrowAppClick={handelArrowAppClick}
+      handelArrowDownClick={handelArrowDownClick}
+    />
   );
 }

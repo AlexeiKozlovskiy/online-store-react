@@ -1,32 +1,31 @@
-import './QuantityPieces.scss';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CartItemReducerProps, CartItem } from '@/components/types/types';
 import products from '@/assets/data/products.json';
+import { QuantityPieces } from './QuantityPieces';
 
 interface IQuantity {
-  onChangeQty: (value: string) => void;
+  id: number;
+  onChangeQuantity: (value: string) => void;
   onResetInput: boolean;
-  clickId: number;
 }
 
-export function QuantityPiecesProduct({ onChangeQty, onResetInput, clickId }: IQuantity) {
+export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, id }: IQuantity) {
   const [inputValue, setInputValue] = useState('1');
   const [stock, setStock] = useState(0);
   const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
 
-  // добавить класс для max stock
   useEffect(() => {
     products.find((el) => {
-      if (el.id === clickId) {
+      if (el.id === id) {
         setStock(el.stock);
       }
     });
-  }, [cartItems, clickId]);
+  }, [cartItems, id]);
 
   useEffect(() => {
-    onChangeQty(inputValue);
-  }, [inputValue, onChangeQty]);
+    onChangeQuantity(inputValue);
+  }, [inputValue, onChangeQuantity]);
 
   useEffect(() => {
     if (onResetInput) {
@@ -60,21 +59,11 @@ export function QuantityPiecesProduct({ onChangeQty, onResetInput, clickId }: IQ
   }
 
   return (
-    <div className="cart-item__qty">
-      <div className="cart-item-qty__value-container">
-        <input
-          className="cart-item-qty__value-container quantity-input"
-          type="number"
-          value={inputValue}
-          onChange={handelInput}
-        />
-      </div>
-      <div className="cart-item-qty__arrow-container arrow-up" onClick={handelArrowAppClick}>
-        <div className="cart-item-qty__arrow-up"></div>
-      </div>
-      <div className="cart-item-qty__arrow-container arrow-down" onClick={handelArrowDownClick}>
-        <div className="cart-item-qty__arrow-down"></div>
-      </div>
-    </div>
+    <QuantityPieces
+      inputValue={inputValue}
+      handelInput={handelInput}
+      handelArrowAppClick={handelArrowAppClick}
+      handelArrowDownClick={handelArrowDownClick}
+    />
   );
 }

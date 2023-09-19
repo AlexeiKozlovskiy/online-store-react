@@ -5,7 +5,7 @@ import { formatPrice } from '@/components/helpers/helpers';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
 import { useMyIdContext } from '@/components/Context/ContextClickID';
 import { removeProductsFromCartAll } from '@/components/reducers/controller';
-import { useEffect } from 'react';
+import { useAnimations } from '@/components/helpers/useAnimation';
 
 export function CartListItem({
   id: itemId,
@@ -13,12 +13,7 @@ export function CartListItem({
   product: { id, images, name, color, collection, size, category, stock, price },
 }: CartItem) {
   const { setClickId } = useMyIdContext();
-
-  // добавить класс для max stock
-  useEffect(() => {
-    if (quantity === stock) {
-    }
-  }, [quantity, stock]);
+  const isShake = useAnimations({ quantity, stock });
 
   function handelCrossClick(e: React.MouseEvent<HTMLElement>) {
     const { dataset } = e.target as HTMLElement;
@@ -38,7 +33,7 @@ export function CartListItem({
           <div className="cart-item-info__collecrion">Collection: {collection}</div>
           <div className="cart-item-info__size">Size: {size}cm</div>
           <div className="cart-item-info__category">Category: {category}</div>
-          <div className="cart-item-info__instock" data-id={id}>
+          <div className={`cart-item-info__instock ${isShake ? 'shake-cart' : ''}`} data-id={id}>
             In stock: {stock}
           </div>
         </div>

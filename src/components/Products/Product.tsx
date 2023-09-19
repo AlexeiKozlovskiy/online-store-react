@@ -33,6 +33,18 @@ export function ProductItem(data: ProductViewData) {
     removeProductsFromCartAll(Number(dataset.id));
   }
 
+  const addToCart = (
+    <div className="product-item__cart-add" data-id={id} onClick={productItemAddClick}>
+      Add to cart
+    </div>
+  );
+
+  const inCart = (
+    <div className="product-item__cart-added" data-id={id} onClick={productItemRemoveClick}>
+      In cart
+    </div>
+  );
+
   return (
     <div className="product-item">
       <Link to={`/product/${id}`} onClick={() => productItemHandelClick(id)}>
@@ -44,17 +56,7 @@ export function ProductItem(data: ProductViewData) {
           alt="product image"
         />
       </Link>
-      <div className="product-item__text-wrapper">
-        {!isInCart ? (
-          <div className="product-item__cart-add" data-id={id} onClick={productItemAddClick}>
-            Add to cart
-          </div>
-        ) : (
-          <div className="product-item__cart-added" data-id={id} onClick={productItemRemoveClick}>
-            In cart
-          </div>
-        )}
-      </div>
+      <div className="product-item__text-wrapper">{!isInCart ? addToCart : inCart}</div>
       <div className="product-item__info">
         <div className="item-info__name-price">
           <span className="item-info__name">{name}</span>
