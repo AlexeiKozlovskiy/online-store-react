@@ -21,7 +21,10 @@
     "size": 10,
     "favorite": true,
     "category": "Tree decorations",
-    "images": ["/assets/products/Christmas-pine-cone.jpg", "/assets/products/Christmas-pine-cone(1).jpg"]
+    "images": [
+      "/assets/products/Christmas-pine-cone.jpg",
+      "/assets/products/Christmas-pine-cone(1).jpg"
+    ]
   },
   {
     "id": 3,
@@ -240,7 +243,10 @@
     "size": 700,
     "favorite": false,
     "category": "Christmas lights",
-    "images": ["/assets/products/led-lights-warm-7-m.jpg", "/assets/products/led-lights-warm-7-m(1).jpg"]
+    "images": [
+      "/assets/products/led-lights-warm-7-m.jpg",
+      "/assets/products/led-lights-warm-7-m(1).jpg"
+    ]
   },
   {
     "id": 18,
@@ -792,7 +798,10 @@
     "size": 25,
     "favorite": false,
     "category": "Christmas decorations",
-    "images": ["/assets/products/Purple Poinsettia.jpg", "/assets/products/Purple Poinsettia(1).jpg"]
+    "images": [
+      "/assets/products/Purple Poinsettia.jpg",
+      "/assets/products/Purple Poinsettia(1).jpg"
+    ]
   },
   {
     "id": 55,

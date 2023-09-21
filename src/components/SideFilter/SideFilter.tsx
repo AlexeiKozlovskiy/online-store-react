@@ -1,42 +1,62 @@
 import './SideFilter.scss';
-import { useState } from 'react';
 import ReactSlider from 'react-slider';
-
-const PRICE_MIN = 1.99;
-const PRICE_MAX = 31.99;
-
-const SIZE_MIN = 1;
-const SIZE_MAX = 700;
-
-const STOCK_MIN = 1;
-const STOCK_MAX = 50;
-
-const COLORS = ['black', 'silver', 'white', 'yellow', 'green', 'pink', 'red', 'purple', 'blue', 'brown'];
-const COLLECTIONS = ['2021', '2022', '2023'];
-
-const CATEGORIES = [
-  { category: 'Tree decorations', products: 32 },
-  { category: 'Garland & Wreath', products: 9 },
-  { category: 'Do It Yourself', products: 4 },
-  { category: 'Christmas decorations', products: 12 },
-  { category: 'Christmas lights', products: 3 },
-];
-
-interface setStateType {
-  (values: [number | null, number | null]): void;
-}
+import {
+  PRICE_MIN,
+  PRICE_MAX,
+  SIZE_MIN,
+  SIZE_MAX,
+  STOCK_MIN,
+  STOCK_MAX,
+} from '@/components/helpers/constant';
+import {
+  BalancerCategory,
+  SelectedFilter,
+  BalancerCollection,
+  BalancerColor,
+} from '@/components/types/types';
 
 interface ISideFilter {
   showFilters: boolean;
   onClickHideFilter: (event: React.MouseEvent) => void;
+  selectedColors: string[];
+  selectedCollections: number[];
+  selectedPrice: [number | null, number | null];
+  selectedSize: [number | null, number | null];
+  selectedStock: [number | null, number | null];
+  selectedCategory: string[];
+  setSelectedCollections: (value: number[]) => void;
+  setSelectedColors: (value: string[]) => void;
+  setSelectedPrice: SelectedFilter;
+  setSelectedSize: SelectedFilter;
+  setSelectedStock: SelectedFilter;
+  setSelectedCategory: (value: string[]) => void;
+  balancerCategory: BalancerCategory[];
+  balancerCollection: BalancerCollection[];
+  balancerColor: BalancerColor[];
 }
 
-export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedCollections, setSelectedCollections] = useState<string[]>([]);
-  const [[valMinPrice, valMaxPrice], setValuesPrice] = useState<any[]>([PRICE_MIN, PRICE_MAX]);
-  const [[valMinSize, valMaxSize], setValuesSize] = useState<any[]>([SIZE_MIN, SIZE_MAX]);
-  const [[valMinStock, valMaxStock], setValuesStock] = useState<any[]>([STOCK_MIN, STOCK_MAX]);
+export function SideFilter({
+  showFilters,
+  onClickHideFilter,
+  selectedColors,
+  selectedCollections,
+  selectedPrice,
+  selectedSize,
+  selectedStock,
+  selectedCategory,
+  setSelectedColors,
+  setSelectedCollections,
+  setSelectedPrice,
+  setSelectedSize,
+  setSelectedStock,
+  setSelectedCategory,
+  balancerCategory,
+  balancerCollection,
+  balancerColor, // balancerPrice,
+}: ISideFilter) {
+  const [valMinPrice, valMaxPrice] = selectedPrice;
+  const [valMinSize, valMaxSize] = selectedSize;
+  const [valMinStock, valMaxStock] = selectedStock;
 
   function handleColorClick(color: string) {
     if (selectedColors.includes(color)) {
@@ -47,15 +67,22 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   }
 
   function handleCollectionClick(collection: string) {
-    if (selectedCollections.includes(collection)) {
-      setSelectedCollections(selectedCollections.filter((el) => el !== collection));
+    if (selectedCollections.includes(+collection)) {
+      setSelectedCollections(selectedCollections.filter((el) => el !== +collection));
     } else {
-      setSelectedCollections([...selectedCollections, collection]);
+      setSelectedCollections([...selectedCollections, +collection]);
     }
   }
 
-  function handleInputChange(startValue: string, endValue: string, setState: setStateType) {
+  function handleInputChange(startValue: string, endValue: string, setState: SelectedFilter) {
     setState([parseFloat(startValue) || null, parseFloat(endValue) || null]);
+  }
+
+  function categoryHandelChange(category: string) {
+    const updatedCategories = [...selectedCategory];
+    const index = [...selectedCategory].indexOf(category);
+    index !== -1 ? updatedCategories.splice(index, 1) : updatedCategories.push(category);
+    setSelectedCategory(updatedCategories);
   }
 
   return (
@@ -64,7 +91,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
         <div className="filters-item__title">Color</div>
         <div className="filters-item__content item-content">
           <div className="item-content__colors colors">
-            {COLORS?.map((color) => (
+            {balancerColor?.map(({ color }) => (
               <div
                 key={color}
                 className={`colors__color is-${color} ${
@@ -81,14 +108,14 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
         <div className="filters-item__title">Collection</div>
         <div className="filters-item__content item-content">
           <div className="item-content__collection collection">
-            {COLLECTIONS?.map((collection) => (
+            {balancerCollection?.map(({ collection }) => (
               <div
                 key={collection}
                 className={`collection__year ${
                   selectedCollections.includes(collection) ? 'is-selected' : ''
                 }`}
                 data-collection={collection}
-                onClick={() => handleCollectionClick(collection)}
+                onClick={() => handleCollectionClick(collection.toString())}
               >
                 {collection}
               </div>
@@ -105,7 +132,9 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               className="box-start"
               value={valMinPrice || ''}
               maxLength={4}
-              onChange={(e) => handleInputChange(e.target.value, valMaxPrice, setValuesPrice)}
+              onChange={(e) =>
+                handleInputChange(e.target.value, valMaxPrice!.toString(), setSelectedPrice)
+              }
             />
             <span className="item-content-position__start">$</span>
             <input
@@ -113,14 +142,16 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               className="box-end"
               value={valMaxPrice || ''}
               maxLength={4}
-              onChange={(e) => handleInputChange(valMinPrice, e.target.value, setValuesPrice)}
+              onChange={(e) =>
+                handleInputChange(valMinPrice!.toString(), e.target.value, setSelectedPrice)
+              }
             />
             <span className="item-content-position__end">$</span>
           </div>
           <ReactSlider
             className="slider"
-            onChange={setValuesPrice}
-            value={[valMinPrice, valMaxPrice]}
+            onAfterChange={(value: [number, number]) => setSelectedPrice(value)}
+            value={[valMinPrice!, valMaxPrice!]}
             min={PRICE_MIN}
             max={PRICE_MAX}
           />
@@ -135,7 +166,9 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               value={valMinSize || ''}
               className="box-start"
               maxLength={3}
-              onChange={(e) => handleInputChange(e.target.value, valMaxSize, setValuesSize)}
+              onChange={(e) =>
+                handleInputChange(e.target.value, valMaxSize!.toString(), setSelectedSize)
+              }
             />
             <span className="item-content-position__start">cm</span>
             <input
@@ -143,14 +176,16 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               value={valMaxSize || ''}
               className="box-end"
               maxLength={3}
-              onChange={(e) => handleInputChange(valMinSize, e.target.value, setValuesSize)}
+              onChange={(e) =>
+                handleInputChange(valMinSize!.toString(), e.target.value, setSelectedSize)
+              }
             />
             <span className="item-content-position__end">cm</span>
           </div>
           <ReactSlider
             className="slider"
-            onChange={setValuesSize}
-            value={[valMinSize, valMaxSize]}
+            onAfterChange={(value: [number, number]) => setSelectedSize(value)}
+            value={[valMinSize!, valMaxSize!]}
             min={SIZE_MIN}
             max={SIZE_MAX}
           />
@@ -159,18 +194,20 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
       <div className="filters__item filters-item">
         <div className="filters-item__title">Category</div>
         <div className="filters-item__content item-content">
-          {CATEGORIES?.map(({ category: categoryName, products }) => {
+          {balancerCategory?.map(({ category: categoryName, count }) => {
             const id = categoryName.toLowerCase().replace(' ', '-');
             return (
               <div key={id} className="item-content__category category">
                 <label htmlFor={id} className="category__label">
                   {categoryName}
                 </label>
-                <div className="category__count">({products})</div>
+                <div className="category__count">({count})</div>
                 <input
                   id={id}
                   type="checkbox"
+                  checked={selectedCategory.includes(categoryName)}
                   className="category__checkbox"
+                  onChange={() => categoryHandelChange(categoryName)}
                   data-categories={categoryName}
                 />
               </div>
@@ -187,20 +224,24 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               value={valMinStock || ''}
               className="box-start"
               maxLength={2}
-              onChange={(e) => handleInputChange(e.target.value, valMaxStock, setValuesStock)}
+              onChange={(e) =>
+                handleInputChange(e.target.value, valMaxStock!.toString(), setSelectedStock)
+              }
             />
             <input
               type="text"
               value={valMaxStock || ''}
               className="box-end"
               maxLength={2}
-              onChange={(e) => handleInputChange(valMinStock, e.target.value, setValuesStock)}
+              onChange={(e) =>
+                handleInputChange(valMinStock!.toString(), e.target.value, setSelectedStock)
+              }
             />
           </div>
           <ReactSlider
             className="slider"
-            onChange={setValuesStock}
-            value={[valMinStock, valMaxStock]}
+            onAfterChange={(value: [number, number]) => setSelectedStock(value)}
+            value={[valMinStock!, valMaxStock!]}
             min={STOCK_MIN}
             max={STOCK_MAX}
           />

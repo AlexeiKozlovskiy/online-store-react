@@ -21,7 +21,9 @@ const availablePromocodes: Promocode[] = [
 ];
 
 export function CartPage() {
-  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+  const cartItems = useSelector(
+    (state: CartItemReducerProps) => state.cart
+  ) as unknown as CartItem[];
 
   const [productCount, setProductCount] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
@@ -35,7 +37,7 @@ export function CartPage() {
 
   return (
     <>
-      {!cartItems ? (
+      {!cartItems.length ? (
         <main>
           <div className="shopping-cart__empty">
             <div className="shopping-cart__empty-title">SHOPPING CART</div>

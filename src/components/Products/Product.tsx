@@ -47,7 +47,7 @@ export function ProductItem(data: ProductViewData) {
 
   return (
     <div className="product-item">
-      <Link to={`/product/${id}`} onClick={() => productItemHandelClick(id)}>
+      <Link to={`/product/${id}`}>
         <img
           className="product-item__img"
           onClick={() => productItemHandelClick(id)}

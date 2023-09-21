@@ -28,7 +28,10 @@ const cartSlice = createSlice({
       return state;
     },
 
-    setProductQuantityInCart: (state, { payload: cartItem }: PayloadAction<CartItemArg>): CartItem[] => {
+    setProductQuantityInCart: (
+      state,
+      { payload: cartItem }: PayloadAction<CartItemArg>
+    ): CartItem[] => {
       const item = state.find((item) => item.product.id === cartItem.product.id);
       if (!item) {
         return [
@@ -49,7 +52,9 @@ const cartSlice = createSlice({
       const item = state.find((item) => item.product.id === product.id);
       if (item) {
         if (item.quantity <= 1) {
-          return state.filter((stateItem) => stateItem !== item).map((p, i) => ({ ...p, id: i + 1 }));
+          return state
+            .filter((stateItem) => stateItem !== item)
+            .map((p, i) => ({ ...p, id: i + 1 }));
         }
         item.quantity -= 1;
       }

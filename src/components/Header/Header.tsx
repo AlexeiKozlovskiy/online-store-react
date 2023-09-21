@@ -5,7 +5,9 @@ import { CartItemReducerProps, CartItem } from '@/components/types/types';
 import { useEffect, useState } from 'react';
 
 export function Header() {
-  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+  const cartItems = useSelector(
+    (state: CartItemReducerProps) => state.cart
+  ) as unknown as CartItem[];
   const [productCount, setProductCount] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
 

@@ -13,7 +13,9 @@ interface IQuantity {
 export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, id }: IQuantity) {
   const [inputValue, setInputValue] = useState('1');
   const [stock, setStock] = useState(0);
-  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+  const cartItems = useSelector(
+    (state: CartItemReducerProps) => state.cart
+  ) as unknown as CartItem[];
 
   useEffect(() => {
     products.find((el) => {
