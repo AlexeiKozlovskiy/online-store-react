@@ -138,16 +138,6 @@ export function MainPage() {
       return arrCategory;
     };
 
-    // const categoryBalancer = sortProducts.reduce((acc: BalancerCategory[], { category }) => {
-    //   const existingCategory = acc.find((item) => item.category === category);
-    //   if (existingCategory) {
-    //     existingCategory.count++;
-    //   } else {
-    //     acc = [...acc, { category: category, count: 1 }];
-    //   }
-    //   return acc;
-    // }, []);
-
     if (!selectedColors.length) {
       setBalancerColor(sortColorBalancer(colorBalancer));
     }

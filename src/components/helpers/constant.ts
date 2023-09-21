@@ -7,20 +7,6 @@ export const SIZE_MAX = 700;
 export const STOCK_MIN = 1;
 export const STOCK_MAX = 50;
 
-export const COLORS = [
-  'black',
-  'silver',
-  'white',
-  'yellow',
-  'green',
-  'pink',
-  'red',
-  'purple',
-  'blue',
-  'brown',
-];
-export const COLLECTIONS = [2021, 2022, 2023];
-
 export const CATEGORIES = [
   'Tree decorations',
   'Garland & Wreath',
