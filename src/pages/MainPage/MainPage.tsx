@@ -24,6 +24,7 @@ import {
   SIZE_MAX,
   STOCK_MIN,
   STOCK_MAX,
+  CATEGORIES,
 } from '@/components/helpers/constant';
 
 export function MainPage() {
@@ -124,15 +125,28 @@ export function MainPage() {
       return acc;
     }, []);
 
-    const categoryBalancer = sortProducts.reduce((acc: BalancerCategory[], { category }) => {
-      const existingCategory = acc.find((item) => item.category === category);
-      if (existingCategory) {
-        existingCategory.count++;
-      } else {
-        acc = [...acc, { category: category, count: 1 }];
-      }
-      return acc;
-    }, []);
+    const categoryBalancer = (products: Product[]) => {
+      let arrCategory: BalancerCategory[] = [];
+
+      CATEGORIES.forEach((category) => {
+        const categoryProducts = products.filter((product) => product.category === category);
+        const count = categoryProducts.length;
+        arrCategory = [...arrCategory, { category, count }];
+        return arrCategory;
+      });
+
+      return arrCategory;
+    };
+
+    // const categoryBalancer = sortProducts.reduce((acc: BalancerCategory[], { category }) => {
+    //   const existingCategory = acc.find((item) => item.category === category);
+    //   if (existingCategory) {
+    //     existingCategory.count++;
+    //   } else {
+    //     acc = [...acc, { category: category, count: 1 }];
+    //   }
+    //   return acc;
+    // }, []);
 
     if (!selectedColors.length) {
       setBalancerColor(sortColorBalancer(colorBalancer));
@@ -140,8 +154,9 @@ export function MainPage() {
     if (!selectedCollections.length) {
       setBalancerCollection(sortCollectionBalancer(collectionBalancer));
     }
+
     if (!selectedCategory.length) {
-      setBalancerCategory(sortCategoryBalancer(categoryBalancer));
+      setBalancerCategory(sortCategoryBalancer(categoryBalancer(sortProducts)));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -160,7 +175,7 @@ export function MainPage() {
       <SearchPanel />
       <div className="store-page">
         <section className="main-catalog">
-          <div className="main-catalog__filters">
+          <aside className="main-catalog__filters">
             <SideFilter
               showFilters={showFilters}
               onClickHideFilter={handleShowFilters}
@@ -180,7 +195,7 @@ export function MainPage() {
               balancerCollection={balancerCollection}
               balancerColor={balancerColor}
             />
-          </div>
+          </aside>
           <div className="main-catalog__center-section main-center-section">
             <SortedFilters
               onClickShowFilter={handleShowFilters}
