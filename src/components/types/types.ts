@@ -53,3 +53,20 @@ export type CartData = {
 };
 
 export type GetPriceByPromocodes = (promocodes?: Promocode[]) => number;
+
+export type BalancerCategory = {
+  category: string;
+  count: number;
+};
+
+export type BalancerCollection = {
+  collection: number;
+};
+
+export type BalancerColor = {
+  color: string;
+};
+
+export type SelectedFilter = {
+  (values: [number | null, number | null]): void;
+};

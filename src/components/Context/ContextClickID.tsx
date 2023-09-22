@@ -15,5 +15,7 @@ export const IdClickContext = createContext<IIdClick>({
 export const IdClickProvider = ({ children }: { children: ReactNode }) => {
   const [clickId, setClickId] = useState<number>(0);
 
-  return <IdClickContext.Provider value={{ clickId, setClickId }}>{children}</IdClickContext.Provider>;
+  return (
+    <IdClickContext.Provider value={{ clickId, setClickId }}>{children}</IdClickContext.Provider>
+  );
 };

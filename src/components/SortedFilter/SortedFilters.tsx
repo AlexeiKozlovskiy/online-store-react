@@ -15,9 +15,15 @@ interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
   onClickSwitcher: (string: string) => void;
   swichedView: string;
+  itemsCount: number;
 }
 
-export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
+export function SortedFilters({
+  onClickShowFilter,
+  onClickSwitcher,
+  swichedView,
+  itemsCount,
+}: ISortedFilters) {
   function switcherView(view: string) {
     view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
   }
@@ -28,7 +34,7 @@ export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView 
         <div onClick={onClickShowFilter} className="filters-menu__icon"></div>
         <div className="filters-menu__title">Show filters</div>
       </div>
-      <div className="sorted-filters__item-count">60 items</div>
+      <div className="sorted-filters__item-count">{itemsCount} items</div>
       <div className="sorted-filters__select">
         <select className="filters-select">
           {sortOptions.map((value) => (

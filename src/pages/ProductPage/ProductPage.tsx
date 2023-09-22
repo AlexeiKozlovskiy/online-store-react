@@ -32,7 +32,9 @@ export function ProductPage({ clickId }: IProductPage) {
       images: ['', ''],
     });
   const [firstImg, secondImg] = images;
-  const cartItems = useSelector((state: CartItemReducerProps) => state.cart) as unknown as CartItem[];
+  const cartItems = useSelector(
+    (state: CartItemReducerProps) => state.cart
+  ) as unknown as CartItem[];
   const isShake = useAnimations({ quantity: Number(quantity), stock });
 
   useEffect(() => {
@@ -113,7 +115,11 @@ export function ProductPage({ clickId }: IProductPage) {
           {isInCart ? inCart : ''}
         </div>
         <div className="product-page__cart-container">
-          <QuantityPiecesProduct id={clickId} onChangeQuantity={qtyChange} onResetInput={resetInput} />
+          <QuantityPiecesProduct
+            id={clickId}
+            onChangeQuantity={qtyChange}
+            onResetInput={resetInput}
+          />
           {isInCart ? addMore : addToCart}
         </div>
         <div className="product-page__specifications-container">
@@ -126,7 +132,9 @@ export function ProductPage({ clickId }: IProductPage) {
               <div className="specifications__name-title">Price</div>
               <div className="specifications__name-title">Size</div>
               <div className="specifications__name-title">Category</div>
-              <div className={`specifications__name-title in-stock ${isShake ? 'shake-product' : ''}`}>
+              <div
+                className={`specifications__name-title in-stock ${isShake ? 'shake-product' : ''}`}
+              >
                 In stock
               </div>
             </div>
