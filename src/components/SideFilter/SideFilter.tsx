@@ -14,6 +14,8 @@ import {
   BalancerCollection,
   BalancerColor,
 } from '@/components/types/types';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 interface ISideFilter {
   showFilters: boolean;
@@ -52,11 +54,89 @@ export function SideFilter({
   setSelectedCategory,
   balancerCategory,
   balancerCollection,
-  balancerColor, // balancerPrice,
+  balancerColor,
 }: ISideFilter) {
   const [valMinPrice, valMaxPrice] = selectedPrice;
   const [valMinSize, valMaxSize] = selectedSize;
   const [valMinStock, valMaxStock] = selectedStock;
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  useEffect(() => {
+    const colors = queryParams.getAll('colors');
+    const collections = queryParams.getAll('collections');
+    const valMinPrice = queryParams.getAll('minPrice');
+    const valMaxPrice = queryParams.getAll('maxPrice');
+    const valMinSize = queryParams.getAll('minSize');
+    const valMaxSize = queryParams.getAll('maxSize');
+    const valMinStock = queryParams.getAll('minStock');
+    const valMaxStock = queryParams.getAll('maxStock');
+    const categories = queryParams.getAll('categories');
+
+    if (colors.length) {
+      setSelectedColors(colors[0]?.split(','));
+    }
+    if (collections.length) {
+      setSelectedCollections(collections[0]?.split(',').map(Number));
+    }
+    if (categories.length) {
+      setSelectedCategory(categories[0]?.split(','));
+    }
+    if (valMinPrice.length || valMaxPrice.length) {
+      setSelectedPrice([+valMinPrice, +valMaxPrice]);
+    }
+    if (valMinSize.length || valMaxSize.length) {
+      setSelectedSize([+valMinSize, +valMaxSize]);
+    }
+    if (valMinStock.length || valMaxStock.length) {
+      setSelectedStock([+valMinStock, +valMaxStock]);
+    }
+  }, [location.search]);
+
+  useEffect(() => {
+    updateURLWithFilters();
+  }, [
+    selectedColors,
+    selectedCollections,
+    selectedCategory,
+    selectedPrice,
+    selectedSize,
+    selectedStock,
+  ]);
+
+  const updateURLWithFilters = () => {
+    const params = new URLSearchParams();
+    if (selectedColors.length) {
+      params.set('colors', selectedColors.join(','));
+    }
+    if (selectedCollections.length) {
+      params.set('collections', selectedCollections.join(','));
+    }
+    if (selectedCategory.length) {
+      params.set('categories', selectedCategory.join(','));
+    }
+    if (valMinPrice !== PRICE_MIN || valMaxPrice !== PRICE_MAX) {
+      if (valMinPrice && valMaxPrice) {
+        params.set('minPrice', valMinPrice!.toString());
+        params.set('maxPrice', valMaxPrice!.toString());
+      }
+    }
+    if (valMinSize !== SIZE_MIN || valMaxSize !== SIZE_MAX) {
+      if (valMinSize && valMaxSize) {
+        params.set('minSize', valMinSize!.toString());
+        params.set('maxSize', valMaxSize!.toString());
+      }
+    }
+    if (valMinStock !== STOCK_MIN || valMaxStock !== STOCK_MAX) {
+      if (valMinStock && valMaxStock) {
+        params.set('minStock', valMinStock!.toString());
+        params.set('maxStock', valMaxStock!.toString());
+      }
+    }
+    const newURL = `${location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, '', newURL);
+  };
 
   function handleColorClick(color: string) {
     if (selectedColors.includes(color)) {
@@ -91,7 +171,7 @@ export function SideFilter({
         <div className="filters-item__title">Color</div>
         <div className="filters-item__content item-content">
           <div className="item-content__colors colors">
-            {balancerColor?.map(({ color }) => (
+            {balancerColor.map(({ color }) => (
               <div
                 key={color}
                 className={`colors__color is-${color} ${
