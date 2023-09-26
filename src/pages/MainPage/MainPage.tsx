@@ -1,5 +1,5 @@
 import './MainPage.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { SortedFilters } from '@/components/SortedFilter/SortedFilters';
 import { ProductsList } from '@/components/Products/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
@@ -32,34 +32,110 @@ export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [swichedView, setSwichedView] = useState('block');
   const [sortProducts, setSortProducts] = useState<Product[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedCollections, setSelectedCollections] = useState<number[]>([]);
-  const [selectedPrice, setSelectedPrice] = useState<[number | null, number | null]>([
-    PRICE_MIN,
-    PRICE_MAX,
-  ]);
-  const [selectedSize, setSelectedSize] = useState<[number | null, number | null]>([
-    SIZE_MIN,
-    SIZE_MAX,
-  ]);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedStock, setSelectedStock] = useState<[number | null, number | null]>([
-    STOCK_MIN,
-    STOCK_MAX,
-  ]);
+  const [selectedColors, setSelectedColors] = useState<string[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedColors') || '[]');
+  });
+  const [selectedCollections, setSelectedCollections] = useState<number[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedCollections') || '[]');
+  });
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedCategory') || '[]');
+  });
+
+  const [selectedPrice, setSelectedPrice] = useState<[number | null, number | null]>(() => {
+    return JSON.parse(localStorage.getItem('selectedPrice') || '[null, null]');
+  });
+  const [selectedSize, setSelectedSize] = useState<[number | null, number | null]>(() => {
+    return JSON.parse(localStorage.getItem('selectedSize') || '[null, null]');
+  });
+  const [selectedStock, setSelectedStock] = useState<[number | null, number | null]>(() => {
+    return JSON.parse(localStorage.getItem('selectedStock') || '[null, null]');
+  });
   const [sortColor, setSortColor] = useState<Product[]>([]);
   const [sortCollections, setSortCollections] = useState<Product[]>([]);
   const [sortPrice, setSortPrice] = useState<Product[]>([]);
   const [sortSize, setSortSize] = useState<Product[]>([]);
   const [sortCategory, setSortCategory] = useState<Product[]>([]);
   const [sortStock, setSortStock] = useState<Product[]>([]);
-  const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>([]);
-  const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>([]);
-  const [balancerColor, setBalancerColor] = useState<BalancerColor[]>([]);
+  const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerCategory') || '[]');
+  });
+  const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerCollection') || '[]');
+  });
+  const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerColor') || '[]');
+  });
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
   const [minStock, maxStock] = selectedStock;
+
+  useEffect(() => {
+    if (selectedPrice.every((el) => el === null)) {
+      setSelectedPrice([PRICE_MIN, PRICE_MAX]);
+    }
+    if (selectedSize.every((el) => el === null)) {
+      setSelectedSize([SIZE_MIN, SIZE_MAX]);
+    }
+    if (selectedStock.every((el) => el === null)) {
+      setSelectedStock([STOCK_MIN, STOCK_MAX]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedColors) {
+      localStorage.setItem('selectedColors', JSON.stringify(selectedColors));
+    }
+  }, [selectedColors]);
+
+  useEffect(() => {
+    if (selectedCollections) {
+      localStorage.setItem('selectedCollections', JSON.stringify(selectedCollections));
+    }
+  }, [selectedCollections]);
+
+  useEffect(() => {
+    if (selectedPrice) {
+      localStorage.setItem('selectedPrice', JSON.stringify(selectedPrice));
+    }
+  }, [selectedPrice]);
+
+  useEffect(() => {
+    if (selectedSize) {
+      localStorage.setItem('selectedSize', JSON.stringify(selectedSize));
+    }
+  }, [selectedSize]);
+
+  useEffect(() => {
+    if (selectedStock) {
+      localStorage.setItem('selectedStock', JSON.stringify(selectedStock));
+    }
+  }, [selectedStock]);
+
+  useEffect(() => {
+    if (selectedCategory) {
+      localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory));
+    }
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (balancerCategory) {
+      localStorage.setItem('balancerCategory', JSON.stringify(balancerCategory));
+    }
+  }, [balancerCategory]);
+
+  useEffect(() => {
+    if (balancerColor) {
+      localStorage.setItem('balancerColor', JSON.stringify(balancerColor));
+    }
+  }, [balancerColor]);
+
+  useEffect(() => {
+    if (balancerCollection) {
+      localStorage.setItem('balancerCollection', JSON.stringify(balancerCollection));
+    }
+  }, [balancerCollection]);
 
   useEffect(() => {
     const sortColor = products.filter(({ color }) => selectedColors.includes(color));
@@ -93,7 +169,7 @@ export function MainPage() {
     sortStock.length ? setSortStock(sortStock) : setSortStock(products);
   }, [minStock, maxStock, selectedStock]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const commonProduct = findCommonProducts(
       products,
       sortColor,
@@ -127,7 +203,6 @@ export function MainPage() {
 
     const categoryBalancer = (products: Product[]) => {
       let arrCategory: BalancerCategory[] = [];
-
       CATEGORIES.forEach((category) => {
         const categoryProducts = products.filter((product) => product.category === category);
         const count = categoryProducts.length;
@@ -141,15 +216,16 @@ export function MainPage() {
     if (!selectedColors.length) {
       setBalancerColor(sortColorBalancer(colorBalancer));
     }
+
     if (!selectedCollections.length) {
       setBalancerCollection(sortCollectionBalancer(collectionBalancer));
     }
 
-    if (!selectedCategory.length) {
+    if (selectedCategory.length) {
+      setBalancerCategory(sortCategoryBalancer(balancerCategory));
+    } else {
       setBalancerCategory(sortCategoryBalancer(categoryBalancer(sortProducts)));
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortProducts]);
 
   function handleShowFilters() {
