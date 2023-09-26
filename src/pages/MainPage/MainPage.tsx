@@ -1,5 +1,5 @@
 import './MainPage.scss';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { SortedFilters } from '@/components/SortedFilter/SortedFilters';
 import { ProductsList } from '@/components/Products/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
@@ -25,8 +25,6 @@ import {
   STOCK_MIN,
   STOCK_MAX,
   CATEGORIES,
-  COLOR_STOCK,
-  COLLECTION_STOCK,
 } from '@/components/helpers/constant';
 
 export function MainPage() {
@@ -34,12 +32,16 @@ export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [swichedView, setSwichedView] = useState('block');
   const [sortProducts, setSortProducts] = useState<Product[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedCollections, setSelectedCollections] = useState<number[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  //   () => {
-  //   return JSON.parse(localStorage.getItem('selectedCategory') || '[]');
-  // });
+  const [selectedColors, setSelectedColors] = useState<string[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedColors') || '[]');
+  });
+  const [selectedCollections, setSelectedCollections] = useState<number[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedCollections') || '[]');
+  });
+  const [selectedCategory, setSelectedCategory] = useState<string[]>(() => {
+    return JSON.parse(localStorage.getItem('selectedCategory') || '[]');
+  });
+
   const [selectedPrice, setSelectedPrice] = useState<[number | null, number | null]>(() => {
     return JSON.parse(localStorage.getItem('selectedPrice') || '[null, null]');
   });
@@ -55,39 +57,21 @@ export function MainPage() {
   const [sortSize, setSortSize] = useState<Product[]>([]);
   const [sortCategory, setSortCategory] = useState<Product[]>([]);
   const [sortStock, setSortStock] = useState<Product[]>([]);
-  const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>([]);
-  //   () => {
-  //   return JSON.parse(localStorage.getItem('balancerCategory') || '[]');
-  // });
-  const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>([]);
-  const [balancerColor, setBalancerColor] = useState<BalancerColor[]>([]);
+  const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerCategory') || '[]');
+  });
+  const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerCollection') || '[]');
+  });
+  const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
+    return JSON.parse(localStorage.getItem('balancerColor') || '[]');
+  });
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
   const [minStock, maxStock] = selectedStock;
 
   useEffect(() => {
-    const savedColors: string[] = JSON.parse(localStorage.getItem('selectedColors') || '[]');
-    const savedCollections: number[] = JSON.parse(
-      localStorage.getItem('selectedCollections') || '[]'
-    );
-    const savedCategory: string[] = JSON.parse(localStorage.getItem('selectedCategory') || '[]');
-    const savedBalanceCategory = JSON.parse(localStorage.getItem('balancerCategory') || '[]');
-
-    if (savedColors.length) {
-      setSelectedColors(savedColors);
-    }
-    if (savedCollections.length) {
-      setSelectedCollections(savedCollections);
-    }
-    if (savedCategory.length) {
-      setSelectedCategory(savedCategory);
-    }
-
-    if (savedBalanceCategory.length) {
-      // setBalancerCategory(sortCategoryBalancer(savedBalanceCategory));
-    }
-
     if (selectedPrice.every((el) => el === null)) {
       setSelectedPrice([PRICE_MIN, PRICE_MAX]);
     }
@@ -97,9 +81,7 @@ export function MainPage() {
     if (selectedStock.every((el) => el === null)) {
       setSelectedStock([STOCK_MIN, STOCK_MAX]);
     }
-    // console.log(savedCategory);
   }, []);
-  console.log(selectedCategory);
 
   useEffect(() => {
     if (selectedColors) {
@@ -144,6 +126,18 @@ export function MainPage() {
   }, [balancerCategory]);
 
   useEffect(() => {
+    if (balancerColor) {
+      localStorage.setItem('balancerColor', JSON.stringify(balancerColor));
+    }
+  }, [balancerColor]);
+
+  useEffect(() => {
+    if (balancerCollection) {
+      localStorage.setItem('balancerCollection', JSON.stringify(balancerCollection));
+    }
+  }, [balancerCollection]);
+
+  useEffect(() => {
     const sortColor = products.filter(({ color }) => selectedColors.includes(color));
     selectedColors.length ? setSortColor(sortColor) : setSortColor(products);
   }, [selectedColors]);
@@ -175,7 +169,7 @@ export function MainPage() {
     sortStock.length ? setSortStock(sortStock) : setSortStock(products);
   }, [minStock, maxStock, selectedStock]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const commonProduct = findCommonProducts(
       products,
       sortColor,
@@ -215,22 +209,21 @@ export function MainPage() {
         arrCategory = [...arrCategory, { category, count }];
         return arrCategory;
       });
+
       return arrCategory;
     };
 
     if (!selectedColors.length) {
       setBalancerColor(sortColorBalancer(colorBalancer));
-    } else {
-      setBalancerColor(COLOR_STOCK);
     }
 
     if (!selectedCollections.length) {
       setBalancerCollection(sortCollectionBalancer(collectionBalancer));
-    } else {
-      setBalancerCollection(COLLECTION_STOCK);
     }
 
-    if (selectedCategory) {
+    if (selectedCategory.length) {
+      setBalancerCategory(sortCategoryBalancer(balancerCategory));
+    } else {
       setBalancerCategory(sortCategoryBalancer(categoryBalancer(sortProducts)));
     }
   }, [sortProducts]);
