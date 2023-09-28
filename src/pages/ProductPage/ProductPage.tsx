@@ -8,6 +8,7 @@ import products from '@/assets/data/products.json';
 import { addProductsToCart } from '@/components/reducers/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/components/helpers/useAnimation';
+import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 
 interface IProductPage {
   clickId: number;
@@ -90,7 +91,7 @@ export function ProductPage({ clickId }: IProductPage) {
         <div className="bread-crumbs__path">{name}</div>
       </div>
       <div className="product-page wrapper">
-        <Link to="/" className="product-page__arrow-back"></Link>
+        <ArrowBack />
         <div className="product-page__img-container">
           <div className="img-container__slider">
             <img

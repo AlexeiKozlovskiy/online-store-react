@@ -4,9 +4,10 @@ import { Promocode, CartItemReducerProps, CartItem } from '@/components/types/ty
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
+import { ITEMS_IN_PAGE_CART } from '@/components/helpers/constant';
 
 // Test data
-const itemsInPage = [1, 3, 5, 10, 0];
 const availablePromocodes: Promocode[] = [
   {
     id: 1,
@@ -52,9 +53,10 @@ export function CartPage() {
         <main>
           <div className="shopping-cart wrapper">
             <div className="shopping-cart__header">SHOPPING CART</div>
+            <ArrowBack />
             <div className="shopping-cart__pagination">
               <select className="pagination-select">
-                {itemsInPage?.map((value, ind) => (
+                {ITEMS_IN_PAGE_CART?.map((value, ind) => (
                   <option key={ind} value={value}>
                     Show items: {value}
                   </option>
