@@ -66,6 +66,7 @@ export function MainPage() {
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
     return JSON.parse(localStorage.getItem('balancerColor') || '[]');
   });
+  const [inputSearchValue, setInputSearchValue] = useState('');
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -230,6 +231,17 @@ export function MainPage() {
     }
   }, [sortProducts]);
 
+  useEffect(() => {
+    const searchItems = sortProducts.filter(({ name }) =>
+      name.toLowerCase().includes(inputSearchValue.toLowerCase())
+    );
+    if (inputSearchValue.length) {
+      setSortProducts(searchItems);
+    } else {
+      setSortProducts(products);
+    }
+  }, [inputSearchValue.length]);
+
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
   }
@@ -238,9 +250,11 @@ export function MainPage() {
     setSwichedView(value);
   }
 
+  const noItemsFound = <div className="empty-catalog">No items found</div>;
+  const productsList = <ProductsList swichedView={swichedView} products={sortProducts} />;
   return (
     <main className="MainPage-container wrapper">
-      <SearchPanel />
+      <SearchPanel setInputSearchValue={setInputSearchValue} />
       <div className="store-page">
         <section className="main-catalog">
           <aside className="main-catalog__filters">
@@ -283,7 +297,7 @@ export function MainPage() {
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
             />
-            <ProductsList swichedView={swichedView} products={sortProducts} />
+            {itemsCount ? productsList : noItemsFound}
           </div>
         </section>
       </div>
