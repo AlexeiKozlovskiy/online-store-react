@@ -1,0 +1,29 @@
+@import 'src/assets/styles/common.scss';
+
+.arrow-back {
+  background: url('https://api.iconify.design/ic/outline-arrow-back.svg?color=%239aab9f&width=60&height=60')
+    no-repeat center;
+  width: 70px;
+  height: 70px;
+  transition: transform 0.1s;
+  cursor: pointer;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+
+  &:hover {
+    animation: 0.7s ease-in-out 0s normal none infinite running arrow-animation;
+  }
+
+  @media screen and (max-width: 1070px) {
+    width: 55px;
+    height: 55px;
+    background-size: contain;
+  }
+
+  @media screen and (max-width: 767px) {
+    top: 19px;
+    width: 35px;
+    height: 35px;
+  }
+}

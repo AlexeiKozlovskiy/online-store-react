@@ -1,6 +1,6 @@
 import './MainPage.scss';
 import { useEffect, useLayoutEffect, useState } from 'react';
-import { SortedFilters } from '@/components/SortedFilter/SortedFilters';
+import { SortedFilters } from '@/components/TopMainPanel/SortedFilters';
 import { ProductsList } from '@/components/Products/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
@@ -213,6 +213,8 @@ export function MainPage() {
       return arrCategory;
     };
 
+    // Dual ranges balancers???
+
     if (!selectedColors.length) {
       setBalancerColor(sortColorBalancer(colorBalancer));
     }
@@ -268,6 +270,18 @@ export function MainPage() {
               onClickSwitcher={handleSwichedView}
               swichedView={swichedView}
               itemsCount={itemsCount}
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+              selectedCollections={selectedCollections}
+              setSelectedCollections={setSelectedCollections}
+              selectedPrice={selectedPrice}
+              setSelectedPrice={setSelectedPrice}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              selectedStock={selectedStock}
+              setSelectedStock={setSelectedStock}
             />
             <ProductsList swichedView={swichedView} products={sortProducts} />
           </div>

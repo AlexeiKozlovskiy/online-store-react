@@ -13,25 +13,13 @@ import {
   SelectedFilter,
   BalancerCollection,
   BalancerColor,
+  SelectedFilters,
 } from '@/components/types/types';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 
-interface ISideFilter {
+interface ISideFilter extends SelectedFilters {
   showFilters: boolean;
   onClickHideFilter: (event: React.MouseEvent) => void;
-  selectedColors: string[];
-  selectedCollections: number[];
-  selectedPrice: [number | null, number | null];
-  selectedSize: [number | null, number | null];
-  selectedStock: [number | null, number | null];
-  selectedCategory: string[];
-  setSelectedCollections: (value: number[]) => void;
-  setSelectedColors: (value: string[]) => void;
-  setSelectedPrice: SelectedFilter;
-  setSelectedSize: SelectedFilter;
-  setSelectedStock: SelectedFilter;
-  setSelectedCategory: (value: string[]) => void;
   balancerCategory: BalancerCategory[];
   balancerCollection: BalancerCollection[];
   balancerColor: BalancerColor[];
@@ -60,28 +48,26 @@ export function SideFilter({
   const [valMinSize, valMaxSize] = selectedSize;
   const [valMinStock, valMaxStock] = selectedStock;
 
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
   useEffect(() => {
-    const colors = queryParams.getAll('colors');
-    const collections = queryParams.getAll('collections');
+    const queryParams = new URLSearchParams(location.search);
+    const [colors] = queryParams.getAll('colors');
+    const [collections] = queryParams.getAll('collections');
+    const [categories] = queryParams.getAll('categories');
     const valMinPrice = queryParams.getAll('minPrice');
     const valMaxPrice = queryParams.getAll('maxPrice');
     const valMinSize = queryParams.getAll('minSize');
     const valMaxSize = queryParams.getAll('maxSize');
     const valMinStock = queryParams.getAll('minStock');
     const valMaxStock = queryParams.getAll('maxStock');
-    const categories = queryParams.getAll('categories');
 
-    if (colors.length) {
-      setSelectedColors(colors[0]?.split(','));
+    if (colors) {
+      setSelectedColors(colors?.split(','));
     }
-    if (collections.length) {
-      setSelectedCollections(collections[0]?.split(',').map(Number));
+    if (collections) {
+      setSelectedCollections(collections?.split(',').map(Number));
     }
-    if (categories.length) {
-      setSelectedCategory(categories[0]?.split(','));
+    if (categories) {
+      setSelectedCategory(categories?.split(','));
     }
     if (valMinPrice.length || valMaxPrice.length) {
       setSelectedPrice([+valMinPrice, +valMaxPrice]);

@@ -70,3 +70,18 @@ export type BalancerColor = {
 export type SelectedFilter = {
   (values: [number | null, number | null]): void;
 };
+
+export interface SelectedFilters {
+  selectedColors: string[];
+  selectedCollections: number[];
+  selectedPrice: [number | null, number | null];
+  selectedSize: [number | null, number | null];
+  selectedStock: [number | null, number | null];
+  selectedCategory: string[];
+  setSelectedCollections: (value: number[]) => void;
+  setSelectedColors: (value: string[]) => void;
+  setSelectedPrice: SelectedFilter;
+  setSelectedSize: SelectedFilter;
+  setSelectedStock: SelectedFilter;
+  setSelectedCategory: (value: string[]) => void;
+}
