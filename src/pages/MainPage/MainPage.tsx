@@ -31,6 +31,9 @@ export function MainPage() {
   const [itemsCount, setItemsCount] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
   const [swichedView, setSwichedView] = useState('block');
+
+  const [sortProductsSearch, setSortProductsSearch] = useState<Product[]>([]);
+
   const [sortProducts, setSortProducts] = useState<Product[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>(() => {
     return JSON.parse(localStorage.getItem('selectedColors') || '[]');
@@ -66,6 +69,7 @@ export function MainPage() {
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
     return JSON.parse(localStorage.getItem('balancerColor') || '[]');
   });
+  const [inputSearchValue, setInputSearchValue] = useState('');
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -138,35 +142,77 @@ export function MainPage() {
   }, [balancerCollection]);
 
   useEffect(() => {
-    const sortColor = products.filter(({ color }) => selectedColors.includes(color));
-    selectedColors.length ? setSortColor(sortColor) : setSortColor(products);
+    if (inputSearchValue) {
+      const sortColor = sortProductsSearch.filter(({ color }) => selectedColors.includes(color));
+      selectedColors.length ? setSortColor(sortColor) : setSortColor(sortProductsSearch);
+    } else {
+      const sortColor = products.filter(({ color }) => selectedColors.includes(color));
+      selectedColors.length ? setSortColor(sortColor) : setSortColor(products);
+    }
   }, [selectedColors]);
 
   useEffect(() => {
-    const sortCollections = products.filter(({ collection }) =>
-      selectedCollections.includes(collection)
-    );
-    selectedCollections.length ? setSortCollections(sortCollections) : setSortCollections(products);
+    if (inputSearchValue) {
+      const sortCollections = sortProductsSearch.filter(({ collection }) =>
+        selectedCollections.includes(collection)
+      );
+      sortCollections.length ? setSortColor(sortCollections) : setSortColor(sortProductsSearch);
+    } else {
+      const sortCollections = products.filter(({ collection }) =>
+        selectedCollections.includes(collection)
+      );
+      selectedCollections.length
+        ? setSortCollections(sortCollections)
+        : setSortCollections(products);
+    }
   }, [selectedCollections]);
 
   useEffect(() => {
-    const sortPrice = products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
-    sortPrice.length ? setSortPrice(sortPrice) : setSortPrice(products);
+    if (inputSearchValue) {
+      const sortPrice = sortProductsSearch.filter(
+        ({ price }) => minPrice! <= price && maxPrice! >= price
+      );
+      sortPrice.length ? setSortPrice(sortPrice) : setSortPrice(sortProductsSearch);
+    } else {
+      const sortPrice = products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
+      sortPrice.length ? setSortPrice(sortPrice) : setSortPrice(products);
+    }
   }, [minPrice, maxPrice, selectedPrice]);
 
   useEffect(() => {
-    const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
-    sortSize.length ? setSortSize(sortSize) : setSortSize(products);
+    if (inputSearchValue) {
+      const sortSize = sortProductsSearch.filter(
+        ({ size }) => minSize! <= size && maxSize! >= size
+      );
+      sortSize.length ? setSortSize(sortSize) : setSortSize(sortProductsSearch);
+    } else {
+      const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
+      sortSize.length ? setSortSize(sortSize) : setSortSize(products);
+    }
   }, [minSize, maxSize, selectedSize]);
 
   useEffect(() => {
-    const sortCategory = products.filter(({ category }) => selectedCategory.includes(category));
-    selectedCategory.length ? setSortCategory(sortCategory) : setSortCategory(products);
+    if (inputSearchValue) {
+      const sortCategory = sortProductsSearch.filter(({ category }) =>
+        selectedCategory.includes(category)
+      );
+      sortCategory.length ? setSortCategory(sortCategory) : setSortCategory(sortProductsSearch);
+    } else {
+      const sortCategory = products.filter(({ category }) => selectedCategory.includes(category));
+      selectedCategory.length ? setSortCategory(sortCategory) : setSortCategory(products);
+    }
   }, [selectedCategory]);
 
   useEffect(() => {
-    const sortStock = products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
-    sortStock.length ? setSortStock(sortStock) : setSortStock(products);
+    if (inputSearchValue) {
+      const sortStock = sortProductsSearch.filter(
+        ({ stock }) => minStock! <= stock && maxStock! >= stock
+      );
+      sortStock.length ? setSortStock(sortStock) : setSortStock(sortProductsSearch);
+    } else {
+      const sortStock = products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
+      sortStock.length ? setSortStock(sortStock) : setSortStock(products);
+    }
   }, [minStock, maxStock, selectedStock]);
 
   useLayoutEffect(() => {
@@ -230,6 +276,18 @@ export function MainPage() {
     }
   }, [sortProducts]);
 
+  useEffect(() => {
+    const searchItems = sortProducts.filter(({ name }) =>
+      name.toLowerCase().includes(inputSearchValue.toLowerCase())
+    );
+    if (inputSearchValue.length) {
+      setSortProducts(searchItems);
+      setSortProductsSearch(searchItems);
+    } else {
+      setSortProducts(products);
+    }
+  }, [inputSearchValue]);
+
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
   }
@@ -238,9 +296,11 @@ export function MainPage() {
     setSwichedView(value);
   }
 
+  const noItemsFound = <div className="empty-catalog">No items found</div>;
+  const productsList = <ProductsList swichedView={swichedView} products={sortProducts} />;
   return (
     <main className="MainPage-container wrapper">
-      <SearchPanel />
+      <SearchPanel setInputSearchValue={setInputSearchValue} />
       <div className="store-page">
         <section className="main-catalog">
           <aside className="main-catalog__filters">
@@ -283,7 +343,7 @@ export function MainPage() {
               selectedStock={selectedStock}
               setSelectedStock={setSelectedStock}
             />
-            <ProductsList swichedView={swichedView} products={sortProducts} />
+            {itemsCount ? productsList : noItemsFound}
           </div>
         </section>
       </div>

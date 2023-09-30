@@ -1,22 +1,32 @@
-import { createContext, ReactNode, useState, useContext } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-export const useMyHeaderClick = () => useContext(HeaderClickContext);
+export const useMyHeaderClickContext = () => useContext(HeaderClickContext);
 
-export interface IHeaderLogoClick {
+interface IHeaderLogoClick {
+  handleHeaderLogoClick: () => void;
   clickHeaderLogo: boolean;
-  setClickHeaderLogo: (id: boolean) => void;
 }
 
 export const HeaderClickContext = createContext<IHeaderLogoClick>({
+  handleHeaderLogoClick: () => null,
   clickHeaderLogo: false,
-  setClickHeaderLogo: () => null,
 });
 
 export const HeaderClickProvider = ({ children }: { children: ReactNode }) => {
   const [clickHeaderLogo, setClickHeaderLogo] = useState<boolean>(false);
 
+  const handleHeaderLogoClick = () => {
+    if (!clickHeaderLogo) {
+      setClickHeaderLogo(true);
+    }
+  };
+
+  useEffect(() => {
+    setClickHeaderLogo(false);
+  }, [clickHeaderLogo]);
+
   return (
-    <HeaderClickContext.Provider value={{ clickHeaderLogo, setClickHeaderLogo }}>
+    <HeaderClickContext.Provider value={{ handleHeaderLogoClick, clickHeaderLogo }}>
       {children}
     </HeaderClickContext.Provider>
   );

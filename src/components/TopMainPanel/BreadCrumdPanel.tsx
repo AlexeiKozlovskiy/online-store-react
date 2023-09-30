@@ -9,7 +9,7 @@ import {
   STOCK_MIN,
   STOCK_MAX,
 } from '@/components/helpers/constant';
-import { useMyHeaderClick } from '../Context/ContextHeaderLogoClick';
+import { useMyHeaderClickContext } from '../Context/ContextHeaderLogoClick';
 
 export function BreadCrumdPanel({
   selectedColors,
@@ -26,7 +26,7 @@ export function BreadCrumdPanel({
   setSelectedCategory,
 }: SelectedFilters) {
   const [copedLink, setCopedLink] = useState(false);
-  const { clickHeaderLogo, setClickHeaderLogo } = useMyHeaderClick();
+  const { clickHeaderLogo } = useMyHeaderClickContext();
 
   const [valMinPrice, valMaxPrice] = selectedPrice;
   const [valMinSize, valMaxSize] = selectedSize;
@@ -35,7 +35,6 @@ export function BreadCrumdPanel({
   useEffect(() => {
     if (clickHeaderLogo) {
       handelClearAllButton();
-      setClickHeaderLogo(false);
     }
   }, [clickHeaderLogo]);
 
