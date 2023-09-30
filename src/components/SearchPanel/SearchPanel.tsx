@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './SearchPanel.scss';
 
 interface ISearchPanel {
@@ -6,15 +6,33 @@ interface ISearchPanel {
 }
 
 export function SearchPanel({ setInputSearchValue }: ISearchPanel) {
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const queryParams = new URLSearchParams(location.search);
+  const [search] = queryParams.getAll('q');
+  const [searchValue, setSearchValue] = useState('');
 
-  function handelInputSearch() {
-    if (inputRef.current) {
-      const { value } = inputRef.current;
-      setInputSearchValue(value);
+  useEffect(() => {
+    if (search) {
+      setInputSearchValue(search);
+      setSearchValue(search);
     }
-  }
+  }, [location.search]);
 
+  useEffect(() => {
+    updateURLWithFilters();
+  }, [searchValue]);
+
+  const updateURLWithFilters = () => {
+    const params = new URLSearchParams();
+    params.set('q', searchValue);
+    const newURL = `${location.pathname}?${params.toString()}`;
+    window.history.replaceState(null, '', newURL);
+  };
+
+  function handelInputSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    const { value } = e.target as HTMLInputElement;
+    setSearchValue(value);
+    setInputSearchValue(value);
+  }
   return (
     <label htmlFor="find-input">
       <div className="find-container">
@@ -31,7 +49,7 @@ export function SearchPanel({ setInputSearchValue }: ISearchPanel) {
             type="search"
             placeholder="Search..."
             id="find-input"
-            ref={inputRef}
+            value={searchValue}
             onChange={handelInputSearch}
           />
           <div className="find-input-img_search"></div>
