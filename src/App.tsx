@@ -5,7 +5,7 @@ import { MainPage } from '@/pages/MainPage/MainPage';
 import { CartPage } from '@/pages/CartPage/CartPage';
 import { Header } from '@/components/Header/Header';
 import { ProductPage } from '@/pages/ProductPage/ProductPage';
-import { useMyIdContext } from '@/components/Context/ContextClickID';
+import { useMyIdContext } from '@/components/Context/ClickIDContext';
 import products from '@/assets/data/products.json';
 
 function App() {

@@ -1,99 +1,24 @@
 import './TopMainPanel.scss';
-import { SelectedFilters } from '@/components/types/types';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
-import { useEffect, useState } from 'react';
-import {
-  PRICE_MIN,
-  PRICE_MAX,
-  SIZE_MIN,
-  SIZE_MAX,
-  STOCK_MIN,
-  STOCK_MAX,
-  ITEMS_IN_PAGE,
-  SORT_OPTIONS,
-} from '@/components/helpers/constant';
+import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/components/helpers/constant';
+import { useMyFiltersContext } from '@/components/Context/FiltersContext';
 
-interface ISortedFilters extends SelectedFilters {
+interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
   onClickSwitcher: (string: string) => void;
   swichedView: string;
-  itemsCount: number;
 }
 
-export function SortedFilters({
-  onClickShowFilter,
-  onClickSwitcher,
-  swichedView,
-  itemsCount,
-  selectedColors,
-  selectedCollections,
-  selectedPrice,
-  selectedSize,
-  selectedStock,
-  selectedCategory,
-  setSelectedColors,
-  setSelectedCollections,
-  setSelectedPrice,
-  setSelectedSize,
-  setSelectedStock,
-  setSelectedCategory,
-}: ISortedFilters) {
-  const [emptyFilters, setEmptyFilters] = useState(true);
+export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
+  const { isEmptyFilters, itemsCount } = useMyFiltersContext();
+
   function switcherView(view: string) {
     view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
   }
-  const [valMinPrice, valMaxPrice] = selectedPrice;
-  const [valMinSize, valMaxSize] = selectedSize;
-  const [valMinStock, valMaxStock] = selectedStock;
-
-  useEffect(() => {
-    function checkSelectedFilters() {
-      if (
-        !selectedColors.length &&
-        !selectedCollections.length &&
-        valMinPrice === PRICE_MIN &&
-        valMaxPrice === PRICE_MAX &&
-        valMinSize === SIZE_MIN &&
-        valMaxSize === SIZE_MAX &&
-        valMinStock === STOCK_MIN &&
-        valMaxStock === STOCK_MAX &&
-        !selectedCategory.length
-      ) {
-        setEmptyFilters(false);
-      } else {
-        setEmptyFilters(true);
-      }
-    }
-    checkSelectedFilters();
-  }, [
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
-  ]);
 
   return (
     <>
-      {emptyFilters ? (
-        <BreadCrumdPanel
-          selectedColors={selectedColors}
-          setSelectedColors={setSelectedColors}
-          selectedCollections={selectedCollections}
-          setSelectedCollections={setSelectedCollections}
-          selectedPrice={selectedPrice}
-          setSelectedPrice={setSelectedPrice}
-          selectedSize={selectedSize}
-          setSelectedSize={setSelectedSize}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedStock={selectedStock}
-          setSelectedStock={setSelectedStock}
-        />
-      ) : (
-        ''
-      )}
+      {isEmptyFilters ? <BreadCrumdPanel /> : ''}
       <div className="main-center-section__sorted sorted-filters">
         <div className="sorted-filters__filters-menu filters-menu">
           <div onClick={onClickShowFilter} className="filters-menu__icon"></div>

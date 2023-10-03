@@ -1,7 +1,7 @@
 import './Product.scss';
 import { Link } from 'react-router-dom';
 import { Product } from '@/components/types/types';
-import { useMyIdContext } from '@/components/Context/ContextClickID';
+import { useMyIdContext } from '@/components/Context/ClickIDContext';
 import { addProductsToCart, removeProductsFromCartAll } from '@/components/reducers/controller';
 
 type ProductViewData = {

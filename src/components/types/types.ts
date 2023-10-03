@@ -1,4 +1,4 @@
-export type Product = {
+export interface Product {
   id: number;
   name: string;
   price: number;
@@ -9,67 +9,56 @@ export type Product = {
   favorite?: boolean;
   category: string;
   images: string[];
-};
+}
 
-export type CartItemArg = {
+export interface CartItemArg {
   product: Product;
   quantity: number;
-};
+}
 
-export type Promocode = {
+export interface Promocode {
   id: number;
   name: string;
   discount: number;
-};
+}
 
-export type PromocodeData = {
+export interface PromocodeData {
   applied: Promocode[];
   available: Promocode[];
-};
+}
 
-export type CartItem = CartItemArg & {
+export interface CartItem extends CartItemArg {
   id: number;
-};
+}
 
 export interface CartItemReducerProps {
   cart: CartItem;
 }
 
-export type PaginationData = {
+export interface PaginationData {
   page: number;
   perPage: number;
   pageCount: number;
   offset: number;
   limit: number;
-};
+}
 
-export type CartData = {
+export interface CartData {
   items: CartItem[];
   priceAfterDiscount: number;
   getPriceByPromocodes: GetPriceByPromocodes;
   productCount: number;
   promocodes: PromocodeData;
   pagination: PaginationData;
-};
+}
 
 export type GetPriceByPromocodes = (promocodes?: Promocode[]) => number;
 
-export type BalancerCategory = {
-  category: string;
-  count: number;
-};
-
-export type BalancerCollection = {
-  collection: number;
-};
-
-export type BalancerColor = {
-  color: string;
-};
-
-export type SelectedFilter = {
+export interface SelectedFilter {
   (values: [number | null, number | null]): void;
-};
+}
+
+export interface Filters extends SelectedFilters, SetSelectedFilters {}
 
 export interface SelectedFilters {
   selectedColors: string[];
@@ -78,10 +67,37 @@ export interface SelectedFilters {
   selectedSize: [number | null, number | null];
   selectedStock: [number | null, number | null];
   selectedCategory: string[];
+}
+
+export interface SetSelectedFilters {
   setSelectedCollections: (value: number[]) => void;
   setSelectedColors: (value: string[]) => void;
   setSelectedPrice: SelectedFilter;
   setSelectedSize: SelectedFilter;
   setSelectedStock: SelectedFilter;
   setSelectedCategory: (value: string[]) => void;
+}
+
+export interface Balancers {
+  balancerCategory: BalancerCategory[];
+  balancerCollection: BalancerCollection[];
+  balancerColor: BalancerColor[];
+}
+
+export interface BalancerCategory {
+  category: string;
+  count: number;
+}
+
+export interface BalancerCollection {
+  collection: number;
+}
+
+export interface BalancerColor {
+  color: string;
+}
+
+export interface InputSearch {
+  inputSearchValue: string | null;
+  setInputSearchValue: (value: string | null) => void;
 }

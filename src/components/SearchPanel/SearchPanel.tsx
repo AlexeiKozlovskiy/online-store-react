@@ -1,38 +1,27 @@
-import { useEffect, useState } from 'react';
 import './SearchPanel.scss';
+import { useEffect, useState } from 'react';
+import { useMyFiltersContext } from '@/components/Context/FiltersContext';
 
-interface ISearchPanel {
-  setInputSearchValue: (value: string) => void;
-}
-
-export function SearchPanel({ setInputSearchValue }: ISearchPanel) {
-  const queryParams = new URLSearchParams(location.search);
-  const [search] = queryParams.getAll('q');
-  const [searchValue, setSearchValue] = useState('');
+export function SearchPanel() {
+  const [inputValue, setInputValue] = useState<string | null>('');
+  const { inputSearchValue, setInputSearchValue } = useMyFiltersContext();
 
   useEffect(() => {
-    if (search) {
-      setInputSearchValue(search);
-      setSearchValue(search);
+    function setFromURL() {
+      setInputValue(inputSearchValue);
     }
-  }, [location.search]);
+    setFromURL();
+  }, [inputSearchValue]);
 
   useEffect(() => {
-    updateURLWithFilters();
-  }, [searchValue]);
+    const id = setInterval(() => {
+      setInputSearchValue(inputValue);
+    }, 500);
+    return () => {
+      clearInterval(id);
+    };
+  }, [inputValue]);
 
-  const updateURLWithFilters = () => {
-    const params = new URLSearchParams();
-    params.set('q', searchValue);
-    const newURL = `${location.pathname}?${params.toString()}`;
-    window.history.replaceState(null, '', newURL);
-  };
-
-  function handelInputSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = e.target as HTMLInputElement;
-    setSearchValue(value);
-    setInputSearchValue(value);
-  }
   return (
     <label htmlFor="find-input">
       <div className="find-container">
@@ -49,8 +38,8 @@ export function SearchPanel({ setInputSearchValue }: ISearchPanel) {
             type="search"
             placeholder="Search..."
             id="find-input"
-            value={searchValue}
-            onChange={handelInputSearch}
+            value={inputValue || ''}
+            onChange={(e) => setInputValue(e.target.value)}
           />
           <div className="find-input-img_search"></div>
         </div>

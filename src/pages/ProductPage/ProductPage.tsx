@@ -2,7 +2,7 @@ import './ProductPage.scss';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
-import { formatPrice } from '@/components/helpers/helpers';
+import { formatPrice } from '@/components/helpers/helpersFunc';
 import { Product, CartItemReducerProps, CartItem } from '@/components/types/types';
 import products from '@/assets/data/products.json';
 import { addProductsToCart } from '@/components/reducers/controller';

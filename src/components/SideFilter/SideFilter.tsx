@@ -8,121 +8,36 @@ import {
   STOCK_MIN,
   STOCK_MAX,
 } from '@/components/helpers/constant';
-import {
-  BalancerCategory,
-  SelectedFilter,
-  BalancerCollection,
-  BalancerColor,
-  SelectedFilters,
-} from '@/components/types/types';
-import { useEffect } from 'react';
+import { SelectedFilter } from '@/components/types/types';
+import { useMyFiltersContext } from '@/components/Context/FiltersContext';
 
-interface ISideFilter extends SelectedFilters {
+interface ISideFilter {
   showFilters: boolean;
   onClickHideFilter: (event: React.MouseEvent) => void;
-  balancerCategory: BalancerCategory[];
-  balancerCollection: BalancerCollection[];
-  balancerColor: BalancerColor[];
 }
 
-export function SideFilter({
-  showFilters,
-  onClickHideFilter,
-  selectedColors,
-  selectedCollections,
-  selectedPrice,
-  selectedSize,
-  selectedStock,
-  selectedCategory,
-  setSelectedColors,
-  setSelectedCollections,
-  setSelectedPrice,
-  setSelectedSize,
-  setSelectedStock,
-  setSelectedCategory,
-  balancerCategory,
-  balancerCollection,
-  balancerColor,
-}: ISideFilter) {
-  const [valMinPrice, valMaxPrice] = selectedPrice;
-  const [valMinSize, valMaxSize] = selectedSize;
-  const [valMinStock, valMaxStock] = selectedStock;
-
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const [colors] = queryParams.getAll('colors');
-    const [collections] = queryParams.getAll('collections');
-    const [categories] = queryParams.getAll('categories');
-    const valMinPrice = queryParams.getAll('minPrice');
-    const valMaxPrice = queryParams.getAll('maxPrice');
-    const valMinSize = queryParams.getAll('minSize');
-    const valMaxSize = queryParams.getAll('maxSize');
-    const valMinStock = queryParams.getAll('minStock');
-    const valMaxStock = queryParams.getAll('maxStock');
-
-    if (colors) {
-      setSelectedColors(colors?.split(','));
-    }
-    if (collections) {
-      setSelectedCollections(collections?.split(',').map(Number));
-    }
-    if (categories) {
-      setSelectedCategory(categories?.split(','));
-    }
-    if (valMinPrice.length || valMaxPrice.length) {
-      setSelectedPrice([+valMinPrice, +valMaxPrice]);
-    }
-    if (valMinSize.length || valMaxSize.length) {
-      setSelectedSize([+valMinSize, +valMaxSize]);
-    }
-    if (valMinStock.length || valMaxStock.length) {
-      setSelectedStock([+valMinStock, +valMaxStock]);
-    }
-  }, [location.search]);
-
-  useEffect(() => {
-    updateURLWithFilters();
-  }, [
+export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
+  const {
     selectedColors,
     selectedCollections,
     selectedCategory,
     selectedPrice,
     selectedSize,
     selectedStock,
-  ]);
+    balancerCategory,
+    setSelectedColors,
+    setSelectedCollections,
+    setSelectedCategory,
+    setSelectedPrice,
+    setSelectedSize,
+    setSelectedStock,
+    balancerCollection,
+    balancerColor,
+  } = useMyFiltersContext();
 
-  const updateURLWithFilters = () => {
-    const params = new URLSearchParams();
-    if (selectedColors.length) {
-      params.set('colors', selectedColors.join(','));
-    }
-    if (selectedCollections.length) {
-      params.set('collections', selectedCollections.join(','));
-    }
-    if (selectedCategory.length) {
-      params.set('categories', selectedCategory.join(','));
-    }
-    if (valMinPrice !== PRICE_MIN || valMaxPrice !== PRICE_MAX) {
-      if (valMinPrice && valMaxPrice) {
-        params.set('minPrice', valMinPrice!.toString());
-        params.set('maxPrice', valMaxPrice!.toString());
-      }
-    }
-    if (valMinSize !== SIZE_MIN || valMaxSize !== SIZE_MAX) {
-      if (valMinSize && valMaxSize) {
-        params.set('minSize', valMinSize!.toString());
-        params.set('maxSize', valMaxSize!.toString());
-      }
-    }
-    if (valMinStock !== STOCK_MIN || valMaxStock !== STOCK_MAX) {
-      if (valMinStock && valMaxStock) {
-        params.set('minStock', valMinStock!.toString());
-        params.set('maxStock', valMaxStock!.toString());
-      }
-    }
-    const newURL = `${location.pathname}?${params.toString()}`;
-    window.history.replaceState(null, '', newURL);
-  };
+  const [valMinPrice, valMaxPrice] = selectedPrice;
+  const [valMinSize, valMaxSize] = selectedSize;
+  const [valMinStock, valMaxStock] = selectedStock;
 
   function handleColorClick(color: string) {
     if (selectedColors.includes(color)) {
