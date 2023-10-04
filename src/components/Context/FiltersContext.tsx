@@ -30,12 +30,19 @@ import {
 
 export const useMyFiltersContext = () => useContext(FiltersContext);
 
+interface ISelect {
+  value: string;
+  label: string;
+}
+
 interface IFiltersContext extends Filters, Balancers, InputSearch {
   itemsCount: number;
   isEmptyFilters: boolean;
   removeFiltersAndSearchInput: () => void;
   removeItemFilterClick: (e: React.MouseEvent<HTMLElement>) => void;
   sortProducts: Product[];
+  // sortindViewOption: ISelect;
+  setSortindViewOption: (selectedOption: ISelect) => void;
 }
 
 export const FiltersContext = createContext<IFiltersContext>({
@@ -61,6 +68,8 @@ export const FiltersContext = createContext<IFiltersContext>({
   balancerCollection: [],
   balancerColor: [],
   sortProducts: [],
+  // sortindViewOption: {},
+  setSortindViewOption: () => null,
 });
 
 export const FiltersContextProvider = ({ children }: { children: ReactNode }) => {
@@ -104,6 +113,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   });
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
     return JSON.parse(sessionStorage.getItem('balancerColor') || '[]');
+  });
+  const [sortindViewOption, setSortindViewOption] = useState({
+    value: 'Recommended',
+    label: 'Recommended',
   });
 
   const [minPrice, maxPrice] = selectedPrice;
@@ -343,6 +356,15 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   }, [inputSearchValue]);
 
   useEffect(() => {
+    function sortingView() {
+      if (sortindViewOption) {
+        console.log(sortindViewOption);
+      }
+    }
+    sortingView();
+  }, [sortindViewOption]);
+
+  useEffect(() => {
     function filtersBalancer() {
       const colorBalancer = sortProducts.reduce((acc: BalancerColor[], { color }) => {
         const existingColor = acc.find((item) => item.color === color);
@@ -478,6 +500,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         balancerColor,
         sortProducts,
         itemsCount,
+        setSortindViewOption,
       }}
     >
       {children}

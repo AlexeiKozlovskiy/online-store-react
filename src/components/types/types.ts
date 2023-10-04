@@ -101,3 +101,8 @@ export interface InputSearch {
   inputSearchValue: string | null;
   setInputSearchValue: (value: string | null) => void;
 }
+
+export interface ISelect {
+  value: string;
+  label: string;
+}
