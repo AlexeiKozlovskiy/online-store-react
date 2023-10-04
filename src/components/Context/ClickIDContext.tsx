@@ -4,7 +4,7 @@ export const useMyIdContext = () => useContext(IdClickContext);
 
 export interface IIdClick {
   clickId: number;
-  setClickId: (id: number) => void;
+  setClickId: (value: number) => void;
 }
 
 export const IdClickContext = createContext<IIdClick>({

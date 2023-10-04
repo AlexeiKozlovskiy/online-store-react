@@ -1,9 +1,9 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
 import { CartItem } from '@/components/types/types';
-import { formatPrice } from '@/components/helpers/helpers';
+import { formatPrice } from '@/components/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
-import { useMyIdContext } from '@/components/Context/ContextClickID';
+import { useMyIdContext } from '@/components/Context/ClickIDContext';
 import { removeProductsFromCartAll } from '@/components/reducers/controller';
 import { useAnimations } from '@/components/helpers/useAnimation';
 
