@@ -1,7 +1,9 @@
-import { SetSelectedFilters } from '@/components/types/types';
+import { SetSelectedFilters, ISelect } from '@/components/types/types';
+import { SORT_OPTIONS } from '@/components/helpers/constant';
 
 interface SetFromURL extends SetSelectedFilters {
   setInputSearchValue: (value: string) => void;
+  setSortindViewOption: (selectedOption: ISelect) => void;
 }
 
 export function setFromURL({
@@ -12,6 +14,7 @@ export function setFromURL({
   setSelectedSize,
   setSelectedStock,
   setInputSearchValue,
+  setSortindViewOption,
 }: SetFromURL) {
   const queryParams = new URLSearchParams(location.search);
   const [colors] = queryParams.getAll('colors');
@@ -24,6 +27,7 @@ export function setFromURL({
   const valMinStock = queryParams.getAll('minStock');
   const valMaxStock = queryParams.getAll('maxStock');
   const [search] = queryParams.getAll('q');
+  const [viewOption] = queryParams.getAll('sortBy');
 
   if (colors) {
     setSelectedColors(colors?.split(','));
@@ -45,5 +49,15 @@ export function setFromURL({
   }
   if (search) {
     setInputSearchValue(search);
+  }
+  if (viewOption) {
+    setSortindViewOption({
+      value: viewOption,
+      label: SORT_OPTIONS.filter(({ value, label }) => {
+        if (value === viewOption) {
+          return label;
+        }
+      })[0]?.label,
+    });
   }
 }

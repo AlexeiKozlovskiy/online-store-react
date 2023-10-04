@@ -41,12 +41,12 @@ export const COLLECTION_STOCK = [{ collection: 2021 }, { collection: 2022 }, { c
 export const ITEMS_IN_PAGE_CART = [1, 3, 5, 10, 0];
 
 export const SORT_OPTIONS = [
-  { value: 'Recommended', label: 'Recommended' },
-  { value: 'Name', label: 'Name' },
-  { value: 'Price ascending', label: 'Price ascending' },
-  { value: 'Price descending', label: 'Price descending' },
-  { value: 'Stock ascending', label: 'Stock ascending' },
-  { value: 'Stock descending', label: 'Stock descending' },
+  { value: '', label: 'Recommended' },
+  { value: 'name', label: 'Name' },
+  { value: 'price-asc', label: 'Price ascending' },
+  { value: 'price-desc', label: 'Price descending' },
+  { value: 'stock-asc', label: 'Stock ascending' },
+  { value: 'stock-desc', label: 'Stock descending' },
 ];
 
 export const ITEMS_IN_PAGE = [

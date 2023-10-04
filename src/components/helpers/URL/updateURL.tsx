@@ -6,10 +6,11 @@ import {
   STOCK_MIN,
   STOCK_MAX,
 } from '@/components/helpers/constant';
-import { SelectedFilters } from '@/components/types/types';
+import { SelectedFilters, ISelect } from '@/components/types/types';
 
 interface UpdateURLWithFilters extends SelectedFilters {
   inputSearchValue: string | null;
+  sortindViewOption: ISelect;
 }
 
 export function updateURLWithFilters({
@@ -20,6 +21,7 @@ export function updateURLWithFilters({
   selectedSize,
   selectedStock,
   inputSearchValue,
+  sortindViewOption,
 }: UpdateURLWithFilters) {
   const params = new URLSearchParams();
 
@@ -56,6 +58,9 @@ export function updateURLWithFilters({
   }
   if (inputSearchValue) {
     params.set('q', inputSearchValue);
+  }
+  if (sortindViewOption.value !== '') {
+    params.set('sortBy', sortindViewOption.value);
   }
   const newURL = `${location.pathname}?${params.toString()}`;
   window.history.replaceState(null, '', newURL);

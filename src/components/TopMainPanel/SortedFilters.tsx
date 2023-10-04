@@ -14,15 +14,17 @@ interface ISortedFilters {
 }
 
 export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
-  const { isEmptyFilters, itemsCount, setSortindViewOption } = useMyFiltersContext();
+  const { isEmptyFilters, itemsCount, sortindViewOption, setSortindViewOption, sortingView } =
+    useMyFiltersContext();
   const [, setSelectedPagination] = useState<ISelect | null>(null);
 
   function switcherView(view: string) {
     view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
   }
 
-  function handleChange(selectedOption: ISelect | null) {
+  function handleSort(selectedOption: ISelect | null) {
     setSortindViewOption(selectedOption!);
+    sortingView(selectedOption!);
   }
 
   function handleChangePagination(selectedOption: ISelect | null) {
@@ -41,8 +43,9 @@ export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView 
         <div className="sorted-filters__select">
           <Select
             className="filters-select"
-            defaultValue={SORT_OPTIONS[0]}
-            onChange={handleChange}
+            // defaultValue={sortindViewOption}
+            value={sortindViewOption}
+            onChange={handleSort}
             options={SORT_OPTIONS}
             styles={customStyles}
             theme={customTheme}
