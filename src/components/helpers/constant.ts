@@ -38,14 +38,21 @@ export const COLOR_STOCK = [
 
 export const COLLECTION_STOCK = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
 
-export const ITEMS_IN_PAGE = [5, 10, 20, 30, 0];
 export const ITEMS_IN_PAGE_CART = [1, 3, 5, 10, 0];
 
 export const SORT_OPTIONS = [
-  'Recommended',
-  'Name',
-  'Price ascending',
-  'Price descending',
-  'Stock ascending',
-  'Stock descending',
+  { value: '', label: 'Recommended' },
+  { value: 'name', label: 'Name' },
+  { value: 'price-asc', label: 'Price ascending' },
+  { value: 'price-desc', label: 'Price descending' },
+  { value: 'stock-asc', label: 'Stock ascending' },
+  { value: 'stock-desc', label: 'Stock descending' },
+];
+
+export const ITEMS_IN_PAGE = [
+  { value: '5', label: 'Show items: 5' },
+  { value: '10', label: 'Show items: 10' },
+  { value: '20', label: 'Show items: 20' },
+  { value: '30', label: 'Show items: 30' },
+  { value: '0', label: 'All' },
 ];

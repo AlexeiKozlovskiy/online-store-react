@@ -30,12 +30,20 @@ import {
 
 export const useMyFiltersContext = () => useContext(FiltersContext);
 
+interface ISelect {
+  value: string;
+  label: string;
+}
+
 interface IFiltersContext extends Filters, Balancers, InputSearch {
   itemsCount: number;
   isEmptyFilters: boolean;
   removeFiltersAndSearchInput: () => void;
   removeItemFilterClick: (e: React.MouseEvent<HTMLElement>) => void;
   sortProducts: Product[];
+  sortindViewOption: ISelect;
+  setSortindViewOption: (selectedOption: ISelect) => void;
+  sortingView: (selectedOption: ISelect) => void;
 }
 
 export const FiltersContext = createContext<IFiltersContext>({
@@ -61,6 +69,12 @@ export const FiltersContext = createContext<IFiltersContext>({
   balancerCollection: [],
   balancerColor: [],
   sortProducts: [],
+  sortindViewOption: {
+    value: '',
+    label: 'Recommended',
+  },
+  setSortindViewOption: () => null,
+  sortingView: () => null,
 });
 
 export const FiltersContextProvider = ({ children }: { children: ReactNode }) => {
@@ -104,6 +118,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   });
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>(() => {
     return JSON.parse(sessionStorage.getItem('balancerColor') || '[]');
+  });
+  const [sortindViewOption, setSortindViewOption] = useState({
+    value: '',
+    label: 'Recommended',
   });
 
   const [minPrice, maxPrice] = selectedPrice;
@@ -158,6 +176,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       setSelectedSize,
       setSelectedStock,
       setInputSearchValue,
+      setSortindViewOption,
     });
   }, [location.search]);
 
@@ -170,6 +189,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       selectedSize,
       selectedStock,
       inputSearchValue,
+      sortindViewOption,
     });
   }, [
     selectedColors,
@@ -179,6 +199,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     selectedSize,
     selectedStock,
     inputSearchValue,
+    sortindViewOption,
   ]);
 
   useEffect(() => {
@@ -401,6 +422,13 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     countProducts();
   }, [sortProducts]);
 
+  useEffect(() => {
+    function defaultFilter() {
+      sortingView(sortindViewOption);
+    }
+    defaultFilter();
+  }, [sortProducts]);
+
   function checkSelectedFilters() {
     if (
       !selectedColors.length &&
@@ -427,6 +455,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     setSelectedPrice([PRICE_MIN, PRICE_MAX]);
     setSelectedSize([SIZE_MIN, SIZE_MAX]);
     setSelectedStock([STOCK_MIN, STOCK_MAX]);
+    setSortindViewOption({
+      value: '',
+      label: 'Recommended',
+    });
   }
 
   function removeItemFilterClick(e: React.MouseEvent<HTMLElement>) {
@@ -450,6 +482,47 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       case 'stock':
         setSelectedStock([STOCK_MIN, STOCK_MAX]);
         break;
+    }
+  }
+
+  function sortingView(sortindOption: ISelect) {
+    if (sortindOption.value === 'name') {
+      const sortName = sortProducts.sort((a, b) => {
+        const nameA = a.name.toLowerCase();
+        const nameB = b.name.toLowerCase();
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+      setSortProducts(sortName);
+    } else if (sortindOption.value === 'price-asc') {
+      const priceAsc = sortProducts.sort((a, b) => a.price - b.price);
+      setSortProducts(priceAsc);
+    } else if (sortindOption.value === 'price-desc') {
+      const priceDesc = sortProducts.sort((a, b) => b.price - a.price);
+      setSortProducts(priceDesc);
+    } else if (sortindOption.value === 'stock-asc') {
+      const stockAsc = sortProducts.sort((a, b) => a.stock - b.stock);
+      setSortProducts(stockAsc);
+    } else if (sortindOption.value === 'stock-desc') {
+      const stockDesc = sortProducts.sort((a, b) => b.stock - a.stock);
+      setSortProducts(stockDesc);
+    } else if (!sortindOption.value) {
+      const resetFilter = sortProducts.sort((a, b) => a.id - b.id);
+      const stockDesc = resetFilter.sort(({ favorite }) => {
+        if (favorite === true) {
+          return -1;
+        }
+        if (favorite === false) {
+          return 1;
+        }
+        return 0;
+      });
+      setSortProducts(stockDesc);
     }
   }
 
@@ -478,6 +551,9 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         balancerColor,
         sortProducts,
         itemsCount,
+        sortindViewOption,
+        setSortindViewOption,
+        sortingView,
       }}
     >
       {children}
