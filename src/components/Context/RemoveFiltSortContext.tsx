@@ -32,7 +32,6 @@ export const RemoveFiltSortContextProvider = ({ children }: { children: ReactNod
   } = useMyURLContext();
 
   function removeFiltersAndSearchInput() {
-    console.log(123);
     setInputSearchValue('');
     setSelectedColors([]);
     setSelectedCollections([]);
