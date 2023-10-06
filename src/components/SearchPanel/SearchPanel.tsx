@@ -1,10 +1,10 @@
 import './SearchPanel.scss';
 import { useEffect, useState } from 'react';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
+import { useMyURLContext } from '@/components/Context/URLContext';
 
 export function SearchPanel() {
   const [inputValue, setInputValue] = useState<string | null>('');
-  const { inputSearchValue, setInputSearchValue } = useMyFiltersContext();
+  const { inputSearchValue, setInputSearchValue } = useMyURLContext();
 
   useEffect(() => {
     function setFromURL() {

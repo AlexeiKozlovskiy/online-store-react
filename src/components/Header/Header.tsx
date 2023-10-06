@@ -3,7 +3,7 @@ import './Header.scss';
 import { useSelector } from 'react-redux';
 import { CartItemReducerProps, CartItem } from '@/components/types/types';
 import { useEffect, useState } from 'react';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
+import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveFiltSortContext';
 
 export function Header() {
   const cartItems = useSelector(
@@ -11,7 +11,7 @@ export function Header() {
   ) as unknown as CartItem[];
   const [productCount, setProductCount] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
-  const { removeFiltersAndSearchInput } = useMyFiltersContext();
+  const { removeFiltersAndSearchInput } = useMyRemoveFiltSortContext();
 
   useEffect(() => {
     setProductCount(cartItems.reduce((count, cartItem) => count + cartItem.quantity, 0));

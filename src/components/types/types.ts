@@ -106,3 +106,11 @@ export interface ISelect {
   value: string;
   label: string;
 }
+
+export enum Select {
+  NAME = 'name',
+  PRICE_ASC = 'price-asc',
+  PRICE_DESC = 'price-desc',
+  STOCK_ASC = 'stock-asc',
+  STOCK_DESC = 'stock-desc',
+}
