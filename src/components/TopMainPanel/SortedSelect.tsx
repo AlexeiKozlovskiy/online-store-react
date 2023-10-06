@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/components/helpers/constant';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
+import { useMyURLContext } from '@/components/Context/URLContext';
 import Select from 'react-select';
 import { ISelect } from '@/components/types/types';
 import { customStyles, customTheme } from './selectCustomStyles';
@@ -13,9 +14,10 @@ interface ISortedFilters {
   swichedView: string;
 }
 
-export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
-  const { isEmptyFilters, itemsCount, sortindViewOption, setSortindViewOption, sortingView } =
-    useMyFiltersContext();
+export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
+  const { isEmptyFilters, itemsCount } = useMyFiltersContext();
+  const { sortindViewOption, setSortindViewOption } = useMyURLContext();
+
   const [, setSelectedPagination] = useState<ISelect | null>(null);
 
   function switcherView(view: string) {
@@ -24,7 +26,7 @@ export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView 
 
   function handleSort(selectedOption: ISelect | null) {
     setSortindViewOption(selectedOption!);
-    sortingView(selectedOption!);
+    // sortingView(selectedOption!);
   }
 
   function handleChangePagination(selectedOption: ISelect | null) {
@@ -43,8 +45,8 @@ export function SortedFilters({ onClickShowFilter, onClickSwitcher, swichedView 
         <div className="sorted-filters__select">
           <Select
             className="filters-select"
-            // defaultValue={sortindViewOption}
             value={sortindViewOption}
+            defaultValue={sortindViewOption}
             onChange={handleSort}
             options={SORT_OPTIONS}
             styles={customStyles}

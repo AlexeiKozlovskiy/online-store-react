@@ -10,6 +10,7 @@ import {
 } from '@/components/helpers/constant';
 import { SelectedFilter } from '@/components/types/types';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
+import { useMyURLContext } from '@/components/Context/URLContext';
 
 interface ISideFilter {
   showFilters: boolean;
@@ -24,17 +25,15 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
     selectedPrice,
     selectedSize,
     selectedStock,
-    balancerCategory,
     setSelectedColors,
     setSelectedCollections,
     setSelectedCategory,
     setSelectedPrice,
     setSelectedSize,
     setSelectedStock,
-    balancerCollection,
-    balancerColor,
-  } = useMyFiltersContext();
+  } = useMyURLContext();
 
+  const { balancerCategory, balancerCollection, balancerColor } = useMyFiltersContext();
   const [valMinPrice, valMaxPrice] = selectedPrice;
   const [valMinSize, valMaxSize] = selectedSize;
   const [valMinStock, valMaxStock] = selectedStock;

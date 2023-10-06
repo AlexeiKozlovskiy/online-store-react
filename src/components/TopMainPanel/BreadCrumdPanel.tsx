@@ -9,10 +9,22 @@ import {
   STOCK_MAX,
 } from '@/components/helpers/constant';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
+import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveFiltSortContext';
+import { useMyURLContext } from '@/components/Context/URLContext';
 
 export function BreadCrumdPanel() {
   const [copedLink, setCopedLink] = useState(false);
-  const { removeFiltersAndSearchInput, removeItemFilterClick } = useMyFiltersContext();
+  const { removeFiltersAndSearchInput } = useMyRemoveFiltSortContext();
+  const { removeItemFilterClick } = useMyFiltersContext();
+  // const {
+  //   selectedColors,
+  //   selectedCollections,
+  //   selectedCategory,
+  //   selectedPrice,
+  //   selectedSize,
+  //   selectedStock,
+  // } = useMyFiltersContext();
+
   const {
     selectedColors,
     selectedCollections,
@@ -20,7 +32,7 @@ export function BreadCrumdPanel() {
     selectedPrice,
     selectedSize,
     selectedStock,
-  } = useMyFiltersContext();
+  } = useMyURLContext();
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
