@@ -33,6 +33,9 @@ interface IFiltersContext extends Balancers {
   removeItemFilterClick: (e: React.MouseEvent<HTMLElement>) => void;
   filtersProducts: Product[];
   setFiltersProducts: (value: Product[]) => void;
+  balanserPrise: [number | null, number | null];
+  balanserSize: [number | null, number | null];
+  balanserStock: [number | null, number | null];
 }
 
 export const FiltersContext = createContext<IFiltersContext>({
@@ -44,6 +47,9 @@ export const FiltersContext = createContext<IFiltersContext>({
   balancerColor: [],
   filtersProducts: [],
   setFiltersProducts: () => null,
+  balanserPrise: [null, null],
+  balanserSize: [null, null],
+  balanserStock: [null, null],
 });
 
 export const FiltersContextProvider = ({ children }: { children: ReactNode }) => {
@@ -76,7 +82,18 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>([]);
   const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>([]);
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>([]);
-  // const [balanserPrise, setBalanserPrise] = useState<[number | null, number | null]>([]);
+  const [balanserPrise, setBalanserPrise] = useState<[number | null, number | null]>([
+    PRICE_MIN,
+    PRICE_MAX,
+  ]);
+  const [balanserSize, setBalanserSize] = useState<[number | null, number | null]>([
+    SIZE_MIN,
+    SIZE_MAX,
+  ]);
+  const [balanserStock, setBalanserStock] = useState<[number | null, number | null]>([
+    STOCK_MIN,
+    STOCK_MAX,
+  ]);
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -233,7 +250,6 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         sortCategory
       );
       const commonProductSort = sortByFavorite(commonProduct);
-      // setSortProducts(commonProduct);
       setFiltersProducts(commonProductSort);
     }
     commonProductsOutFilters();
@@ -254,6 +270,9 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     findItemsInSearchInput();
+    return () => {
+      setSortProductsSearch([]);
+    };
   }, [inputSearchValue]);
 
   useEffect(() => {
@@ -278,7 +297,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         }, []);
       }
 
-      const categoryBalancer = (products: Product[]) => {
+      function categoryBalancer(products: Product[]) {
         let arrCategory: BalancerCategory[] = [];
         CATEGORIES.forEach((category) => {
           const categoryProducts = products.filter((product) => product.category === category);
@@ -287,34 +306,62 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
           return arrCategory;
         });
         return arrCategory;
-      };
+      }
 
-      // Dual ranges balancers???
+      function priceBalancer(products: Product[]): [number, number] {
+        const arrPrice = products.map(({ price }) => price);
+        return [Math.min(...arrPrice), Math.max(...arrPrice)];
+      }
 
-      // function priceBalancer(products: Product[]): [number | null, number | null] {
-      //   const arrPrice = products.map((el) => el.price);
-      //   return [Math.min(...arrPrice), Math.max(...arrPrice)];
-      // }
+      function sizeBalancer(products: Product[]): [number, number] {
+        const arrPrice = products.map(({ size }) => size);
+        return [Math.min(...arrPrice), Math.max(...arrPrice)];
+      }
+
+      function stockBalancer(products: Product[]): [number, number] {
+        const arrPrice = products.map(({ stock }) => stock);
+        return [Math.min(...arrPrice), Math.max(...arrPrice)];
+      }
 
       if (!selectedColors.length) {
-        setBalancerColor(sortColorBalancer(colorBalancer(filtersProducts)));
+        const colorsValues = sortColorBalancer(colorBalancer(filtersProducts));
+        setBalancerColor(colorsValues);
       } else {
         const commonProduct = findCommonProducts(sortCategory, sortCollections, sortProductsSearch);
-        setBalancerColor(sortColorBalancer(colorBalancer(commonProduct)));
+        const colorsValues = sortColorBalancer(colorBalancer(commonProduct));
+        setBalancerColor(colorsValues);
       }
 
       if (!selectedCollections.length) {
-        setBalancerCollection(sortCollectionBalancer(collectionBalancer(filtersProducts)));
+        const collectionsValues = sortCollectionBalancer(collectionBalancer(filtersProducts));
+        setBalancerCollection(collectionsValues);
       } else {
         const commonProduct = findCommonProducts(sortCategory, sortColor, sortProductsSearch);
-        setBalancerCollection(sortCollectionBalancer(collectionBalancer(commonProduct)));
+        const collectionsValues = sortCollectionBalancer(collectionBalancer(commonProduct));
+        setBalancerCollection(collectionsValues);
       }
 
       if (!selectedCategory.length) {
-        setBalancerCategory(sortCategoryBalancer(categoryBalancer(filtersProducts)));
+        const categoryValues = sortCategoryBalancer(categoryBalancer(filtersProducts));
+        setBalancerCategory(categoryValues);
       } else {
         const commonProduct = findCommonProducts(sortColor, sortCollections, sortProductsSearch);
-        setBalancerCategory(sortCategoryBalancer(categoryBalancer(commonProduct)));
+        const categoryValues = sortCategoryBalancer(categoryBalancer(commonProduct));
+        setBalancerCategory(categoryValues);
+      }
+
+      if (selectedColors.length || selectedCollections.length || selectedCategory.length) {
+        setBalanserPrise(priceBalancer(filtersProducts));
+        setBalanserSize(sizeBalancer(filtersProducts));
+        setBalanserStock(stockBalancer(filtersProducts));
+      } else if (sortProductsSearch.length) {
+        setBalanserPrise(priceBalancer(sortProductsSearch));
+        setBalanserSize(sizeBalancer(sortProductsSearch));
+        setBalanserStock(stockBalancer(sortProductsSearch))!;
+      } else {
+        setBalanserPrise([PRICE_MIN, PRICE_MAX]);
+        setBalanserSize([SIZE_MIN, SIZE_MAX]);
+        setBalanserStock([STOCK_MIN, STOCK_MAX]);
       }
     }
     filtersBalancer();
@@ -380,6 +427,9 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         filtersProducts,
         setFiltersProducts,
         itemsCount,
+        balanserPrise,
+        balanserSize,
+        balanserStock,
       }}
     >
       {children}
