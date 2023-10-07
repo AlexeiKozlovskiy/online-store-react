@@ -82,18 +82,9 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>([]);
   const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>([]);
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>([]);
-  const [balanserPrise, setBalanserPrise] = useState<[number | null, number | null]>([
-    PRICE_MIN,
-    PRICE_MAX,
-  ]);
-  const [balanserSize, setBalanserSize] = useState<[number | null, number | null]>([
-    SIZE_MIN,
-    SIZE_MAX,
-  ]);
-  const [balanserStock, setBalanserStock] = useState<[number | null, number | null]>([
-    STOCK_MIN,
-    STOCK_MAX,
-  ]);
+  const [balanserPrise, setBalanserPrise] = useState<[number | null, number | null]>([null, null]);
+  const [balanserSize, setBalanserSize] = useState<[number | null, number | null]>([null, null]);
+  const [balanserStock, setBalanserStock] = useState<[number | null, number | null]>([null, null]);
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
