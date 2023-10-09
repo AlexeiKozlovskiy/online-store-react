@@ -341,7 +341,17 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         setBalancerCategory(categoryValues);
       }
 
-      if (selectedColors.length || selectedCollections.length || selectedCategory.length) {
+      if (
+        selectedColors.length ||
+        selectedCollections.length ||
+        selectedCategory.length ||
+        minPrice === PRICE_MIN ||
+        maxPrice === PRICE_MAX ||
+        minSize === SIZE_MIN ||
+        maxSize === SIZE_MAX ||
+        minStock === STOCK_MIN ||
+        maxStock === STOCK_MAX
+      ) {
         setBalanserPrise(priceBalancer(filtersProducts));
         setBalanserSize(sizeBalancer(filtersProducts));
         setBalanserStock(stockBalancer(filtersProducts));
@@ -387,13 +397,15 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     const { dataset } = e.target as HTMLElement;
     switch (dataset.params) {
       case 'colors':
-        setSelectedColors(selectedColors.filter((el) => el !== dataset.value));
+        setSelectedColors(selectedColors.filter((color) => color !== dataset.value));
         break;
       case 'collections':
-        setSelectedCollections(selectedCollections.filter((el) => el !== Number(dataset.value)));
+        setSelectedCollections(
+          selectedCollections.filter((collection) => collection !== Number(dataset.value))
+        );
         break;
       case 'categories':
-        setSelectedCategory(selectedCategory.filter((el) => el !== dataset.value));
+        setSelectedCategory(selectedCategory.filter((category) => category !== dataset.value));
         break;
       case 'price':
         setSelectedPrice([PRICE_MIN, PRICE_MAX]);
