@@ -401,7 +401,7 @@
   {
     "id": 28,
     "name": "Snowman with lantern",
-    "price": 32.05,
+    "price": 34.99,
     "stock": 7,
     "collection": 2022,
     "color": "white",
@@ -420,7 +420,7 @@
     "stock": 24,
     "collection": 2023,
     "color": "green",
-    "size": 270,
+    "size": 570,
     "favorite": true,
     "category": "Garland & Wreath",
     "images": [

@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
+
 import './SideFilter.scss';
-import ReactSlider from 'react-slider';
+import Slider from 'react-slider';
 import {
   PRICE_MIN,
   PRICE_MAX,
@@ -33,10 +35,62 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
     setSelectedStock,
   } = useMyURLContext();
 
-  const { balancerCategory, balancerCollection, balancerColor } = useMyFiltersContext();
-  const [valMinPrice, valMaxPrice] = selectedPrice;
-  const [valMinSize, valMaxSize] = selectedSize;
-  const [valMinStock, valMaxStock] = selectedStock;
+  const {
+    balancerCategory,
+    balancerCollection,
+    balancerColor,
+    balanserPrise,
+    balanserSize,
+    balanserStock,
+  } = useMyFiltersContext();
+  const [[priseMin, priseMax], setPrice] = useState<[number | null, number | null]>([null, null]);
+  const [[sizeMin, sizeMax], setSize] = useState<[number | null, number | null]>([null, null]);
+  const [[stockMin, stockMax], setStock] = useState<[number | null, number | null]>([null, null]);
+
+  const [selectedMinPrice, selectedMaxPrice] = selectedPrice;
+  const [balancedMinPrice, balancedMaxPrice] = balanserPrise;
+  const [selectedMinSize, selectedMaxSize] = selectedSize;
+  const [balancedMinSize, balancedMaxSize] = balanserSize;
+  const [selectedMinStock, selectedMaxStock] = selectedStock;
+  const [balancedMinStock, balancedMaxStock] = balanserStock;
+
+  useEffect(() => {
+    function getSelectedFilters() {
+      setPrice([selectedMinPrice, selectedMaxPrice]);
+      setSize([selectedMinSize, selectedMaxSize]);
+      setStock([selectedMinStock, selectedMaxStock]);
+    }
+    getSelectedFilters();
+  }, [
+    selectedMinPrice,
+    selectedMaxPrice,
+    selectedMinSize,
+    selectedMaxSize,
+    selectedMinStock,
+    selectedMaxStock,
+  ]);
+
+  useEffect(() => {
+    function getBalancerFilters() {
+      if (selectedMinPrice === PRICE_MIN && selectedMaxPrice === PRICE_MAX) {
+        setPrice([balancedMinPrice, balancedMaxPrice]);
+      }
+      if (selectedMinSize === SIZE_MIN && selectedMaxSize === SIZE_MAX) {
+        setSize([balancedMinSize, balancedMaxSize]);
+      }
+      if (selectedMinStock === STOCK_MIN && selectedMaxStock === STOCK_MAX) {
+        setStock([balancedMinStock, balancedMaxStock]);
+      }
+    }
+    getBalancerFilters();
+  }, [
+    balancedMinPrice,
+    balancedMaxPrice,
+    balancedMinSize,
+    balancedMaxSize,
+    balancedMinStock,
+    balancedMaxStock,
+  ]);
 
   function handleColorClick(color: string) {
     if (selectedColors.includes(color)) {
@@ -57,6 +111,15 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   function handleInputChange(startValue: string, endValue: string, setState: SelectedFilter) {
     setState([parseFloat(startValue) || null, parseFloat(endValue) || null]);
   }
+
+  const handleSliderChange = (
+    value: [number, number],
+    setSelectedState: SelectedFilter,
+    setFilter: SelectedFilter
+  ) => {
+    setSelectedState(value);
+    setFilter(value);
+  };
 
   function categoryHandelChange(category: string) {
     const updatedCategories = [...selectedCategory];
@@ -110,28 +173,30 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
             <input
               type="text"
               className="box-start"
-              value={valMinPrice || ''}
+              value={priseMin || ''}
               maxLength={4}
               onChange={(e) =>
-                handleInputChange(e.target.value, valMaxPrice!.toString(), setSelectedPrice)
+                handleInputChange(e.target.value, priseMax!.toString(), setSelectedPrice)
               }
             />
             <span className="item-content-position__start">$</span>
             <input
               type="text"
               className="box-end"
-              value={valMaxPrice || ''}
+              value={priseMax || ''}
               maxLength={4}
               onChange={(e) =>
-                handleInputChange(valMinPrice!.toString(), e.target.value, setSelectedPrice)
+                handleInputChange(priseMin!.toString(), e.target.value, setSelectedPrice)
               }
             />
             <span className="item-content-position__end">$</span>
           </div>
-          <ReactSlider
+          <Slider
             className="slider"
-            onAfterChange={(value: [number, number]) => setSelectedPrice(value)}
-            value={[valMinPrice!, valMaxPrice!]}
+            onAfterChange={(value: [number, number]) =>
+              handleSliderChange(value, setSelectedPrice, setPrice)
+            }
+            value={[priseMin!, priseMax!]}
             min={PRICE_MIN}
             max={PRICE_MAX}
           />
@@ -143,29 +208,31 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
           <div className="item-content__size size">
             <input
               type="text"
-              value={valMinSize || ''}
+              value={sizeMin || ''}
               className="box-start"
               maxLength={3}
               onChange={(e) =>
-                handleInputChange(e.target.value, valMaxSize!.toString(), setSelectedSize)
+                handleInputChange(e.target.value, sizeMax!.toString(), setSelectedSize)
               }
             />
             <span className="item-content-position__start">cm</span>
             <input
               type="text"
-              value={valMaxSize || ''}
+              value={sizeMax || ''}
               className="box-end"
               maxLength={3}
               onChange={(e) =>
-                handleInputChange(valMinSize!.toString(), e.target.value, setSelectedSize)
+                handleInputChange(sizeMin!.toString(), e.target.value, setSelectedSize)
               }
             />
             <span className="item-content-position__end">cm</span>
           </div>
-          <ReactSlider
+          <Slider
             className="slider"
-            onAfterChange={(value: [number, number]) => setSelectedSize(value)}
-            value={[valMinSize!, valMaxSize!]}
+            onAfterChange={(value: [number, number]) =>
+              handleSliderChange(value, setSelectedSize, setSize)
+            }
+            value={[sizeMin!, sizeMax!]}
             min={SIZE_MIN}
             max={SIZE_MAX}
           />
@@ -201,27 +268,29 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
           <div className="item-content__stock stock">
             <input
               type="text"
-              value={valMinStock || ''}
+              value={stockMin || ''}
               className="box-start"
               maxLength={2}
               onChange={(e) =>
-                handleInputChange(e.target.value, valMaxStock!.toString(), setSelectedStock)
+                handleInputChange(e.target.value, stockMax!.toString(), setSelectedStock)
               }
             />
             <input
               type="text"
-              value={valMaxStock || ''}
+              value={stockMax || ''}
               className="box-end"
               maxLength={2}
               onChange={(e) =>
-                handleInputChange(valMinStock!.toString(), e.target.value, setSelectedStock)
+                handleInputChange(stockMin!.toString(), e.target.value, setSelectedStock)
               }
             />
           </div>
-          <ReactSlider
+          <Slider
             className="slider"
-            onAfterChange={(value: [number, number]) => setSelectedStock(value)}
-            value={[valMinStock!, valMaxStock!]}
+            onAfterChange={(value: [number, number]) =>
+              handleSliderChange(value, setSelectedStock, setStock)
+            }
+            value={[stockMin!, stockMax!]}
             min={STOCK_MIN}
             max={STOCK_MAX}
           />
