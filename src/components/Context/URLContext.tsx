@@ -7,6 +7,7 @@ import {
   STOCK_MIN,
   STOCK_MAX,
   SORT_OPTIONS,
+  ITEMS_IN_PAGE,
 } from '@/components/helpers/constant';
 import { Filters, ISelect, InputSearch } from '../types/types';
 
@@ -15,6 +16,11 @@ export const useMyURLContext = () => useContext(URLContext);
 interface IURLContext extends Filters, InputSearch {
   sortindViewOption: ISelect;
   setSortindViewOption: (selectedOption: ISelect) => void;
+  curPage: number;
+  setCurPage: (value: number) => void;
+  perPageOption: ISelect;
+  setPerPageOption: (selectedOption: ISelect) => void;
+  isEmptyFilters: boolean;
 }
 
 export const URLContext = createContext<IURLContext>({
@@ -32,11 +38,13 @@ export const URLContext = createContext<IURLContext>({
   setSelectedPrice: () => null,
   setSelectedSize: () => null,
   setSelectedStock: () => null,
-  sortindViewOption: {
-    value: '',
-    label: 'Recommended',
-  },
+  sortindViewOption: SORT_OPTIONS[0],
   setSortindViewOption: () => null,
+  curPage: 1,
+  setCurPage: () => null,
+  perPageOption: ITEMS_IN_PAGE[2],
+  setPerPageOption: () => null,
+  isEmptyFilters: true,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
@@ -56,10 +64,42 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     STOCK_MAX,
   ]);
   const [inputSearchValue, setInputSearchValue] = useState<string | null>('');
-  const [sortindViewOption, setSortindViewOption] = useState({
-    value: '',
-    label: 'Recommended',
-  });
+  const [sortindViewOption, setSortindViewOption] = useState<ISelect>(SORT_OPTIONS[0]);
+  const [curPage, setCurPage] = useState<number>(1);
+  const [perPageOption, setPerPageOption] = useState<ISelect>(ITEMS_IN_PAGE[2]);
+  const [isEmptyFilters, setIsEmptyFilters] = useState(true);
+
+  const [minPrice, maxPrice] = selectedPrice;
+  const [minSize, maxSize] = selectedSize;
+  const [minStock, maxStock] = selectedStock;
+
+  useEffect(() => {
+    function checkIsEmptyFilters() {
+      if (
+        !selectedColors.length &&
+        !selectedCollections.length &&
+        !selectedCategory.length &&
+        minPrice === PRICE_MIN &&
+        maxPrice === PRICE_MAX &&
+        minSize === SIZE_MIN &&
+        maxSize === SIZE_MAX &&
+        minStock === STOCK_MIN &&
+        maxStock === STOCK_MAX
+      ) {
+        setIsEmptyFilters(false);
+      } else {
+        setIsEmptyFilters(true);
+      }
+    }
+    checkIsEmptyFilters();
+  }, [
+    selectedColors,
+    selectedCollections,
+    selectedCategory,
+    selectedPrice,
+    selectedSize,
+    selectedStock,
+  ]);
 
   useEffect(() => {
     function setDataFromUrl() {
@@ -75,6 +115,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       const valMaxStock = queryParams.getAll('maxStock');
       const [search] = queryParams.getAll('q');
       const [viewOption] = queryParams.getAll('sortBy');
+      const [curPage] = queryParams.getAll('page');
+      const [perPageOption] = queryParams.getAll('perPage');
 
       if (colors) {
         setSelectedColors(colors?.split(','));
@@ -102,6 +144,19 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
           value: viewOption,
           label: SORT_OPTIONS.filter(({ value, label }) => {
             if (value === viewOption) {
+              return label;
+            }
+          })[0].label,
+        });
+      }
+      if (curPage) {
+        setCurPage(+curPage);
+      }
+      if (perPageOption) {
+        setPerPageOption({
+          value: perPageOption,
+          label: ITEMS_IN_PAGE.filter(({ value, label }) => {
+            if (value === perPageOption) {
               return label;
             }
           })[0].label,
@@ -151,6 +206,15 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       if (sortindViewOption.value.length) {
         params.set('sortBy', sortindViewOption.value);
       }
+
+      if (curPage > 1) {
+        params.set('page', curPage.toString());
+      }
+
+      if (+perPageOption.value !== 20) {
+        params.set('perPage', perPageOption.value);
+      }
+
       const newURL = `${location.pathname}?${params.toString()}`;
       window.history.replaceState(null, '', newURL);
     }
@@ -164,11 +228,14 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     selectedStock,
     inputSearchValue,
     sortindViewOption.value,
+    curPage,
+    perPageOption,
   ]);
 
   return (
     <URLContext.Provider
       value={{
+        isEmptyFilters,
         selectedColors,
         selectedCollections,
         selectedCategory,
@@ -185,6 +252,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setSortindViewOption,
         inputSearchValue,
         setInputSearchValue,
+        curPage,
+        setCurPage,
+        perPageOption,
+        setPerPageOption,
       }}
     >
       {children}
