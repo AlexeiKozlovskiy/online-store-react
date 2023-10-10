@@ -1,5 +1,5 @@
 import './TopMainPanel.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/components/helpers/constant';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
@@ -15,22 +15,30 @@ interface ISortedFilters {
 }
 
 export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
-  const { isEmptyFilters, itemsCount } = useMyFiltersContext();
-  const { sortindViewOption, setSortindViewOption } = useMyURLContext();
+  const { itemsCount } = useMyFiltersContext();
+  const {
+    isEmptyFilters,
+    sortindViewOption,
+    setSortindViewOption,
+    perPageOption,
+    setPerPageOption,
+  } = useMyURLContext();
+  const [selectedPagination, setSelectedPagination] = useState<ISelect | null>(null);
 
-  const [, setSelectedPagination] = useState<ISelect | null>(null);
+  useEffect(() => {
+    setSelectedPagination(perPageOption);
+  }, [perPageOption]);
 
   function switcherView(view: string) {
     view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
   }
 
-  function handleSort(selectedOption: ISelect | null) {
+  function handleChangeSort(selectedOption: ISelect | null) {
     setSortindViewOption(selectedOption!);
-    // sortingView(selectedOption!);
   }
 
   function handleChangePagination(selectedOption: ISelect | null) {
-    setSelectedPagination(selectedOption);
+    setPerPageOption(selectedOption!);
   }
 
   return (
@@ -47,7 +55,7 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
             className="filters-select"
             value={sortindViewOption}
             defaultValue={sortindViewOption}
-            onChange={handleSort}
+            onChange={handleChangeSort}
             options={SORT_OPTIONS}
             styles={customStyles}
             theme={customTheme}
@@ -57,7 +65,7 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
           <div className="pagination__select">
             <Select
               className="pagination-select"
-              defaultValue={ITEMS_IN_PAGE[3]}
+              value={selectedPagination}
               onChange={handleChangePagination}
               options={ITEMS_IN_PAGE}
               styles={customStyles}

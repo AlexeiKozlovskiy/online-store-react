@@ -7,19 +7,21 @@ import {
   SIZE_MAX,
   STOCK_MIN,
   STOCK_MAX,
+  SORT_OPTIONS,
+  ITEMS_IN_PAGE,
 } from '@/components/helpers/constant';
 
-export const useMyRemoveFiltSortContext = () => useContext(RemoveFiltSortContext);
+export const useMyRemoveFiltSortContext = () => useContext(RemoveAllSelectedContext);
 
-interface IRemoveFiltSortContext {
-  removeFiltersAndSearchInput: () => void;
+interface IRemoveAllSelectedContext {
+  removeAllSelected: () => void;
 }
 
-export const RemoveFiltSortContext = createContext<IRemoveFiltSortContext>({
-  removeFiltersAndSearchInput: () => null,
+export const RemoveAllSelectedContext = createContext<IRemoveAllSelectedContext>({
+  removeAllSelected: () => null,
 });
 
-export const RemoveFiltSortContextProvider = ({ children }: { children: ReactNode }) => {
+export const RemoveAllSelectedContextProvider = ({ children }: { children: ReactNode }) => {
   const {
     setSelectedColors,
     setSelectedCollections,
@@ -29,9 +31,11 @@ export const RemoveFiltSortContextProvider = ({ children }: { children: ReactNod
     setSelectedStock,
     setInputSearchValue,
     setSortindViewOption,
+    setCurPage,
+    setPerPageOption,
   } = useMyURLContext();
 
-  function removeFiltersAndSearchInput() {
+  function removeAllSelected() {
     setInputSearchValue('');
     setSelectedColors([]);
     setSelectedCollections([]);
@@ -39,18 +43,17 @@ export const RemoveFiltSortContextProvider = ({ children }: { children: ReactNod
     setSelectedPrice([PRICE_MIN, PRICE_MAX]);
     setSelectedSize([SIZE_MIN, SIZE_MAX]);
     setSelectedStock([STOCK_MIN, STOCK_MAX]);
-    setSortindViewOption({
-      value: '',
-      label: 'Recommended',
-    });
+    setSortindViewOption(SORT_OPTIONS[0]);
+    setCurPage(1);
+    setPerPageOption(ITEMS_IN_PAGE[2]);
   }
   return (
-    <RemoveFiltSortContext.Provider
+    <RemoveAllSelectedContext.Provider
       value={{
-        removeFiltersAndSearchInput,
+        removeAllSelected,
       }}
     >
       {children}
-    </RemoveFiltSortContext.Provider>
+    </RemoveAllSelectedContext.Provider>
   );
 };

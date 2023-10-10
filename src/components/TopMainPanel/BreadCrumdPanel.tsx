@@ -9,22 +9,13 @@ import {
   STOCK_MAX,
 } from '@/components/helpers/constant';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
-import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveFiltSortContext';
+import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveAllSelectedContext';
 import { useMyURLContext } from '@/components/Context/URLContext';
 
 export function BreadCrumdPanel() {
   const [copedLink, setCopedLink] = useState(false);
-  const { removeFiltersAndSearchInput } = useMyRemoveFiltSortContext();
+  const { removeAllSelected } = useMyRemoveFiltSortContext();
   const { removeItemFilterClick } = useMyFiltersContext();
-  // const {
-  //   selectedColors,
-  //   selectedCollections,
-  //   selectedCategory,
-  //   selectedPrice,
-  //   selectedSize,
-  //   selectedStock,
-  // } = useMyFiltersContext();
-
   const {
     selectedColors,
     selectedCollections,
@@ -155,7 +146,7 @@ export function BreadCrumdPanel() {
     <div className="selected-section__filters selected-filters">
       <div className="selected-filters__title">Selected filters:</div>
       {selectedFilters}
-      <div className="selected-filters__remove-filters" onClick={removeFiltersAndSearchInput}>
+      <div className="selected-filters__remove-filters" onClick={removeAllSelected}>
         Clear all
       </div>
       {copedLink ? copied : copyLink}

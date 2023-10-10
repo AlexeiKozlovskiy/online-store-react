@@ -3,7 +3,7 @@ import './Header.scss';
 import { useSelector } from 'react-redux';
 import { CartItemReducerProps, CartItem } from '@/components/types/types';
 import { useEffect, useState } from 'react';
-import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveFiltSortContext';
+import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveAllSelectedContext';
 
 export function Header() {
   const cartItems = useSelector(
@@ -11,7 +11,7 @@ export function Header() {
   ) as unknown as CartItem[];
   const [productCount, setProductCount] = useState(0);
   const [productAmount, setProductAmount] = useState(0);
-  const { removeFiltersAndSearchInput } = useMyRemoveFiltSortContext();
+  const { removeAllSelected } = useMyRemoveFiltSortContext();
 
   useEffect(() => {
     setProductCount(cartItems.reduce((count, cartItem) => count + cartItem.quantity, 0));
@@ -23,7 +23,7 @@ export function Header() {
   return (
     <header className="header">
       <div className="header__container wrapper">
-        <Link to="/" className="header-link" onClick={removeFiltersAndSearchInput}>
+        <Link to="/" className="header-link" onClick={removeAllSelected}>
           <span className="header-logo">
             <span className="header-logo__title">Christmas</span>
             <span className="header-logo__img"></span>

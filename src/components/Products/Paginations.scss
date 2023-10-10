@@ -1,0 +1,43 @@
+@import 'src/assets/styles/common.scss';
+
+.react-paginate {
+  margin-top: 60px;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  list-style-type: none;
+  padding: 0 5rem;
+  gap: 10px;
+  color: $darkGray;
+  font: 1rem $Roboto;
+}
+
+.page-item {
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1.5px solid $oliva;
+
+  a {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.react-paginate li.active {
+  color: white;
+  background-color: $oliva;
+}
+
+.react-paginate li.disabled {
+  color: grey;
+  border: 1.5px solid $greyBorder;
+  cursor: default;
+
+  a {
+    color: $greyBorder;
+  }
+}

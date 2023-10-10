@@ -29,7 +29,6 @@ export const useMyFiltersContext = () => useContext(FiltersContext);
 
 interface IFiltersContext extends Balancers {
   itemsCount: number;
-  isEmptyFilters: boolean;
   removeItemFilterClick: (e: React.MouseEvent<HTMLElement>) => void;
   filtersProducts: Product[];
   setFiltersProducts: (value: Product[]) => void;
@@ -40,7 +39,6 @@ interface IFiltersContext extends Balancers {
 
 export const FiltersContext = createContext<IFiltersContext>({
   itemsCount: 0,
-  isEmptyFilters: true,
   removeItemFilterClick: () => null,
   balancerCategory: [],
   balancerCollection: [],
@@ -78,7 +76,6 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [sortSize, setSortSize] = useState<Product[]>([]);
   const [sortCategory, setSortCategory] = useState<Product[]>([]);
   const [sortStock, setSortStock] = useState<Product[]>([]);
-  const [isEmptyFilters, setIsEmptyFilters] = useState(true);
   const [balancerCategory, setBalancerCategory] = useState<BalancerCategory[]>([]);
   const [balancerCollection, setBalancerCollection] = useState<BalancerCollection[]>([]);
   const [balancerColor, setBalancerColor] = useState<BalancerColor[]>([]);
@@ -89,17 +86,6 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
   const [minStock, maxStock] = selectedStock;
-
-  useEffect(() => {
-    checkSelectedFilters();
-  }, [
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
-  ]);
 
   useEffect(() => {
     function filterColors() {
@@ -375,24 +361,6 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     countProducts();
   }, [filtersProducts.length]);
 
-  function checkSelectedFilters() {
-    if (
-      !selectedColors.length &&
-      !selectedCollections.length &&
-      minPrice === PRICE_MIN &&
-      maxPrice === PRICE_MAX &&
-      minSize === SIZE_MIN &&
-      maxSize === SIZE_MAX &&
-      minStock === STOCK_MIN &&
-      maxStock === STOCK_MAX &&
-      !selectedCategory.length
-    ) {
-      setIsEmptyFilters(false);
-    } else {
-      setIsEmptyFilters(true);
-    }
-  }
-
   function removeItemFilterClick(e: React.MouseEvent<HTMLElement>) {
     const { dataset } = e.target as HTMLElement;
     switch (dataset.params) {
@@ -422,7 +390,6 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   return (
     <FiltersContext.Provider
       value={{
-        isEmptyFilters,
         removeItemFilterClick,
         balancerCategory,
         balancerCollection,

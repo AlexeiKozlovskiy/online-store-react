@@ -54,5 +54,5 @@ export const ITEMS_IN_PAGE = [
   { value: '10', label: 'Show items: 10' },
   { value: '20', label: 'Show items: 20' },
   { value: '30', label: 'Show items: 30' },
-  { value: '0', label: 'All' },
+  { value: 'all', label: 'All' },
 ];
