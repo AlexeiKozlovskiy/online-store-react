@@ -8,25 +8,28 @@ import { FiltersContextProvider } from '@/components/Context/FiltersContext';
 import { SortingsContextProvider } from '@/components/Context/SortingsContext';
 import { RemoveAllSelectedContextProvider } from '@/components/Context/RemoveAllSelectedContext';
 import { Provider } from 'react-redux';
-import store from '@/components/reducers/store';
+import store, { persistor } from '@/components/reducers/store';
 import { URLContextProvider } from '@/components/Context/URLContext';
+import { PersistGate } from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <URLContextProvider>
-          <FiltersContextProvider>
-            <SortingsContextProvider>
-              <RemoveAllSelectedContextProvider>
-                <IdClickProvider>
-                  <App />
-                </IdClickProvider>
-              </RemoveAllSelectedContextProvider>
-            </SortingsContextProvider>
-          </FiltersContextProvider>
-        </URLContextProvider>
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <URLContextProvider>
+            <FiltersContextProvider>
+              <SortingsContextProvider>
+                <RemoveAllSelectedContextProvider>
+                  <IdClickProvider>
+                    <App />
+                  </IdClickProvider>
+                </RemoveAllSelectedContextProvider>
+              </SortingsContextProvider>
+            </FiltersContextProvider>
+          </URLContextProvider>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
   </StrictMode>
 );
