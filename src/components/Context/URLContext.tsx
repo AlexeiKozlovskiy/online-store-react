@@ -10,7 +10,6 @@ import {
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
 } from '@/components/helpers/constant';
-// import products from '@/assets/data/products.json';
 import { Filters, ISelect, InputSearch } from '../types/types';
 
 export const useMyURLContext = () => useContext(URLContext);
@@ -27,6 +26,8 @@ interface IURLContext extends Filters, InputSearch {
   setCurPageCart: (value: number) => void;
   perCartPageOption: ISelect;
   setPerCartPageOption: (selectedOption: ISelect) => void;
+  swichedView: string;
+  setSwichedView: (value: string) => void;
 }
 
 export const URLContext = createContext<IURLContext>({
@@ -55,6 +56,8 @@ export const URLContext = createContext<IURLContext>({
   setCurPageCart: () => null,
   perCartPageOption: ITEMS_IN_PAGE_CART[1],
   setPerCartPageOption: () => null,
+  swichedView: 'block',
+  setSwichedView: () => null,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
@@ -80,6 +83,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [isEmptyFilters, setIsEmptyFilters] = useState(true);
   const [curPageCart, setCurPageCart] = useState<number>(1);
   const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
+  const [swichedView, setSwichedView] = useState('block');
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -131,6 +135,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       const [perMainOption] = queryParams.getAll('perPage');
       const [curPageCart] = queryParams.getAll('page');
       const [perCartOption] = queryParams.getAll('perPage');
+      const [swichedViews] = queryParams.getAll('switchView');
 
       if (colors) {
         setSelectedColors(colors?.split(','));
@@ -169,7 +174,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (perMainOption && location.pathname === '/') {
-        console.log(123);
         setPerMainPageOption({
           value: perMainOption,
           label: ITEMS_IN_PAGE.filter(({ value, label }) => {
@@ -193,6 +197,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
             }
           })[0].label,
         });
+      }
+
+      if (swichedViews) {
+        setSwichedView(swichedViews);
       }
     }
     setDataFromUrl();
@@ -254,6 +262,11 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       if (+perCartPageOption.value !== 3 && location.pathname === '/cart') {
         params.set('perPage', perCartPageOption.value);
       }
+
+      if (swichedView === 'row') {
+        params.set('switchView', swichedView);
+      }
+
       const newURL = `${location.pathname}?${params.toString()}`;
       window.history.replaceState(null, '', newURL);
     }
@@ -271,6 +284,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     perMainPageOption,
     curPageCart,
     perCartPageOption,
+    swichedView,
   ]);
 
   return (
@@ -301,6 +315,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setCurPageCart,
         perCartPageOption,
         setPerCartPageOption,
+        swichedView,
+        setSwichedView,
       }}
     >
       {children}

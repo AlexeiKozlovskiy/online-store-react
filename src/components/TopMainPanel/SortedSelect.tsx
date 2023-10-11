@@ -9,11 +9,9 @@ import { CustomSelect } from '@/components/Select/Select';
 
 interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
-  onClickSwitcher: (string: string) => void;
-  swichedView: string;
 }
 
-export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }: ISortedFilters) {
+export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
   const { itemsCount } = useMyFiltersContext();
   const {
     isEmptyFilters,
@@ -21,6 +19,8 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
     setSortindViewOption,
     perMainPageOption,
     setPerMainPageOption,
+    swichedView,
+    setSwichedView,
   } = useMyURLContext();
   const [selectedPagination, setSelectedPagination] = useState<ISelect | null>(null);
 
@@ -29,7 +29,7 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
   }, [perMainPageOption]);
 
   function switcherView(view: string) {
-    view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
+    view === 'row' ? setSwichedView(view) : setSwichedView(view);
   }
 
   function handleChangeSort(selectedOption: ISelect | null) {
@@ -67,8 +67,8 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
         </div>
         <div className="sorted-filters__switch-view switch-view">
           <div
-            className={`switch-view__line ${swichedView === 'line' ? 'switch-active' : ''} `}
-            onClick={() => switcherView('line')}
+            className={`switch-view__line ${swichedView === 'row' ? 'switch-active' : ''} `}
+            onClick={() => switcherView('row')}
           ></div>
           <div
             className={`switch-view__block ${swichedView === 'block' ? 'switch-active' : ''} `}
