@@ -9,6 +9,7 @@ import {
   STOCK_MAX,
   SORT_OPTIONS,
   ITEMS_IN_PAGE,
+  ITEMS_IN_PAGE_CART,
 } from '@/components/helpers/constant';
 
 export const useMyRemoveFiltSortContext = () => useContext(RemoveAllSelectedContext);
@@ -31,8 +32,10 @@ export const RemoveAllSelectedContextProvider = ({ children }: { children: React
     setSelectedStock,
     setInputSearchValue,
     setSortindViewOption,
-    setCurPage,
-    setPerPageOption,
+    setCurPageMain,
+    setPerMainPageOption,
+    setPerCartPageOption,
+    setCurPageCart,
   } = useMyURLContext();
 
   function removeAllSelected() {
@@ -44,8 +47,10 @@ export const RemoveAllSelectedContextProvider = ({ children }: { children: React
     setSelectedSize([SIZE_MIN, SIZE_MAX]);
     setSelectedStock([STOCK_MIN, STOCK_MAX]);
     setSortindViewOption(SORT_OPTIONS[0]);
-    setCurPage(1);
-    setPerPageOption(ITEMS_IN_PAGE[2]);
+    setCurPageMain(1);
+    setPerMainPageOption(ITEMS_IN_PAGE[2]);
+    setPerCartPageOption(ITEMS_IN_PAGE_CART[1]);
+    setCurPageCart(1);
   }
   return (
     <RemoveAllSelectedContext.Provider

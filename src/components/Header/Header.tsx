@@ -4,8 +4,11 @@ import { useSelector } from 'react-redux';
 import { CartItemReducerProps, CartItem } from '@/components/types/types';
 import { useEffect, useState } from 'react';
 import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveAllSelectedContext';
+import { useMyURLContext } from '@/components/Context/URLContext';
 
 export function Header() {
+  const { curPageCart, perCartPageOption } = useMyURLContext();
+
   const cartItems = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
@@ -20,6 +23,14 @@ export function Header() {
     );
   }, [cartItems]);
 
+  function getCartUrl() {
+    let url = `/cart`;
+    if (+perCartPageOption.value !== 3) {
+      url = `/cart?page=${curPageCart}&perPage=${perCartPageOption.value}`;
+    }
+    return url;
+  }
+
   return (
     <header className="header">
       <div className="header__container wrapper">
@@ -30,7 +41,7 @@ export function Header() {
             <span className="header-logo__subtitle">Decorations</span>
           </span>
         </Link>
-        <Link to="/cart" className="header-cart">
+        <Link to={getCartUrl()} className="header-cart">
           <div className="header-cart__img"></div>
           <div className="header-cart__amount-container">
             <p className="header-cart__amount">{productCount}</p>

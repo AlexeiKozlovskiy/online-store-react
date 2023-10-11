@@ -17,7 +17,7 @@ function App() {
   }, [clickId]);
 
   const loadProductRoute = () => {
-    const url = window.location.pathname;
+    const url = location.pathname;
     const routeId = +url
       .split('/')
       .map((el, ind, arr) => (el === 'product' ? arr[ind + 1] : ''))

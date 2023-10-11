@@ -1,39 +1,45 @@
 import './ProductsList.scss';
-import './Paginations.scss';
-
 import { useEffect, useState } from 'react';
 import { ProductItem } from './Product';
 import { useSelector } from 'react-redux';
 import { CartItemReducerProps, CartItem, Product } from '@/components/types/types';
-import ReactPaginate from 'react-paginate';
 import { useMyURLContext } from '@/components/Context/URLContext';
+import { Pagination } from '@/components/Pagination/Pagination';
 
 interface IProductsList {
   swichedView: string;
   products: Product[];
-  itemsPerPage: number;
 }
 
-export function ProductsList({ swichedView, products, itemsPerPage }: IProductsList) {
+export function ProductsList({ swichedView, products }: IProductsList) {
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const [pageCount, setPageCount] = useState(products.length);
   const [itemOffset, setItemOffset] = useState(0);
-  const { curPage, setCurPage } = useMyURLContext();
+  const { curPageMain, setCurPageMain, perMainPageOption } = useMyURLContext();
+  const [itemsPerPage, setItemsPerPage] = useState(1);
+
+  useEffect(() => {
+    perMainPageOption.value === 'all'
+      ? setItemsPerPage(products.length)
+      : setItemsPerPage(+perMainPageOption.value);
+  }, [perMainPageOption]);
 
   const cartItems = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
 
   useEffect(() => {
-    const newOffset = ((curPage - 1) * itemsPerPage) % products.length;
-    setItemOffset(newOffset);
-  }, [curPage]);
+    const newOffset = ((curPageMain - 1) * itemsPerPage) % products.length;
+    if (newOffset) {
+      setItemOffset(newOffset);
+    }
+  }, [curPageMain, itemsPerPage]);
 
   useEffect(() => {
-    if (curPage > pageCount) {
-      setCurPage(1);
+    if (curPageMain > pageCount) {
+      setCurPageMain(1);
     }
-  }, [curPage, pageCount]);
+  }, [curPageMain, pageCount]);
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
@@ -44,7 +50,7 @@ export function ProductsList({ swichedView, products, itemsPerPage }: IProductsL
   const handlePageClick = (event: any) => {
     const newOffset = (event.selected * itemsPerPage) % products.length;
     setItemOffset(newOffset);
-    setCurPage(event.selected + 1);
+    setCurPageMain(event.selected + 1);
   };
 
   return (
@@ -61,28 +67,7 @@ export function ProductsList({ swichedView, products, itemsPerPage }: IProductsL
             />
           ))}
       </div>
-      <ReactPaginate
-        forcePage={curPage - 1}
-        className="react-paginate"
-        nextLabel=">"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={pageCount}
-        previousLabel="<"
-        pageClassName="page-item"
-        pageLinkClassName="page-link"
-        previousClassName="page-item"
-        previousLinkClassName="page-link"
-        nextClassName="page-item"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="active"
-        renderOnZeroPageCount={null}
-      />
+      <Pagination curPage={curPageMain} pageCount={pageCount} handlePageClick={handlePageClick} />
     </>
   );
 }
