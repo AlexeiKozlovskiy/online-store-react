@@ -8,7 +8,9 @@ import {
   STOCK_MAX,
   SORT_OPTIONS,
   ITEMS_IN_PAGE,
+  ITEMS_IN_PAGE_CART,
 } from '@/components/helpers/constant';
+// import products from '@/assets/data/products.json';
 import { Filters, ISelect, InputSearch } from '../types/types';
 
 export const useMyURLContext = () => useContext(URLContext);
@@ -16,11 +18,15 @@ export const useMyURLContext = () => useContext(URLContext);
 interface IURLContext extends Filters, InputSearch {
   sortindViewOption: ISelect;
   setSortindViewOption: (selectedOption: ISelect) => void;
-  curPage: number;
-  setCurPage: (value: number) => void;
-  perPageOption: ISelect;
-  setPerPageOption: (selectedOption: ISelect) => void;
+  curPageMain: number;
+  setCurPageMain: (value: number) => void;
+  perMainPageOption: ISelect;
+  setPerMainPageOption: (selectedOption: ISelect) => void;
   isEmptyFilters: boolean;
+  curPageCart: number;
+  setCurPageCart: (value: number) => void;
+  perCartPageOption: ISelect;
+  setPerCartPageOption: (selectedOption: ISelect) => void;
 }
 
 export const URLContext = createContext<IURLContext>({
@@ -40,11 +46,15 @@ export const URLContext = createContext<IURLContext>({
   setSelectedStock: () => null,
   sortindViewOption: SORT_OPTIONS[0],
   setSortindViewOption: () => null,
-  curPage: 1,
-  setCurPage: () => null,
-  perPageOption: ITEMS_IN_PAGE[2],
-  setPerPageOption: () => null,
+  curPageMain: 1,
+  setCurPageMain: () => null,
+  perMainPageOption: ITEMS_IN_PAGE[2],
+  setPerMainPageOption: () => null,
   isEmptyFilters: true,
+  curPageCart: 1,
+  setCurPageCart: () => null,
+  perCartPageOption: ITEMS_IN_PAGE_CART[1],
+  setPerCartPageOption: () => null,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
@@ -65,9 +75,11 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   ]);
   const [inputSearchValue, setInputSearchValue] = useState<string | null>('');
   const [sortindViewOption, setSortindViewOption] = useState<ISelect>(SORT_OPTIONS[0]);
-  const [curPage, setCurPage] = useState<number>(1);
-  const [perPageOption, setPerPageOption] = useState<ISelect>(ITEMS_IN_PAGE[2]);
+  const [curPageMain, setCurPageMain] = useState<number>(1);
+  const [perMainPageOption, setPerMainPageOption] = useState<ISelect>(ITEMS_IN_PAGE[2]);
   const [isEmptyFilters, setIsEmptyFilters] = useState(true);
+  const [curPageCart, setCurPageCart] = useState<number>(1);
+  const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -115,8 +127,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       const valMaxStock = queryParams.getAll('maxStock');
       const [search] = queryParams.getAll('q');
       const [viewOption] = queryParams.getAll('sortBy');
-      const [curPage] = queryParams.getAll('page');
-      const [perPageOption] = queryParams.getAll('perPage');
+      const [curPageMain] = queryParams.getAll('page');
+      const [perMainOption] = queryParams.getAll('perPage');
+      const [curPageCart] = queryParams.getAll('page');
+      const [perCartOption] = queryParams.getAll('perPage');
 
       if (colors) {
         setSelectedColors(colors?.split(','));
@@ -149,14 +163,32 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
           })[0].label,
         });
       }
-      if (curPage) {
-        setCurPage(+curPage);
+
+      if (curPageMain && location.pathname === '/') {
+        setCurPageMain(+curPageMain);
       }
-      if (perPageOption) {
-        setPerPageOption({
-          value: perPageOption,
+
+      if (perMainOption && location.pathname === '/') {
+        console.log(123);
+        setPerMainPageOption({
+          value: perMainOption,
           label: ITEMS_IN_PAGE.filter(({ value, label }) => {
-            if (value === perPageOption) {
+            if (value === perMainOption) {
+              return label;
+            }
+          })[0].label,
+        });
+      }
+
+      if (curPageCart && location.pathname === '/cart') {
+        setCurPageCart(+curPageCart);
+      }
+
+      if (perCartOption && location.pathname === '/cart') {
+        setPerCartPageOption({
+          value: perCartOption,
+          label: ITEMS_IN_PAGE_CART.filter(({ value, label }) => {
+            if (value === perCartOption) {
               return label;
             }
           })[0].label,
@@ -207,14 +239,21 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         params.set('sortBy', sortindViewOption.value);
       }
 
-      if (curPage > 1) {
-        params.set('page', curPage.toString());
+      if (curPageMain > 1 && location.pathname === '/') {
+        params.set('page', curPageMain.toString());
       }
 
-      if (+perPageOption.value !== 20) {
-        params.set('perPage', perPageOption.value);
+      if (+perMainPageOption.value !== 20 && location.pathname === '/') {
+        params.set('perPage', perMainPageOption.value);
       }
 
+      if (curPageCart > 1 && location.pathname === '/cart') {
+        params.set('page', curPageCart.toString());
+      }
+
+      if (+perCartPageOption.value !== 3 && location.pathname === '/cart') {
+        params.set('perPage', perCartPageOption.value);
+      }
       const newURL = `${location.pathname}?${params.toString()}`;
       window.history.replaceState(null, '', newURL);
     }
@@ -228,8 +267,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     selectedStock,
     inputSearchValue,
     sortindViewOption.value,
-    curPage,
-    perPageOption,
+    curPageMain,
+    perMainPageOption,
+    curPageCart,
+    perCartPageOption,
   ]);
 
   return (
@@ -252,10 +293,14 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setSortindViewOption,
         inputSearchValue,
         setInputSearchValue,
-        curPage,
-        setCurPage,
-        perPageOption,
-        setPerPageOption,
+        curPageMain,
+        setCurPageMain,
+        perMainPageOption,
+        setPerMainPageOption,
+        curPageCart,
+        setCurPageCart,
+        perCartPageOption,
+        setPerCartPageOption,
       }}
     >
       {children}

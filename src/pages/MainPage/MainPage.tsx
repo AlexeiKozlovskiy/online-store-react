@@ -6,14 +6,12 @@ import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
 import { useMySortingsContext } from '@/components/Context/SortingsContext';
-import { useMyURLContext } from '@/components/Context/URLContext';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [swichedView, setSwichedView] = useState('block');
   const { itemsCount } = useMyFiltersContext();
   const { sortProducts: products } = useMySortingsContext();
-  const { perPageOption } = useMyURLContext();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
@@ -24,13 +22,7 @@ export function MainPage() {
   }
 
   const noItemsFound = <div className="empty-catalog">No items found</div>;
-  const productsList = (
-    <ProductsList
-      swichedView={swichedView}
-      products={products}
-      itemsPerPage={perPageOption.value === 'all' ? products.length : +perPageOption.value}
-    />
-  );
+  const productsList = <ProductsList swichedView={swichedView} products={products} />;
   return (
     <main className="MainPage-container wrapper">
       <SearchPanel />

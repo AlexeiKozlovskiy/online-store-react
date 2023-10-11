@@ -21,6 +21,14 @@
     padding: 0px 10px;
   }
 
+  &__pagination-conteiner {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+  }
+
   &__empty {
     padding-top: 50px;
     display: flex;

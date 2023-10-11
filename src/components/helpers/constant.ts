@@ -38,8 +38,6 @@ export const COLOR_STOCK = [
 
 export const COLLECTION_STOCK = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
 
-export const ITEMS_IN_PAGE_CART = [1, 3, 5, 10, 0];
-
 export const SORT_OPTIONS = [
   { value: '', label: 'Recommended' },
   { value: 'name', label: 'Name' },
@@ -55,4 +53,25 @@ export const ITEMS_IN_PAGE = [
   { value: '20', label: 'Show items: 20' },
   { value: '30', label: 'Show items: 30' },
   { value: 'all', label: 'All' },
+];
+
+export const ITEMS_IN_PAGE_CART = [
+  { value: '1', label: 'Show items: 1' },
+  { value: '3', label: 'Show items: 3' },
+  { value: '5', label: 'Show items: 5' },
+  { value: '10', label: 'Show items: 10' },
+  { value: 'all', label: 'All' },
+];
+
+export const PROMOCODES = [
+  {
+    id: 1,
+    name: 'one',
+    discount: 10,
+  },
+  {
+    id: 2,
+    name: 'two',
+    discount: 15,
+  },
 ];

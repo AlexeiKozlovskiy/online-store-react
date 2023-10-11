@@ -4,9 +4,8 @@ import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/components/helpers/constant';
 import { useMyFiltersContext } from '@/components/Context/FiltersContext';
 import { useMyURLContext } from '@/components/Context/URLContext';
-import Select from 'react-select';
 import { ISelect } from '@/components/types/types';
-import { customStyles, customTheme } from './selectCustomStyles';
+import { CustomSelect } from '@/components/Select/Select';
 
 interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
@@ -20,14 +19,14 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
     isEmptyFilters,
     sortindViewOption,
     setSortindViewOption,
-    perPageOption,
-    setPerPageOption,
+    perMainPageOption,
+    setPerMainPageOption,
   } = useMyURLContext();
   const [selectedPagination, setSelectedPagination] = useState<ISelect | null>(null);
 
   useEffect(() => {
-    setSelectedPagination(perPageOption);
-  }, [perPageOption]);
+    setSelectedPagination(perMainPageOption);
+  }, [perMainPageOption]);
 
   function switcherView(view: string) {
     view === 'line' ? onClickSwitcher('line') : onClickSwitcher('block');
@@ -38,7 +37,7 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
   }
 
   function handleChangePagination(selectedOption: ISelect | null) {
-    setPerPageOption(selectedOption!);
+    setPerMainPageOption(selectedOption!);
   }
 
   return (
@@ -51,25 +50,18 @@ export function SortedSelect({ onClickShowFilter, onClickSwitcher, swichedView }
         </div>
         <div className="sorted-filters__item-count">{itemsCount} items</div>
         <div className="sorted-filters__select">
-          <Select
-            className="filters-select"
-            value={sortindViewOption}
-            defaultValue={sortindViewOption}
-            onChange={handleChangeSort}
+          <CustomSelect
+            selectedItem={sortindViewOption}
+            handleChange={handleChangeSort}
             options={SORT_OPTIONS}
-            styles={customStyles}
-            theme={customTheme}
           />
         </div>
         <div className="sorted-filters__select">
           <div className="pagination__select">
-            <Select
-              className="pagination-select"
-              value={selectedPagination}
-              onChange={handleChangePagination}
+            <CustomSelect
+              selectedItem={selectedPagination}
+              handleChange={handleChangePagination}
               options={ITEMS_IN_PAGE}
-              styles={customStyles}
-              theme={customTheme}
             />
           </div>
         </div>
