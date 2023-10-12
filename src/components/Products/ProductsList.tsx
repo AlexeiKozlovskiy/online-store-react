@@ -7,15 +7,14 @@ import { useMyURLContext } from '@/components/Context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
 
 interface IProductsList {
-  swichedView: string;
   products: Product[];
 }
 
-export function ProductsList({ swichedView, products }: IProductsList) {
+export function ProductsList({ products }: IProductsList) {
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const [pageCount, setPageCount] = useState(products.length);
   const [itemOffset, setItemOffset] = useState(0);
-  const { curPageMain, setCurPageMain, perMainPageOption } = useMyURLContext();
+  const { curPageMain, setCurPageMain, perMainPageOption, swichedView } = useMyURLContext();
   const [itemsPerPage, setItemsPerPage] = useState(1);
 
   useEffect(() => {
@@ -55,7 +54,7 @@ export function ProductsList({ swichedView, products }: IProductsList) {
 
   return (
     <>
-      <div className={`main-catalog__products ${swichedView === 'line' ? 'row-view' : ''}`}>
+      <div className={`main-catalog__products ${swichedView === 'row' ? 'row-view' : ''}`}>
         {currentItems &&
           currentItems.map((product) => (
             <ProductItem
