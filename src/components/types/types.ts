@@ -35,6 +35,10 @@ export interface CartItemReducerProps {
   cart: CartItem;
 }
 
+export interface PromocodeDataReducerProps {
+  promocode: PromocodeData;
+}
+
 export interface PaginationData {
   page: number;
   perPage: number;

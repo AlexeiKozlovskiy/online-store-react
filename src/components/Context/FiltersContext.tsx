@@ -6,7 +6,7 @@ import {
   SIZE_MAX,
   STOCK_MIN,
   STOCK_MAX,
-  CATEGORIES,
+  CATEGORIES_STOCK,
 } from '@/components/helpers/constant';
 import {
   BalancerCategory,
@@ -276,7 +276,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
 
       function categoryBalancer(products: Product[]) {
         let arrCategory: BalancerCategory[] = [];
-        CATEGORIES.forEach((category) => {
+        CATEGORIES_STOCK.map(({ category }) => category).forEach((category) => {
           const categoryProducts = products.filter((product) => product.category === category);
           const count = categoryProducts.length;
           arrCategory = [...arrCategory, { category, count }];

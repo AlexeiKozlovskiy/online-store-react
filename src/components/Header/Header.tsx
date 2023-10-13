@@ -1,27 +1,15 @@
 import { Link } from 'react-router-dom';
 import './Header.scss';
-import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem } from '@/components/types/types';
-import { useEffect, useState } from 'react';
 import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveAllSelectedContext';
 import { useMyURLContext } from '@/components/Context/URLContext';
+import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
+import { useMyTotalItemsContext } from '@/components/Context/TotalItemsContext';
 
 export function Header() {
   const { curPageCart, perCartPageOption } = useMyURLContext();
-
-  const cartItems = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
-  const [productCount, setProductCount] = useState(0);
-  const [productAmount, setProductAmount] = useState(0);
   const { removeAllSelected } = useMyRemoveFiltSortContext();
-
-  useEffect(() => {
-    setProductCount(cartItems.reduce((count, cartItem) => count + cartItem.quantity, 0));
-    setProductAmount(
-      cartItems.reduce((count, cartItem) => count + cartItem.product.price * cartItem.quantity, 0)
-    );
-  }, [cartItems]);
+  const { totalPriceByPromocodes } = useMyTotalPriceContext();
+  const { totalItems } = useMyTotalItemsContext();
 
   function getCartUrl() {
     let url = `/cart`;
@@ -44,9 +32,9 @@ export function Header() {
         <Link to={getCartUrl()} className="header-cart">
           <div className="header-cart__img"></div>
           <div className="header-cart__amount-container">
-            <p className="header-cart__amount">{productCount}</p>
+            <p className="header-cart__amount">{totalItems}</p>
           </div>
-          <div className="header-cart__num">${productAmount.toFixed(2)}</div>
+          <div className="header-cart__num">${totalPriceByPromocodes.toFixed(2)}</div>
         </Link>
       </div>
     </header>

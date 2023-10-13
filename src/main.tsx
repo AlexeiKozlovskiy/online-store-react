@@ -10,6 +10,8 @@ import { RemoveAllSelectedContextProvider } from '@/components/Context/RemoveAll
 import { Provider } from 'react-redux';
 import store, { persistor } from '@/components/reducers/store';
 import { URLContextProvider } from '@/components/Context/URLContext';
+import { TotalPriceContextProvider } from '@/components/Context/TotalPriseContext';
+import { TotalItemsContextProvider } from '@/components/Context/TotalItemsContext';
 import { PersistGate } from 'redux-persist/integration/react';
 
 createRoot(document.getElementById('root')!).render(
@@ -21,9 +23,13 @@ createRoot(document.getElementById('root')!).render(
             <FiltersContextProvider>
               <SortingsContextProvider>
                 <RemoveAllSelectedContextProvider>
-                  <IdClickProvider>
-                    <App />
-                  </IdClickProvider>
+                  <TotalPriceContextProvider>
+                    <TotalItemsContextProvider>
+                      <IdClickProvider>
+                        <App />
+                      </IdClickProvider>
+                    </TotalItemsContextProvider>
+                  </TotalPriceContextProvider>
                 </RemoveAllSelectedContextProvider>
               </SortingsContextProvider>
             </FiltersContextProvider>
