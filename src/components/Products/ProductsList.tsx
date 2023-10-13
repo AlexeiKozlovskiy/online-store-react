@@ -23,7 +23,7 @@ export function ProductsList({ products }: IProductsList) {
       : setItemsPerPage(+perMainPageOption.value);
   }, [perMainPageOption]);
 
-  const cartItems = useSelector(
+  const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
 
@@ -60,7 +60,7 @@ export function ProductsList({ products }: IProductsList) {
             <ProductItem
               key={product.id}
               product={product}
-              isInCart={cartItems.some(({ product: inCartProduct }) => {
+              isInCart={cartItemsState.some(({ product: inCartProduct }) => {
                 return inCartProduct.id === product.id;
               })}
             />

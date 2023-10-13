@@ -13,7 +13,7 @@ interface IQuantity {
 export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, id }: IQuantity) {
   const [inputValue, setInputValue] = useState('1');
   const [stock, setStock] = useState(0);
-  const cartItems = useSelector(
+  const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
 
@@ -23,7 +23,7 @@ export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, id }: IQ
         setStock(el.stock);
       }
     });
-  }, [cartItems, id]);
+  }, [cartItemsState, id]);
 
   useEffect(() => {
     onChangeQuantity(inputValue);
