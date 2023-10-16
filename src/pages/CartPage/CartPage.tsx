@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItemReducerProps, CartItem, ISelect } from '@/components/types/types';
+import { CartItemReducerProps, CartItem, ISelect, PageClickEvent } from '@/components/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/components/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/components/Context/URLContext';
 import { Summary } from './Summary';
+import { PaymentModal } from '../PaymentPage/PaymentPage';
 
 export function CartPage() {
   const cartItemsState = useSelector(
@@ -21,6 +22,7 @@ export function CartPage() {
   const [pageCount, setPageCount] = useState(cartItemsState.length);
   const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     perCartPageOption.value === 'all'
@@ -39,7 +41,7 @@ export function CartPage() {
     setPageCount(Math.ceil(cartItemsState.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, cartItemsState]);
 
-  const handlePageClick = (event: any) => {
+  const handlePageClick = (event: PageClickEvent) => {
     const newOffset = (event.selected * itemsPerPage) % cartItemsState.length;
     setItemOffset(newOffset);
     setCurPageCart(event.selected + 1);
@@ -62,12 +64,17 @@ export function CartPage() {
     </main>
   );
 
+  function handelOrderClick(value: boolean) {
+    setOpenModal(value);
+  }
+
   return (
     <>
       {!cartItemsState.length ? (
         emtyCart
       ) : (
         <main>
+          <PaymentModal openModal={openModal} setOpenModal={setOpenModal} />
           <div className="shopping-cart wrapper">
             <div className="shopping-cart__header">SHOPPING CART</div>
             <ArrowBack />
@@ -98,7 +105,7 @@ export function CartPage() {
               pageCount={pageCount}
               handlePageClick={handlePageClick}
             />
-            <Summary />
+            <Summary isHandelOrderClick={handelOrderClick} />
           </div>
         </main>
       )}

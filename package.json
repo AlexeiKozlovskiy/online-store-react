@@ -24,19 +24,22 @@
     "prettier": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
     "react-paginate": "^8.2.0",
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.15.0",
     "react-select": "^5.7.7",
     "react-slider": "^2.0.6",
     "redux-persist": "^6.0.0",
-    "sass": "^1.66.1"
+    "sass": "^1.66.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20.6.0",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
     "@types/react-slider": "^1.3.1",
+    "@types/uuid": "^9.0.5",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "@vitejs/plugin-react": "^4.0.4",

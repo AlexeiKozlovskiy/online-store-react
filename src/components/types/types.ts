@@ -111,6 +111,10 @@ export interface ISelect {
   label: string;
 }
 
+export interface PageClickEvent {
+  selected: number;
+}
+
 export enum Select {
   NAME = 'name',
   PRICE_ASC = 'price-asc',
