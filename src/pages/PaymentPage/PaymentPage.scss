@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 10px;
   width: 500px;
-  padding: 30px;
+  padding: 20px;
   background-color: #fff;
   position: relative;
   border-radius: 10px;
@@ -65,7 +65,7 @@
   }
 
   &__title {
-    font-size: 20px;
+    font-size: 1.2rem;
     color: $oliva;
     letter-spacing: 0.1px;
   }
@@ -81,9 +81,9 @@
   &__email,
   &__phone-number {
     width: 95%;
-    padding: 20px 10px;
+    padding: 10px 10px;
     border: solid $greyBorder 1px;
-    margin-top: 25px;
+    margin-top: 20px;
     outline: 0;
     border-radius: 5px;
   }
@@ -92,7 +92,6 @@
 .payment-details__title,
 .payment-method__top {
   display: flex;
-  padding: 10px 0;
 }
 
 .payment-method {
@@ -103,15 +102,14 @@
   &__top {
     display: flex;
     align-items: center;
-    padding: 0;
-    margin-top: 10px;
+    margin-top: 5px;
   }
 
   &__title {
     margin-right: 15px;
     color: $oliva;
     letter-spacing: 1px;
-    font-size: 20px;
+    font-size: 1.2rem;
   }
 }
 
@@ -123,18 +121,20 @@
     width: 57px;
     height: 37px;
     padding: 5px;
-    background-size: contain;
 
-    &_visa {
+    &-visa {
       background: url('../../assets/img/visa.svg') no-repeat center;
+      background-size: contain;
     }
 
-    &_mastercard {
+    &-mastercard {
       background: url('../../assets/img/mastercard.svg') no-repeat center;
+      background-size: contain;
     }
 
-    &_amex {
-      background: url('../../assets/img/paypal.svg') no-repeat center;
+    &-express {
+      background: url('../../assets/img/americanExpress.png') no-repeat center;
+      background-size: contain;
     }
   }
 }
@@ -148,9 +148,9 @@
   &__date,
   &__cvv {
     width: 95%;
-    padding: 20px 10px;
+    padding: 10px 10px;
     border: solid $greyBorder 1px;
-    margin-top: 25px;
+    margin-top: 20px;
     outline: 0;
     border-radius: 5px;
   }
@@ -236,43 +236,42 @@
   }
 }
 
-.valid:focus {
-  border: 1.5px solid green;
-}
-
 .valid {
-  border: 1.5px solid green;
+  border: 1px solid green;
 }
 
 .invalid {
-  border: 1.5px solid red;
+  border: 1px solid red;
 }
 
 .payment-test {
-  margin-top: 15px;
   display: flex;
   justify-content: center;
   cursor: pointer;
   text-decoration: underline;
   text-transform: uppercase;
-  padding: 5px;
   color: $greyBorder;
+  font-size: 0.6rem;
 }
 
 .loading-spinner {
   display: none;
   margin: 0 auto;
-  height: 35px;
-  width: 35px;
-  border: 5px solid $greyBorder;
-  border-top: 5px solid green;
+  height: 25px;
+  width: 25px;
+  border: 6px solid $greyBorder;
+  border-top: 6px solid green;
   border-radius: 50%;
   animation: spinner 0.7s linear infinite;
 }
 
 .error-message {
-  margin-top: 3px;
+  margin-top: -8px;
+  margin-left: 10px;
+  padding: 2px;
   text-align: center;
   color: $darkGray;
   position: absolute;
+  font-size: 0.55rem;
+  background-color: #fff;
 }

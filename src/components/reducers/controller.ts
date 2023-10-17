@@ -6,6 +6,7 @@ import {
   removeProductFromCart,
   setProductQuantityInCart,
   removeProductFromCartAll,
+  removeAllProductFromCart,
 } from '@/components/reducers/cart';
 import { addAppliedPromocode, removeAppliedPromocode } from '@/components/reducers/promocode';
 
@@ -34,6 +35,10 @@ export function removeProductsFromCartAll(id: number) {
   if (product) {
     store.dispatch(removeProductFromCartAll(product));
   }
+}
+
+export function removeAllProductsFromCart() {
+  store.dispatch(removeAllProductFromCart());
 }
 
 export function isPromocodeAvailable(name: string): boolean {

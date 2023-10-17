@@ -8,7 +8,7 @@ import { removeProductsFromCartAll } from '@/components/reducers/controller';
 import { useAnimations } from '@/components/helpers/useAnimation';
 
 export function CartListItem({
-  id: itemId,
+  itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },
 }: CartItem) {
@@ -23,7 +23,7 @@ export function CartListItem({
   return (
     <div className="cart-item">
       <div className="cart-item__content">
-        <div className="cart-item__number">{itemId}</div>
+        <div className="cart-item__number">{itemNumber}</div>
         <Link to={`/product/${id}`} onClick={() => setClickId(id)}>
           <img className="cart-item__img" data-id={id} src={images[0]} alt="product image" />
         </Link>

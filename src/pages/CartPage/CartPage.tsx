@@ -97,7 +97,7 @@ export function CartPage() {
             <div className="shopping-cart__list">
               {currentItems &&
                 currentItems.map((cartItem: CartItem) => (
-                  <CartListItem key={cartItem.id} {...cartItem} />
+                  <CartListItem key={cartItem.cartID} {...cartItem} />
                 ))}
             </div>
             <Pagination
