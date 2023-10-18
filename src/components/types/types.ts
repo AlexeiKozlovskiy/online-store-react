@@ -13,18 +13,6 @@ export interface Product {
   images: string[];
 }
 
-export interface FormData {
-  userID: number;
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
-  nameCard: string;
-  numderCard: string;
-  dateCard: string;
-  cvvCard: string;
-}
-
 export interface CartItemArg {
   product: Product;
   quantity: number;
@@ -144,28 +132,38 @@ export enum CARD {
   MASTERCARD = '5',
 }
 
-export type ErrorType = LiteralUnion<'required' | 'validate', string>;
-
-export interface FormErrorMessages {
-  mesageName?: null | FORM_MESSAGES;
-  mesageAdress?: null | FORM_MESSAGES;
-  mesageEmail?: null | FORM_MESSAGES;
-  mesagePhone?: null | FORM_MESSAGES;
-  mesageNameCard?: null | FORM_MESSAGES;
-  mesageNumberCard?: null | FORM_MESSAGES;
-  mesageDateCard?: null | FORM_MESSAGES;
-  mesageCvvCard?: null | FORM_MESSAGES;
+export interface CardImages {
+  3: string;
+  4: string;
+  5: string;
 }
 
-export interface FormValues {
-  name?: string;
-  adress?: string;
-  email?: string;
-  numberPhone?: string;
-  nameCard?: string;
-  numberCard?: string;
-  dateCard?: string;
-  cvvCard?: string;
+export type ErrorType = LiteralUnion<'required' | 'validate', string>;
+
+export interface FormData {
+  form: Partial<FormFields>;
+}
+
+export interface FormFields {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  nameCard: string;
+  numberCard: string;
+  dateCard: string;
+  cvvCard: string;
+}
+
+export interface FormErrorMessages {
+  msgName?: null | FORM_MESSAGES;
+  msgAdress?: null | FORM_MESSAGES;
+  msgEmail?: null | FORM_MESSAGES;
+  msgPhone?: null | FORM_MESSAGES;
+  msgNameCard?: null | FORM_MESSAGES;
+  msgNumberCard?: null | FORM_MESSAGES;
+  msgDateCard?: null | FORM_MESSAGES;
+  msgCvvCard?: null | FORM_MESSAGES;
 }
 
 export enum FORM_MESSAGES {

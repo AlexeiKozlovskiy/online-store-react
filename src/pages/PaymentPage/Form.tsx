@@ -11,9 +11,9 @@ import {
   CartItem,
   FormData,
   ErrorType,
-  CARD,
   FORM_MESSAGES,
   FormErrorMessages,
+  CardImages,
 } from '@/components/types/types';
 import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
 
@@ -28,66 +28,61 @@ export function Form({ handelCloseModal }: IForm) {
     formState: { errors, isValid },
     reset,
     watch,
-  } = useForm<FormData>();
+    setValue,
+  } = useForm<FormData>({
+    defaultValues: {
+      form: {
+        name: '',
+        address: '',
+        email: '',
+        phone: '',
+        nameCard: '',
+        numberCard: '',
+        dateCard: '',
+        cvvCard: '',
+      },
+    },
+  });
   const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
   const { totalPriceByPromocodes } = useMyTotalPriceContext();
   const navigate = useNavigate();
-  const [submitData, setSubmitData] = useState({});
-  const [name, setName] = useState('');
-  const [adress, setAdress] = useState('');
-  const [email, setEmail] = useState('');
-  const [numberPhone, setNumberPhone] = useState('');
-  const [nameCard, setNameCard] = useState('');
-  const [numberCard, setNumberCard] = useState('');
-  const [dateCard, setDateCard] = useState('');
-  const [cvvCard, setCvvCard] = useState('');
   const [
-    {
-      mesageName,
-      mesageAdress,
-      mesageEmail,
-      mesagePhone,
-      mesageNameCard,
-      mesageNumberCard,
-      mesageDateCard,
-      mesageCvvCard,
-    },
+    { msgName, msgAdress, msgEmail, msgPhone, msgNameCard, msgNumberCard, msgDateCard, msgCvvCard },
     setFormMessages,
   ] = useState<FormErrorMessages>({
-    mesageName: null,
-    mesageAdress: null,
-    mesageEmail: null,
-    mesagePhone: null,
-    mesageNameCard: null,
-    mesageNumberCard: null,
-    mesageDateCard: null,
-    mesageCvvCard: null,
+    msgName: null,
+    msgAdress: null,
+    msgEmail: null,
+    msgPhone: null,
+    msgNameCard: null,
+    msgNumberCard: null,
+    msgDateCard: null,
+    msgCvvCard: null,
   });
+  const [submitData, setSubmitData] = useState({});
+  const [imageValue, setImageValue] = useState('');
 
-  const errorsName = errors.name?.type;
-  const errorsAddress = errors.address?.type;
-  const errorsEmail = errors.email?.type;
-  const errorsPhone = errors.phone?.type;
-  const errorsNameCard = errors.nameCard?.type;
-  const errorsNumderCard = errors.numderCard?.type;
-  const errorsDateCard = errors.dateCard?.type;
-  const errorsCvvCard = errors.cvvCard?.type;
+  const { form } = errors;
+  const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } = form || {};
 
-  const onSubmit = ({
-    name,
-    address,
-    email,
-    phone,
-    nameCard,
-    numderCard,
-    cvvCard,
-    dateCard,
-  }: FormData) => {
+  const errorsName = name?.type;
+  const errorsAddress = address?.type;
+  const errorsEmail = email?.type;
+  const errorsPhone = phone?.type;
+  const errorsNameCard = nameCard?.type;
+  const errorsNumderCard = numberCard?.type;
+  const errorsDateCard = dateCard?.type;
+  const errorsCvvCard = cvvCard?.type;
+
+  const onSubmit = ({ form }: FormData) => {
+    const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } = form;
+
     const spinner = document.querySelector<HTMLElement>('.loading-spinner');
     spinner!.style.display = 'flex';
     const orderID = uuidv4();
+
     setSubmitData({
       orderID,
       diliveryData: {
@@ -98,7 +93,7 @@ export function Form({ handelCloseModal }: IForm) {
       },
       paymentData: {
         nameCard,
-        numderCard,
+        numberCard,
         cvvCard,
         dateCard,
         totalPriceOrder: totalPriceByPromocodes,
@@ -111,8 +106,8 @@ export function Form({ handelCloseModal }: IForm) {
         };
       }),
     });
-    reset();
     setTimeout(() => {
+      reset();
       removeAllProductsFromCart();
       navigate('/');
     }, 2000);
@@ -125,230 +120,207 @@ export function Form({ handelCloseModal }: IForm) {
   }, [submitData]);
 
   useEffect(() => {
-    formatName(watch('name'));
-  }, [watch('name')]);
+    setValue('form.name', watch('form.name')?.substring(0, 40));
+  }, [watch('form.name')]);
 
   useEffect(() => {
-    formatAdress(watch('address'));
-  }, [watch('address')]);
+    setValue('form.address', watch('form.address')?.substring(0, 70));
+  }, [watch('form.address')]);
 
   useEffect(() => {
-    formatEmail(watch('email'));
-  }, [watch('email')]);
+    setValue('form.email', watch('form.email')?.substring(0, 50));
+  }, [watch('form.email')]);
 
   useEffect(() => {
-    formatPhone(watch('phone'));
-  }, [watch('phone')]);
+    setValue(
+      'form.phone',
+      watch('form.phone')
+        ?.replace(/[^\d+]/g, '')
+        .substring(0, 16)
+    );
+  }, [watch('form.phone')]);
 
   useEffect(() => {
-    formatCardName(watch('nameCard'));
-  }, [watch('nameCard')]);
+    setValue('form.nameCard', watch('form.nameCard')?.substring(0, 40));
+  }, [watch('form.nameCard')]);
 
   useEffect(() => {
-    formatCardNumber(watch('numderCard'));
-  }, [watch('numderCard')]);
+    const valueNumber =
+      watch('form.numberCard')
+        ?.replace(/[^\d]/g, '')
+        .substring(0, 16)
+        .match(/.{1,4}/g)
+        ?.join(' ') || '';
+    setValue('form.numberCard', valueNumber);
+  }, [watch('form.numberCard')]);
 
   useEffect(() => {
-    formatCardDate(watch('dateCard'));
-  }, [watch('dateCard')]);
+    const valueDate =
+      watch('form.dateCard')
+        ?.replace(/[^\d]/g, '')
+        .substring(0, 4)
+        .match(/.{1,2}/g)
+        ?.join('/') || '';
+    setValue('form.dateCard', valueDate);
+  }, [watch('form.dateCard')]);
 
   useEffect(() => {
-    formatCardCvv(watch('cvvCard'));
-  }, [watch('cvvCard')]);
+    setValue('form.cvvCard', watch('form.cvvCard')?.replace(/[^\d]/g, '').substring(0, 3));
+  }, [watch('form.cvvCard')]);
+
+  useEffect(() => {
+    const curImage = cardImages[+watch('form.numberCard')![0] as keyof CardImages];
+    setImageValue(curImage);
+  }, [watch('form'), watch('form.numberCard')]);
 
   const errorDefinitions: Record<string, Record<ErrorType, JSX.Element>> = {
     name: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_NAME),
-      validate: ErrorMessage(mesageName!),
+      validate: ErrorMessage(msgName!),
     },
     address: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_ADDRESS),
-      validate: ErrorMessage(mesageAdress!),
+      validate: ErrorMessage(msgAdress!),
     },
     email: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_EMAIL),
-      validate: ErrorMessage(mesageEmail!),
+      validate: ErrorMessage(msgEmail!),
     },
     phone: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_PHONE),
-      validate: ErrorMessage(mesagePhone!),
+      validate: ErrorMessage(msgPhone!),
     },
     nameCard: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_NAME_CARD),
-      validate: ErrorMessage(mesageNameCard!),
+      validate: ErrorMessage(msgNameCard!),
     },
     numberCard: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_NUMBER_CARD),
-      validate: ErrorMessage(mesageNumberCard!),
+      validate: ErrorMessage(msgNumberCard!),
     },
     dateCard: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_DATE_CARD),
-      validate: ErrorMessage(mesageDateCard!),
+      validate: ErrorMessage(msgDateCard!),
     },
     cvvCard: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_CVV_CARD),
-      validate: ErrorMessage(mesageCvvCard!),
+      validate: ErrorMessage(msgCvvCard!),
     },
   };
 
-  function validateName(value: string) {
+  function validateName(value?: string) {
+    if (!value) return;
     const words = value.split(' ');
     if (words.length < 2 || !words.every((el) => el.length >= 1)) {
-      setFormMessages({ mesageName: FORM_MESSAGES.NAME_CONTAINS_TWO_WORDS });
+      setFormMessages({ msgName: FORM_MESSAGES.NAME_CONTAINS_TWO_WORDS });
       return false;
     }
     if (!value.match(/^[a-zA-Zа-яА-Я\.\s]+$/)) {
-      setFormMessages({ mesageName: FORM_MESSAGES.NAME_CONTAINS_INVALID_CHARACTERS });
+      setFormMessages({ msgName: FORM_MESSAGES.NAME_CONTAINS_INVALID_CHARACTERS });
       return false;
     }
-    return true;
   }
 
-  function validateAddress(value: string) {
+  function validateAddress(value?: string) {
+    if (!value) return;
     const words = value.split(' ');
     if (words.length < 3 || !words.every((el) => el.length >= 1)) {
-      setFormMessages({ mesageAdress: FORM_MESSAGES.ADDRESS_CONTAINS_THREE_WORDS });
+      setFormMessages({ msgAdress: FORM_MESSAGES.ADDRESS_CONTAINS_THREE_WORDS });
       return false;
     }
-    return true;
   }
 
-  function validateEmail(value: string) {
+  function validateEmail(value?: string) {
+    if (!value) return;
     if (!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
-      setFormMessages({ mesageEmail: FORM_MESSAGES.INVALID_EMAIL });
+      setFormMessages({ msgEmail: FORM_MESSAGES.INVALID_EMAIL });
       return false;
     }
-    return true;
   }
 
-  function validatePhone(value: string) {
+  function validatePhone(value?: string) {
+    if (!value) return;
     if (value.length <= 6) {
-      setFormMessages({ mesagePhone: FORM_MESSAGES.PHONE_LENGTH });
+      setFormMessages({ msgPhone: FORM_MESSAGES.PHONE_LENGTH });
       return false;
     }
-    return true;
   }
 
-  function validateNameCard(value: string) {
+  function validateNameCard(value?: string) {
+    if (!value) return;
     const words = value.split(' ');
     if (words.length < 2) {
-      setFormMessages({ mesageNameCard: FORM_MESSAGES.NAME_CONTAINS_TWO_WORDS });
+      setFormMessages({ msgNameCard: FORM_MESSAGES.NAME_CONTAINS_TWO_WORDS });
       return false;
     }
     if (!value.match(/^[a-zA-Zа-яА-Я\s]+$/)) {
-      setFormMessages({ mesageNameCard: FORM_MESSAGES.NAME_CONTAINS_INVALID_CHARACTERS });
+      setFormMessages({ msgNameCard: FORM_MESSAGES.NAME_CONTAINS_INVALID_CHARACTERS });
       return false;
     }
-    return true;
   }
 
-  function validateNumderCard(value: string) {
+  function validateNumderCard(value?: string) {
+    if (!value) return;
     if (value.length < 16) {
-      setFormMessages({ mesageNumberCard: FORM_MESSAGES.CARD_NUMBER_LENGTH });
+      setFormMessages({ msgNumberCard: FORM_MESSAGES.CARD_NUMBER_LENGTH });
       return false;
     }
-    return true;
   }
 
-  function validateDateCard(value: string) {
+  function validateDateCard(value?: string) {
+    if (!value) return;
     const month = Number(value.substring(0, 2));
     const year = Number(value.substring(3, 5));
 
     if (value.length < 4) {
-      setFormMessages({ mesageDateCard: FORM_MESSAGES.CARD_DATE_LENGTH });
+      setFormMessages({ msgDateCard: FORM_MESSAGES.CARD_DATE_LENGTH });
       return false;
     } else {
       if (year < +thisYear || year > +thisYear + 5) {
-        setFormMessages({ mesageDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
+        setFormMessages({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
         return false;
       }
       if (month >= 12) {
-        setFormMessages({ mesageDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
+        setFormMessages({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
         return false;
       }
       if (year === +thisYear && +thisMonth >= month) {
-        setFormMessages({ mesageDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
+        setFormMessages({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
         return false;
       }
     }
   }
 
-  function validateCvvCard(value: string) {
+  function validateCvvCard(value?: string) {
+    if (!value) return;
     if (value.length < 3) {
-      setFormMessages({ mesageCvvCard: FORM_MESSAGES.INVALID_CARD_CVV });
+      setFormMessages({ msgCvvCard: FORM_MESSAGES.INVALID_CARD_CVV });
       return false;
-    }
-  }
-
-  function formatName(value: string) {
-    setName(value.substring(0, 40));
-  }
-
-  function formatAdress(value: string) {
-    setAdress(value.substring(0, 70));
-  }
-
-  function formatEmail(value: string) {
-    setEmail(value.substring(0, 50));
-  }
-
-  function formatPhone(value: string) {
-    setNumberPhone(value.replace(/[^\d+]/g, '').substring(0, 16));
-  }
-
-  function formatCardName(value: string) {
-    setNameCard(value.substring(0, 40));
-  }
-
-  function formatCardNumber(value: string) {
-    const valueNumber = value.replace(/[^\d]/g, '').substring(0, 16);
-    setNumberCard(valueNumber.match(/.{1,4}/g)?.join(' ') || '');
-    checkCardImg(value[0]);
-  }
-
-  function formatCardDate(value: string) {
-    const valueDate = value.replace(/[^\d]/g, '').substring(0, 4);
-    setDateCard(valueDate.match(/.{1,2}/g)?.join('/') || '');
-  }
-
-  function formatCardCvv(value: string) {
-    setCvvCard(value.replace(/[^\d]/g, '').substring(0, 3));
-  }
-
-  function checkCardImg(value: string) {
-    const img = document.querySelector<HTMLElement>('.cards');
-    switch (value) {
-      case CARD.EXPRESS:
-        img!.classList.add('cards__img-express');
-        break;
-      case CARD.VISA:
-        img!.classList.add('cards__img-visa');
-        break;
-      case CARD.MASTERCARD:
-        img!.classList.add('cards__img-mastercard');
-        break;
-      default:
-        img!.classList.remove('cards__img-express');
-        img!.classList.remove('cards__img-visa');
-        img!.classList.remove('cards__img-mastercard');
-        break;
     }
   }
 
   function testDataClick() {
-    setName('Rubi Rhod');
-    setAdress('United States, New-York, Times Square');
-    setEmail('Rubi_Rod@icloud.com');
-    setNumberPhone('+37533123456789');
-    setNameCard('RUBI RHOD');
-    setNumberCard('5555 4444 3333 2222');
-    setDateCard('05/25');
-    setCvvCard('123');
+    setValue('form', {
+      name: 'Rubi Rhod',
+      address: 'United States, New-York, Times Square',
+      email: 'Rubi_Rod@icloud.com',
+      phone: '+37533123456789',
+      nameCard: 'RUBI RHOD',
+      numberCard: '5555 4444 3333 2222',
+      dateCard: '05/25',
+      cvvCard: '123',
+    });
   }
 
   function ErrorMessage(message: string) {
     return <div className="error-message">{message}</div>;
   }
+
+  const cardImages: CardImages = {
+    3: 'cards__img-express',
+    4: 'cards__img-visa',
+    5: 'cards__img-mastercard',
+  };
 
   return (
     <>
@@ -370,8 +342,7 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="text"
                   id="nameInput"
-                  value={name}
-                  {...register('name', {
+                  {...register('form.name', {
                     required: true,
                     validate: validateName,
                   })}
@@ -386,8 +357,10 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="text"
                   id="addressInput"
-                  value={adress}
-                  {...register('address', { required: true, validate: validateAddress })}
+                  {...register('form.address', {
+                    required: true,
+                    validate: validateAddress,
+                  })}
                 />
                 {errorsAddress && errorDefinitions.address[errorsAddress]}
               </div>
@@ -399,8 +372,7 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="text"
                   id="emailInput"
-                  value={email}
-                  {...register('email', { required: true, validate: validateEmail })}
+                  {...register('form.email', { required: true, validate: validateEmail })}
                 />
                 {errorsEmail && errorDefinitions.email[errorsEmail]}
               </div>
@@ -412,8 +384,7 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="tel"
                   id="phoneInput"
-                  value={numberPhone}
-                  {...register('phone', {
+                  {...register('form.phone', {
                     required: true,
                     validate: validatePhone,
                   })}
@@ -425,7 +396,7 @@ export function Form({ handelCloseModal }: IForm) {
           <div className="payment-details__payment-method payment-method">
             <div className="payment-method__top">
               <div className="payment-method__title">PAYMENT METHOD</div>
-              <div className="payment-method__cards cards">
+              <div className={`payment-method__cards ${imageValue}`}>
                 <div className="cards__img"></div>
               </div>
             </div>
@@ -438,8 +409,10 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="text"
                   id="cardInput"
-                  value={nameCard}
-                  {...register('nameCard', { required: true, validate: validateNameCard })}
+                  {...register('form.nameCard', {
+                    required: true,
+                    validate: validateNameCard,
+                  })}
                 />
                 {errorsNameCard && errorDefinitions.nameCard[errorsNameCard]}
               </div>
@@ -451,8 +424,10 @@ export function Form({ handelCloseModal }: IForm) {
                   }`}
                   type="text"
                   id="numberCartInput"
-                  value={numberCard}
-                  {...register('numderCard', { required: true, validate: validateNumderCard })}
+                  {...register('form.numberCard', {
+                    required: true,
+                    validate: validateNumderCard,
+                  })}
                 />
                 {errorsNumderCard && errorDefinitions.numberCard[errorsNumderCard]}
               </div>
@@ -466,8 +441,7 @@ export function Form({ handelCloseModal }: IForm) {
                     } ${isValid && 'valid'}`}
                     type="text"
                     id="dateCartInput"
-                    value={dateCard}
-                    {...register('dateCard', {
+                    {...register('form.dateCard', {
                       required: true,
                       validate: validateDateCard,
                     })}
@@ -482,8 +456,7 @@ export function Form({ handelCloseModal }: IForm) {
                     }`}
                     type="text"
                     id="cvvCardInput"
-                    value={cvvCard}
-                    {...register('cvvCard', {
+                    {...register('form.cvvCard', {
                       required: true,
                       validate: validateCvvCard,
                     })}
