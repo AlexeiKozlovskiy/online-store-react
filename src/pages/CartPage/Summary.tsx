@@ -12,7 +12,11 @@ import { formatPrice } from '@/components/helpers/helpersFunc';
 import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
 import { useMyTotalItemsContext } from '@/components/Context/TotalItemsContext';
 
-export function Summary() {
+interface ISummary {
+  isHandelOrderClick: (value: boolean) => void;
+}
+
+export function Summary({ isHandelOrderClick }: ISummary) {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<string | null>(null);
   const promocodeState = useSelector(
@@ -81,7 +85,9 @@ export function Summary() {
             </div>
           </div>
           <div className="order-container-button">
-            <button className="button-order">Proceed to Checkout</button>
+            <button className="button-order" onClick={() => isHandelOrderClick(true)}>
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       </div>

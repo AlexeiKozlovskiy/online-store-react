@@ -1,3 +1,5 @@
+import { LiteralUnion } from 'react-hook-form';
+
 export interface Product {
   id: number;
   name: string;
@@ -28,7 +30,8 @@ export interface PromocodeData {
 }
 
 export interface CartItem extends CartItemArg {
-  id: number;
+  cartID: string;
+  itemNumber: number;
 }
 
 export interface CartItemReducerProps {
@@ -111,10 +114,74 @@ export interface ISelect {
   label: string;
 }
 
+export interface PageClickEvent {
+  selected: number;
+}
+
 export enum Select {
   NAME = 'name',
   PRICE_ASC = 'price-asc',
   PRICE_DESC = 'price-desc',
   STOCK_ASC = 'stock-asc',
   STOCK_DESC = 'stock-desc',
+}
+
+export enum CARD {
+  EXPRESS = '3',
+  VISA = '4',
+  MASTERCARD = '5',
+}
+
+export interface CardImages {
+  3: string;
+  4: string;
+  5: string;
+}
+
+export type ErrorType = LiteralUnion<'required' | 'validate', string>;
+
+export interface FormData {
+  form: Partial<FormFields>;
+}
+
+export interface FormFields {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  nameCard: string;
+  numberCard: string;
+  dateCard: string;
+  cvvCard: string;
+}
+
+export interface FormErrorMessages {
+  msgName?: null | FORM_MESSAGES;
+  msgAdress?: null | FORM_MESSAGES;
+  msgEmail?: null | FORM_MESSAGES;
+  msgPhone?: null | FORM_MESSAGES;
+  msgNameCard?: null | FORM_MESSAGES;
+  msgNumberCard?: null | FORM_MESSAGES;
+  msgDateCard?: null | FORM_MESSAGES;
+  msgCvvCard?: null | FORM_MESSAGES;
+}
+
+export enum FORM_MESSAGES {
+  ENTER_NAME = 'Please enter name',
+  ENTER_ADDRESS = 'Please enter address',
+  ENTER_EMAIL = 'Please enter email',
+  ENTER_PHONE = 'Please enter phone',
+  ENTER_NAME_CARD = 'Please enter name card',
+  ENTER_NUMBER_CARD = 'Please enter number card',
+  ENTER_DATE_CARD = 'Please enter date card',
+  ENTER_CVV_CARD = 'Please enter cvv card',
+  NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
+  NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
+  ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
+  INVALID_EMAIL = 'Invalid email',
+  PHONE_LENGTH = 'Invalid phone length',
+  CARD_NUMBER_LENGTH = 'Card number invalid length',
+  CARD_DATE_LENGTH = 'Card date invalid length',
+  INVALID_CARD_DATE = 'Invalid date',
+  INVALID_CARD_CVV = 'Invalid CVV',
 }

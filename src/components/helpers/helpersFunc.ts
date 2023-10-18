@@ -102,3 +102,5 @@ export function sortByName(products: Product[]) {
     return 0;
   });
 }
+export const thisYear = new Date().getFullYear().toString().substring(2, 4);
+export const thisMonth = new Date().getMonth().toString();

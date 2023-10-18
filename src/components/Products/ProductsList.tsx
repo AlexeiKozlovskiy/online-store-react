@@ -2,7 +2,7 @@ import './ProductsList.scss';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './Product';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem, Product } from '@/components/types/types';
+import { CartItemReducerProps, CartItem, Product, PageClickEvent } from '@/components/types/types';
 import { useMyURLContext } from '@/components/Context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
 
@@ -46,7 +46,7 @@ export function ProductsList({ products }: IProductsList) {
     setPageCount(Math.ceil(products.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, products]);
 
-  const handlePageClick = (event: any) => {
+  const handlePageClick = (event: PageClickEvent) => {
     const newOffset = (event.selected * itemsPerPage) % products.length;
     setItemOffset(newOffset);
     setCurPageMain(event.selected + 1);

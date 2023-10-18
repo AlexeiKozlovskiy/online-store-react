@@ -1,10 +1,11 @@
 import './Pagination.scss';
 import ReactPaginate from 'react-paginate';
+import { PageClickEvent } from '@/components/types/types';
 
 interface IPagination {
   curPage: number;
   pageCount: number;
-  handlePageClick: (event: any) => void;
+  handlePageClick: (event: PageClickEvent) => void;
 }
 
 export function Pagination({ curPage, handlePageClick, pageCount }: IPagination) {
