@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { PromocodeData } from '@/components/types/types';
+import { PromocodeData } from '@/types/types';
 
 const initialState: PromocodeData = {
   applied: [],

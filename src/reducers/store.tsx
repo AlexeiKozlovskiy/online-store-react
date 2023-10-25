@@ -13,16 +13,19 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { productsApi } from '@/api/productsAPI';
 
 const rootReduser = combineReducers({
   cart: cartSlice,
   promocode: promocodeSlice,
+  [productsApi.reducerPath]: productsApi.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
   // добавить в блэк лист rtk qwery когда заюзаю
+  blacklist: ['productsApi'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReduser);
@@ -34,7 +37,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(productsApi.middleware),
 });
 
 export const persistor = persistStore(store);

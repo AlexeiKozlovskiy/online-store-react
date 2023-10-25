@@ -1,36 +1,32 @@
 import './Product.scss';
 import { Link } from 'react-router-dom';
-import { Product } from '@/components/types/types';
-import { useMyIdContext } from '@/components/Context/ClickIDContext';
-import { addProductsToCart, removeProductsFromCartAll } from '@/components/reducers/controller';
+import { Product } from '@/types/types';
+import { addProductsToCart, removeProductsFromCartAll } from '@/reducers/controller';
+import { useGetProductsQuery } from '@/api/productsAPI';
+import { useMyURLContext } from '@/context/URLContext';
+import { formatNameForURL } from '@/helpers/helpersFunc';
 
 type ProductViewData = {
   isInCart: boolean;
   product: Product;
 };
 
-export function ProductItem(data: ProductViewData) {
-  const {
-    product: { id, images, name, price, color, collection, size, category, stock },
-    isInCart,
-  } = data;
+export function ProductItem({ isInCart, product }: ProductViewData) {
+  const { setProductNameFromURL } = useMyURLContext();
+  const { data: products } = useGetProductsQuery();
 
-  const { setClickId } = useMyIdContext();
-
-  function productItemHandelClick(id: number) {
-    setClickId(id);
-  }
+  const { id, images, name, price, color, collection, size, category, stock } = product;
 
   function productItemAddClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    addProductsToCart(Number(dataset.id));
+    addProductsToCart(dataset.id!, products!);
   }
 
   function productItemRemoveClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(Number(dataset.id));
+    removeProductsFromCartAll(dataset.id!, products!);
   }
 
   const addToCart = (
@@ -47,10 +43,10 @@ export function ProductItem(data: ProductViewData) {
 
   return (
     <div className="product-item">
-      <Link to={`/product/${id}`}>
+      <Link to={`/product/${formatNameForURL(name)}`}>
         <img
           className="product-item__img"
-          onClick={() => productItemHandelClick(id)}
+          onClick={() => setProductNameFromURL(formatNameForURL(name))}
           data-id={id}
           src={images[0]}
           alt="product image"

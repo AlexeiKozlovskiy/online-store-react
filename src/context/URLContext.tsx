@@ -9,7 +9,7 @@ import {
   SORT_OPTIONS,
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
-} from '@/components/helpers/constant';
+} from '@/helpers/constant';
 import { Filters, ISelect, InputSearch } from '../types/types';
 
 export const useMyURLContext = () => useContext(URLContext);
@@ -28,6 +28,8 @@ interface IURLContext extends Filters, InputSearch {
   setPerCartPageOption: (selectedOption: ISelect) => void;
   swichedView: string;
   setSwichedView: (value: string) => void;
+  productNameFromURL: string;
+  setProductNameFromURL: (value: string) => void;
 }
 
 export const URLContext = createContext<IURLContext>({
@@ -58,6 +60,8 @@ export const URLContext = createContext<IURLContext>({
   setPerCartPageOption: () => null,
   swichedView: 'block',
   setSwichedView: () => null,
+  productNameFromURL: '',
+  setProductNameFromURL: () => null,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
@@ -84,6 +88,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [curPageCart, setCurPageCart] = useState<number>(1);
   const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
   const [swichedView, setSwichedView] = useState('block');
+  const [productNameFromURL, setProductNameFromURL] = useState<string>('');
 
   const [minPrice, maxPrice] = selectedPrice;
   const [minSize, maxSize] = selectedSize;
@@ -136,6 +141,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       const [curPageCart] = queryParams.getAll('page');
       const [perCartOption] = queryParams.getAll('perPage');
       const [swichedViews] = queryParams.getAll('switchView');
+      const productName = location.pathname
+        .split('/')
+        .map((el, ind, arr) => (el === 'product' ? arr[ind + 1] : ''))
+        .join('');
 
       if (colors) {
         setSelectedColors(colors?.split(','));
@@ -201,6 +210,10 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
 
       if (swichedViews) {
         setSwichedView(swichedViews);
+      }
+
+      if (productName) {
+        setProductNameFromURL(productName);
       }
     }
     setDataFromUrl();
@@ -292,16 +305,16 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isEmptyFilters,
         selectedColors,
-        selectedCollections,
-        selectedCategory,
-        selectedPrice,
-        selectedSize,
-        selectedStock,
         setSelectedColors,
+        selectedCollections,
         setSelectedCollections,
+        selectedCategory,
         setSelectedCategory,
+        selectedPrice,
         setSelectedPrice,
+        selectedSize,
         setSelectedSize,
+        selectedStock,
         setSelectedStock,
         sortindViewOption,
         setSortindViewOption,
@@ -317,6 +330,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setPerCartPageOption,
         swichedView,
         setSwichedView,
+        productNameFromURL,
+        setProductNameFromURL,
       }}
     >
       {children}

@@ -1,16 +1,12 @@
 import './CartPage.scss';
 import { useRef, useState } from 'react';
-import { PromocodeData, PromocodeDataReducerProps } from '@/components/types/types';
-import { PROMOCODES } from '@/components/helpers/constant';
+import { PromocodeData, PromocodeDataReducerProps } from '@/types/types';
+import { PROMOCODES } from '@/helpers/constant';
 import { useSelector } from 'react-redux';
-import {
-  isPromocodeAvailable,
-  applyPromocode,
-  removePromocode,
-} from '@/components/reducers/controller';
-import { formatPrice } from '@/components/helpers/helpersFunc';
-import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
-import { useMyTotalItemsContext } from '@/components/Context/TotalItemsContext';
+import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/reducers/controller';
+import { formatPrice } from '@/helpers/helpersFunc';
+import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
+import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 
 interface ISummary {
   isHandelOrderClick: (value: boolean) => void;

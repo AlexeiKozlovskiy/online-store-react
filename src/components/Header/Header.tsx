@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import './Header.scss';
-import { useMyRemoveFiltSortContext } from '@/components/Context/RemoveAllSelectedContext';
-import { useMyURLContext } from '@/components/Context/URLContext';
-import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
-import { useMyTotalItemsContext } from '@/components/Context/TotalItemsContext';
+import { useMyRemoveFiltSortContext } from '@/context/RemoveAllSelectedContext';
+import { useMyURLContext } from '@/context/URLContext';
+import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
+import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 
 export function Header() {
   const { curPageCart, perCartPageOption } = useMyURLContext();

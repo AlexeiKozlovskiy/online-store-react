@@ -3,17 +3,19 @@ import {
   addProductsToCart,
   removeProductsFromCart,
   setProductsQuantityInCart,
-} from '@/components/reducers/controller';
+} from '@/reducers/controller';
 import { QuantityPieces } from './QuantityPieces';
+import { useGetProductsQuery } from '@/api/productsAPI';
 
 interface IQuantity {
-  id: number;
+  id: string;
   quantity: number;
   stock: number;
 }
 
 export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   const [inputValue, setInputValue] = useState(quantity.toString());
+  const { data: products } = useGetProductsQuery();
 
   useEffect(() => {
     if (quantity >= 1) {
@@ -22,11 +24,11 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   }, [quantity]);
 
   function handelArrowAppClick() {
-    addProductsToCart(id);
+    addProductsToCart(id, products!);
   }
 
   function handelArrowDownClick() {
-    removeProductsFromCart(id);
+    removeProductsFromCart(id, products!);
   }
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -34,13 +36,13 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
 
     if (+value < 0) {
       setInputValue('1');
-      addProductsToCart(id);
+      addProductsToCart(id, products!);
     } else if (+value >= stock) {
       setInputValue(stock.toString());
-      setProductsQuantityInCart(id, stock);
+      setProductsQuantityInCart(id, stock, products!);
     } else {
       setInputValue(value);
-      setProductsQuantityInCart(id, +value);
+      setProductsQuantityInCart(id, +value, products!);
     }
   }
 

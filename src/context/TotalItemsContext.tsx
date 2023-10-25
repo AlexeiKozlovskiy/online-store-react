@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem } from '@/components/types/types';
+import { CartItemReducerProps, CartItem } from '@/types/types';
 
 export const useMyTotalItemsContext = () => useContext(TotalItemsContext);
 

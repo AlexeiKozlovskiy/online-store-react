@@ -2,8 +2,8 @@ import './ProductsList.scss';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './Product';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem, Product, PageClickEvent } from '@/components/types/types';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { CartItemReducerProps, CartItem, Product, PageClickEvent } from '@/types/types';
+import { useMyURLContext } from '@/context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
 
 interface IProductsList {
@@ -11,50 +11,49 @@ interface IProductsList {
 }
 
 export function ProductsList({ products }: IProductsList) {
-  const [currentItems, setCurrentItems] = useState<Product[]>([]);
-  const [pageCount, setPageCount] = useState(products.length);
-  const [itemOffset, setItemOffset] = useState(0);
-  const { curPageMain, setCurPageMain, perMainPageOption, swichedView } = useMyURLContext();
-  const [itemsPerPage, setItemsPerPage] = useState(1);
-
-  useEffect(() => {
-    perMainPageOption.value === 'all'
-      ? setItemsPerPage(products.length)
-      : setItemsPerPage(+perMainPageOption.value);
-  }, [perMainPageOption]);
-
   const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
+  const [currentItems, setCurrentItems] = useState<Product[]>([]);
+  const { curPageMain, setCurPageMain, perMainPageOption, swichedView } = useMyURLContext();
+  const [countPages, setCountPages] = useState(curPageMain);
+  const [itemOffset, setItemOffset] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(+perMainPageOption.value);
+
+  const countProducts = products.length;
 
   useEffect(() => {
-    const newOffset = ((curPageMain - 1) * itemsPerPage) % products.length;
+    if (perMainPageOption.value === 'all' && countProducts) {
+      setItemsPerPage(countProducts);
+    } else if (countProducts) {
+      setItemsPerPage(+perMainPageOption.value);
+    }
+  }, [perMainPageOption, countProducts]);
+
+  useEffect(() => {
+    const newOffset = ((curPageMain - 1) * itemsPerPage) % countProducts;
     if (newOffset) {
       setItemOffset(newOffset);
     }
-  }, [curPageMain, itemsPerPage]);
+  }, [curPageMain, itemsPerPage, products]);
 
   useEffect(() => {
-    if (curPageMain > pageCount) {
-      setCurPageMain(1);
+    if (countProducts && itemsPerPage) {
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(products.slice(itemOffset, endOffset));
+      setCountPages(Math.ceil(countProducts / itemsPerPage));
     }
-  }, [curPageMain, pageCount]);
-
-  useEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(products.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(products.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, products]);
 
   const handlePageClick = (event: PageClickEvent) => {
-    const newOffset = (event.selected * itemsPerPage) % products.length;
+    const newOffset = (event.selected * itemsPerPage) % countProducts;
     setItemOffset(newOffset);
     setCurPageMain(event.selected + 1);
   };
 
   return (
     <>
-      <div className={`main-catalog__products ${swichedView === 'row' ? 'row-view' : ''}`}>
+      <div className={`main-catalog__products ${swichedView === 'row' && 'row-view'}`}>
         {currentItems &&
           currentItems.map((product) => (
             <ProductItem
@@ -66,7 +65,7 @@ export function ProductsList({ products }: IProductsList) {
             />
           ))}
       </div>
-      <Pagination curPage={curPageMain} pageCount={pageCount} handlePageClick={handlePageClick} />
+      <Pagination curPage={curPageMain} countPages={countPages} handlePageClick={handlePageClick} />
     </>
   );
 }

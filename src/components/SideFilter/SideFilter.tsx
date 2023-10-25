@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 
 import './SideFilter.scss';
 import Slider from 'react-slider';
-import {
-  PRICE_MIN,
-  PRICE_MAX,
-  SIZE_MIN,
-  SIZE_MAX,
-  STOCK_MIN,
-  STOCK_MAX,
-} from '@/components/helpers/constant';
-import { SelectedFilter } from '@/components/types/types';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
+import { SelectedFilter } from '@/types/types';
+import { useMyFiltersContext } from '@/context/FiltersContext';
+import { useMyURLContext } from '@/context/URLContext';
 
 interface ISideFilter {
   showFilters: boolean;

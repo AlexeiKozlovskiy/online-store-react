@@ -7,7 +7,7 @@ import {
   STOCK_MIN,
   STOCK_MAX,
   CATEGORIES_STOCK,
-} from '@/components/helpers/constant';
+} from '@/helpers/constant';
 import {
   BalancerCategory,
   BalancerCollection,
@@ -15,15 +15,15 @@ import {
   Product,
   Balancers,
 } from '../types/types';
-import products from '@/assets/data/products.json';
 import {
   findCommonProducts,
   sortColorBalancer,
   sortCategoryBalancer,
   sortCollectionBalancer,
   sortByFavorite,
-} from '@/components/helpers/helpersFunc';
-import { useMyURLContext } from '@/components/Context/URLContext';
+} from '@/helpers/helpersFunc';
+import { useMyURLContext } from '@/context/URLContext';
+import { useGetProductsQuery } from '@/api/productsAPI';
 
 export const useMyFiltersContext = () => useContext(FiltersContext);
 
@@ -38,7 +38,7 @@ interface IFiltersContext extends Balancers {
 }
 
 export const FiltersContext = createContext<IFiltersContext>({
-  itemsCount: 0,
+  itemsCount: 1,
   removeItemFilterClick: () => null,
   balancerCategory: [],
   balancerCollection: [],
@@ -66,9 +66,9 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     setSelectedSize,
     setSelectedStock,
   } = useMyURLContext();
-
+  const { data: products = [], isFetching } = useGetProductsQuery();
   const [filtersProducts, setFiltersProducts] = useState<Product[]>([]);
-  const [itemsCount, setItemsCount] = useState<number>(0);
+  const [itemsCount, setItemsCount] = useState<number>(1);
   const [sortProductsSearch, setSortProductsSearch] = useState<Product[]>([]);
   const [sortColor, setSortColor] = useState<Product[]>([]);
   const [sortCollections, setSortCollections] = useState<Product[]>([]);
@@ -104,7 +104,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterColors();
-  }, [selectedColors]);
+  }, [selectedColors, isFetching]);
 
   useEffect(() => {
     function filterCollections() {
@@ -129,7 +129,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterCollections();
-  }, [selectedCollections]);
+  }, [selectedCollections, isFetching]);
 
   useEffect(() => {
     function filterPrice() {
@@ -150,7 +150,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterPrice();
-  }, [minPrice, maxPrice, selectedPrice]);
+  }, [minPrice, maxPrice, selectedPrice, isFetching]);
 
   useEffect(() => {
     function filterSize() {
@@ -166,12 +166,12 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
           setSortSize(sortProductsSearch);
         }
       } else {
-        const sortSize = [...products].filter(({ size }) => minSize! <= size && maxSize! >= size);
+        const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
         sortSize.length ? setSortSize(sortSize) : setSortSize(products);
       }
     }
     filterSize();
-  }, [minSize, maxSize, selectedSize]);
+  }, [minSize, maxSize, selectedSize, isFetching]);
 
   useEffect(() => {
     function filterCategory() {
@@ -192,7 +192,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterCategory();
-  }, [selectedCategory]);
+  }, [selectedCategory, isFetching]);
 
   useEffect(() => {
     function filterStock() {
@@ -213,7 +213,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterStock();
-  }, [minStock, maxStock, selectedStock]);
+  }, [minStock, maxStock, selectedStock, isFetching]);
 
   useEffect(() => {
     function commonProductsOutFilters() {
@@ -356,7 +356,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
 
   useEffect(() => {
     function countProducts() {
-      setItemsCount(filtersProducts.length);
+      !isFetching && setItemsCount(filtersProducts.length);
     }
     countProducts();
   }, [filtersProducts.length]);

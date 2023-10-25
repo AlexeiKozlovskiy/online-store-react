@@ -1,5 +1,5 @@
 import { StylesConfig, ThemeConfig, Theme } from 'react-select';
-import { ISelect } from '@/components/types/types';
+import { ISelect } from '@/types/types';
 
 export const customStyles: StylesConfig<ISelect, false> = {
   option: (styles, { isSelected }) => ({

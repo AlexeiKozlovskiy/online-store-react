@@ -1,29 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem } from '@/components/types/types';
-import products from '@/assets/data/products.json';
+import { CartItemReducerProps, CartItem } from '@/types/types';
 import { QuantityPieces } from './QuantityPieces';
+import { useGetProductsQuery } from '@/api/productsAPI';
 
 interface IQuantity {
-  id: number;
+  clickId: string;
   onChangeQuantity: (value: string) => void;
   onResetInput: boolean;
 }
 
-export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, id }: IQuantity) {
+export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, clickId }: IQuantity) {
+  const { data: products = [] } = useGetProductsQuery();
   const [inputValue, setInputValue] = useState('1');
   const [stock, setStock] = useState(0);
+
   const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
 
   useEffect(() => {
-    products.find((el) => {
-      if (el.id === id) {
-        setStock(el.stock);
+    products.find(({ id, stock }) => {
+      if (id === clickId) {
+        setStock(stock);
       }
     });
-  }, [cartItemsState, id]);
+  }, [cartItemsState, clickId]);
 
   useEffect(() => {
     onChangeQuantity(inputValue);

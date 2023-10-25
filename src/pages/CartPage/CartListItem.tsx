@@ -1,30 +1,36 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItem } from '@/components/types/types';
-import { formatPrice } from '@/components/helpers/helpersFunc';
+import { CartItem } from '@/types/types';
+import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
-import { useMyIdContext } from '@/components/Context/ClickIDContext';
-import { removeProductsFromCartAll } from '@/components/reducers/controller';
-import { useAnimations } from '@/components/helpers/useAnimation';
+import { removeProductsFromCartAll } from '@/reducers/controller';
+import { useAnimations } from '@/helpers/useAnimation';
+import { useGetProductsQuery } from '@/api/productsAPI';
+import { useMyURLContext } from '@/context/URLContext';
 
 export function CartListItem({
   itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },
 }: CartItem) {
-  const { setClickId } = useMyIdContext();
-  const isShake = useAnimations({ quantity, stock });
+  const { setProductNameFromURL } = useMyURLContext();
+  const { data: products } = useGetProductsQuery();
 
   function handelCrossClick(e: React.MouseEvent<HTMLElement>) {
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(Number(dataset.id));
+    removeProductsFromCartAll(dataset.id!, products!);
   }
+
+  const isShake = useAnimations({ quantity, stock });
 
   return (
     <div className="cart-item">
       <div className="cart-item__content">
         <div className="cart-item__number">{itemNumber}</div>
-        <Link to={`/product/${id}`} onClick={() => setClickId(id)}>
+        <Link
+          to={`/product/${formatNameForURL(name)}`}
+          onClick={() => setProductNameFromURL(formatNameForURL(name))}
+        >
           <img className="cart-item__img" data-id={id} src={images[0]} alt="product image" />
         </Link>
         <div className="cart-item__info">

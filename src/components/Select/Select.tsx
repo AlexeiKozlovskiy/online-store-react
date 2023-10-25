@@ -1,5 +1,5 @@
 import { customStyles, customTheme } from './SelectCustomStyles';
-import { ISelect } from '@/components/types/types';
+import { ISelect } from '@/types/types';
 import Select from 'react-select';
 
 interface IMySelect {
