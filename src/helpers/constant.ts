@@ -1,3 +1,10 @@
+export const PRICE_MIN = 1.99;
+export const PRICE_MAX = 34.99;
+export const SIZE_MIN = 1;
+export const SIZE_MAX = 700;
+export const STOCK_MIN = 1;
+export const STOCK_MAX = 50;
+
 export const COLOR_STOCK = [
   { color: 'black' },
   { color: 'blue' },
@@ -11,22 +18,13 @@ export const COLOR_STOCK = [
   { color: 'yellow' },
 ];
 
-export const COLLECTION_STOCK = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
-
 export const CATEGORIES_STOCK = [
-  { category: 'Christmas decorations', count: 12 },
-  { category: 'Garland & Wreath', count: 9 },
-  { category: 'Do It Yourself', count: 4 },
-  { category: 'Tree decorations', count: 32 },
-  { category: 'Christmas lights', count: 3 },
+  { category: 'Christmas decorations', count: 0 },
+  { category: 'Garland & Wreath', count: 0 },
+  { category: 'Do It Yourself', count: 0 },
+  { category: 'Tree decorations', count: 0 },
+  { category: 'Christmas lights', count: 0 },
 ];
-
-export const PRICE_MIN = 1.99;
-export const PRICE_MAX = 34.99;
-export const SIZE_MIN = 1;
-export const SIZE_MAX = 700;
-export const STOCK_MIN = 1;
-export const STOCK_MAX = 50;
 
 export const SORT_OPTIONS = [
   { value: '', label: 'Recommended' },
@@ -52,6 +50,8 @@ export const ITEMS_IN_PAGE_CART = [
   { value: '10', label: 'Show items: 10' },
   { value: 'all', label: 'All' },
 ];
+
+export const COLLECTION_STOCK = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
 
 export const PROMOCODES = [
   {

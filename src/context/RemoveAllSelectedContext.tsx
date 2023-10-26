@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode } from 'react';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { useMyURLContext } from '@/context/URLContext';
 import {
   PRICE_MIN,
   PRICE_MAX,
@@ -10,8 +10,7 @@ import {
   SORT_OPTIONS,
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
-} from '@/components/helpers/constant';
-
+} from '@/helpers/constant';
 export const useMyRemoveFiltSortContext = () => useContext(RemoveAllSelectedContext);
 
 interface IRemoveAllSelectedContext {

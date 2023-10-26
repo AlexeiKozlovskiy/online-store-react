@@ -1,14 +1,14 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItemReducerProps, CartItem, ISelect, PageClickEvent } from '@/components/types/types';
-import { ITEMS_IN_PAGE_CART } from '@/components/helpers/constant';
+import { CartItemReducerProps, CartItem, ISelect, PageClickEvent } from '@/types/types';
+import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
 import { PaymentModal } from '../PaymentPage/PaymentPage';
 
@@ -16,33 +16,36 @@ export function CartPage() {
   const cartItemsState = useSelector(
     (state: CartItemReducerProps) => state.cart
   ) as unknown as CartItem[];
+  const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption, curPageCart, setCurPageCart } =
     useMyURLContext();
   const [currentItems, setCurrentItems] = useState<CartItem[]>([]);
-  const [pageCount, setPageCount] = useState(cartItemsState.length);
+  const [countPages, setCountPages] = useState(countCartItem);
   const [itemOffset, setItemOffset] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    perCartPageOption.value === 'all'
-      ? setItemsPerPage(cartItemsState.length)
-      : setItemsPerPage(+perCartPageOption.value);
-  }, [perCartPageOption]);
+    if (perCartPageOption.value === 'all' && countCartItem) {
+      setItemsPerPage(countCartItem);
+    } else if (countCartItem) {
+      setItemsPerPage(+perCartPageOption.value);
+    }
+  }, [perCartPageOption, countCartItem]);
 
   useEffect(() => {
-    const newOffset = ((curPageCart - 1) * itemsPerPage) % cartItemsState.length;
+    const newOffset = ((curPageCart - 1) * itemsPerPage) % countCartItem;
     setItemOffset(newOffset);
   }, [curPageCart, itemsPerPage]);
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(cartItemsState.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(cartItemsState.length / itemsPerPage));
+    setCountPages(Math.ceil(countCartItem / itemsPerPage));
   }, [itemOffset, itemsPerPage, cartItemsState]);
 
   const handlePageClick = (event: PageClickEvent) => {
-    const newOffset = (event.selected * itemsPerPage) % cartItemsState.length;
+    const newOffset = (event.selected * itemsPerPage) % countCartItem;
     setItemOffset(newOffset);
     setCurPageCart(event.selected + 1);
   };
@@ -70,7 +73,7 @@ export function CartPage() {
 
   return (
     <>
-      {!cartItemsState.length ? (
+      {!countCartItem ? (
         emtyCart
       ) : (
         <main>
@@ -102,7 +105,7 @@ export function CartPage() {
             </div>
             <Pagination
               curPage={curPageCart}
-              pageCount={pageCount}
+              countPages={countPages}
               handlePageClick={handlePageClick}
             />
             <Summary isHandelOrderClick={handelOrderClick} />

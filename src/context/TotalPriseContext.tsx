@@ -5,7 +5,7 @@ import {
   CartItem,
   PromocodeDataReducerProps,
   PromocodeData,
-} from '@/components/types/types';
+} from '@/types/types';
 
 export const useMyTotalPriceContext = () => useContext(TotalPriceContext);
 

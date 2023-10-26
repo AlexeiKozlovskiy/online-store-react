@@ -1,6 +1,6 @@
 import './SearchPanel.scss';
 import { useEffect, useState } from 'react';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { useMyURLContext } from '@/context/URLContext';
 
 export function SearchPanel() {
   const [inputValue, setInputValue] = useState<string | null>('');

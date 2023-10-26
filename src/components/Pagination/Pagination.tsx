@@ -1,14 +1,14 @@
 import './Pagination.scss';
 import ReactPaginate from 'react-paginate';
-import { PageClickEvent } from '@/components/types/types';
+import { PageClickEvent } from '@/types/types';
 
 interface IPagination {
   curPage: number;
-  pageCount: number;
+  countPages: number;
   handlePageClick: (event: PageClickEvent) => void;
 }
 
-export function Pagination({ curPage, handlePageClick, pageCount }: IPagination) {
+export function Pagination({ curPage, handlePageClick, countPages }: IPagination) {
   return (
     <div className="pagination-button-container">
       <ReactPaginate
@@ -18,7 +18,7 @@ export function Pagination({ curPage, handlePageClick, pageCount }: IPagination)
         onPageChange={handlePageClick}
         pageRangeDisplayed={3}
         marginPagesDisplayed={2}
-        pageCount={pageCount}
+        pageCount={countPages}
         previousLabel="<"
         pageClassName="page-item"
         pageLinkClassName="page-link"

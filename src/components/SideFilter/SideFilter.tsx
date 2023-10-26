@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 
 import './SideFilter.scss';
 import Slider from 'react-slider';
-import {
-  PRICE_MIN,
-  PRICE_MAX,
-  SIZE_MIN,
-  SIZE_MAX,
-  STOCK_MIN,
-  STOCK_MAX,
-} from '@/components/helpers/constant';
-import { SelectedFilter } from '@/components/types/types';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
-import { useMyURLContext } from '@/components/Context/URLContext';
+import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
+import { SelectedFilter } from '@/types/types';
+import { useMyFiltersContext } from '@/context/FiltersContext';
+import { useMyURLContext } from '@/context/URLContext';
 
 interface ISideFilter {
   showFilters: boolean;
@@ -138,7 +131,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               <div
                 key={color}
                 className={`colors__color is-${color} ${
-                  selectedColors.includes(color) ? 'is-selected' : ''
+                  selectedColors.includes(color) && 'is-selected'
                 }`}
                 data-color={color}
                 onClick={() => handleColorClick(color)}
@@ -155,7 +148,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               <div
                 key={collection}
                 className={`collection__year ${
-                  selectedCollections.includes(collection) ? 'is-selected' : ''
+                  selectedCollections.includes(collection) && 'is-selected'
                 }`}
                 data-collection={collection}
                 onClick={() => handleCollectionClick(collection.toString())}

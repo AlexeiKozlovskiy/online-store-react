@@ -8,9 +8,8 @@ import {
   sortByPriceDesc,
   sortByStockAsc,
   sortByStockDesc,
-  resetSort,
-} from '../helpers/helpersFunc';
-import { useMyURLContext } from '@/components/Context/URLContext';
+} from '@/helpers/helpersFunc';
+import { useMyURLContext } from '@/context/URLContext';
 import { useMyFiltersContext } from './FiltersContext';
 
 export const useMySortingsContext = () => useContext(SortingsContext);
@@ -59,8 +58,7 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
         setSortProducts(stockDesc);
         break;
       case '':
-        const resetFilter = sortByKey(filtersProducts, resetSort);
-        const recomend = sortByFavorite(resetFilter);
+        const recomend = sortByFavorite(filtersProducts);
         setSortProducts(recomend);
         break;
     }

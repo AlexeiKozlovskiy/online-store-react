@@ -1,13 +1,20 @@
-import {
-  BalancerCategory,
-  BalancerColor,
-  BalancerCollection,
-  Product,
-} from '@/components/types/types';
+import { BalancerCategory, BalancerColor, BalancerCollection, Product } from '@/types/types';
 
 export function formatPrice(price: number) {
-  return price.toFixed(2);
+  return price?.toFixed(2);
 }
+
+export function formatNameForURL(name: string) {
+  return name.replace(/\s/g, '-');
+}
+
+export function formatNameFromURL(name: string) {
+  return name.replace(/\-/g, ' ');
+}
+
+export const thisYear = new Date().getFullYear().toString().substring(2, 4);
+
+export const thisMonth = new Date().getMonth().toString();
 
 export function findCommonProducts<T>(...arrays: T[][]): T[] {
   const nonEmptyArrays = arrays.filter((array) => array.length > 0);
@@ -73,10 +80,6 @@ export function sortByStockDesc(a: Product, b: Product) {
   return b.stock - a.stock;
 }
 
-export function resetSort(a: Product, b: Product) {
-  return a.id - b.id;
-}
-
 export function sortByFavorite(products: Product[]) {
   return [...products].sort(({ favorite }) => {
     if (favorite === true) {
@@ -102,5 +105,3 @@ export function sortByName(products: Product[]) {
     return 0;
   });
 }
-export const thisYear = new Date().getFullYear().toString().substring(2, 4);
-export const thisMonth = new Date().getMonth().toString();

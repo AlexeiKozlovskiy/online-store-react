@@ -4,20 +4,23 @@ import { SortedSelect } from '@/components/TopMainPanel/SortedSelect';
 import { ProductsList } from '@/components/Products/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
-import { useMySortingsContext } from '@/components/Context/SortingsContext';
+import { useMyFiltersContext } from '@/context/FiltersContext';
+import { useMySortingsContext } from '@/context/SortingsContext';
+import { useGetProductsQuery } from '@/api/productsAPI';
+import { Preloader } from '@/components/Preloader/Preloader';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
-  const { itemsCount } = useMyFiltersContext();
-  const { sortProducts: products } = useMySortingsContext();
+  const { emptyCatalog } = useMyFiltersContext();
+  const { sortProducts } = useMySortingsContext();
+  const { isFetching } = useGetProductsQuery();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
   }
 
   const noItemsFound = <div className="empty-catalog">No items found</div>;
-  const productsList = <ProductsList products={products} />;
+  const productsList = isFetching ? <Preloader /> : <ProductsList products={sortProducts} />;
 
   return (
     <main className="MainPage-container wrapper">
@@ -29,7 +32,7 @@ export function MainPage() {
           </aside>
           <div className="main-catalog__center-section main-center-section">
             <SortedSelect onClickShowFilter={handleShowFilters} />
-            {itemsCount ? productsList : noItemsFound}
+            {emptyCatalog ? noItemsFound : productsList}
           </div>
         </section>
       </div>

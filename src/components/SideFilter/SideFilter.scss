@@ -170,6 +170,7 @@
 
   &:hover {
     cursor: pointer;
+    
 
     &:after {
       position: absolute;
@@ -211,7 +212,7 @@
       content: 'yellow';
     }
   }
-  background-color: rgb(219, 213, 90);
+  background-color: rgb(252, 240, 0);
 }
 .is-green {
   &:hover {
@@ -219,7 +220,7 @@
       content: 'green';
     }
   }
-  background-color: darkgreen;
+  background-color: rgb(69, 160, 69);
 }
 .is-pink {
   &:hover {

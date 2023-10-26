@@ -254,17 +254,6 @@
   font-size: 0.6rem;
 }
 
-.loading-spinner {
-  display: none;
-  margin: 0 auto;
-  height: 25px;
-  width: 25px;
-  border: 6px solid $greyBorder;
-  border-top: 6px solid green;
-  border-radius: 50%;
-  animation: spinner 0.7s linear infinite;
-}
-
 .error-message {
   margin-top: -8px;
   margin-left: 10px;

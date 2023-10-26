@@ -1,11 +1,10 @@
 import './PaymentPage.scss';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { v4 as uuidv4 } from 'uuid';
-import { thisYear, thisMonth } from '@/components/helpers/helpersFunc';
+import { thisYear, thisMonth } from '@/helpers/helpersFunc';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { removeAllProductsFromCart } from '@/components/reducers/controller';
+import { removeAllProductsFromCart } from '@/reducers/controller';
 import {
   CartItemReducerProps,
   CartItem,
@@ -14,8 +13,9 @@ import {
   FORM_MESSAGES,
   FormErrorMessages,
   CardImages,
-} from '@/components/types/types';
-import { useMyTotalPriceContext } from '@/components/Context/TotalPriseContext';
+} from '@/types/types';
+import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
+import { Preloader } from '@/components/Preloader/Preloader';
 
 interface IForm {
   handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -63,10 +63,10 @@ export function Form({ handelCloseModal }: IForm) {
   });
   const [submitData, setSubmitData] = useState({});
   const [imageValue, setImageValue] = useState('');
+  const [showPreloader, setShowPreloader] = useState(false);
 
   const { form } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } = form || {};
-
   const errorsName = name?.type;
   const errorsAddress = address?.type;
   const errorsEmail = email?.type;
@@ -78,13 +78,8 @@ export function Form({ handelCloseModal }: IForm) {
 
   const onSubmit = ({ form }: FormData) => {
     const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } = form;
-
-    const spinner = document.querySelector<HTMLElement>('.loading-spinner');
-    spinner!.style.display = 'flex';
-    const orderID = uuidv4();
-
+    setShowPreloader(true);
     setSubmitData({
-      orderID,
       diliveryData: {
         name,
         address,
@@ -115,7 +110,7 @@ export function Form({ handelCloseModal }: IForm) {
 
   useEffect(() => {
     if (Object.keys(submitData).length !== 0) {
-      console.log(submitData);
+      console.log('submitData', submitData);
     }
   }, [submitData]);
 
@@ -470,7 +465,7 @@ export function Form({ handelCloseModal }: IForm) {
           <div className="payment-test" onClick={testDataClick}>
             Test payment data
           </div>
-          <div className="loading-spinner"></div>
+          {showPreloader && <Preloader />}
         </div>
       </form>
     </>

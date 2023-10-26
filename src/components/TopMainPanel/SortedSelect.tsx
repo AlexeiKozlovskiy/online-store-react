@@ -1,10 +1,10 @@
 import './TopMainPanel.scss';
 import { useState, useEffect } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
-import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/components/helpers/constant';
-import { useMyFiltersContext } from '@/components/Context/FiltersContext';
-import { useMyURLContext } from '@/components/Context/URLContext';
-import { ISelect } from '@/components/types/types';
+import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/helpers/constant';
+import { useMyFiltersContext } from '@/context/FiltersContext';
+import { useMyURLContext } from '@/context/URLContext';
+import { ISelect } from '@/types/types';
 import { CustomSelect } from '@/components/Select/Select';
 
 interface ISortedFilters {

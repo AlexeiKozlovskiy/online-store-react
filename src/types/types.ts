@@ -1,7 +1,7 @@
 import { LiteralUnion } from 'react-hook-form';
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   price: number;
   collection: number;
