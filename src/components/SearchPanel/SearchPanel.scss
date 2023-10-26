@@ -1,13 +1,14 @@
 @import 'src/assets/styles/common.scss';
 
 .find-container {
-  background-color: $oliva;
+  background-color: #95b39e;
+  background: linear-gradient(45deg, $zima 10%, $zimaHover 50%, $zima 80%);
+  animation: background-gradient 5s infinite alternate;
   height: 150px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-
 
   @media screen and (max-width: 450px) {
     height: 120px;
@@ -17,7 +18,11 @@
     height: 100px;
   }
 }
-
+@keyframes background-gradient {
+  100% {
+    background-position: 1000px 0;
+  }
+}
 .find-title {
   width: 550px;
   font: 1.8rem $Roboto;

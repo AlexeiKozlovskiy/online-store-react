@@ -131,7 +131,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               <div
                 key={color}
                 className={`colors__color is-${color} ${
-                  selectedColors.includes(color) ? 'is-selected' : ''
+                  selectedColors.includes(color) && 'is-selected'
                 }`}
                 data-color={color}
                 onClick={() => handleColorClick(color)}
@@ -148,7 +148,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
               <div
                 key={collection}
                 className={`collection__year ${
-                  selectedCollections.includes(collection) ? 'is-selected' : ''
+                  selectedCollections.includes(collection) && 'is-selected'
                 }`}
                 data-collection={collection}
                 onClick={() => handleCollectionClick(collection.toString())}

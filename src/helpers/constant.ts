@@ -19,11 +19,11 @@ export const COLOR_STOCK = [
 ];
 
 export const CATEGORIES_STOCK = [
-  { category: 'Christmas decorations', count: 12 },
-  { category: 'Garland & Wreath', count: 9 },
-  { category: 'Do It Yourself', count: 4 },
-  { category: 'Tree decorations', count: 32 },
-  { category: 'Christmas lights', count: 3 },
+  { category: 'Christmas decorations', count: 0 },
+  { category: 'Garland & Wreath', count: 0 },
+  { category: 'Do It Yourself', count: 0 },
+  { category: 'Tree decorations', count: 0 },
+  { category: 'Christmas lights', count: 0 },
 ];
 
 export const SORT_OPTIONS = [
