@@ -6,7 +6,7 @@
 
 .header__container {
   padding: 5px 20px;
-  height: 108px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -19,53 +19,11 @@
   }
 }
 
-.header-logo {
-  position: relative;
+.header-nav,
+.header-nav-contents {
   display: flex;
-  flex-direction: column;
   align-items: center;
-
-  &__img {
-    position: absolute;
-    left: 0;
-    top: 48px;
-    background: url('../../assets/img/spruce-logo.svg') no-repeat center;
-    width: 32px;
-    height: 32px;
-
-    @media screen and (max-width: 450px) {
-      width: 26px;
-      height: 26px;
-      left: 7px;
-      top: 43px;
-      background-size: contain;
-    }
-  }
-
-  &__title {
-    font: 2.5rem $Ruluko;
-    letter-spacing: 0.15em;
-    color: $oliva;
-
-    @media screen and (max-width: 450px) {
-      font-size: 2.2rem;
-    }
-  }
-
-  &__subtitle {
-    padding: 5px 0 0 10px;
-    font: 1.75rem $Ruge_Boogie;
-    letter-spacing: 0.15em;
-    color: $oliva;
-
-    @media screen and (max-width: 450px) {
-      font-size: 1.5rem;
-    }
-  }
-}
-
-.header-logo:hover > .header-logo__img {
-  animation: 1s ease-in-out 0s normal none running shake-animation-cart;
+  gap: 20px;
 }
 
 .header-cart {
@@ -77,13 +35,13 @@
 
   &__img {
     background: url('../../assets/img/cart-header.svg') no-repeat center;
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
+    background-size: contain;
 
     @media screen and (max-width: 450px) {
-      width: 50px;
-      height: 50px;
-      background-size: contain;
+      width: 40px;
+      height: 40px;
     }
   }
 
@@ -92,10 +50,10 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 14px;
+    top: 12px;
     right: -8px;
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: $oliva;
 
@@ -109,7 +67,7 @@
   }
 
   &__num {
-    font: 1.2rem $Roboto;
+    font: 1rem $Roboto;
     color: #747474;
 
     @media screen and (max-width: 600px) {
@@ -122,7 +80,7 @@
   }
 
   &__amount {
-    font: 1rem $Roboto;
+    font: 0.8rem $Roboto;
     color: #eee;
   }
 }

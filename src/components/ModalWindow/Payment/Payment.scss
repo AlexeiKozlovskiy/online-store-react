@@ -1,27 +1,5 @@
 @import 'src/assets/styles/common.scss';
 
-.payment-page {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.9);
-
-  &__container {
-    padding: 20px 10px;
-    margin: auto;
-
-    @media screen and (max-width: 460px) {
-      padding: 10px 5px;
-    }
-  }
-}
-
 .payment-details {
   display: flex;
   flex-direction: column;
@@ -47,23 +25,6 @@
     width: 300px;
   }
 
-  &__close-btn {
-    background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
-      no-repeat center center / contain;
-    width: 36px;
-    height: 36px;
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    transition: transform 0.2s;
-
-    &:hover {
-      cursor: pointer;
-      transform: scale(1.1);
-      transition: transform 0.2s;
-    }
-  }
-
   &__title {
     font-size: 1.2rem;
     color: $oliva;
@@ -80,9 +41,9 @@
   &__shipping-address,
   &__email,
   &__phone-number {
-    width: 95%;
+    width: calc(100% - 20px);
     padding: 10px 10px;
-    border: solid $greyBorder 1px;
+    border: solid $oliva 1px;
     margin-top: 20px;
     outline: 0;
     border-radius: 5px;
@@ -123,17 +84,17 @@
     padding: 5px;
 
     &-visa {
-      background: url('../../assets/img/visa.svg') no-repeat center;
+      background: url('../../../assets/img/visa.svg') no-repeat center;
       background-size: contain;
     }
 
     &-mastercard {
-      background: url('../../assets/img/mastercard.svg') no-repeat center;
+      background: url('../../../assets/img/mastercard.svg') no-repeat center;
       background-size: contain;
     }
 
     &-express {
-      background: url('../../assets/img/americanExpress.png') no-repeat center;
+      background: url('../../../assets/img/americanExpress.png') no-repeat center;
       background-size: contain;
     }
   }
@@ -147,9 +108,9 @@
   &__card-number,
   &__date,
   &__cvv {
-    width: 95%;
+    width: calc(100% - 20px);
     padding: 10px 10px;
-    border: solid $greyBorder 1px;
+    border: solid $oliva 1px;
     margin-top: 20px;
     outline: 0;
     border-radius: 5px;
@@ -203,45 +164,6 @@
   &__list {
     margin-bottom: 60px;
   }
-
-  &__order-btn {
-    border-radius: 5px;
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    background-color: $oliva;
-    color: white;
-    text-transform: uppercase;
-    font-size: 20px;
-    font-weight: 500;
-    height: 50px;
-    transition: all 0.2s;
-    margin-top: 20px;
-    border: none;
-
-    @media screen and (max-width: 410px) {
-      font-size: 15px;
-    }
-
-    &:hover {
-      cursor: pointer;
-      background-color: $olivaHover;
-      transition: all 0.2s;
-    }
-
-    &:active {
-      transform: scale(0.98);
-    }
-  }
-}
-
-.valid {
-  border: 1px solid green;
-}
-
-.invalid {
-  border: 1px solid red;
 }
 
 .payment-test {
@@ -254,13 +176,10 @@
   font-size: 0.6rem;
 }
 
-.error-message {
-  margin-top: -8px;
-  margin-left: 10px;
-  padding: 2px;
-  text-align: center;
-  color: $darkGray;
-  position: absolute;
-  font-size: 0.55rem;
-  background-color: #fff;
+.valid {
+  border: 1px solid green;
+}
+
+.invalid {
+  border: 1px solid red;
 }

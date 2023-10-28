@@ -11,11 +11,12 @@ import {
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
 } from '@/helpers/constant';
-export const useMyRemoveFiltSortContext = () => useContext(RemoveAllSelectedContext);
 
 interface IRemoveAllSelectedContext {
   removeAllSelected: () => void;
 }
+
+export const useMyRemoveFiltSortContext = () => useContext(RemoveAllSelectedContext);
 
 export const RemoveAllSelectedContext = createContext<IRemoveAllSelectedContext>({
   removeAllSelected: () => null,

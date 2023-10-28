@@ -1,0 +1,47 @@
+@import 'src/assets/styles/common.scss';
+
+.header-auth__btn {
+  border-radius: 5px;
+  background: linear-gradient(90deg, $oliva 50%, $olivaBlack 100%);
+  padding: 5px 10px;
+  font: 1.3rem $Roboto;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s;
+  -webkit-text-fill-color: white;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  transition: transform 0.3s;
+
+  &:hover {
+    transition: transform 0.3s;
+    transform: scale(1.03);
+  }
+
+  &:active {
+    transition: transform 0.3s;
+    transform: scale(1);
+  }
+
+  &:visited {
+    color: white;
+  }
+}
+
+.header-auth__text {
+  font: 1rem $Roboto;
+  color: $darkGray;
+  letter-spacing: 0.05em;
+}
+
+.header-auth__link {
+  font: 1rem $Roboto;
+  font-weight: 600;
+  color: black;
+  transition: color 0.3s;
+
+  &:hover {
+    color: $winter;
+    transition: color 0.3s;
+    cursor: pointer;
+  }
+}

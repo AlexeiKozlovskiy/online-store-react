@@ -1,0 +1,80 @@
+@import 'src/assets/styles/common.scss';
+
+.signUP-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 550px;
+  padding: 25px;
+  background-color: #fff;
+  position: relative;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-family: $Roboto;
+
+  @media screen and (max-width: 580px) {
+    width: 400px;
+    padding: 20px;
+  }
+
+  @media screen and (max-width: 460px) {
+    width: 360px;
+  }
+
+  @media screen and (max-width: 410px) {
+    width: 300px;
+  }
+
+  &__title {
+    font-size: 3rem;
+    font-weight: 600;
+    color: $oliva;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  &__logo {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  &__name,
+  &__email,
+  &__pasword {
+    width: calc(100% - 40px);
+    padding: 15px 20px;
+    border: solid $oliva 1px;
+    margin-top: 20px;
+    outline: 0;
+    border-radius: 15px;
+    font-size: 1.2rem;
+  }
+}
+
+.signUP-already {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+
+  &__highlight {
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+      color: $winter;
+      transition: color 0.3s;
+    }
+  }
+}
+
+.valid {
+  border: 1px solid green;
+}
+
+.invalid {
+  border: 1px solid red;
+}

@@ -10,7 +10,8 @@ import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
-import { PaymentModal } from '../PaymentPage/PaymentPage';
+import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
+import { useCloseModalsHook } from '@/components/CustomHook/CloseModalsHook';
 
 export function CartPage() {
   const cartItemsState = useSelector(
@@ -23,7 +24,7 @@ export function CartPage() {
   const [countPages, setCountPages] = useState(countCartItem);
   const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
-  const [openModal, setOpenModal] = useState(false);
+  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } = useCloseModalsHook();
 
   useEffect(() => {
     if (perCartPageOption.value === 'all' && countCartItem) {
@@ -67,17 +68,13 @@ export function CartPage() {
     </main>
   );
 
-  function handelOrderClick(value: boolean) {
-    setOpenModal(value);
-  }
-
   return (
     <>
       {!countCartItem ? (
         emtyCart
       ) : (
         <main>
-          <PaymentModal openModal={openModal} setOpenModal={setOpenModal} />
+          {openModalPayment && <PaymentModal handelCloseModalPayment={handelCloseModalPayment} />}
           <div className="shopping-cart wrapper">
             <div className="shopping-cart__header">SHOPPING CART</div>
             <ArrowBack />
@@ -108,7 +105,7 @@ export function CartPage() {
               countPages={countPages}
               handlePageClick={handlePageClick}
             />
-            <Summary isHandelOrderClick={handelOrderClick} />
+            <Summary isHandelOrderClick={() => setOpenModalPayment(true)} />
           </div>
         </main>
       )}

@@ -6,7 +6,7 @@ import { formatPrice, formatNameFromURL } from '@/helpers/helpersFunc';
 import { CartItemReducerProps, CartItem, Product } from '@/types/types';
 import { addProductsToCart } from '@/reducers/controller';
 import { useSelector } from 'react-redux';
-import { useAnimations } from '@/helpers/useAnimation';
+import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { useGetProductQuery, useGetProductsQuery } from '@/api/productsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
