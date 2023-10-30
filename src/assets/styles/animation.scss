@@ -97,3 +97,54 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes background-gradient {
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes modal-view {
+  0% {
+    transform: translateY(-1000px);
+  }
+  60% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes modal-hide {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-1000px);
+  }
+}
+
+@keyframes appear-from-right {
+  0% {
+    transform: translateX(100%);
+  }
+
+  80% {
+    transform: translateX(-8px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes appear-from-hide {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(300px);
+  }
+}

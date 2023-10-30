@@ -9,7 +9,7 @@ import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 
 interface ISummary {
-  isHandelOrderClick: (value: boolean) => void;
+  isHandelOrderClick: (e: React.MouseEvent) => void;
 }
 
 export function Summary({ isHandelOrderClick }: ISummary) {
@@ -81,7 +81,7 @@ export function Summary({ isHandelOrderClick }: ISummary) {
             </div>
           </div>
           <div className="order-container-button">
-            <button className="button-order" onClick={() => isHandelOrderClick(true)}>
+            <button className="button-order" onClick={isHandelOrderClick}>
               Proceed to Checkout
             </button>
           </div>

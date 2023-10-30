@@ -1,0 +1,85 @@
+@import 'src/assets/styles/common.scss';
+
+.modal-overlay {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.modal-window {
+  position: absolute;
+  top: 95px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 8px;
+  background-color: white;
+  height: 140px;
+  width: 230px;
+  box-sizing: border-box;
+  padding: 10px;
+  animation: appear-from-right 0.4s forwards;
+  box-shadow: 5px 2px 20px rgba(0, 0, 0, 25%);
+
+  &__account {
+    font: 0.8rem $Roboto;
+    font-weight: 500;
+    color: black;
+    text-align: left;
+  }
+
+  &__person {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__line {
+    border: 0.5px solid rgba($oliva, 0.5);
+    width: 100%;
+  }
+
+  &__log-out {
+    margin: 5px 0;
+    width: 100%;
+    box-sizing: border-box;
+    font: 0.9rem $Roboto;
+    color: black;
+    transition: 0.3s color;
+
+    &:hover {
+      cursor: pointer;
+      transition: 0.2s color;
+      color: red;
+    }
+  }
+}
+
+.modal-person {
+  &__name-email {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  &__name {
+    font: 0.8rem $Roboto;
+    font-weight: 400;
+    color: black;
+  }
+
+  &__email {
+    font: 0.8rem $Roboto;
+    font-weight: 400;
+    color: rgba(black, 0.5);
+  }
+}
+
+.hide-modal-user {
+  animation: appear-from-hide 0.25s forwards;
+}

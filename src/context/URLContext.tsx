@@ -10,9 +10,8 @@ import {
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
 } from '@/helpers/constant';
-import { Filters, ISelect, InputSearch } from '../types/types';
 
-export const useMyURLContext = () => useContext(URLContext);
+import { Filters, ISelect, InputSearch } from '../types/types';
 
 interface IURLContext extends Filters, InputSearch {
   sortindViewOption: ISelect;
@@ -32,20 +31,22 @@ interface IURLContext extends Filters, InputSearch {
   setProductNameFromURL: (value: string) => void;
 }
 
+export const useMyURLContext = () => useContext(URLContext);
+
 export const URLContext = createContext<IURLContext>({
   inputSearchValue: '',
   setInputSearchValue: () => null,
   selectedColors: [],
-  selectedCollections: [],
-  selectedCategory: [],
-  selectedPrice: [PRICE_MIN, PRICE_MAX],
-  selectedSize: [SIZE_MIN, SIZE_MAX],
-  selectedStock: [STOCK_MIN, STOCK_MAX],
   setSelectedColors: () => null,
+  selectedCollections: [],
   setSelectedCollections: () => null,
+  selectedCategory: [],
   setSelectedCategory: () => null,
+  selectedPrice: [PRICE_MIN, PRICE_MAX],
   setSelectedPrice: () => null,
+  selectedSize: [SIZE_MIN, SIZE_MAX],
   setSelectedSize: () => null,
+  selectedStock: [STOCK_MIN, STOCK_MAX],
   setSelectedStock: () => null,
   sortindViewOption: SORT_OPTIONS[0],
   setSortindViewOption: () => null,

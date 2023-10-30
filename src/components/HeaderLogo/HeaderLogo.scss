@@ -1,0 +1,50 @@
+@import 'src/assets/styles/common.scss';
+
+.header-logo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__img {
+    position: absolute;
+    left: 0;
+    top: 48px;
+    background: url('../../assets/img/spruce-logo.svg') no-repeat center;
+    width: 32px;
+    height: 32px;
+
+    @media screen and (max-width: 450px) {
+      width: 26px;
+      height: 26px;
+      left: 7px;
+      top: 43px;
+      background-size: contain;
+    }
+  }
+
+  &__title {
+    font: 2.3rem $Ruluko;
+    letter-spacing: 0.15em;
+    color: $oliva;
+
+    @media screen and (max-width: 450px) {
+      font-size: 2.1rem;
+    }
+  }
+
+  &__subtitle {
+    padding: 5px 0 0 10px;
+    font: 1.6rem $Ruge_Boogie;
+    letter-spacing: 0.15em;
+    color: $oliva;
+
+    @media screen and (max-width: 450px) {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.header-logo:hover > .header-logo__img {
+  animation: 1s ease-in-out 0s normal none running shake-animation-cart;
+}

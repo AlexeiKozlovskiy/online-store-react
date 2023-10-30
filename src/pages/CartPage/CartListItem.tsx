@@ -4,7 +4,7 @@ import { CartItem } from '@/types/types';
 import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
 import { removeProductsFromCartAll } from '@/reducers/controller';
-import { useAnimations } from '@/helpers/useAnimation';
+import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { useGetProductsQuery } from '@/api/productsAPI';
 import { useMyURLContext } from '@/context/URLContext';
 

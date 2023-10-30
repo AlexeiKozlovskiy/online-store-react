@@ -140,11 +140,19 @@ export interface CardImages {
 
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
 
-export interface FormData {
-  form: Partial<FormFields>;
+export interface FormDataPayment {
+  formPayment: Partial<FormPayment>;
 }
 
-export interface FormFields {
+export interface FormDataSignUP {
+  formSignUP: Partial<FormSignUP>;
+}
+
+export interface FormDataSignIN {
+  formSignIN: Partial<FormSignIN>;
+}
+
+export interface FormPayment {
   name: string;
   address: string;
   email: string;
@@ -153,6 +161,17 @@ export interface FormFields {
   numberCard: string;
   dateCard: string;
   cvvCard: string;
+}
+
+export interface FormSignUP {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface FormSignIN {
+  email: string;
+  password: string;
 }
 
 export interface FormErrorMessages {
@@ -164,6 +183,7 @@ export interface FormErrorMessages {
   msgNumberCard?: null | FORM_MESSAGES;
   msgDateCard?: null | FORM_MESSAGES;
   msgCvvCard?: null | FORM_MESSAGES;
+  msgPassword?: null | FORM_MESSAGES;
 }
 
 export enum FORM_MESSAGES {
@@ -175,6 +195,7 @@ export enum FORM_MESSAGES {
   ENTER_NUMBER_CARD = 'Please enter number card',
   ENTER_DATE_CARD = 'Please enter date card',
   ENTER_CVV_CARD = 'Please enter cvv card',
+  ENTER_PASSWORD = 'Please enter password',
   NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
   NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
   ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
@@ -184,4 +205,5 @@ export enum FORM_MESSAGES {
   CARD_DATE_LENGTH = 'Card date invalid length',
   INVALID_CARD_DATE = 'Invalid date',
   INVALID_CARD_CVV = 'Invalid CVV',
+  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 4 symbol',
 }

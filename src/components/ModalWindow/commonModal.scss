@@ -1,0 +1,88 @@
+@import 'src/assets/styles/common.scss';
+
+.modal-page {
+  display: flex;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  &__container {
+    padding: 20px 10px;
+    margin: auto;
+
+    @media screen and (max-width: 460px) {
+      padding: 10px 5px;
+    }
+  }
+}
+
+.modal__close-btn {
+  background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
+    no-repeat center center / contain;
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  transition: transform 0.2s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: transform 0.2s;
+  }
+}
+
+.main-modal-btn {
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $oliva;
+  color: white;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: 500;
+  height: 50px;
+  transition: all 0.2s;
+  margin-top: 10px;
+  border: none;
+
+  @media screen and (max-width: 410px) {
+    font-size: 15px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $olivaHover;
+    transition: all 0.2s;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.error-message {
+  margin-top: -8px;
+  margin-left: 10px;
+  padding: 2px;
+  text-align: center;
+  color: $darkGray;
+  position: absolute;
+  font-size: 0.55rem;
+  background-color: #fff;
+}
+
+.animation-view-form {
+  animation: modal-view 0.6s forwards;
+}
+
+.hide-modal {
+  animation: modal-hide 0.5s forwards;
+}

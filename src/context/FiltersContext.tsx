@@ -27,8 +27,6 @@ import {
 import { useMyURLContext } from '@/context/URLContext';
 import { useGetProductsQuery } from '@/api/productsAPI';
 
-export const useMyFiltersContext = () => useContext(FiltersContext);
-
 interface IFiltersContext extends Balancers {
   itemsCount: number;
   removeItemFilterClick: (e: React.MouseEvent<HTMLElement>) => void;
@@ -39,6 +37,8 @@ interface IFiltersContext extends Balancers {
   balanserStock: [number | null, number | null];
   emptyCatalog: boolean;
 }
+
+export const useMyFiltersContext = () => useContext(FiltersContext);
 
 export const FiltersContext = createContext<IFiltersContext>({
   itemsCount: 0,
