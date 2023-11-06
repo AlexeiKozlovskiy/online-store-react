@@ -11,7 +11,7 @@ import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
-import { useCloseModalsHook } from '@/components/CustomHook/CloseModalsHook';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function CartPage() {
   const cartItemsState = useSelector(
@@ -24,7 +24,8 @@ export function CartPage() {
   const [countPages, setCountPages] = useState(countCartItem);
   const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
-  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } = useCloseModalsHook();
+  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } =
+    useCloseOpenModalsContext();
 
   useEffect(() => {
     if (perCartPageOption.value === 'all' && countCartItem) {

@@ -5,6 +5,7 @@ import { thisYear, thisMonth } from '@/helpers/helpersFunc';
 export function useFormsValidation() {
   const [formErrors, setFormErrors] = useState<FormErrorMessages>({
     msgName: null,
+    msgLogin: null,
     msgEmail: null,
     msgPassword: null,
     msgAdress: null,
@@ -28,6 +29,18 @@ export function useFormsValidation() {
     }
   }
 
+  function validateLogin(value?: string) {
+    if (!value) return;
+    if (value.length < 4) {
+      setFormErrors({ msgLogin: FORM_MESSAGES.LOGIN_LENGTH });
+      return false;
+    }
+    if (!value.match(/^[a-zA-Zа-яА-Я0-9\.\s]+$/)) {
+      setFormErrors({ msgLogin: FORM_MESSAGES.LOGIN_CONTAINS_INVALID_CHARACTERS });
+      return false;
+    }
+  }
+
   function validateEmail(value?: string) {
     if (!value) return;
     if (!value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
@@ -38,7 +51,7 @@ export function useFormsValidation() {
 
   function validatePassword(value?: string) {
     if (!value) return;
-    if (!value.match(/^(?=.*[a-zA-Z])(?=.*[0-9]).{4,}$/)) {
+    if (!value.match(/^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/)) {
       setFormErrors({ msgPassword: FORM_MESSAGES.INVALID_PASSWORD });
       return false;
     }
@@ -119,6 +132,10 @@ export function useFormsValidation() {
       required: ErrorMessage(FORM_MESSAGES.ENTER_NAME),
       validate: ErrorMessage(formErrors.msgName!),
     },
+    login: {
+      required: ErrorMessage(FORM_MESSAGES.ENTER_LOGIN),
+      validate: ErrorMessage(formErrors.msgLogin!),
+    },
     email: {
       required: ErrorMessage(FORM_MESSAGES.ENTER_EMAIL),
       validate: ErrorMessage(formErrors.msgEmail!),
@@ -159,6 +176,7 @@ export function useFormsValidation() {
 
   return {
     validateName,
+    validateLogin,
     validateEmail,
     validatePassword,
     validateAddress,

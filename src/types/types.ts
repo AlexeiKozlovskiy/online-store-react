@@ -164,7 +164,7 @@ export interface FormPayment {
 }
 
 export interface FormSignUP {
-  name: string;
+  login: string;
   email: string;
   password: string;
 }
@@ -176,6 +176,7 @@ export interface FormSignIN {
 
 export interface FormErrorMessages {
   msgName?: null | FORM_MESSAGES;
+  msgLogin?: null | FORM_MESSAGES;
   msgAdress?: null | FORM_MESSAGES;
   msgEmail?: null | FORM_MESSAGES;
   msgPhone?: null | FORM_MESSAGES;
@@ -188,6 +189,7 @@ export interface FormErrorMessages {
 
 export enum FORM_MESSAGES {
   ENTER_NAME = 'Please enter name',
+  ENTER_LOGIN = 'Please enter login',
   ENTER_ADDRESS = 'Please enter address',
   ENTER_EMAIL = 'Please enter email',
   ENTER_PHONE = 'Please enter phone',
@@ -197,13 +199,24 @@ export enum FORM_MESSAGES {
   ENTER_CVV_CARD = 'Please enter cvv card',
   ENTER_PASSWORD = 'Please enter password',
   NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
+  LOGIN_CONTAINS_INVALID_CHARACTERS = 'Login should be included and (or) letters',
   NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
   ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
   INVALID_EMAIL = 'Invalid email',
   PHONE_LENGTH = 'Invalid phone length',
+  LOGIN_LENGTH = 'Invalid login length',
   CARD_NUMBER_LENGTH = 'Card number invalid length',
   CARD_DATE_LENGTH = 'Card date invalid length',
   INVALID_CARD_DATE = 'Invalid date',
   INVALID_CARD_CVV = 'Invalid CVV',
-  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 4 symbol',
+  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 5 symbol',
+  THIS_EMAIL_IS_ALREADY_REGISTERED = 'This email is already registered',
+  INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
+  SOMETHING_WRONG = 'Something wrong',
+}
+
+export interface IUser {
+  id: string;
+  email: string;
+  name: string;
 }

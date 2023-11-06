@@ -9,8 +9,7 @@
   background-color: #fff;
   position: relative;
   border-radius: 10px;
-  font-size: 0.8rem;
-  font-family: $Roboto;
+  font: 0.8rem $Roboto;
 
   @media screen and (max-width: 580px) {
     width: 400px;

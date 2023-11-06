@@ -1,3 +1,4 @@
+import { useMyUserContext } from '@/context/UserContext';
 import './UserIcon.scss';
 
 export interface IUserIcon {
@@ -5,9 +6,11 @@ export interface IUserIcon {
 }
 
 export const UserIcon = ({ handleClick }: IUserIcon) => {
+  const { user } = useMyUserContext();
+
   return (
     <div className="user-icon" onClick={handleClick}>
-      RR
+      {user?.name.slice(0, 1)}
     </div>
   );
 };
