@@ -41,11 +41,7 @@ export function Header() {
     return url;
   }
 
-  const userIcon = (
-    <>
-      <UserIcon handleClick={() => setOpenModalUser(true)} />
-    </>
-  );
+  const userIcon = <UserIcon handleClick={() => setOpenModalUser(true)} />;
 
   const authBar = (
     <>
@@ -78,7 +74,7 @@ export function Header() {
         <div className="header-nav">
           <div className="header-nav-contents">
             {isFetching ? <Preloader /> : authenticated && userIcon}
-            {!idUser && authBar}
+            {!idUser && !isFetching && authBar}
           </div>
           <Link to={getCartUrl()} className="header-cart">
             <div className="header-cart__img"></div>

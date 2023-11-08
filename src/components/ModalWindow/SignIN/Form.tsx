@@ -5,6 +5,7 @@ import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook'
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { FormDataSignIN } from '@/types/types';
 import { useMyUserContext } from '@/context/UserContext';
+import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 
 interface IForm {
   handelCloseModalSignIN: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -29,6 +30,7 @@ export function Form({ handelCloseModalSignIN }: IForm) {
   const { validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
   const { signIn, showPreloader, errorUser } = useMyUserContext();
+
   const { formSignIN } = errors;
   const { password, email } = formSignIN || {};
   const errorsPassword = password?.type;
@@ -39,9 +41,7 @@ export function Form({ handelCloseModalSignIN }: IForm) {
     reset({ formSignIN: { password: '' } });
   };
 
-  function ErrorSignIN() {
-    return <div className="form-error-response">{errorUser}</div>;
-  }
+  const ErrorSignIN = <div className="form-error-response">{errorUser}</div>;
 
   return (
     <>
@@ -57,8 +57,8 @@ export function Form({ handelCloseModalSignIN }: IForm) {
             <HeaderLogo />
           </div>
           <div className="signIN-details__info">
-            <button className="main-modal-btn-google">Log in with Google</button>
-            <p className="signIN__hr">Or</p>
+            <GoogleButton />
+            <p className="hr">Or</p>
             <div>
               <input
                 placeholder="Email"
@@ -94,12 +94,13 @@ export function Form({ handelCloseModalSignIN }: IForm) {
             <span>Forgot password?</span>
           </div>
           <button className="main-modal-btn">Log In</button>
+
           <div className="signIN-already">
             <span>{`Don't have an account?`}</span>
             <span className="signIN-already__highlight">Sign up</span>
           </div>
           {showPreloader && <Preloader />}
-          {errorUser && <ErrorSignIN />}
+          {errorUser && ErrorSignIN}
         </div>
       </form>
     </>

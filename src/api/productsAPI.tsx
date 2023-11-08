@@ -2,20 +2,16 @@ import { baseUrl } from '@/helpers/constant';
 import { Product } from '@/types/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-interface IUser {
-  idUser: string | null;
-  accessToken: string | null;
-}
+// interface IUser {
+//   idUser: string | null;
+//   accessToken: string | null;
+// }
 
-interface UseData {
-  id: string;
-  email: string;
-  name: string;
-}
-
-export const getTokenFromLocalStorage = () => {
-  return localStorage.getItem('token');
-};
+// interface UseData {
+//   id: string;
+//   email: string;
+//   name: string;
+// }
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
@@ -32,16 +28,16 @@ export const productsApi = createApi({
       query: (id: string) => ({ url: `/products/${id}` }),
     }),
 
-    getUser: builder.query<UseData, IUser>({
-      query: ({ idUser, accessToken }) => ({
-        url: `/user/${idUser}`,
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }),
-    }),
+    // getUser: builder.query<UseData, IUser>({
+    //   query: ({ idUser, accessToken }) => ({
+    //     url: `/user/${idUser}`,
+    //     method: 'GET',
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   }),
+    // }),
   }),
 });
 
-export const { useGetProductsQuery, useGetProductQuery, useGetUserQuery } = productsApi;
+export const { useGetProductsQuery, useGetProductQuery } = productsApi;

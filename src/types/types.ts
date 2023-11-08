@@ -212,11 +212,44 @@ export enum FORM_MESSAGES {
   INVALID_PASSWORD = 'Password should be included numbers and letters, min length 5 symbol',
   THIS_EMAIL_IS_ALREADY_REGISTERED = 'This email is already registered',
   INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
+  SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google',
   SOMETHING_WRONG = 'Something wrong',
 }
 
-export interface IUser {
+export interface User {
   id: string;
   email: string;
+  login: string;
+  picture?: string;
+  isGoogle?: boolean;
+}
+
+export interface DataFromGoogle {
+  email: string;
   name: string;
+  picture: string;
+}
+
+export interface AuthUser {
+  data: User;
+}
+
+export interface SignInGoogle {
+  data: {
+    backendTokens: BackendTokens;
+    user: User;
+  };
+}
+
+export interface BackendTokens {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: string;
+}
+
+export interface GoogleResponse {
+  clientId: string;
+  client_id: string;
+  credential: string;
+  select_by: string;
 }

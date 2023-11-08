@@ -1,21 +1,28 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import axios, { AxiosError } from 'axios';
 import { API_ROUTES } from '@/helpers/constant';
-import { FORM_MESSAGES, FormDataSignIN, FormDataSignUP, IUser } from '@/types/types';
+import {
+  FORM_MESSAGES,
+  FormDataSignIN,
+  FormDataSignUP,
+  User,
+  DataFromGoogle,
+  AuthUser,
+  SignInGoogle,
+} from '@/types/types';
 import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
 
 interface IUserContext {
-  user: IUser | null;
+  user: User | null;
   authenticated: boolean;
   logOut: () => void;
-  storeAccessToken: (value: string) => void;
-  storeIDUser: (value: string) => void;
   signIn: ({ formSignIN }: FormDataSignIN) => void;
   signUP: ({ formSignUP }: FormDataSignUP) => void;
   showPreloader: boolean;
   errorUser: string | null;
   isFetching: boolean;
   idUser: string | null;
+  setGoogleData: (value: DataFromGoogle) => void;
 }
 
 export const useMyUserContext = () => useContext(UserContext);
@@ -24,26 +31,27 @@ export const UserContext = createContext<IUserContext>({
   user: null,
   authenticated: false,
   logOut: () => null,
-  storeAccessToken: () => null,
-  storeIDUser: () => null,
   signIn: () => null,
   signUP: () => null,
   showPreloader: false,
   errorUser: null,
   isFetching: false,
   idUser: '',
+  setGoogleData: () => null,
 });
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [authenticated, setAutenticated] = useState(false);
   const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
   const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken'));
   const [expiresIn, setExpiresIn] = useState(localStorage.getItem('expiresIn'));
   const [idUser, setIdUser] = useState(localStorage.getItem('idUser'));
   const [isFetching, setIsFetching] = useState(false);
+  const [googleData, setGoogleData] = useState<DataFromGoogle | null>(null);
+  const [showPreloader, setShowPreloader] = useState(false);
+  const [errorUser, setErrorUser] = useState<string | null>(null);
   //   const { data: User = {}, isFetching } = useGetUserQuery({ idUser, accessToken });
-
   const {
     openModalSignUP,
     openModalSignIN,
@@ -51,19 +59,20 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     setOpenModalSignUP,
     closeModalSignInAnimation,
   } = useCloseOpenModalsContext();
-  const [showPreloader, setShowPreloader] = useState(false);
-  const [errorUser, setErrorUser] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!openModalSignUP || !openModalSignUP) {
-      setErrorUser(null);
+    function resetErrorByCloseModal() {
+      if (!openModalSignUP || !openModalSignUP) {
+        setErrorUser(null);
+      }
     }
+    resetErrorByCloseModal();
   }, [openModalSignUP, openModalSignIN]);
 
   useEffect(() => {
     async function getRefreshTokens() {
       if (new Date().getTime() > +expiresIn!) {
-        refresh();
+        refreshTokens();
       }
     }
     const id = setInterval(() => {
@@ -89,7 +98,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     getUserDetails();
   }, [accessToken]);
 
-  async function refresh() {
+  async function refreshTokens() {
     try {
       const response = await axios({
         method: 'POST',
@@ -98,7 +107,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           Authorization: `Refresh ${refreshToken}`,
         },
       });
-      const { expiresIn, accessToken, refreshToken: refreshTokenNew } = response.data;
+      const { expiresIn, accessToken, refreshToken: refreshTokenNew } = response.data.backendTokens;
       storeExpiresIn(expiresIn);
       storeAccessToken(accessToken);
       storeRefreshToken(refreshTokenNew);
@@ -109,12 +118,13 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   async function getAuthUser() {
     const defaultReturnObject = { auth: false, user: null };
+
     try {
       if (!accessToken) {
         return defaultReturnObject;
       }
       setIsFetching(true);
-      const response = await axios({
+      const response: AuthUser = await axios({
         method: 'GET',
         url: API_ROUTES.GET_USER + idUser,
         headers: {
@@ -130,16 +140,53 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  useEffect(() => {
+    if (googleData) {
+      signInByGoogle(googleData);
+    }
+  }, [googleData]);
+
+  async function signInByGoogle(dataGoogle: DataFromGoogle) {
+    const { email, name: login, picture } = dataGoogle;
+
+    try {
+      setShowPreloader(true);
+      setIsFetching(true);
+
+      const response: SignInGoogle = await axios({
+        method: 'post',
+        url: API_ROUTES.SIGN_IN_GOOGLE,
+        data: { email, login, picture, isGoogle: true },
+      });
+      const { accessToken, refreshToken, expiresIn } = response.data.backendTokens;
+      const { id } = response.data.user;
+      storeAccessToken(accessToken);
+      storeRefreshToken(refreshToken);
+      storeExpiresIn(expiresIn);
+      storeIDUser(id);
+      setAutenticated(true);
+    } catch (err) {
+      const error = err as AxiosError<Error>;
+      if (error.response) {
+        setErrorUser(
+          `${FORM_MESSAGES.SOMETHING_WRONG_WITH_GOOGLE} ${error.response.data.message}.`
+        );
+      }
+    } finally {
+      setIsFetching(false);
+      setShowPreloader(false);
+    }
+  }
+
   async function signIn({ formSignIN }: FormDataSignIN) {
+    const { email, password } = formSignIN;
+
     try {
       setShowPreloader(true);
       const response = await axios({
         method: 'post',
         url: API_ROUTES.SIGN_IN,
-        data: {
-          username: formSignIN.email,
-          password: formSignIN.password,
-        },
+        data: { email, password },
       });
       const { accessToken, refreshToken, expiresIn } = response.data.backendTokens;
       const { id } = response.data.user;
@@ -161,16 +208,13 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   async function signUP({ formSignUP }: FormDataSignUP) {
+    const { login, email, password } = formSignUP;
     try {
       setShowPreloader(true);
       await axios({
         method: 'post',
         url: API_ROUTES.SIGN_UP,
-        data: {
-          name: formSignUP.login,
-          email: formSignUP.email,
-          password: formSignUP.password,
-        },
+        data: { login, email, password },
       });
       setOpenModalSignUP(false);
       setOpenModalSignIN(true);
@@ -239,14 +283,13 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         user,
         authenticated,
         logOut,
-        storeAccessToken,
-        storeIDUser,
         signIn,
         signUP,
         showPreloader,
         errorUser,
         isFetching,
         idUser,
+        setGoogleData,
       }}
     >
       {children}

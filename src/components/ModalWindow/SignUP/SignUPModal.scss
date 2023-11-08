@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 550px;
+  width: 400px;
   padding: 25px;
   background-color: #fff;
   position: relative;
@@ -43,11 +43,11 @@
   &__email,
   &__pasword {
     width: calc(100% - 40px);
-    padding: 15px 20px;
+    padding: 10px 20px;
     border: solid $oliva 1px;
     margin-top: 20px;
     outline: 0;
-    border-radius: 15px;
+    border-radius: 5px;
     font-size: 1.2rem;
   }
 }

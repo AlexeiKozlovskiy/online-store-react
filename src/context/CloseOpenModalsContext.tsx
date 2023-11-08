@@ -14,6 +14,7 @@ interface ICloseOpenModalsContext {
   handelCloseModalUser: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handelCloseModalPayment: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   closeModalSignInAnimation: () => void;
+  closeModalSignUPAnimation: () => void;
   closeModalUserAnimation: () => void;
 }
 
@@ -33,6 +34,7 @@ export const CloseOpenModalsContext = createContext<ICloseOpenModalsContext>({
   handelCloseModalUser: () => null,
   handelCloseModalPayment: () => null,
   closeModalSignInAnimation: () => null,
+  closeModalSignUPAnimation: () => null,
   closeModalUserAnimation: () => null,
 });
 
@@ -118,6 +120,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
         handelCloseModalUser,
         handelCloseModalPayment,
         closeModalSignInAnimation,
+        closeModalSignUPAnimation,
         closeModalUserAnimation,
       }}
     >

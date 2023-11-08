@@ -5,7 +5,7 @@
   flex-direction: column;
   align-self: center;
   gap: 10px;
-  width: 550px;
+  width: 400px;
   padding: 25px;
   background-color: #fff;
   position: relative;
@@ -40,14 +40,20 @@
     justify-content: space-around;
   }
 
+  // &__google {
+  //   display: flex;
+  //   justify-content: center;
+  //   padding: 10px;
+  // }
+
   &__email,
   &__pasword {
     width: calc(100% - 40px);
-    padding: 15px 20px;
+    padding: 10px 20px;
     border: solid $oliva 1px;
     margin-top: 20px;
     outline: 0;
-    border-radius: 15px;
+    border-radius: 5px;
     font-size: 1.2rem;
   }
 }
@@ -70,66 +76,7 @@
   }
 }
 
-.main-modal-btn-google {
-  width: 100%;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  color: black;
-  font-size: 1.2rem;
-  font-weight: 500;
-  height: 50px;
-  transition: all 0.2s;
-  margin: 20px 0;
-  border: solid 1px $oliva;
-
-  @media screen and (max-width: 410px) {
-    font-size: 15px;
-  }
-
-  &:hover {
-    cursor: pointer;
-    background-color: $olivaHover;
-    transition: all 0.2s;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-}
-
 .signIN {
-  &__hr {
-    text-align: center;
-    position: relative;
-
-    @media screen and (height <= 700px) {
-      margin: 2vh 0;
-    }
-  }
-
-  &__hr::before,
-  &__hr::after {
-    position: absolute;
-    top: 55%;
-    content: '';
-    background-color: $greyBorder;
-    height: 1px;
-    width: 30%;
-    overflow: hidden;
-  }
-
-  &__hr::after {
-    margin-left: 3%;
-  }
-
-  &__hr::before {
-    margin-left: -33%;
-    text-align: right;
-  }
-
   &__forgot {
     display: flex;
     justify-content: end;

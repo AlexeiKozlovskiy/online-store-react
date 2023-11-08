@@ -5,6 +5,7 @@ import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { useMyUserContext } from '@/context/UserContext';
+import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 
 interface IForm {
   handelCloseModalSignUP: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -42,9 +43,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
     reset({ formSignUP: { password: '' } });
   };
 
-  function ErrorSignUP() {
-    return <div className="form-error-response">{errorUser}</div>;
-  }
+  const ErrorSignUP = <div className="form-error-response">{errorUser}</div>;
 
   return (
     <>
@@ -56,10 +55,12 @@ export function Form({ handelCloseModalSignUP }: IForm) {
             onClick={() => handelCloseModalSignUP}
           ></div>
           <div className="signUP-details__title">SIGN UP</div>
-          <div className="signUP-details__logo">
+          <div className="signIN-details__logo">
             <HeaderLogo />
           </div>
           <div className="signUP-details__info">
+            <GoogleButton />
+            <p className="hr">Or</p>
             <div>
               <input
                 placeholder="Login"
@@ -110,7 +111,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
             <span className="signUP-already__highlight">Log In</span>
           </div>
           {showPreloader && <Preloader />}
-          {errorUser && <ErrorSignUP />}
+          {errorUser && ErrorSignUP}
         </div>
       </form>
     </>
