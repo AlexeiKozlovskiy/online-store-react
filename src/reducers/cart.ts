@@ -8,8 +8,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addProductToCart: (state, { payload: cartItem }: PayloadAction<CartItemArg>): CartItem[] => {
-      const item = state.find((item) => item.product.id === cartItem.product.id);
+    addProductToCart: (state, action: PayloadAction<CartItemArg>) => {
+      const { product, quantity } = action.payload;
+
+      const item = state.find((item) => item.product.id === product.id);
       const cartID = uuidv4();
 
       if (!item) {
@@ -18,12 +20,12 @@ const cartSlice = createSlice({
           {
             cartID,
             itemNumber: state.length + 1,
-            product: cartItem.product,
-            quantity: cartItem.quantity,
+            product,
+            quantity,
           },
         ];
       }
-      item.quantity += cartItem.quantity;
+      item.quantity += quantity;
 
       if (item.quantity > item.product.stock) {
         item.quantity = item.product.stock;
@@ -32,11 +34,10 @@ const cartSlice = createSlice({
       return state;
     },
 
-    setProductQuantityInCart: (
-      state,
-      { payload: cartItem }: PayloadAction<CartItemArg>
-    ): CartItem[] => {
-      const item = state.find((item) => item.product.id === cartItem.product.id);
+    setProductQuantityInCart: (state, action: PayloadAction<CartItemArg>) => {
+      const { product, quantity } = action.payload;
+
+      const item = state.find((item) => item.product.id === product.id);
       const cartID = uuidv4();
 
       if (!item) {
@@ -45,18 +46,20 @@ const cartSlice = createSlice({
           {
             cartID,
             itemNumber: state.length + 1,
-            product: cartItem.product,
-            quantity: cartItem.quantity,
+            product,
+            quantity,
           },
         ];
       }
-      item.quantity = cartItem.quantity;
+      item.quantity = quantity;
 
       return state;
     },
 
-    removeProductFromCart: (state, { payload: product }: PayloadAction<Product>): CartItem[] => {
-      const item = state.find((item) => item.product.id === product.id);
+    removeProductFromCart: (state, action: PayloadAction<Product>) => {
+      const { id } = action.payload;
+
+      const item = state.find(({ product }) => product.id === id);
       if (item) {
         if (item.quantity <= 1) {
           return state
@@ -69,8 +72,10 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeProductFromCartAll: (state, { payload: product }: PayloadAction<Product>): CartItem[] => {
-      const item = state.find((item) => item.product.id === product.id);
+    removeProductFromCartAll: (state, action: PayloadAction<Product>) => {
+      const { id } = action.payload;
+
+      const item = state.find(({ product }) => product.id === id);
       if (item) {
         return state
           .filter((stateItem) => stateItem !== item)
@@ -79,7 +84,7 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeAllProductFromCart: (state): CartItem[] => {
+    removeAllProductFromCart: (state) => {
       state = [];
       return state;
     },

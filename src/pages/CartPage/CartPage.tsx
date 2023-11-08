@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItemReducerProps, CartItem, ISelect, PageClickEvent } from '@/types/types';
+import { CartItem, ISelect, PageClickEvent, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
@@ -14,9 +14,7 @@ import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function CartPage() {
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption, curPageCart, setCurPageCart } =
     useMyURLContext();

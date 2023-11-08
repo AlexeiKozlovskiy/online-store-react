@@ -6,11 +6,15 @@ import {
   FormDataSignIN,
   FormDataSignUP,
   User,
-  DataFromGoogle,
-  AuthUser,
+  CredentialGoogle,
   SignInGoogle,
+  AuthUserResp,
+  Authentication,
+  RootReducerProps,
 } from '@/types/types';
 import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
+import { useSelector } from 'react-redux';
+import { setAuthParams, clearAuthParams } from '@/reducers/controller';
 
 interface IUserContext {
   user: User | null;
@@ -21,8 +25,7 @@ interface IUserContext {
   showPreloader: boolean;
   errorUser: string | null;
   isFetching: boolean;
-  idUser: string | null;
-  setGoogleData: (value: DataFromGoogle) => void;
+  setGoogleData: (value: CredentialGoogle) => void;
 }
 
 export const useMyUserContext = () => useContext(UserContext);
@@ -36,22 +39,16 @@ export const UserContext = createContext<IUserContext>({
   showPreloader: false,
   errorUser: null,
   isFetching: false,
-  idUser: '',
   setGoogleData: () => null,
 });
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [authenticated, setAutenticated] = useState(false);
-  const [accessToken, setAccessToken] = useState(localStorage.getItem('accessToken'));
-  const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken'));
-  const [expiresIn, setExpiresIn] = useState(localStorage.getItem('expiresIn'));
-  const [idUser, setIdUser] = useState(localStorage.getItem('idUser'));
   const [isFetching, setIsFetching] = useState(false);
-  const [googleData, setGoogleData] = useState<DataFromGoogle | null>(null);
+  const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
   const [showPreloader, setShowPreloader] = useState(false);
   const [errorUser, setErrorUser] = useState<string | null>(null);
-  //   const { data: User = {}, isFetching } = useGetUserQuery({ idUser, accessToken });
   const {
     openModalSignUP,
     openModalSignIN,
@@ -59,6 +56,9 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     setOpenModalSignUP,
     closeModalSignInAnimation,
   } = useCloseOpenModalsContext();
+  const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const { accessToken, refreshToken, expiresIn, idUser } = authState;
+  //   const { data: User = {}, isFetching } = useGetUserQuery({ idUser, accessToken });
 
   useEffect(() => {
     function resetErrorByCloseModal() {
@@ -107,10 +107,9 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
           Authorization: `Refresh ${refreshToken}`,
         },
       });
+
       const { expiresIn, accessToken, refreshToken: refreshTokenNew } = response.data.backendTokens;
-      storeExpiresIn(expiresIn);
-      storeAccessToken(accessToken);
-      storeRefreshToken(refreshTokenNew);
+      setAuthParams({ accessToken, refreshToken: refreshTokenNew, expiresIn, idUser });
     } catch (err) {
       setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
     }
@@ -124,13 +123,14 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         return defaultReturnObject;
       }
       setIsFetching(true);
-      const response: AuthUser = await axios({
+      const response: AuthUserResp = await axios({
         method: 'GET',
         url: API_ROUTES.GET_USER + idUser,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+
       setIsFetching(false);
       return { auth: true, user: response.data };
     } catch (err) {
@@ -146,7 +146,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [googleData]);
 
-  async function signInByGoogle(dataGoogle: DataFromGoogle) {
+  async function signInByGoogle(dataGoogle: CredentialGoogle) {
     const { email, name: login, picture } = dataGoogle;
 
     try {
@@ -158,12 +158,11 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         url: API_ROUTES.SIGN_IN_GOOGLE,
         data: { email, login, picture, isGoogle: true },
       });
+
       const { accessToken, refreshToken, expiresIn } = response.data.backendTokens;
-      const { id } = response.data.user;
-      storeAccessToken(accessToken);
-      storeRefreshToken(refreshToken);
-      storeExpiresIn(expiresIn);
-      storeIDUser(id);
+      const { id: idUser } = response.data.user;
+
+      setAuthParams({ accessToken, refreshToken, expiresIn, idUser });
       setAutenticated(true);
     } catch (err) {
       const error = err as AxiosError<Error>;
@@ -188,12 +187,11 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         url: API_ROUTES.SIGN_IN,
         data: { email, password },
       });
+
       const { accessToken, refreshToken, expiresIn } = response.data.backendTokens;
-      const { id } = response.data.user;
-      storeAccessToken(accessToken);
-      storeRefreshToken(refreshToken);
-      storeExpiresIn(expiresIn);
-      storeIDUser(id);
+      const { idUser } = response.data.user;
+
+      setAuthParams({ accessToken, refreshToken, expiresIn, idUser });
       closeModalSignInAnimation();
     } catch (err) {
       const error = err as AxiosError<Error>;
@@ -216,6 +214,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         url: API_ROUTES.SIGN_UP,
         data: { login, email, password },
       });
+
       setOpenModalSignUP(false);
       setOpenModalSignIN(true);
     } catch (err) {
@@ -228,51 +227,8 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  function storeAccessToken(token: string) {
-    localStorage.setItem('accessToken', token);
-    setAccessToken(token);
-  }
-
-  function removeAccessToken() {
-    localStorage.removeItem('accessToken');
-    setAccessToken(null);
-  }
-
-  function storeRefreshToken(token: string) {
-    localStorage.setItem('refreshToken', token);
-    setRefreshToken(token);
-  }
-
-  function removeRefreshToken() {
-    localStorage.removeItem('refreshToken');
-    setRefreshToken(null);
-  }
-
-  function storeExpiresIn(value: string) {
-    localStorage.setItem('expiresIn', value);
-    setExpiresIn(value);
-  }
-
-  function removeExpiresIn() {
-    localStorage.removeItem('expiresIn');
-    setExpiresIn(null);
-  }
-
-  function storeIDUser(id: string) {
-    localStorage.setItem('idUser', id);
-    setIdUser(id);
-  }
-
-  function removeIDUser() {
-    localStorage.removeItem('idUser');
-    setIdUser(null);
-  }
-
   function logOut() {
-    removeAccessToken();
-    removeRefreshToken();
-    removeExpiresIn();
-    removeIDUser();
+    clearAuthParams();
     setUser(null);
     setAutenticated(false);
   }
@@ -288,7 +244,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         showPreloader,
         errorUser,
         isFetching,
-        idUser,
         setGoogleData,
       }}
     >

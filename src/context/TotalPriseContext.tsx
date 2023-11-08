@@ -1,11 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  CartItemReducerProps,
-  CartItem,
-  PromocodeDataReducerProps,
-  PromocodeData,
-} from '@/types/types';
+import { RootReducerProps, CartItem, PromocodeData } from '@/types/types';
 
 export const useMyTotalPriceContext = () => useContext(TotalPriceContext);
 
@@ -20,12 +15,8 @@ export const TotalPriceContext = createContext<ITotalPriceContext>({
 });
 
 export const TotalPriceContextProvider = ({ children }: { children: ReactNode }) => {
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
-  const promocodeState = useSelector(
-    (state: PromocodeDataReducerProps) => state.promocode
-  ) as unknown as PromocodeData;
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
+  const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceByPromocodes, setTotalPriceByPromocodes] = useState(0);
 

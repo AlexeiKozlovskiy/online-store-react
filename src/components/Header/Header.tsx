@@ -13,6 +13,8 @@ import { UserModal } from '@/components/ModalWindow/User/UserModal';
 import { useMyUserContext } from '@/context/UserContext';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { Preloader } from '../Preloader/Preloader';
+import { useSelector } from 'react-redux';
+import { Authentication, RootReducerProps } from '@/types/types';
 
 export function Header() {
   const { curPageCart, perCartPageOption } = useMyURLContext();
@@ -31,7 +33,8 @@ export function Header() {
     handelCloseModalUser,
     closeModalUserAnimation,
   } = useCloseOpenModalsContext();
-  const { authenticated, isFetching, idUser } = useMyUserContext();
+  const { authenticated, isFetching } = useMyUserContext();
+  const { idUser } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
 
   function getCartUrl() {
     let url = `/cart`;

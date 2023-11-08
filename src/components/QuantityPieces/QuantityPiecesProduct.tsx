@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem } from '@/types/types';
+import { RootReducerProps, CartItem } from '@/types/types';
 import { QuantityPieces } from './QuantityPieces';
 import { useGetProductsQuery } from '@/api/productsAPI';
 
@@ -11,13 +11,10 @@ interface IQuantity {
 }
 
 export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, clickId }: IQuantity) {
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const { data: products = [] } = useGetProductsQuery();
   const [inputValue, setInputValue] = useState('1');
   const [stock, setStock] = useState(0);
-
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
 
   useEffect(() => {
     products.find(({ id, stock }) => {

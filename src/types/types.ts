@@ -34,12 +34,10 @@ export interface CartItem extends CartItemArg {
   itemNumber: number;
 }
 
-export interface CartItemReducerProps {
-  cart: CartItem;
-}
-
-export interface PromocodeDataReducerProps {
+export interface RootReducerProps {
+  cart: CartItem[];
   promocode: PromocodeData;
+  auth: Authentication;
 }
 
 export interface PaginationData {
@@ -85,10 +83,12 @@ export interface SetSelectedFilters {
   setSelectedCategory: (value: string[]) => void;
 }
 
-export interface Balancers {
-  balancerCategory: BalancerCategory[];
-  balancerCollection: BalancerCollection[];
-  balancerColor: BalancerColor[];
+export interface BalancerColor {
+  color: string;
+}
+
+export interface BalancerCollection {
+  collection: number;
 }
 
 export interface BalancerCategory {
@@ -96,12 +96,10 @@ export interface BalancerCategory {
   count: number;
 }
 
-export interface BalancerCollection {
-  collection: number;
-}
-
-export interface BalancerColor {
-  color: string;
+export interface Balancers {
+  balancerColor: BalancerColor[];
+  balancerCollection: BalancerCollection[];
+  balancerCategory: BalancerCategory[];
 }
 
 export interface InputSearch {
@@ -140,18 +138,6 @@ export interface CardImages {
 
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
 
-export interface FormDataPayment {
-  formPayment: Partial<FormPayment>;
-}
-
-export interface FormDataSignUP {
-  formSignUP: Partial<FormSignUP>;
-}
-
-export interface FormDataSignIN {
-  formSignIN: Partial<FormSignIN>;
-}
-
 export interface FormPayment {
   name: string;
   address: string;
@@ -172,6 +158,18 @@ export interface FormSignUP {
 export interface FormSignIN {
   email: string;
   password: string;
+}
+
+export interface FormDataPayment {
+  formPayment: Partial<FormPayment>;
+}
+
+export interface FormDataSignUP {
+  formSignUP: Partial<FormSignUP>;
+}
+
+export interface FormDataSignIN {
+  formSignIN: Partial<FormSignIN>;
 }
 
 export interface FormErrorMessages {
@@ -224,14 +222,27 @@ export interface User {
   isGoogle?: boolean;
 }
 
-export interface DataFromGoogle {
+export interface AuthUserResp {
+  data: User;
+}
+
+export interface GoogleResponse {
+  clientId: string;
+  client_id: string;
+  credential: string;
+  select_by: string;
+}
+
+export interface CredentialGoogle {
   email: string;
   name: string;
   picture: string;
 }
 
-export interface AuthUser {
-  data: User;
+export interface BackendTokens {
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiresIn: string | null;
 }
 
 export interface SignInGoogle {
@@ -241,15 +252,6 @@ export interface SignInGoogle {
   };
 }
 
-export interface BackendTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: string;
-}
-
-export interface GoogleResponse {
-  clientId: string;
-  client_id: string;
-  credential: string;
-  select_by: string;
+export interface Authentication extends BackendTokens {
+  idUser: string | null;
 }

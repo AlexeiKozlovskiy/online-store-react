@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem } from '@/types/types';
+import { RootReducerProps, CartItem } from '@/types/types';
 
 interface ITotalItemsContext {
   totalItems: number;
@@ -14,9 +14,7 @@ export const TotalItemsContext = createContext<ITotalItemsContext>({
 
 export const TotalItemsContextProvider = ({ children }: { children: ReactNode }) => {
   const [totalItems, setTotalItems] = useState(0);
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
 
   useEffect(() => {
     setTotalItems(cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0));

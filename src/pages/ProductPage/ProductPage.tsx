@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
 import { formatPrice, formatNameFromURL } from '@/helpers/helpersFunc';
-import { CartItemReducerProps, CartItem, Product } from '@/types/types';
+import { RootReducerProps, CartItem, Product } from '@/types/types';
 import { addProductsToCart } from '@/reducers/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/components/CustomHook/AnimationsHook';
@@ -22,6 +22,7 @@ export function ProductPage() {
   const { data: product = {}, isFetching } = useGetProductQuery(clickedIDFromURL);
   const { data: products } = useGetProductsQuery();
   const navigate = useNavigate();
+  const cartItems = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
 
   useEffect(() => {
     if (products) {
@@ -37,11 +38,6 @@ export function ProductPage() {
 
   const { id, name, price, collection, stock, color, size, category, images } = product as Product;
   const [firstImg, secondImg] = images || [];
-
-  const cartItems = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
-
   const isShake = useAnimations({ quantity: Number(quantity), stock });
 
   useEffect(() => {
