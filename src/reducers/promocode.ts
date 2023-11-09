@@ -23,6 +23,7 @@ const promocodeSlice = createSlice({
   reducers: {
     addAppliedPromocode: (state, action: PayloadAction<number>) => {
       const id = action.payload;
+
       const promocode = state.available.find((el) => el.id === id);
       if (promocode && !state.applied.some((el) => el.id === id)) {
         state.applied.push(promocode);
@@ -32,6 +33,7 @@ const promocodeSlice = createSlice({
 
     removeAppliedPromocode: (state, action: PayloadAction<number>) => {
       const id = action.payload;
+
       state.applied = state.applied.filter((el) => el.id !== id);
       return state;
     },

@@ -13,7 +13,6 @@ interface IForm {
 
 export function Form({ handelCloseModalSignUP }: IForm) {
   const { signUP, showPreloader, errorUser } = useMyUserContext();
-
   const {
     register,
     handleSubmit,
@@ -32,6 +31,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
   });
   const { validateLogin, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
+
   const { formSignUP } = errors;
   const { login, password, email } = formSignUP || {};
   const errorsLogin = login?.type;

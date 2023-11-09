@@ -3,14 +3,14 @@ import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { jwtDecode } from 'jwt-decode';
 import { useMyUserContext } from '@/context/UserContext';
 import { useEffect } from 'react';
-import { CredentialGoogle, GoogleResponse } from '@/types/types';
+import { CredentialGoogle, GoogleResp } from '@/types/types';
 
 export function GoogleButton() {
   const { openModalSignUP, openModalSignIN, closeModalSignInAnimation, closeModalSignUPAnimation } =
     useCloseOpenModalsContext();
   const { setGoogleData } = useMyUserContext();
 
-  function hadelCallbackResponse(response: GoogleResponse) {
+  function hadelCallbackResponse(response: GoogleResp) {
     const googleData = jwtDecode<CredentialGoogle>(response.credential);
     setGoogleData(googleData);
     openModalSignUP && closeModalSignUPAnimation();

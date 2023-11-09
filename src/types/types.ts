@@ -222,11 +222,11 @@ export interface User {
   isGoogle?: boolean;
 }
 
-export interface AuthUserResp {
+export interface UserResp {
   data: User;
 }
 
-export interface GoogleResponse {
+export interface GoogleResp {
   clientId: string;
   client_id: string;
   credential: string;
@@ -245,11 +245,13 @@ export interface BackendTokens {
   expiresIn: string | null;
 }
 
-export interface SignInGoogle {
-  data: {
-    backendTokens: BackendTokens;
-    user: User;
-  };
+export interface AuthData {
+  backendTokens: BackendTokens;
+  user: User;
+}
+
+export interface AuthDataResp {
+  data: AuthData;
 }
 
 export interface Authentication extends BackendTokens {
