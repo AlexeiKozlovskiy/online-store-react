@@ -5,7 +5,7 @@ import {
   setProductsQuantityInCart,
 } from '@/reducers/controller';
 import { QuantityPieces } from './QuantityPieces';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
+import { useGetProductsQuery } from '@/api/_productsAPI';
 
 interface IQuantity {
   id: string;

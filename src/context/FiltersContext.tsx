@@ -25,7 +25,7 @@ import {
   sortByFavorite,
 } from '@/helpers/helpersFunc';
 import { useMyURLContext } from '@/context/URLContext';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
+import { useGetProductsQuery } from '@/api/_productsAPI';
 
 interface IFiltersContext extends Balancers {
   itemsCount: number;

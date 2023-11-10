@@ -14,7 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { productsApi } from '@/api/ProductsAPI';
+import { productsApi } from '@/api/_productsAPI';
 
 const rootReduser = combineReducers({
   cart: cartSlice,
