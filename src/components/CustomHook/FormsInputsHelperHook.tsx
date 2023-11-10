@@ -13,6 +13,10 @@ export function useFormsInputsHelper({ watch, setValue }: Helper) {
   }, [watch('formSignUP.name')]);
 
   useEffect(() => {
+    setValue('formSignUP.login', watch('formSignUP.login')?.substring(0, 40));
+  }, [watch('formSignUP.login')]);
+
+  useEffect(() => {
     setValue('formSignUP.email', watch('formSignUP.email')?.substring(0, 70));
   }, [watch('formSignUP.email')]);
 

@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItemReducerProps, CartItem, ISelect, PageClickEvent } from '@/types/types';
+import { CartItem, ISelect, PageClickEvent, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
@@ -11,12 +11,10 @@ import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
-import { useCloseModalsHook } from '@/components/CustomHook/CloseModalsHook';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function CartPage() {
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption, curPageCart, setCurPageCart } =
     useMyURLContext();
@@ -24,7 +22,8 @@ export function CartPage() {
   const [countPages, setCountPages] = useState(countCartItem);
   const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
-  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } = useCloseModalsHook();
+  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } =
+    useCloseOpenModalsContext();
 
   useEffect(() => {
     if (perCartPageOption.value === 'all' && countCartItem) {

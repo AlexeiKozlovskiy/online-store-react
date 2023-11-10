@@ -39,7 +39,7 @@
 }
 
 .main-modal-btn {
-  border-radius: 15px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -80,9 +80,43 @@
 }
 
 .animation-view-form {
-  animation: modal-view 0.6s forwards;
+  animation: modal-view 1s forwards;
 }
 
 .hide-modal {
   animation: modal-hide 0.5s forwards;
+}
+
+.form-error-response {
+  text-align: center;
+  font: 1rem $Roboto;
+  color: red;
+}
+.hr {
+  text-align: center;
+  position: relative;
+
+  @media screen and (height <= 700px) {
+    margin: 0.5vh 0;
+  }
+}
+
+.hr::before,
+.hr::after {
+  position: absolute;
+  top: 55%;
+  content: '';
+  background-color: $greyBorder;
+  height: 1px;
+  width: 30%;
+  overflow: hidden;
+}
+
+.hr::after {
+  margin-left: 3%;
+}
+
+.hr::before {
+  margin-left: -33%;
+  text-align: right;
 }

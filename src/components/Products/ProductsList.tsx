@@ -2,7 +2,7 @@ import './ProductsList.scss';
 import { useEffect, useState } from 'react';
 import { ProductItem } from './Product';
 import { useSelector } from 'react-redux';
-import { CartItemReducerProps, CartItem, Product, PageClickEvent } from '@/types/types';
+import { RootReducerProps, CartItem, Product, PageClickEvent } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
 
@@ -11,9 +11,7 @@ interface IProductsList {
 }
 
 export function ProductsList({ products }: IProductsList) {
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const { curPageMain, setCurPageMain, perMainPageOption, swichedView } = useMyURLContext();
   const [countPages, setCountPages] = useState(curPageMain);

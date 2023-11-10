@@ -34,12 +34,10 @@ export interface CartItem extends CartItemArg {
   itemNumber: number;
 }
 
-export interface CartItemReducerProps {
-  cart: CartItem;
-}
-
-export interface PromocodeDataReducerProps {
+export interface RootReducerProps {
+  cart: CartItem[];
   promocode: PromocodeData;
+  auth: Authentication;
 }
 
 export interface PaginationData {
@@ -85,10 +83,12 @@ export interface SetSelectedFilters {
   setSelectedCategory: (value: string[]) => void;
 }
 
-export interface Balancers {
-  balancerCategory: BalancerCategory[];
-  balancerCollection: BalancerCollection[];
-  balancerColor: BalancerColor[];
+export interface BalancerColor {
+  color: string;
+}
+
+export interface BalancerCollection {
+  collection: number;
 }
 
 export interface BalancerCategory {
@@ -96,12 +96,10 @@ export interface BalancerCategory {
   count: number;
 }
 
-export interface BalancerCollection {
-  collection: number;
-}
-
-export interface BalancerColor {
-  color: string;
+export interface Balancers {
+  balancerColor: BalancerColor[];
+  balancerCollection: BalancerCollection[];
+  balancerCategory: BalancerCategory[];
 }
 
 export interface InputSearch {
@@ -140,18 +138,6 @@ export interface CardImages {
 
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
 
-export interface FormDataPayment {
-  formPayment: Partial<FormPayment>;
-}
-
-export interface FormDataSignUP {
-  formSignUP: Partial<FormSignUP>;
-}
-
-export interface FormDataSignIN {
-  formSignIN: Partial<FormSignIN>;
-}
-
 export interface FormPayment {
   name: string;
   address: string;
@@ -164,7 +150,7 @@ export interface FormPayment {
 }
 
 export interface FormSignUP {
-  name: string;
+  login: string;
   email: string;
   password: string;
 }
@@ -174,8 +160,21 @@ export interface FormSignIN {
   password: string;
 }
 
+export interface FormDataPayment {
+  formPayment: Partial<FormPayment>;
+}
+
+export interface FormDataSignUP {
+  formSignUP: Partial<FormSignUP>;
+}
+
+export interface FormDataSignIN {
+  formSignIN: Partial<FormSignIN>;
+}
+
 export interface FormErrorMessages {
   msgName?: null | FORM_MESSAGES;
+  msgLogin?: null | FORM_MESSAGES;
   msgAdress?: null | FORM_MESSAGES;
   msgEmail?: null | FORM_MESSAGES;
   msgPhone?: null | FORM_MESSAGES;
@@ -188,6 +187,7 @@ export interface FormErrorMessages {
 
 export enum FORM_MESSAGES {
   ENTER_NAME = 'Please enter name',
+  ENTER_LOGIN = 'Please enter login',
   ENTER_ADDRESS = 'Please enter address',
   ENTER_EMAIL = 'Please enter email',
   ENTER_PHONE = 'Please enter phone',
@@ -197,13 +197,63 @@ export enum FORM_MESSAGES {
   ENTER_CVV_CARD = 'Please enter cvv card',
   ENTER_PASSWORD = 'Please enter password',
   NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
+  LOGIN_CONTAINS_INVALID_CHARACTERS = 'Login should be included and (or) letters',
   NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
   ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
   INVALID_EMAIL = 'Invalid email',
   PHONE_LENGTH = 'Invalid phone length',
+  LOGIN_LENGTH = 'Invalid login length',
   CARD_NUMBER_LENGTH = 'Card number invalid length',
   CARD_DATE_LENGTH = 'Card date invalid length',
   INVALID_CARD_DATE = 'Invalid date',
   INVALID_CARD_CVV = 'Invalid CVV',
-  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 4 symbol',
+  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 5 symbol',
+  THIS_EMAIL_IS_ALREADY_REGISTERED = 'This email is already registered',
+  INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
+  SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google',
+  SOMETHING_WRONG = 'Something wrong',
+}
+
+export interface User {
+  id: string;
+  email: string;
+  login: string;
+  picture?: string;
+  isGoogle?: boolean;
+}
+
+export interface UserResp {
+  data: User;
+}
+
+export interface GoogleResp {
+  clientId: string;
+  client_id: string;
+  credential: string;
+  select_by: string;
+}
+
+export interface CredentialGoogle {
+  email: string;
+  name: string;
+  picture: string;
+}
+
+export interface BackendTokens {
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiresIn: string | null;
+}
+
+export interface AuthData {
+  backendTokens: BackendTokens;
+  user: User;
+}
+
+export interface AuthDataResp {
+  data: AuthData;
+}
+
+export interface Authentication extends BackendTokens {
+  idUser: string | null;
 }

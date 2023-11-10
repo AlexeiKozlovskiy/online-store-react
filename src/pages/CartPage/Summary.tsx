@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { useRef, useState } from 'react';
-import { PromocodeData, PromocodeDataReducerProps } from '@/types/types';
+import { PromocodeData, RootReducerProps } from '@/types/types';
 import { PROMOCODES } from '@/helpers/constant';
 import { useSelector } from 'react-redux';
 import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/reducers/controller';
@@ -15,9 +15,7 @@ interface ISummary {
 export function Summary({ isHandelOrderClick }: ISummary) {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<string | null>(null);
-  const promocodeState = useSelector(
-    (state: PromocodeDataReducerProps) => state.promocode
-  ) as unknown as PromocodeData;
+  const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
   const { totalPrice, totalPriceByPromocodes } = useMyTotalPriceContext();
   const { totalItems } = useMyTotalItemsContext();
 

@@ -10,7 +10,11 @@ import { SignUPModal } from '@/components/ModalWindow/SignUP/SignUPModal';
 import { SignINModal } from '@/components/ModalWindow/SignIN/SignINModal';
 import { UserIcon } from '@/components/UserProfile/UserIcon';
 import { UserModal } from '@/components/ModalWindow/User/UserModal';
-import { useCloseModalsHook } from '@/components/CustomHook/CloseModalsHook';
+import { useMyUserContext } from '@/context/UserContext';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
+import { Preloader } from '../Preloader/Preloader';
+import { useSelector } from 'react-redux';
+import { Authentication, RootReducerProps } from '@/types/types';
 
 export function Header() {
   const { curPageCart, perCartPageOption } = useMyURLContext();
@@ -27,7 +31,10 @@ export function Header() {
     handelCloseModalSignUP,
     handelCloseModalSignIN,
     handelCloseModalUser,
-  } = useCloseModalsHook();
+    closeModalUserAnimation,
+  } = useCloseOpenModalsContext();
+  const { authenticated, isFetching } = useMyUserContext();
+  const { idUser } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
 
   function getCartUrl() {
     let url = `/cart`;
@@ -37,37 +44,40 @@ export function Header() {
     return url;
   }
 
+  const userIcon = <UserIcon handleClick={() => setOpenModalUser(true)} />;
+
+  const authBar = (
+    <>
+      <div className="header-auth__btn" onClick={() => setOpenModalSignIN(true)}>
+        Sign In
+      </div>
+      <div className="header-auth-signup">
+        <div className="header-auth__text">Not a Member?</div>
+        <div className="header-auth__link" onClick={() => setOpenModalSignUP(true)}>
+          Sign up
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <header className="header">
+      {openModalSignUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
+      {openModalSignIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
+      {openModalUser && (
+        <UserModal
+          onClickOutside={handelCloseModalUser}
+          closeModalUserAnimation={closeModalUserAnimation}
+        />
+      )}
       <div className="header__container wrapper">
         <Link to="/" className="header-link" onClick={removeAllSelected}>
           <HeaderLogo />
         </Link>
         <div className="header-nav">
           <div className="header-nav-contents">
-            {openModalSignUP && (
-              <SignUPModal
-                setOpenModalSignUP={setOpenModalSignUP}
-                handelCloseModalSignUP={handelCloseModalSignUP}
-              />
-            )}
-            {openModalSignIN && (
-              <SignINModal
-                setOpenModalSignIN={setOpenModalSignIN}
-                handelCloseModalSignIN={handelCloseModalSignIN}
-              />
-            )}
-            <div className="header-auth__btn" onClick={() => setOpenModalSignIN(true)}>
-              Sign In
-            </div>
-            <div className="header-auth-signup">
-              <div className="header-auth__text">Not a Member?</div>
-              <div className="header-auth__link" onClick={() => setOpenModalSignUP(true)}>
-                Sign up
-              </div>
-            </div>
-            <UserIcon handleClick={() => setOpenModalUser(true)} />
-            {openModalUser && <UserModal onClickOutside={handelCloseModalUser} />}
+            {isFetching ? <Preloader /> : authenticated && userIcon}
+            {!idUser && !isFetching && authBar}
           </div>
           <Link to={getCartUrl()} className="header-cart">
             <div className="header-cart__img"></div>

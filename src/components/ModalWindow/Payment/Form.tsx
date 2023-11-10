@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { removeAllProductsFromCart } from '@/reducers/controller';
-import { CartItemReducerProps, CartItem, FormDataPayment, CardImages } from '@/types/types';
+import { RootReducerProps, CartItem, FormDataPayment, CardImages } from '@/types/types';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
@@ -19,9 +19,7 @@ export function Form({ handelCloseModalPayment }: IForm) {
   const [imageValue, setImageValue] = useState('');
   const [showPreloader, setShowPreloader] = useState(false);
   const navigate = useNavigate();
-  const cartItemsState = useSelector(
-    (state: CartItemReducerProps) => state.cart
-  ) as unknown as CartItem[];
+  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const {
     validateName,
     validateEmail,

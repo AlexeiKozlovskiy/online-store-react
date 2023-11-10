@@ -1,65 +1,49 @@
 import { HeaderLogo } from '@/components/HeaderLogo/HeaderLogo';
 import { useForm } from 'react-hook-form';
 import { FormDataSignUP } from '@/types/types';
-import { useEffect, useState } from 'react';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
+import { useMyUserContext } from '@/context/UserContext';
+import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 
 interface IForm {
-  setOpenModalSignUP: (value: boolean) => void;
   handelCloseModalSignUP: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export function Form({ setOpenModalSignUP, handelCloseModalSignUP }: IForm) {
-  const [submitSignUPData, setSubmitSignUPData] = useState({});
-  const [showPreloader, setShowPreloader] = useState(false);
+export function Form({ handelCloseModalSignUP }: IForm) {
+  const { signUP, showPreloader, errorUser } = useMyUserContext();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-    reset,
     watch,
+    reset,
     setValue,
   } = useForm<FormDataSignUP>({
     defaultValues: {
       formSignUP: {
-        name: '',
+        login: '',
         email: '',
         password: '',
       },
     },
   });
-  const { validateName, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
+  const { validateLogin, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
+
   const { formSignUP } = errors;
-  const { name, password, email } = formSignUP || {};
-  const errorsName = name?.type;
+  const { login, password, email } = formSignUP || {};
+  const errorsLogin = login?.type;
   const errorsPassword = password?.type;
   const errorsEmail = email?.type;
 
   const onSubmit = ({ formSignUP }: FormDataSignUP) => {
-    const { name, email, password } = formSignUP;
-    setShowPreloader(true);
-    setSubmitSignUPData({
-      formDataSighUP: {
-        name,
-        email,
-        password,
-      },
-    });
-    setTimeout(() => {
-      reset();
-      setOpenModalSignUP(false);
-      setShowPreloader(false);
-    }, 2000);
+    signUP({ formSignUP });
+    reset({ formSignUP: { password: '' } });
   };
 
-  useEffect(() => {
-    if (Object.keys(submitSignUPData).length !== 0) {
-      console.log('submitSignUPData', submitSignUPData);
-    }
-  }, [submitSignUPData]);
+  const ErrorSignUP = <div className="form-error-response">{errorUser}</div>;
 
   return (
     <>
@@ -71,22 +55,24 @@ export function Form({ setOpenModalSignUP, handelCloseModalSignUP }: IForm) {
             onClick={() => handelCloseModalSignUP}
           ></div>
           <div className="signUP-details__title">SIGN UP</div>
-          <div className="signUP-details__logo">
+          <div className="signIN-details__logo">
             <HeaderLogo />
           </div>
           <div className="signUP-details__info">
+            <GoogleButton />
+            <p className="hr">Or</p>
             <div>
               <input
-                placeholder="Name"
-                className={`signUP-details__name ${errorsName && 'invalid'} ${isValid && 'valid'}`}
+                placeholder="Login"
+                className={`signUP-details__name ${errorsLogin && 'invalid'} ${isValid && 'valid'}`}
                 type="text"
-                id="nameInputSignUP"
-                {...register('formSignUP.name', {
+                id="loginInputSignUP"
+                {...register('formSignUP.login', {
                   required: true,
-                  validate: validateName,
+                  validate: validateLogin,
                 })}
               />
-              {errorsName && errorDefinitions.name[errorsName]}
+              {errorsLogin && errorDefinitions.login[errorsLogin]}
             </div>
             <div>
               <input
@@ -125,6 +111,7 @@ export function Form({ setOpenModalSignUP, handelCloseModalSignUP }: IForm) {
             <span className="signUP-already__highlight">Log In</span>
           </div>
           {showPreloader && <Preloader />}
+          {errorUser && ErrorSignUP}
         </div>
       </form>
     </>

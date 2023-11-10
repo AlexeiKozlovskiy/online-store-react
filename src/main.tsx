@@ -12,6 +12,8 @@ import { URLContextProvider } from '@/context/URLContext';
 import { TotalPriceContextProvider } from '@/context/TotalPriseContext';
 import { TotalItemsContextProvider } from '@/context/TotalItemsContext';
 import { PersistGate } from 'redux-persist/integration/react';
+import { UserContextProvider } from '@/context/UserContext';
+import { CloseOpenModalsContextProvider } from './context/CloseOpenModalsContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -24,7 +26,11 @@ createRoot(document.getElementById('root')!).render(
                 <RemoveAllSelectedContextProvider>
                   <TotalPriceContextProvider>
                     <TotalItemsContextProvider>
-                      <App />
+                      <CloseOpenModalsContextProvider>
+                        <UserContextProvider>
+                          <App />
+                        </UserContextProvider>
+                      </CloseOpenModalsContextProvider>
                     </TotalItemsContextProvider>
                   </TotalPriceContextProvider>
                 </RemoveAllSelectedContextProvider>
