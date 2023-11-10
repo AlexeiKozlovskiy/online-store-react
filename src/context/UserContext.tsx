@@ -12,7 +12,7 @@ import {
 import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/reducers/controller';
-import { useAuthApi } from '@/api/AuthAPI';
+import { useAuthApi } from '@/api/authAPI';
 
 interface IUserContext {
   user: User | null;

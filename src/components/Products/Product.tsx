@@ -2,7 +2,7 @@ import './Product.scss';
 import { Link } from 'react-router-dom';
 import { Product } from '@/types/types';
 import { addProductsToCart, removeProductsFromCartAll } from '@/reducers/controller';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
+import { useGetProductsQuery } from '@/api/productsAPI';
 import { useMyURLContext } from '@/context/URLContext';
 import { formatNameForURL } from '@/helpers/helpersFunc';
 
