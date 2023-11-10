@@ -8,7 +8,7 @@ import { addProductsToCart } from '@/reducers/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
-import { useGetProductQuery, useGetProductsQuery } from '@/api/productsAPI';
+import { useGetProductQuery, useGetProductsQuery } from '@/api/ProductsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useMyURLContext } from '@/context/URLContext';
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem } from '@/types/types';
 import { QuantityPieces } from './QuantityPieces';
-import { useGetProductsQuery } from '@/api/productsAPI';
+import { useGetProductsQuery } from '@/api/ProductsAPI';
 
 interface IQuantity {
   clickId: string;
