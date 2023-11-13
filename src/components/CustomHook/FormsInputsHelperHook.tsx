@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-// import { FormDataSignUP, FormDataPayment } from '@/types/types';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 type Helper = {

@@ -1,11 +1,11 @@
-import { baseUrl } from '@/helpers/constant';
+import { BASE_URL } from '@/helpers/constant';
 import { Product } from '@/types/types';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${baseUrl}`,
+    baseUrl: `${BASE_URL}`,
     mode: 'cors',
   }),
   endpoints: (builder) => ({

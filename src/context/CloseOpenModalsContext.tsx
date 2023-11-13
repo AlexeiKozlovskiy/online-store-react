@@ -61,7 +61,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
   }
 
   function closeModalUserAnimation() {
-    const modalWindow = document.querySelector('.modal-window') as HTMLDivElement;
+    const modalWindow = document.querySelector('.user-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal-user');
     setTimeout(() => {
       setOpenModalUser(false);

@@ -1,4 +1,4 @@
-import { LiteralUnion } from 'react-hook-form';
+import { LiteralUnion, UseFormRegister } from 'react-hook-form';
 
 export interface Product {
   id: string;
@@ -136,84 +136,6 @@ export interface CardImages {
   5: string;
 }
 
-export type ErrorType = LiteralUnion<'required' | 'validate', string>;
-
-export interface FormPayment {
-  name: string;
-  address: string;
-  email: string;
-  phone: string;
-  nameCard: string;
-  numberCard: string;
-  dateCard: string;
-  cvvCard: string;
-}
-
-export interface FormSignUP {
-  login: string;
-  email: string;
-  password: string;
-}
-
-export interface FormSignIN {
-  email: string;
-  password: string;
-}
-
-export interface FormDataPayment {
-  formPayment: Partial<FormPayment>;
-}
-
-export interface FormDataSignUP {
-  formSignUP: Partial<FormSignUP>;
-}
-
-export interface FormDataSignIN {
-  formSignIN: Partial<FormSignIN>;
-}
-
-export interface FormErrorMessages {
-  msgName?: null | FORM_MESSAGES;
-  msgLogin?: null | FORM_MESSAGES;
-  msgAdress?: null | FORM_MESSAGES;
-  msgEmail?: null | FORM_MESSAGES;
-  msgPhone?: null | FORM_MESSAGES;
-  msgNameCard?: null | FORM_MESSAGES;
-  msgNumberCard?: null | FORM_MESSAGES;
-  msgDateCard?: null | FORM_MESSAGES;
-  msgCvvCard?: null | FORM_MESSAGES;
-  msgPassword?: null | FORM_MESSAGES;
-}
-
-export enum FORM_MESSAGES {
-  ENTER_NAME = 'Please enter name',
-  ENTER_LOGIN = 'Please enter login',
-  ENTER_ADDRESS = 'Please enter address',
-  ENTER_EMAIL = 'Please enter email',
-  ENTER_PHONE = 'Please enter phone',
-  ENTER_NAME_CARD = 'Please enter name card',
-  ENTER_NUMBER_CARD = 'Please enter number card',
-  ENTER_DATE_CARD = 'Please enter date card',
-  ENTER_CVV_CARD = 'Please enter cvv card',
-  ENTER_PASSWORD = 'Please enter password',
-  NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
-  LOGIN_CONTAINS_INVALID_CHARACTERS = 'Login should be included and (or) letters',
-  NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
-  ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
-  INVALID_EMAIL = 'Invalid email',
-  PHONE_LENGTH = 'Invalid phone length',
-  LOGIN_LENGTH = 'Invalid login length',
-  CARD_NUMBER_LENGTH = 'Card number invalid length',
-  CARD_DATE_LENGTH = 'Card date invalid length',
-  INVALID_CARD_DATE = 'Invalid date',
-  INVALID_CARD_CVV = 'Invalid CVV',
-  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 5 symbol',
-  THIS_EMAIL_IS_ALREADY_REGISTERED = 'This email is already registered',
-  INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
-  SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google',
-  SOMETHING_WRONG = 'Something wrong',
-}
-
 export interface User {
   id: string;
   email: string;
@@ -256,4 +178,131 @@ export interface AuthDataResp {
 
 export interface Authentication extends BackendTokens {
   idUser: string | null;
+}
+
+export type ErrorType = LiteralUnion<'required' | 'validate', string>;
+
+export interface FormPayment {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  nameCard: string;
+  numberCard: string;
+  dateCard: string;
+  cvvCard: string;
+}
+
+export interface FormSignUP {
+  login: string;
+  email: string;
+  password: string;
+}
+
+export interface FormSignIN {
+  email: string;
+  password: string;
+}
+
+export interface MyForms {
+  formSignIN: FormSignIN;
+  formSignUP: FormSignUP;
+  formPayment: FormPayment;
+}
+
+export interface InputComponents extends errorsForm, RegisterType {
+  id: string;
+  type: string;
+  isValid: boolean;
+  className?: string;
+  placeholder: string;
+  register: UseFormRegister<MyForms>;
+  validate: (value: string | any) => boolean;
+  errorDefinitions: Record<ErrorType, JSX.Element>;
+}
+
+interface RegisterType {
+  registerType:
+    | 'formPayment'
+    | 'formSignIN'
+    | 'formSignUP'
+    | 'formPayment.numberCard'
+    | 'formPayment.name'
+    | 'formPayment.address'
+    | 'formPayment.email'
+    | 'formPayment.phone'
+    | 'formPayment.nameCard'
+    | 'formPayment.dateCard'
+    | 'formPayment.cvvCard'
+    | 'formSignUP.email'
+    | 'formSignUP.password'
+    | 'formSignUP.login'
+    | 'formSignIN.email'
+    | 'formSignIN.password';
+}
+
+export interface FormErrorMessages {
+  msgName?: null | FORM_MESSAGES;
+  msgLogin?: null | FORM_MESSAGES;
+  msgAdress?: null | FORM_MESSAGES;
+  msgEmail?: null | FORM_MESSAGES;
+  msgPhone?: null | FORM_MESSAGES;
+  msgNameCard?: null | FORM_MESSAGES;
+  msgNumberCard?: null | FORM_MESSAGES;
+  msgDateCard?: null | FORM_MESSAGES;
+  msgCvvCard?: null | FORM_MESSAGES;
+  msgPassword?: null | FORM_MESSAGES;
+}
+
+interface errorsForm {
+  errors:
+    | LiteralUnion<
+        | 'required'
+        | 'validate'
+        | 'pattern'
+        | 'min'
+        | 'max'
+        | 'maxLength'
+        | 'minLength'
+        | 'value'
+        | 'setValueAs'
+        | 'shouldUnregister'
+        | 'onChange'
+        | 'onBlur'
+        | 'disabled'
+        | 'deps'
+        | 'valueAsNumber'
+        | 'valueAsDate',
+        string
+      >
+    | undefined;
+}
+
+export enum FORM_MESSAGES {
+  ENTER_NAME = 'Please enter name',
+  ENTER_LOGIN = 'Please enter login',
+  ENTER_ADDRESS = 'Please enter address',
+  ENTER_EMAIL = 'Please enter email',
+  ENTER_PHONE = 'Please enter phone',
+  ENTER_NAME_CARD = 'Please enter name card',
+  ENTER_NUMBER_CARD = 'Please enter number card',
+  ENTER_DATE_CARD = 'Please enter date card',
+  ENTER_CVV_CARD = 'Please enter cvv card',
+  ENTER_PASSWORD = 'Please enter password',
+  NAME_CONTAINS_TWO_WORDS = 'Name must contain at least 2 words',
+  LOGIN_CONTAINS_INVALID_CHARACTERS = 'Login should be included and (or) letters',
+  NAME_CONTAINS_INVALID_CHARACTERS = 'Name contains invalid characters',
+  ADDRESS_CONTAINS_THREE_WORDS = 'Adress must contain at least 3 words',
+  INVALID_EMAIL = 'Invalid email',
+  PHONE_LENGTH = 'Invalid phone length',
+  LOGIN_LENGTH = 'Invalid login length',
+  CARD_NUMBER_LENGTH = 'Card number invalid length',
+  CARD_DATE_LENGTH = 'Card date invalid length',
+  INVALID_CARD_DATE = 'Invalid date',
+  INVALID_CARD_CVV = 'Invalid CVV',
+  INVALID_PASSWORD = 'Password should be included numbers and letters, min length 5 symbol',
+  THIS_EMAIL_IS_ALREADY_REGISTERED = 'This email is already registered.',
+  INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
+  SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google.',
+  SOMETHING_WRONG = 'Something wrong.',
 }

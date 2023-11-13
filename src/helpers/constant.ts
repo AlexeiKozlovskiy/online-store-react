@@ -66,13 +66,30 @@ export const PROMOCODES = [
   },
 ];
 
-export const baseUrl = 'https://online-store-api-7fyt.onrender.com';
-// export const baseUrl = 'http://localhost:4000';
+export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
+// export const BASE_URL = 'http://localhost:4000';
 
 export const API_ROUTES = {
-  SIGN_UP: `${baseUrl}/auth/register`,
-  SIGN_IN: `${baseUrl}/auth/login`,
-  SIGN_IN_GOOGLE: `${baseUrl}/auth/login/google`,
-  GET_USER: `${baseUrl}/user/`,
-  REFRESH: `${baseUrl}/auth/refresh/`,
+  SIGN_UP: `${BASE_URL}/auth/register`,
+  SIGN_IN: `${BASE_URL}/auth/login`,
+  SIGN_IN_GOOGLE: `${BASE_URL}/auth/login/google`,
+  GET_USER: `${BASE_URL}/user/`,
+  REFRESH: `${BASE_URL}/auth/refresh/`,
+};
+
+export const CARD_IMAGES = {
+  3: 'cards__img-express',
+  4: 'cards__img-visa',
+  5: 'cards__img-mastercard',
+};
+
+export const TEST_USER_DATA = {
+  name: 'Rubi Rhod',
+  address: 'United States, New-York, Times Square',
+  email: 'Rubi_Rod@icloud.com',
+  phone: '+37533123456789',
+  nameCard: 'RUBI RHOD',
+  numberCard: '5555 4444 3333 2222',
+  dateCard: '05/25',
+  cvvCard: '123',
 };

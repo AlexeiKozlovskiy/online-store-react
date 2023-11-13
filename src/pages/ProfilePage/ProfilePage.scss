@@ -1,0 +1,81 @@
+@import 'src/assets/styles/common.scss';
+
+.profile {
+  font:
+    1.5rem 'Roboto',
+    sans-serif;
+
+  &__titel {
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: #95bea1;
+    text-align: center;
+  }
+
+  &__container {
+    padding: 30px;
+  }
+
+  &__panel {
+    width: 200px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    position: absolute;
+  }
+
+  &__list {
+    list-style-type: none;
+    margin: 10px 10px;
+    min-height: 540px;
+
+    li {
+      padding: 3px 6px;
+      margin-bottom: 6px;
+      color: black;
+      font-size: 1.2rem;
+      transition: 0.3s background-color;
+      border-radius: 6px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $olivaHover;
+        transition: 0.3s background-color;
+      }
+    }
+  }
+  &__section {
+    width: 500px;
+    margin: 0 auto;
+  }
+}
+
+.profile-form {
+  padding-top: 20px;
+  &__title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #95bea1;
+    letter-spacing: 0.1px;
+  }
+}
+
+.profile-btn {
+  background-color: $oliva;
+  border-radius: 5px;
+  color: white;
+  height: 30px;
+  width: 70px;
+  margin-top: 15px;
+  border: none;
+  font-size: 1.2rem;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $olivaHover;
+    transition: all 0.2s;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}

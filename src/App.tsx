@@ -5,6 +5,7 @@ import { CartPage } from '@/pages/CartPage/CartPage';
 import { Header } from '@/components/Header/Header';
 import { ProductPage } from '@/pages/ProductPage/ProductPage';
 import { useMyURLContext } from '@/context/URLContext';
+import { ProfilePage } from '@/pages/ProfilePage/ProfilePage';
 
 function App() {
   const { productNameFromURL } = useMyURLContext();
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<MainPage />}></Route>
           <Route path="cart" element={<CartPage />}></Route>
           <Route path={`/product/${productNameFromURL}`} element={<ProductPage />}></Route>
+          <Route path="profile" element={<ProfilePage />}></Route>
           <Route path="*" element={<Page404 />}></Route>
         </Routes>
       </div>

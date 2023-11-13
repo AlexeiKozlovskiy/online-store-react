@@ -36,18 +36,6 @@
     flex-direction: column;
     text-align: start;
   }
-
-  &__name,
-  &__shipping-address,
-  &__email,
-  &__phone-number {
-    width: calc(100% - 20px);
-    padding: 10px 10px;
-    border: solid $oliva 1px;
-    margin-top: 20px;
-    outline: 0;
-    border-radius: 5px;
-  }
 }
 
 .payment-details__title,
@@ -63,7 +51,7 @@
   &__top {
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: 10px;
   }
 
   &__title {
@@ -103,41 +91,6 @@
 .card-details {
   display: flex;
   flex-direction: column;
-
-  &__name,
-  &__card-number,
-  &__date,
-  &__cvv {
-    width: calc(100% - 20px);
-    padding: 10px 10px;
-    border: solid $oliva 1px;
-    margin-top: 20px;
-    outline: 0;
-    border-radius: 5px;
-  }
-}
-
-.bottom-row {
-  display: flex;
-  justify-content: space-between;
-
-  &__cvv,
-  &__date {
-    width: 220px;
-    text-align: center;
-
-    @media screen and (max-width: 580px) {
-      width: 170px;
-    }
-
-    @media screen and (max-width: 460px) {
-      width: 150px;
-    }
-
-    @media screen and (max-width: 410px) {
-      width: 120px;
-    }
-  }
 }
 
 .summary-content {

@@ -12,12 +12,7 @@ export const UserIcon = ({ handleClick }: IUserIcon) => {
     if (user) {
       if (user.isGoogle) {
         return (
-          <img
-            className="google-logo"
-            src={user?.picture}
-            alt={user?.login}
-            onClick={handleClick}
-          />
+          <img className="google-logo" src={user.picture} alt={user.login} onClick={handleClick} />
         );
       } else {
         return user.login

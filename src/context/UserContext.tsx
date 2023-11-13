@@ -1,44 +1,29 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import {
-  FormDataSignIN,
-  FormDataSignUP,
+  MyForms,
   User,
   CredentialGoogle,
   Authentication,
   RootReducerProps,
   FORM_MESSAGES,
-  AuthData,
 } from '@/types/types';
 import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/reducers/controller';
-import { useAuthApi } from '@/api/_authAPI';
+import { useAuthApi } from '@/api/AuthAPI';
 
 interface IUserContext {
   user: User | null;
   authenticated: boolean;
   logOut: () => void;
-  signIn: ({ formSignIN }: FormDataSignIN) => void;
-  signUP: ({ formSignUP }: FormDataSignUP) => void;
+  signIn: ({ formSignIN }: MyForms) => void;
+  signUP: ({ formSignUP }: MyForms) => void;
   showPreloader: boolean;
   errorUser: string | null;
   isFetching: boolean;
   setGoogleData: (value: CredentialGoogle) => void;
   setErrorUser: (value: string | null) => void;
 }
-
-type Common = {
-  user: User | null;
-  data: AuthData | null;
-  auth: boolean;
-  error: string | null;
-};
-
-type Refresh = Omit<Common, 'auth' | 'user'>;
-type AuthUser = Omit<Common, 'data' | 'error'>;
-type SignUP = Pick<Common, 'error'>;
-type SignIn = Pick<Common, 'data' | 'error'>;
-type GetUser = Pick<Common, 'error'> & { data: User | null };
 
 export const useMyUserContext = () => useContext(UserContext);
 
@@ -101,7 +86,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     async function getUserDetails() {
-      const authUser: AuthUser = await getAuthUser();
+      const authUser = await getAuthUser();
       const { auth, user } = authUser;
 
       if (!auth || !user) {
@@ -119,20 +104,22 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [googleData]);
 
-  async function signIn(formSignIN: FormDataSignIN) {
+  async function signIn(formSignIN: MyForms) {
     setShowPreloader(true);
     const signInData = await getSignIn(formSignIN);
-    const { data, error } = signInData as SignIn;
-    const { user, backendTokens } = data as AuthData;
     setShowPreloader(false);
 
-    if (error) {
-      setErrorUser(`${FORM_MESSAGES.INCORRECT_USERNAME_OR_PASSWORD} ${error}.`);
-    }
-    if (data) {
-      const { id: idUser } = user;
-      setAuthParams({ ...backendTokens, idUser });
-      closeModalSignInAnimation();
+    if (signInData) {
+      const { data, error } = signInData;
+
+      if (data) {
+        const { user, backendTokens } = data;
+        const { id: idUser } = user;
+        setAuthParams({ ...backendTokens, idUser });
+        closeModalSignInAnimation();
+      } else {
+        setErrorUser(`${FORM_MESSAGES.INCORRECT_USERNAME_OR_PASSWORD} ${error}.`);
+      }
     }
   }
 
@@ -140,18 +127,21 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     setShowPreloader(true);
     setIsFetching(true);
     const signInGoogleData = await getSignInGoogle(dataGoogle);
-    const { data, error } = signInGoogleData as SignIn;
-    const { user, backendTokens } = data as AuthData;
+
     setIsFetching(false);
     setShowPreloader(false);
 
-    if (error) {
-      setErrorUser(`${FORM_MESSAGES.SOMETHING_WRONG_WITH_GOOGLE} ${error}.`);
-    }
-    if (data) {
-      const { id: idUser } = user;
-      setAuthParams({ ...backendTokens, idUser });
-      setAutenticated(true);
+    if (signInGoogleData) {
+      const { data, error } = signInGoogleData;
+
+      if (data) {
+        const { user, backendTokens } = data;
+        const { id: idUser } = user;
+        setAuthParams({ ...backendTokens, idUser });
+        setAutenticated(true);
+      } else {
+        setErrorUser(`${FORM_MESSAGES.SOMETHING_WRONG_WITH_GOOGLE} ${error}.`);
+      }
     }
   }
 
@@ -164,36 +154,33 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
     setIsFetching(true);
     const authUser = await getUser(accessToken, idUser);
-    const { data: user, error } = authUser as GetUser;
+    const { data: user } = authUser;
     setIsFetching(false);
 
-    if (error) {
-      setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
-    }
     if (user) {
       return { auth: true, user };
     } else {
+      logOut();
+      setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
       return defaultReturnObject;
     }
   }
 
   async function refreshTokens() {
     const token = await getRefreshTokens(refreshToken!);
-    const { data, error } = token as Refresh;
-    const { backendTokens } = data as AuthData;
+    const { data, error } = token;
 
-    if (error) {
-      setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
-    }
     if (data) {
-      setAuthParams({ ...backendTokens, idUser });
+      setAuthParams({ ...data.backendTokens, idUser });
+    } else if (error) {
+      setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
     }
   }
 
-  async function signUP(formSignUP: FormDataSignUP) {
+  async function signUP(formSignUP: MyForms) {
     setShowPreloader(true);
     const signUPData = await getSignUP(formSignUP);
-    const { error } = signUPData as SignUP;
+    const { error } = signUPData;
     setShowPreloader(false);
 
     if (error) {
