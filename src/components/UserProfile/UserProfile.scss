@@ -1,0 +1,26 @@
+@import 'src/assets/styles/common.scss';
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__name-email {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  &__name {
+    font: 0.8rem $Roboto;
+    font-weight: 400;
+    color: black;
+  }
+
+  &__email {
+    font: 0.8rem $Roboto;
+    font-weight: 400;
+    color: rgba(black, 0.5);
+  }
+}

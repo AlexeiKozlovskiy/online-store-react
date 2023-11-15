@@ -1,6 +1,6 @@
 @import 'src/assets/styles/common.scss';
 
-.modal-overlay {
+.user-modal-overlay {
   z-index: 1;
   position: fixed;
   top: 0;
@@ -9,7 +9,7 @@
   width: 100vw;
 }
 
-.modal-window {
+.user-modal {
   position: absolute;
   top: 95px;
   right: 20px;
@@ -30,12 +30,7 @@
     font-weight: 500;
     color: black;
     text-align: left;
-  }
-
-  &__person {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    padding-bottom: 5px;
   }
 
   &__line {
@@ -43,40 +38,34 @@
     width: 100%;
   }
 
-  &__log-out {
-    margin: 5px 0;
-    width: 100%;
-    box-sizing: border-box;
-    font: 0.9rem $Roboto;
-    color: black;
-    transition: 0.3s color;
+  &__list {
+    list-style-type: none;
 
-    &:hover {
-      cursor: pointer;
-      transition: 0.2s color;
-      color: red;
+    li {
+      font: 0.9rem $Roboto;
+      padding: 4px;
+      transition: 0.3s background-color;
+      color: black;
+      transition: 0.3s background-color;
+      padding: 3px 5px;
+      border-radius: 3px;
+
+      &:hover {
+        cursor: pointer;
+        transition: 0.2s color;
+        background-color: $olivaHover;
+        transition: 0.3s background-color;
+      }
     }
   }
 }
 
-.modal-person {
-  &__name-email {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-  }
-
-  &__name {
-    font: 0.8rem $Roboto;
-    font-weight: 400;
+.my-profile-link {
+  &:visited {
     color: black;
   }
-
-  &__email {
-    font: 0.8rem $Roboto;
-    font-weight: 400;
-    color: rgba(black, 0.5);
+  &:link {
+    color: #0000d0;
   }
 }
 

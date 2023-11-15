@@ -6,7 +6,7 @@ import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useMySortingsContext } from '@/context/SortingsContext';
-import { useGetProductsQuery } from '@/api/_productsAPI';
+import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
 
 export function MainPage() {

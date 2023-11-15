@@ -1,11 +1,12 @@
 import { HeaderLogo } from '@/components/HeaderLogo/HeaderLogo';
 import { useForm } from 'react-hook-form';
 import { Preloader } from '@/components/Preloader/Preloader';
-import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
-import { FormDataSignIN } from '@/types/types';
+import { MyForms } from '@/types/types';
 import { useMyUserContext } from '@/context/UserContext';
 import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
+import { FormInput } from '@/components/FormInput/FormInput';
+import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
 
 interface IForm {
   handelCloseModalSignIN: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -20,7 +21,7 @@ export function Form({ handelCloseModalSignIN }: IForm) {
     watch,
     reset,
     setValue,
-  } = useForm<FormDataSignIN>({
+  } = useForm<MyForms>({
     defaultValues: {
       formSignIN: {
         email: '',
@@ -28,16 +29,17 @@ export function Form({ handelCloseModalSignIN }: IForm) {
       },
     },
   });
-  const { validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
+
+  const { validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
 
   const { formSignIN } = errors;
   const { password, email } = formSignIN || {};
   const errorsPassword = password?.type;
   const errorsEmail = email?.type;
 
-  const onSubmit = ({ formSignIN }: FormDataSignIN) => {
-    signIn({ formSignIN });
+  const onSubmit = (formSignIN: MyForms) => {
+    signIn(formSignIN);
     reset({ formSignIN: { password: '' } });
   };
 
@@ -59,36 +61,28 @@ export function Form({ handelCloseModalSignIN }: IForm) {
           <div className="signIN-details__info">
             <GoogleButton />
             <p className="hr">Or</p>
-            <div>
-              <input
-                placeholder="Email"
-                className={`signIN-details__email ${errorsEmail && 'invalid'} ${
-                  isValid && 'valid'
-                }`}
-                type="text"
-                id="emailInputSignIN"
-                {...register('formSignIN.email', {
-                  required: true,
-                  validate: validateEmail,
-                })}
-              />
-              {errorsEmail && errorDefinitions.email[errorsEmail]}
-            </div>
-            <div>
-              <input
-                placeholder="Password"
-                className={`signIN-details__pasword ${errorsPassword && 'invalid'} ${
-                  isValid && 'valid'
-                }`}
-                type="password"
-                id="paswordInputSignIN"
-                {...register('formSignIN.password', {
-                  required: true,
-                  validate: validatePassword,
-                })}
-              />
-              {errorsPassword && errorDefinitions.password[errorsPassword]}
-            </div>
+            <FormInput
+              id="emailInputSignIN"
+              type="text"
+              placeholder="Email"
+              register={register}
+              registerType="formSignIN.email"
+              isValid={isValid}
+              validate={validateEmail}
+              errors={errorsEmail}
+              errorDefinitions={errorDefinitions.email}
+            />
+            <FormInput
+              id="paswordInputSignIN"
+              type="password"
+              placeholder="Password"
+              register={register}
+              registerType="formSignIN.password"
+              isValid={isValid}
+              validate={validatePassword}
+              errors={errorsPassword}
+              errorDefinitions={errorDefinitions.password}
+            />
           </div>
           <div className="signIN__forgot">
             <span>Forgot password?</span>
