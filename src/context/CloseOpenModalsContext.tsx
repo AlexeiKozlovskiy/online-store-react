@@ -45,7 +45,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
   const [openModalUser, setOpenModalUser] = useState(false);
 
   function closeModalSignInAnimation() {
-    const modalWindow = document.querySelector('.signIN-form') as HTMLDivElement;
+    const modalWindow = document.querySelector('.signIN-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
       setOpenModalSignIN(false);
@@ -53,7 +53,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
   }
 
   function closeModalSignUPAnimation() {
-    const modalWindow = document.querySelector('.signUP-form') as HTMLDivElement;
+    const modalWindow = document.querySelector('.signUP-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
       setOpenModalSignUP(false);
@@ -69,7 +69,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
   }
 
   function closeModalPaymentAnimation() {
-    const modalWindow = document.querySelector('.payment-details__info') as HTMLDivElement;
+    const modalWindow = document.querySelector('.profile-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
       setOpenModalPayment(false);
@@ -99,7 +99,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
 
   function handelCloseModalPayment(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
-    if (dataset.id === 'close-modal-payment') {
+    if (dataset.id === 'close-modal-profile') {
       closeModalPaymentAnimation();
     }
   }

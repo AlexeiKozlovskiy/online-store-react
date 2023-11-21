@@ -10,7 +10,7 @@ import {
 import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/reducers/controller';
-import { useAuthApi } from '@/api/AuthAPI';
+import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from '@/api/AuthAPI';
 
 interface IUserContext {
   user: User | null;
@@ -53,7 +53,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     setOpenModalSignUP,
     closeModalSignInAnimation,
   } = useCloseOpenModalsContext();
-  const { getRefreshTokens, getSignIn, getSignInGoogle, getSignUP, getUser } = useAuthApi();
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, refreshToken, expiresIn, idUser } = authState;
@@ -106,7 +105,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   async function signIn(formSignIN: MyForms) {
     setShowPreloader(true);
-    const signInData = await getSignIn(formSignIN);
+    const signInData = await signInApi(formSignIN);
     setShowPreloader(false);
 
     if (signInData) {
@@ -126,7 +125,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   async function signInByGoogle(dataGoogle: CredentialGoogle) {
     setShowPreloader(true);
     setIsFetching(true);
-    const signInGoogleData = await getSignInGoogle(dataGoogle);
+    const signInGoogleData = await signInGoogleApi(dataGoogle);
 
     setIsFetching(false);
     setShowPreloader(false);
@@ -167,7 +166,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   async function refreshTokens() {
-    const token = await getRefreshTokens(refreshToken!);
+    const token = await refreshTokensApi(refreshToken!);
     const { data, error } = token;
 
     if (data) {
@@ -179,7 +178,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
 
   async function signUP(formSignUP: MyForms) {
     setShowPreloader(true);
-    const signUPData = await getSignUP(formSignUP);
+    const signUPData = await signUPApi(formSignUP);
     const { error } = signUPData;
     setShowPreloader(false);
 

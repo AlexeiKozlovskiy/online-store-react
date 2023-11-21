@@ -110,10 +110,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const sortColor = sortProductsSearch.filter(({ color }) => selectedColors.includes(color));
         if (!sortColor.length && selectedColors.length) {
           setFiltersProducts([]);
+        } else if (!selectedColors.length && sortProductsSearch.length) {
+          setSortColor(sortProductsSearch);
         } else if (selectedColors.length) {
           setSortColor(sortColor);
-        } else {
-          setSortColor(sortProductsSearch);
         }
       } else {
         const sortColor = products.filter(({ color }) => selectedColors.includes(color));
@@ -121,7 +121,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterColors();
-  }, [selectedColors, sortProductsSearch, isFetching]);
+  }, [selectedColors, isFetching, sortProductsSearch]);
 
   useEffect(() => {
     function filterCollections() {
@@ -131,10 +131,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         );
         if (!sortCollections.length && selectedCollections.length) {
           setFiltersProducts([]);
+        } else if (!selectedCollections.length && sortProductsSearch.length) {
+          setSortCollections(sortProductsSearch);
         } else if (selectedCollections.length) {
           setSortCollections(sortCollections);
-        } else {
-          setSortCollections(sortProductsSearch);
         }
       } else {
         const sortCollections = products.filter(({ collection }) =>
@@ -146,7 +146,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterCollections();
-  }, [selectedCollections, sortProductsSearch, isFetching]);
+  }, [selectedCollections, isFetching, sortProductsSearch]);
 
   useEffect(() => {
     function filterPrice() {
@@ -167,7 +167,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterPrice();
-  }, [minPrice, maxPrice, selectedPrice, sortProductsSearch, isFetching]);
+  }, [minPrice, maxPrice, selectedPrice, isFetching, sortProductsSearch]);
 
   useEffect(() => {
     function filterSize() {
@@ -188,7 +188,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterSize();
-  }, [minSize, maxSize, selectedSize, sortProductsSearch, isFetching]);
+  }, [minSize, maxSize, selectedSize, isFetching, sortProductsSearch]);
 
   useEffect(() => {
     function filterCategory() {
@@ -198,10 +198,10 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         );
         if (!sortCategory.length && selectedCategory.length) {
           setFiltersProducts([]);
-        } else if (sortCategory.length) {
-          setSortCategory(sortCategory);
-        } else {
+        } else if (!selectedCategory.length && sortProductsSearch.length) {
           setSortCategory(sortProductsSearch);
+        } else if (selectedCategory.length) {
+          setSortCategory(sortCategory);
         }
       } else {
         const sortCategory = products.filter(({ category }) => selectedCategory.includes(category));
@@ -209,7 +209,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       }
     }
     filterCategory();
-  }, [selectedCategory, sortProductsSearch, isFetching]);
+  }, [selectedCategory, isFetching, sortProductsSearch]);
 
   useEffect(() => {
     function filterStock() {
@@ -255,6 +255,8 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const searchItems = products.filter(({ name }) =>
           name.toLowerCase().includes(inputSearchValue.toLowerCase())
         );
+        console.log(searchItems);
+
         if (searchItems) {
           setFiltersProducts(searchItems);
           setSortProductsSearch(searchItems);

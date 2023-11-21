@@ -4,7 +4,7 @@ import { CartItem, ISelect, PageClickEvent, RootReducerProps } from '@/types/typ
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
@@ -12,6 +12,7 @@ import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
+import { useMyUserContext } from '@/context/UserContext';
 
 export function CartPage() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
@@ -22,8 +23,9 @@ export function CartPage() {
   const [countPages, setCountPages] = useState(countCartItem);
   const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
-  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment } =
+  const { openModalPayment, setOpenModalPayment, handelCloseModalPayment, setOpenModalSignIN } =
     useCloseOpenModalsContext();
+  const { authenticated } = useMyUserContext();
 
   useEffect(() => {
     if (perCartPageOption.value === 'all' && countCartItem) {
@@ -38,7 +40,7 @@ export function CartPage() {
     setItemOffset(newOffset);
   }, [curPageCart, itemsPerPage]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(cartItemsState.slice(itemOffset, endOffset));
     setCountPages(Math.ceil(countCartItem / itemsPerPage));
@@ -52,6 +54,14 @@ export function CartPage() {
 
   function handleChangePagination(selectedOption: ISelect | null) {
     setPerCartPageOption(selectedOption!);
+  }
+
+  function checkAuth() {
+    if (!authenticated) {
+      setOpenModalSignIN(true);
+    } else {
+      setOpenModalPayment(true);
+    }
   }
 
   const emtyCart = (
@@ -104,7 +114,7 @@ export function CartPage() {
               countPages={countPages}
               handlePageClick={handlePageClick}
             />
-            <Summary isHandelOrderClick={() => setOpenModalPayment(true)} />
+            <Summary isHandelOrderClick={checkAuth} />
           </div>
         </main>
       )}

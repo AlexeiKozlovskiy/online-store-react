@@ -10,13 +10,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  @media screen and (max-width: 600px) {
-    padding: 0 15px;
-  }
-  @media screen and (max-width: 450px) {
-    height: 80px;
-  }
 }
 
 .header-nav,
@@ -46,6 +39,67 @@
   }
 }
 
+.header-nav > .header-link {
+  display: none;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+  }
+}
+
+.header-nav {
+  @media screen and (max-width: 600px) {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 25px;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(255, 255, 255);
+    margin-right: 0;
+  }
+
+  &[data-show='true'] {
+    display: flex;
+  }
+
+  &__icon {
+    display: none;
+    background: url('../../assets/img/burgerMenu.svg');
+    width: 45px;
+    height: 45px;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: transform 0.3s;
+    }
+
+    @media screen and (max-width: 600px) {
+      display: flex;
+    }
+  }
+
+  .close-btn {
+    @media screen and (max-width: 600px) {
+      display: block;
+    }
+  }
+}
+
+.header-nav-contents {
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
 .header-cart {
   position: relative;
   display: flex;
@@ -58,11 +112,6 @@
     width: 60px;
     height: 60px;
     background-size: contain;
-
-    @media screen and (max-width: 450px) {
-      width: 40px;
-      height: 40px;
-    }
   }
 
   &__amount-container {
@@ -76,14 +125,6 @@
     height: 28px;
     border-radius: 50%;
     background: $oliva;
-
-    @media screen and (max-width: 450px) {
-      width: 25px;
-      height: 25px;
-      top: 5px;
-      right: -3px;
-      background-size: contain;
-    }
   }
 
   &__num {

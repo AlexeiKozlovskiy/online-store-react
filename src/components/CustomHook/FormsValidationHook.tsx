@@ -1,3 +1,4 @@
+import '@/components/FormInput/FormInput.scss';
 import { useState } from 'react';
 import { FormErrorMessages, FORM_MESSAGES, ErrorType } from '@/types/types';
 import { thisYear, thisMonth } from '@/helpers/helpersFunc';
@@ -159,7 +160,7 @@ export function useFormsValidation() {
   };
 
   function ErrorMessage(message: string) {
-    return <div className="error-message">{message}</div>;
+    return <div className="formInput__error-message">{message}</div>;
   }
 
   return {

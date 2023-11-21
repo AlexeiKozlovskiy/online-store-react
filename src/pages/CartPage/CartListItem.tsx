@@ -7,8 +7,9 @@ import { removeProductsFromCartAll } from '@/reducers/controller';
 import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { useMyURLContext } from '@/context/URLContext';
+import { memo } from 'react';
 
-export function CartListItem({
+export const CartListItem = memo(function CartListItem({
   itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },
@@ -50,4 +51,4 @@ export function CartListItem({
       <div className="cart-item__cross" data-id={id} onClick={(e) => handelCrossClick(e)}></div>
     </div>
   );
-}
+});

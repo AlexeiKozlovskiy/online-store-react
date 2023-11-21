@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, useLayoutEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem } from '@/types/types';
 
@@ -16,8 +16,12 @@ export const TotalItemsContextProvider = ({ children }: { children: ReactNode })
   const [totalItems, setTotalItems] = useState(0);
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
 
-  useEffect(() => {
-    setTotalItems(cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0));
+  const getTotalItems = useMemo(() => {
+    return cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0);
+  }, [cartItemsState]);
+
+  useLayoutEffect(() => {
+    setTotalItems(getTotalItems);
   }, [cartItemsState]);
 
   return (

@@ -1,46 +1,34 @@
 @import 'src/assets/styles/common.scss';
 
-.payment-details {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 500px;
-  padding: 20px;
-  background-color: #fff;
-  position: relative;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-family: $Roboto;
-
-  @media screen and (max-width: 580px) {
-    width: 400px;
-    padding: 20px;
-  }
-
-  @media screen and (max-width: 460px) {
-    width: 360px;
-  }
-
-  @media screen and (max-width: 410px) {
-    width: 300px;
-  }
-
-  &__title {
-    font-size: 1.2rem;
-    color: $oliva;
-    letter-spacing: 0.1px;
-  }
-
-  &__info {
+.profile-form {
+  &__modal {
     display: flex;
     flex-direction: column;
-    text-align: start;
-  }
-}
+    gap: 10px;
+    width: 500px;
+    padding: 20px;
+    background-color: #fff;
+    position: relative;
+    border-radius: 10px;
+    font: 1.2rem $Roboto;
 
-.payment-details__title,
-.payment-method__top {
-  display: flex;
+    @media screen and (max-width: 580px) {
+      width: 400px;
+      padding: 20px;
+    }
+
+    @media screen and (max-width: 460px) {
+      width: 360px;
+    }
+
+    @media screen and (max-width: 410px) {
+      width: 300px;
+    }
+
+    @media screen and (max-width: 370px) {
+      width: 270px;
+    }
+  }
 }
 
 .payment-method {
@@ -127,12 +115,5 @@
   text-transform: uppercase;
   color: $greyBorder;
   font-size: 0.6rem;
-}
-
-.valid {
-  border: 1px solid green;
-}
-
-.invalid {
-  border: 1px solid red;
+  padding-top: 10px;
 }

@@ -8,36 +8,26 @@ import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
+import { useMyUserContext } from '@/context/UserContext';
+import { useMyProfileUserContext } from '@/context/ProfileUserContext';
 
 export function ProfilePage() {
-  const [submitData, setSubmitData] = useState({});
   const [currentSection, setCurrentSection] = useState('profile');
-  const [showPreloader, setShowPreloader] = useState(false);
   const [imageValue, setImageValue] = useState('');
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValidating: isValid },
     watch,
     setValue,
   } = useForm<MyForms>({
     defaultValues: {
-      formPayment: {
-        name: '',
-        address: '',
-        email: '',
-        phone: '',
-        nameCard: '',
-        numberCard: '',
-        dateCard: '',
-        cvvCard: '',
-      },
+      formProfile: {},
     },
   });
   const {
     validateName,
     validateAddress,
-    validateEmail,
     validatePhone,
     validateNameCard,
     validateNumderCard,
@@ -46,10 +36,19 @@ export function ProfilePage() {
     errorDefinitions,
   } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
+  const { user } = useMyUserContext();
+  const {
+    getUserProfile,
+    isFetching,
+    createUserProfile,
+    isEmptyProfile,
+    updateUserProfile,
+    showPreloaderChanges,
+  } = useMyProfileUserContext();
 
-  const { formPayment } = errors;
+  const { formProfile } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } =
-    formPayment || {};
+    formProfile || {};
   const errorsName = name?.type;
   const errorsAddress = address?.type;
   const errorsEmail = email?.type;
@@ -59,53 +58,54 @@ export function ProfilePage() {
   const errorsDateCard = dateCard?.type;
   const errorsCvvCard = cvvCard?.type;
 
-  const onSubmit = ({ formPayment }: MyForms) => {
-    const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } = formPayment;
-    setShowPreloader(true);
-    setSubmitData({
-      diliveryData: {
-        name,
-        address,
-        email,
-        phone,
-      },
-      paymentData: {
-        nameCard,
-        numberCard,
-        cvvCard,
-        dateCard,
-      },
-    });
-    setTimeout(() => {
-      setShowPreloader(false);
-    }, 2000);
+  const onSubmit = ({ formProfile }: MyForms) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { email, ...dataForm } = formProfile;
+    if (isEmptyProfile) {
+      createUserProfile(dataForm);
+    } else if (!isEmptyProfile) {
+      updateUserProfile(dataForm);
+    }
   };
 
   useEffect(() => {
-    if (Object.keys(submitData).length !== 0) {
-      console.log('submitData', submitData);
+    async function getProfile() {
+      const profile = await getUserProfile();
+      profile && setValue('formProfile', profile);
     }
-  }, [submitData]);
+    getProfile();
+  }, [user]);
 
   useEffect(() => {
-    const curImage = CARD_IMAGES[+watch('formPayment.numberCard')![0] as keyof CardImages];
-    setImageValue(curImage);
-  }, [watch('formPayment'), watch('formPayment.numberCard')]);
+    function checkImageCard() {
+      const curImage = CARD_IMAGES[+watch('formProfile.numberCard')![0] as keyof CardImages];
+      setImageValue(curImage);
+    }
+    checkImageCard();
+  }, [watch('formProfile'), watch('formProfile.numberCard')]);
+
+  useEffect(() => {
+    user && setValue('formProfile.email', user.email);
+  }, [user, watch('formProfile.email')]);
+
+  function testDataClick() {
+    setValue('formProfile', TEST_USER_DATA);
+  }
 
   function handelClickList(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
     const { id } = dataset;
-
-    if (id === 'profile') {
-      setCurrentSection('profile');
+    switch (id) {
+      case 'profile':
+        setCurrentSection('profile');
+        break;
+      case 'favorites':
+        setCurrentSection('favorites');
+        break;
+      case 'shopping':
+        setCurrentSection('shopping');
+        break;
     }
-    if (id === 'shopping') {
-      setCurrentSection('shopping');
-    }
-  }
-
-  function testDataClick() {
-    setValue('formPayment', TEST_USER_DATA);
   }
 
   return (
@@ -117,6 +117,9 @@ export function ProfilePage() {
             <li data-id="profile" onClick={(e) => handelClickList(e)}>
               Profile
             </li>
+            <li data-id="favorites" onClick={(e) => handelClickList(e)}>
+              Favorites
+            </li>
             <li data-id="shopping" onClick={(e) => handelClickList(e)}>
               My shopping
             </li>
@@ -125,121 +128,141 @@ export function ProfilePage() {
         {currentSection === 'profile' && (
           <section className="profile__section section-profile">
             <UserProfile />
-            <form className="profile-form" onSubmit={handleSubmit(onSubmit)}>
-              <div className="profile-form__info">
-                <h4 className="profile-form__title">PAYMENT DETAILS</h4>
-                <FormInput
-                  id="nameInput"
-                  type="text"
-                  placeholder="Name"
-                  register={register}
-                  registerType="formPayment.name"
-                  isValid={isValid}
-                  validate={validateName}
-                  errors={errorsName}
-                  errorDefinitions={errorDefinitions.name}
-                />
-                <FormInput
-                  id="addressInput"
-                  type="text"
-                  placeholder="Address"
-                  register={register}
-                  registerType="formPayment.address"
-                  isValid={isValid}
-                  validate={validateAddress}
-                  errors={errorsAddress}
-                  errorDefinitions={errorDefinitions.address}
-                />
-                <FormInput
-                  id="emailInput"
-                  type="text"
-                  placeholder="Email"
-                  register={register}
-                  registerType="formPayment.email"
-                  isValid={isValid}
-                  validate={validateEmail}
-                  errors={errorsEmail}
-                  errorDefinitions={errorDefinitions.email}
-                />
-                <FormInput
-                  id="phoneInput"
-                  type="tel"
-                  placeholder="Phone +375 ..."
-                  register={register}
-                  registerType="formPayment.phone"
-                  isValid={isValid}
-                  validate={validatePhone}
-                  errors={errorsPhone}
-                  errorDefinitions={errorDefinitions.phone}
-                />
-              </div>
-              <div className="payment-method__top">
-                <h4 className="profile-form__title">PAYMENT METHOD</h4>
-                <div className={`payment-method__cards ${imageValue}`}>
-                  <div className="cards__img"></div>
-                </div>
-              </div>
-              <div className="profile-form__info">
-                <FormInput
-                  id="cardInput"
-                  type="text"
-                  placeholder="Name on card"
-                  register={register}
-                  registerType="formPayment.nameCard"
-                  isValid={isValid}
-                  validate={validateNameCard}
-                  errors={errorsNameCard}
-                  errorDefinitions={errorDefinitions.nameCard}
-                />
-                <FormInput
-                  id="numberCartInput"
-                  type="text"
-                  placeholder="хxxx xxxx xxxx xxxx"
-                  register={register}
-                  registerType="formPayment.numberCard"
-                  isValid={isValid}
-                  validate={validateNumderCard}
-                  errors={errorsNumderCard}
-                  errorDefinitions={errorDefinitions.numberCard}
-                />
-                <div className="profile-form__info bottom-row">
-                  <FormInput
-                    id="dateCartInput"
-                    type="text"
-                    placeholder="MM/YY"
-                    className="bottom-row__date"
-                    register={register}
-                    registerType="formPayment.dateCard"
-                    isValid={isValid}
-                    validate={validateDateCard}
-                    errors={errorsDateCard}
-                    errorDefinitions={errorDefinitions.dateCard}
-                  />
-                  <FormInput
-                    id="cvvCardInput"
-                    type="text"
-                    placeholder="CVV"
-                    className="bottom-row__cvv"
-                    register={register}
-                    registerType="formPayment.cvvCard"
-                    isValid={isValid}
-                    validate={validateCvvCard}
-                    errors={errorsCvvCard}
-                    errorDefinitions={errorDefinitions.cvvCard}
-                  />
-                </div>
-              </div>
-              <button className="profile-btn">Save</button>
-            </form>
-            {showPreloader && <Preloader />}
-            <div className="payment-test" onClick={testDataClick}>
-              Test user data
-            </div>
+            <>
+              {isFetching ? (
+                <Preloader />
+              ) : (
+                <form className="profile-form" onSubmit={handleSubmit(onSubmit)}>
+                  <div className="profile-form__info">
+                    <h4 className="profile-form__title">PAYMENT DETAILS</h4>
+                    <FormInput
+                      id="nameInput"
+                      type="text"
+                      name={watch('formProfile.name') && 'Name'}
+                      placeholder="Name"
+                      register={register}
+                      registerType="formProfile.name"
+                      isValid={isValid}
+                      validate={validateName}
+                      errors={errorsName}
+                      errorDefinitions={errorDefinitions.name}
+                    />
+                    <FormInput
+                      id="addressInput"
+                      type="text"
+                      name={watch('formProfile.address') && 'Address'}
+                      placeholder="Address"
+                      register={register}
+                      registerType="formProfile.address"
+                      isValid={isValid}
+                      validate={validateAddress}
+                      errors={errorsAddress}
+                      errorDefinitions={errorDefinitions.address}
+                    />
+                    <FormInput
+                      id="emailInput"
+                      type="text"
+                      name={watch('formProfile.email') && 'Email'}
+                      disabled={true}
+                      required={false}
+                      placeholder="Email"
+                      register={register}
+                      registerType="formProfile.email"
+                      isValid={isValid}
+                      errors={errorsEmail}
+                      errorDefinitions={errorDefinitions.email}
+                    />
+                    <FormInput
+                      id="phoneInput"
+                      type="tel"
+                      name={watch('formProfile.phone') && 'Phone'}
+                      placeholder="Phone"
+                      register={register}
+                      registerType="formProfile.phone"
+                      isValid={isValid}
+                      validate={validatePhone}
+                      errors={errorsPhone}
+                      errorDefinitions={errorDefinitions.phone}
+                    />
+                  </div>
+                  <div className="payment-method__top">
+                    <h4 className="profile-form__title">PAYMENT METHOD</h4>
+                    <div className={`payment-method__cards ${imageValue}`}>
+                      <div className="cards__img"></div>
+                    </div>
+                  </div>
+                  <div className="profile-form__info">
+                    <FormInput
+                      id="cardInput"
+                      type="text"
+                      name={watch('formProfile.nameCard') && 'Name on card'}
+                      placeholder="Name on card"
+                      register={register}
+                      registerType="formProfile.nameCard"
+                      isValid={isValid}
+                      validate={validateNameCard}
+                      errors={errorsNameCard}
+                      errorDefinitions={errorDefinitions.nameCard}
+                    />
+                    <FormInput
+                      id="numberCartInput"
+                      type="text"
+                      name={watch('formProfile.numberCard') && 'Number card'}
+                      placeholder="хxxx xxxx xxxx xxxx"
+                      register={register}
+                      registerType="formProfile.numberCard"
+                      isValid={isValid}
+                      validate={validateNumderCard}
+                      errors={errorsNumderCard}
+                      errorDefinitions={errorDefinitions.numberCard}
+                    />
+                    <div className="profile-form__info bottom-row">
+                      <FormInput
+                        id="dateCartInput"
+                        type="text"
+                        name={watch('formProfile.dateCard') && 'MM/YY'}
+                        placeholder="MM/YY"
+                        className="bottom-row__date"
+                        register={register}
+                        registerType="formProfile.dateCard"
+                        isValid={isValid}
+                        validate={validateDateCard}
+                        errors={errorsDateCard}
+                        errorDefinitions={errorDefinitions.dateCard}
+                      />
+                      <FormInput
+                        id="cvvCardInput"
+                        type="text"
+                        name={watch('formProfile.cvvCard') && 'CVV'}
+                        placeholder="CVV"
+                        className="bottom-row__cvv"
+                        register={register}
+                        registerType="formProfile.cvvCard"
+                        isValid={isValid}
+                        validate={validateCvvCard}
+                        errors={errorsCvvCard}
+                        errorDefinitions={errorDefinitions.cvvCard}
+                      />
+                    </div>
+                  </div>
+                  <button className="profile-btn">{isEmptyProfile ? `Save` : 'Change'}</button>
+                  <div className="payment-test" onClick={testDataClick}>
+                    Test user data
+                  </div>
+                </form>
+              )}
+            </>
+            {showPreloaderChanges && <Preloader />}
+          </section>
+        )}
+        {currentSection === 'favorites' && (
+          <section className="profile__section section-my-shopping">
+            <p>Favorites section in developing...</p>
           </section>
         )}
         {currentSection === 'shopping' && (
           <section className="profile__section section-my-shopping">
-            <p>In developing</p>
+            <p>My shopping section in developing...</p>
           </section>
         )}
       </div>

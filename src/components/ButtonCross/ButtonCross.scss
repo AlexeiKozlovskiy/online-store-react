@@ -1,0 +1,21 @@
+@import 'src/assets/styles/common.scss';
+
+.close-btn {
+  width: 36px;
+  height: 36px;
+  position: absolute;
+  z-index: 2;
+  background: white
+    url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
+    no-repeat center;
+  right: 20px;
+  top: 25px;
+  display: none;
+  transition: transform 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: transform 0.3s;
+  }
+}

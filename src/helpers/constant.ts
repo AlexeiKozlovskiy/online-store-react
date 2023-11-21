@@ -66,8 +66,8 @@ export const PROMOCODES = [
   },
 ];
 
-export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
-// export const BASE_URL = 'http://localhost:4000';
+// export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
+export const BASE_URL = 'http://localhost:4000';
 
 export const API_ROUTES = {
   SIGN_UP: `${BASE_URL}/auth/register`,
@@ -75,6 +75,9 @@ export const API_ROUTES = {
   SIGN_IN_GOOGLE: `${BASE_URL}/auth/login/google`,
   GET_USER: `${BASE_URL}/user/`,
   REFRESH: `${BASE_URL}/auth/refresh/`,
+  PROFILE: `${BASE_URL}/profile/`,
+  PROFILE_CREATE: `${BASE_URL}/profile/create`,
+  PROFILE_UPDATE: `${BASE_URL}/profile/update`,
 };
 
 export const CARD_IMAGES = {
@@ -86,7 +89,6 @@ export const CARD_IMAGES = {
 export const TEST_USER_DATA = {
   name: 'Rubi Rhod',
   address: 'United States, New-York, Times Square',
-  email: 'Rubi_Rod@icloud.com',
   phone: '+37533123456789',
   nameCard: 'RUBI RHOD',
   numberCard: '5555 4444 3333 2222',

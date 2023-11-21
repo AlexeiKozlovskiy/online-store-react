@@ -1,5 +1,5 @@
 import './TopMainPanel.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/helpers/constant';
 import { useMyFiltersContext } from '@/context/FiltersContext';
@@ -11,7 +11,7 @@ interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent) => void;
 }
 
-export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
+export const SortedSelect = memo(function SortedSelect({ onClickShowFilter }: ISortedFilters) {
   const { itemsCount } = useMyFiltersContext();
   const {
     isEmptyFilters,
@@ -78,4 +78,4 @@ export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
       </div>
     </>
   );
-}
+});

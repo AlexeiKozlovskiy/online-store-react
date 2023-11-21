@@ -1,8 +1,9 @@
 import { useMyUserContext } from '@/context/UserContext';
 import { UserIcon } from './UserIcon';
 import './UserProfile.scss';
+import { memo } from 'react';
 
-export const UserProfile = () => {
+export const UserProfile = memo(function UserProfile() {
   const { user } = useMyUserContext();
 
   return (
@@ -14,4 +15,4 @@ export const UserProfile = () => {
       </div>
     </div>
   );
-};
+});

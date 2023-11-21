@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
-
 import './SideFilter.scss';
 import Slider from 'react-slider';
+import { memo, useEffect, useLayoutEffect, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
 import { SelectedFilter } from '@/types/types';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useMyURLContext } from '@/context/URLContext';
+import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 interface ISideFilter {
   showFilters: boolean;
   onClickHideFilter: (event: React.MouseEvent) => void;
 }
 
-export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
+export const SideFilter = memo(function SideFilter({
+  showFilters,
+  onClickHideFilter,
+}: ISideFilter) {
   const {
     selectedColors,
     selectedCollections,
@@ -63,7 +66,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
     selectedMaxStock,
   ]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function getBalancerFilters() {
       if (selectedMinPrice === PRICE_MIN && selectedMaxPrice === PRICE_MAX) {
         setPrice([balancedMinPrice, balancedMaxPrice]);
@@ -289,7 +292,9 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
           />
         </div>
       </div>
-      <div className="filters__close-btn" onClick={onClickHideFilter}></div>
+      <ButtonCross onClickCross={onClickHideFilter} />
     </div>
   );
-}
+});
+
+// export default SideFilter;

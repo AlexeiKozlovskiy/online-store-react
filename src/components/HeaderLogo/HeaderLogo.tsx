@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import './HeaderLogo.scss';
 
-export function HeaderLogo() {
+export const HeaderLogo = memo(function HeaderLogo() {
   return (
     <>
       <span className="header-logo">
@@ -10,4 +11,4 @@ export function HeaderLogo() {
       </span>
     </>
   );
-}
+});
