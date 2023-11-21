@@ -66,8 +66,8 @@ export const PROMOCODES = [
   },
 ];
 
-// export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
-export const BASE_URL = 'http://localhost:4000';
+export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
+// export const BASE_URL = 'http://localhost:4000';
 
 export const API_ROUTES = {
   SIGN_UP: `${BASE_URL}/auth/register`,
