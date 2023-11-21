@@ -1,40 +1,68 @@
 @import 'src/assets/styles/common.scss';
 
 .profile {
-  font:
-    1.5rem 'Roboto',
-    sans-serif;
+  font-family: $Roboto;
 
   &__titel {
     font-weight: 400;
     letter-spacing: 0.05em;
     color: #95bea1;
     text-align: center;
+    font-size: 1.5rem;
+    padding: 10px 0px;
+
+    @media screen and (max-width: 550px) {
+      font: 1.2rem $Roboto;
+    }
   }
 
   &__container {
     padding: 30px;
+
+    @media screen and (max-width: 1000px) {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+    }
   }
 
   &__panel {
-    width: 200px;
+    width: 180px;
     background-color: whitesmoke;
     border-radius: 8px;
     position: absolute;
+
+    @media screen and (max-width: 1000px) {
+      position: relative;
+    }
+
+    @media screen and (max-width: 550px) {
+      border-radius: 4px;
+    }
   }
 
   &__list {
     list-style-type: none;
-    margin: 10px 10px;
-    min-height: 540px;
+    margin: 8px 8px;
+    min-height: 600px;
+    font-size: 1.2rem;
+
+    @media screen and (max-width: 550px) {
+      font-size: 0.8rem;
+      margin: 3px 3px;
+    }
 
     li {
       padding: 3px 6px;
       margin-bottom: 6px;
       color: black;
-      font-size: 1.2rem;
       transition: 0.3s background-color;
       border-radius: 6px;
+
+      @media screen and (max-width: 550px) {
+        border-radius: 3px;
+        padding: 2px 4px;
+      }
 
       &:hover {
         cursor: pointer;
@@ -43,6 +71,7 @@
       }
     }
   }
+
   &__section {
     width: 500px;
     margin: 0 auto;
@@ -51,11 +80,16 @@
 
 .profile-form {
   padding-top: 20px;
+
   &__title {
     font-size: 1.2rem;
     font-weight: 400;
     color: #95bea1;
     letter-spacing: 0.1px;
+
+    @media screen and (max-width: 550px) {
+      font-size: 1rem;
+    }
   }
 }
 
@@ -64,10 +98,10 @@
   border-radius: 5px;
   color: white;
   height: 30px;
-  width: 70px;
+  width: 80px;
   margin-top: 15px;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 
   &:hover {
     cursor: pointer;

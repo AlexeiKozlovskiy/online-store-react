@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, useLayoutEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem, PromocodeData } from '@/types/types';
 
@@ -20,27 +20,25 @@ export const TotalPriceContextProvider = ({ children }: { children: ReactNode })
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalPriceByPromocodes, setTotalPriceByPromocodes] = useState(0);
 
-  useEffect(() => {
-    const totalPrice = getTotalPrice();
-    setTotalPrice(totalPrice);
+  const getTotalPrice = useMemo(() => {
+    return cartItemsState.reduce((acc, { product, quantity }) => acc + product.price * quantity, 0);
   }, [cartItemsState]);
 
-  useEffect(() => {
-    const discount = promocodeState.applied?.reduce((acc, cur) => acc + cur.discount, 0);
-    if (discount) {
-      setTotalPriceByPromocodes(getTotalPrice() - (discount / 100) * getTotalPrice());
+  const getTotalDiscount = useMemo(() => {
+    return promocodeState.applied.reduce((acc, { discount }) => acc + discount, 0);
+  }, [promocodeState]);
+
+  useLayoutEffect(() => {
+    setTotalPrice(getTotalPrice);
+  }, [cartItemsState]);
+
+  useLayoutEffect(() => {
+    if (getTotalDiscount) {
+      setTotalPriceByPromocodes(getTotalPrice - (getTotalDiscount / 100) * getTotalPrice);
     } else {
-      const totalPrices = getTotalPrice();
-      setTotalPriceByPromocodes(totalPrices);
+      setTotalPriceByPromocodes(getTotalPrice);
     }
   }, [promocodeState, cartItemsState]);
-
-  function getTotalPrice() {
-    return cartItemsState.reduce(
-      (count, cartItem) => count + cartItem.product.price * cartItem.quantity,
-      0
-    );
-  }
 
   return (
     <TotalPriceContext.Provider

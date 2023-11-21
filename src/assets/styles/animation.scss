@@ -148,3 +148,13 @@
     transform: translateX(300px);
   }
 }
+
+@keyframes show-name-input {
+  0% {
+    transform: translateY(20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}

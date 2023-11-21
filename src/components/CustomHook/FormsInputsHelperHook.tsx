@@ -24,46 +24,46 @@ export function useFormsInputsHelper({ watch, setValue }: Helper) {
   }, [watch('formSignUP.email')]);
 
   useEffect(() => {
-    setValue('formPayment.address', watch('formPayment.address')?.substring(0, 70));
-  }, [watch('formPayment.address')]);
+    setValue('formProfile.address', watch('formProfile.address')?.substring(0, 70));
+  }, [watch('formProfile.address')]);
 
   useEffect(() => {
     setValue(
-      'formPayment.phone',
-      watch('formPayment.phone')
+      'formProfile.phone',
+      watch('formProfile.phone')
         ?.replace(/[^\d+]/g, '')
         .substring(0, 16)
     );
-  }, [watch('formPayment.phone')]);
+  }, [watch('formProfile.phone')]);
 
   useEffect(() => {
-    setValue('formPayment.nameCard', watch('formPayment.nameCard')?.substring(0, 40));
-  }, [watch('formPayment.nameCard')]);
+    setValue('formProfile.nameCard', watch('formProfile.nameCard')?.substring(0, 40));
+  }, [watch('formProfile.nameCard')]);
 
   useEffect(() => {
     const valueNumber =
-      watch('formPayment.numberCard')
+      watch('formProfile.numberCard')
         ?.replace(/[^\d]/g, '')
         .substring(0, 16)
         .match(/.{1,4}/g)
         ?.join(' ') || '';
-    setValue('formPayment.numberCard', valueNumber);
-  }, [watch('formPayment.numberCard')]);
+    setValue('formProfile.numberCard', valueNumber);
+  }, [watch('formProfile.numberCard')]);
 
   useEffect(() => {
     const valueDate =
-      watch('formPayment.dateCard')
+      watch('formProfile.dateCard')
         ?.replace(/[^\d]/g, '')
         .substring(0, 4)
         .match(/.{1,2}/g)
         ?.join('/') || '';
-    setValue('formPayment.dateCard', valueDate);
-  }, [watch('formPayment.dateCard')]);
+    setValue('formProfile.dateCard', valueDate);
+  }, [watch('formProfile.dateCard')]);
 
   useEffect(() => {
     setValue(
-      'formPayment.cvvCard',
-      watch('formPayment.cvvCard')?.replace(/[^\d]/g, '').substring(0, 3)
+      'formProfile.cvvCard',
+      watch('formProfile.cvvCard')?.replace(/[^\d]/g, '').substring(0, 3)
     );
-  }, [watch('formPayment.cvvCard')]);
+  }, [watch('formProfile.cvvCard')]);
 }

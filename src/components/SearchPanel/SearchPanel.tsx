@@ -1,8 +1,8 @@
 import './SearchPanel.scss';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { useMyURLContext } from '@/context/URLContext';
 
-export function SearchPanel() {
+export const SearchPanel = memo(function SearchPanel() {
   const [inputValue, setInputValue] = useState<string | null>('');
   const { inputSearchValue, setInputSearchValue } = useMyURLContext();
 
@@ -46,4 +46,4 @@ export function SearchPanel() {
       </div>
     </label>
   );
-}
+});

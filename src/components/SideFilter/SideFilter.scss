@@ -90,6 +90,7 @@
   @media screen and (max-width: 900px) {
     margin-right: 20px;
   }
+
   @media screen and (max-width: 768px) {
     display: none;
     align-items: center;
@@ -109,26 +110,7 @@
     display: flex;
   }
 
-  &__close-btn {
-    @media screen and (max-width: 768px) {
-      width: 36px;
-      height: 36px;
-      position: absolute;
-      background: white
-        url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
-        no-repeat center;
-      right: 25px;
-      top: 5px;
-      display: none;
-
-      &:hover {
-        cursor: pointer;
-        transform: scale(1.1);
-      }
-    }
-  }
-
-  &[data-show='true'] &__close-btn {
+  .close-btn {
     @media screen and (max-width: 768px) {
       display: block;
     }
@@ -142,7 +124,7 @@
   border-top: solid 1px $greyBorder;
 
   &:not(:last-child) {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
   }
 
   &__title {

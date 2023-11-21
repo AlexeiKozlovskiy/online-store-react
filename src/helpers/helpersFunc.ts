@@ -1,4 +1,5 @@
 import { BalancerCategory, BalancerColor, BalancerCollection, Product } from '@/types/types';
+import { AxiosError } from 'axios';
 
 export function formatPrice(price: number) {
   return price?.toFixed(2);
@@ -105,3 +106,18 @@ export function sortByName(products: Product[]) {
     return 0;
   });
 }
+
+export function commonError(err: unknown) {
+  const error = err as AxiosError<Error>;
+  const { message } = error.response!.data;
+  console.error(error.response!.data);
+  return { error: message, data: null };
+}
+
+export const handlerScrollUp = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+};

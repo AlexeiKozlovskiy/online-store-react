@@ -14,6 +14,7 @@
   &__container {
     padding: 20px 10px;
     margin: auto;
+    position: relative;
 
     @media screen and (max-width: 460px) {
       padding: 10px 5px;
@@ -21,21 +22,16 @@
   }
 }
 
-.modal__close-btn {
-  background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
-    no-repeat center center / contain;
-  width: 36px;
-  height: 36px;
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  transition: transform 0.2s;
+[data-id='close-modal-profile'] {
+  display: flex;
+}
 
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.1);
-    transition: transform 0.2s;
-  }
+[data-id='close-modal-signIN'] {
+  display: flex;
+}
+
+[data-id='close-modal-signUP'] {
+  display: flex;
 }
 
 .main-modal-btn {

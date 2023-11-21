@@ -5,13 +5,14 @@ import { addProductsToCart, removeProductsFromCartAll } from '@/reducers/control
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { useMyURLContext } from '@/context/URLContext';
 import { formatNameForURL } from '@/helpers/helpersFunc';
+import { memo } from 'react';
 
 type ProductViewData = {
   isInCart: boolean;
   product: Product;
 };
 
-export function ProductItem({ isInCart, product }: ProductViewData) {
+export const ProductItem = memo(function ProductItem({ isInCart, product }: ProductViewData) {
   const { setProductNameFromURL } = useMyURLContext();
   const { data: products } = useGetProductsQuery();
 
@@ -66,4 +67,4 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
       </div>
     </div>
   );
-}
+});

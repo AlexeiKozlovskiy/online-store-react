@@ -1,11 +1,12 @@
 import { useMyUserContext } from '@/context/UserContext';
 import './UserIcon.scss';
+import { memo } from 'react';
 
 export interface IUserIcon {
   handleClick?: React.MouseEventHandler;
 }
 
-export const UserIcon = ({ handleClick }: IUserIcon) => {
+export const UserIcon = memo(function UserIcon({ handleClick }: IUserIcon) {
   const { user } = useMyUserContext();
 
   function getFirstLettersOrImgUser() {
@@ -27,4 +28,4 @@ export const UserIcon = ({ handleClick }: IUserIcon) => {
       {getFirstLettersOrImgUser()}
     </div>
   );
-};
+});

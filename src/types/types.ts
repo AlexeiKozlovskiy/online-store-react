@@ -182,10 +182,14 @@ export interface Authentication extends BackendTokens {
 
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
 
-export interface FormPayment {
+export interface UserProfileResp {
+  data: UserProfile;
+}
+
+export interface UserProfile {
   name: string;
   address: string;
-  email: string;
+  email?: string;
   phone: string;
   nameCard: string;
   numberCard: string;
@@ -207,33 +211,36 @@ export interface FormSignIN {
 export interface MyForms {
   formSignIN: FormSignIN;
   formSignUP: FormSignUP;
-  formPayment: FormPayment;
+  formProfile: UserProfile;
 }
 
 export interface InputComponents extends errorsForm, RegisterType {
   id: string;
+  name?: string;
   type: string;
   isValid: boolean;
+  disabled?: boolean;
   className?: string;
   placeholder: string;
+  required?: boolean | null;
   register: UseFormRegister<MyForms>;
-  validate: (value: string | any) => boolean;
+  validate?: (value: string | any) => boolean;
   errorDefinitions: Record<ErrorType, JSX.Element>;
 }
 
 interface RegisterType {
   registerType:
-    | 'formPayment'
+    | 'formProfile'
     | 'formSignIN'
     | 'formSignUP'
-    | 'formPayment.numberCard'
-    | 'formPayment.name'
-    | 'formPayment.address'
-    | 'formPayment.email'
-    | 'formPayment.phone'
-    | 'formPayment.nameCard'
-    | 'formPayment.dateCard'
-    | 'formPayment.cvvCard'
+    | 'formProfile.numberCard'
+    | 'formProfile.name'
+    | 'formProfile.address'
+    | 'formProfile.email'
+    | 'formProfile.phone'
+    | 'formProfile.nameCard'
+    | 'formProfile.dateCard'
+    | 'formProfile.cvvCard'
     | 'formSignUP.email'
     | 'formSignUP.password'
     | 'formSignUP.login'

@@ -3,6 +3,7 @@ import { InputComponents } from '@/types/types';
 
 export function FormInput({
   id,
+  name,
   register,
   registerType,
   errors,
@@ -10,20 +11,28 @@ export function FormInput({
   placeholder,
   className,
   type,
+  disabled,
+  required,
   validate,
   errorDefinitions,
 }: InputComponents) {
   return (
-    <div>
+    <div className="formInput">
+      {name && (
+        <label className="formInput__name" htmlFor={id}>
+          {name}
+        </label>
+      )}
       <input
         placeholder={placeholder}
-        className={`formInput ${className && className} ${errors && 'invalid'} ${
+        className={`formInput__input ${className && className} ${errors && 'invalid'} ${
           isValid && 'valid'
         }`}
         type={type}
         id={id}
+        disabled={disabled}
         {...register(registerType, {
-          required: true,
+          required: required === false ? false : true,
           validate,
         })}
       />

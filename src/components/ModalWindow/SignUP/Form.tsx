@@ -7,12 +7,9 @@ import { useMyUserContext } from '@/context/UserContext';
 import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
-interface IForm {
-  handelCloseModalSignUP: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-}
-
-export function Form({ handelCloseModalSignUP }: IForm) {
+export function Form() {
   const { signUP, showPreloader, errorUser } = useMyUserContext();
   const {
     register,
@@ -32,6 +29,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
   });
   useFormsInputsHelper({ watch, setValue });
   const { validateLogin, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
+  const { setOpenModalSignUP, setOpenModalSignIN } = useCloseOpenModalsContext();
 
   const { formSignUP } = errors;
   const { login, password, email } = formSignUP || {};
@@ -44,17 +42,17 @@ export function Form({ handelCloseModalSignUP }: IForm) {
     reset({ formSignUP: { password: '' } });
   };
 
+  function getSigneIN() {
+    setOpenModalSignUP(false);
+    setOpenModalSignIN(true);
+  }
+
   const ErrorSignUP = <div className="form-error-response">{errorUser}</div>;
 
   return (
     <>
-      <form className="signUP-form animation-view-form" onSubmit={handleSubmit(onSubmit)}>
+      <form className="signUP-form" onSubmit={handleSubmit(onSubmit)}>
         <div className="signUP-details">
-          <div
-            className="modal__close-btn"
-            data-id="close-modal-signUP"
-            onClick={() => handelCloseModalSignUP}
-          ></div>
           <div className="signUP-details__title">SIGN UP</div>
           <div className="signIN-details__logo">
             <HeaderLogo />
@@ -65,6 +63,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
             <FormInput
               id="loginInputSignUP"
               type="text"
+              name={watch('formSignUP.login') && 'Login'}
               placeholder="Login"
               register={register}
               registerType="formSignUP.login"
@@ -76,6 +75,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
             <FormInput
               id="emailInputSignUP"
               type="text"
+              name={watch('formSignUP.email') && 'Email'}
               placeholder="Email"
               register={register}
               registerType="formSignUP.email"
@@ -87,6 +87,7 @@ export function Form({ handelCloseModalSignUP }: IForm) {
             <FormInput
               id="paswordInputSignUP"
               type="password"
+              name={watch('formSignUP.password') && 'Password'}
               placeholder="Password"
               register={register}
               registerType="formSignUP.password"
@@ -99,7 +100,9 @@ export function Form({ handelCloseModalSignUP }: IForm) {
           <button className="main-modal-btn">Get started now</button>
           <div className="signUP-already">
             <span>Already a user?</span>
-            <span className="signUP-already__highlight">Log In</span>
+            <span className="signUP-already__highlight" onClick={getSigneIN}>
+              Log In
+            </span>
           </div>
           {showPreloader && <Preloader />}
           {errorUser && ErrorSignUP}
