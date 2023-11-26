@@ -1,6 +1,6 @@
 import './SideFilter.scss';
 import Slider from 'react-slider';
-import { memo, useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
 import { SelectedFilter } from '@/types/types';
 import { useMyFiltersContext } from '@/context/FiltersContext';
@@ -9,46 +9,40 @@ import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 interface ISideFilter {
   showFilters: boolean;
-  onClickHideFilter: (event: React.MouseEvent) => void;
+  onClickHideFilter: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
 
-export const SideFilter = memo(function SideFilter({
-  showFilters,
-  onClickHideFilter,
-}: ISideFilter) {
-  const {
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
-    setSelectedColors,
-    setSelectedCollections,
-    setSelectedCategory,
-    setSelectedPrice,
-    setSelectedSize,
-    setSelectedStock,
-  } = useMyURLContext();
-
-  const {
-    balancerCategory,
-    balancerCollection,
-    balancerColor,
-    balanserPrise,
-    balanserSize,
-    balanserStock,
-  } = useMyFiltersContext();
+export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
+  const { selectedFilters, setSelectedFilters } = useMyURLContext();
+  const { balanserFilters } = useMyFiltersContext();
   const [[priseMin, priseMax], setPrice] = useState<[number | null, number | null]>([null, null]);
   const [[sizeMin, sizeMax], setSize] = useState<[number | null, number | null]>([null, null]);
   const [[stockMin, stockMax], setStock] = useState<[number | null, number | null]>([null, null]);
 
-  const [selectedMinPrice, selectedMaxPrice] = selectedPrice;
+  const {
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
+  } = selectedFilters;
+
+  const {
+    balancerColor,
+    balancerCollection,
+    balanserPrise,
+    balanserSize,
+    balancerCategory,
+    balanserStock,
+  } = balanserFilters;
+
   const [balancedMinPrice, balancedMaxPrice] = balanserPrise;
-  const [selectedMinSize, selectedMaxSize] = selectedSize;
   const [balancedMinSize, balancedMaxSize] = balanserSize;
-  const [selectedMinStock, selectedMaxStock] = selectedStock;
   const [balancedMinStock, balancedMaxStock] = balanserStock;
+  const [selectedMinPrice, selectedMaxPrice] = priceSelected;
+  const [selectedMinSize, selectedMaxSize] = sizeSelected;
+  const [selectedMinStock, selectedMaxStock] = stockSelected;
 
   useEffect(() => {
     function getSelectedFilters() {
@@ -89,39 +83,59 @@ export const SideFilter = memo(function SideFilter({
   ]);
 
   function handleColorClick(color: string) {
-    if (selectedColors.includes(color)) {
-      setSelectedColors(selectedColors.filter((el) => el !== color));
+    if (colorsSelected.includes(color)) {
+      setSelectedFilters({
+        ...selectedFilters,
+        colorsSelected: colorsSelected.filter((el) => el !== color),
+      });
     } else {
-      setSelectedColors([...selectedColors, color]);
+      setSelectedFilters({
+        ...selectedFilters,
+        colorsSelected: [...colorsSelected, color],
+      });
     }
   }
 
   function handleCollectionClick(collection: string) {
-    if (selectedCollections.includes(+collection)) {
-      setSelectedCollections(selectedCollections.filter((el) => el !== +collection));
+    if (collectionsSelected.includes(+collection)) {
+      setSelectedFilters({
+        ...selectedFilters,
+        collectionsSelected: collectionsSelected.filter((el) => el !== +collection),
+      });
     } else {
-      setSelectedCollections([...selectedCollections, +collection]);
+      setSelectedFilters({
+        ...selectedFilters,
+        collectionsSelected: [...collectionsSelected, +collection],
+      });
     }
   }
-
-  function handleInputChange(startValue: string, endValue: string, setState: SelectedFilter) {
-    setState([parseFloat(startValue) || null, parseFloat(endValue) || null]);
+  function handleInputChange(selectedType: string, startValue: string, endValue: string) {
+    setSelectedFilters({
+      ...selectedFilters,
+      [selectedType]: [parseFloat(startValue) || null, parseFloat(endValue) || null],
+    });
   }
 
   const handleSliderChange = (
+    selectedType: string,
     value: [number, number],
-    setSelectedState: SelectedFilter,
     setFilter: SelectedFilter
   ) => {
-    setSelectedState(value);
+    setSelectedFilters({
+      ...selectedFilters,
+      [selectedType]: value,
+    });
     setFilter(value);
   };
 
   function categoryHandelChange(category: string) {
-    const updatedCategories = [...selectedCategory];
-    const index = [...selectedCategory].indexOf(category);
+    const updatedCategories = [...categorySelected];
+    const index = [...categorySelected].indexOf(category);
     index !== -1 ? updatedCategories.splice(index, 1) : updatedCategories.push(category);
-    setSelectedCategory(updatedCategories);
+    setSelectedFilters({
+      ...selectedFilters,
+      categorySelected: updatedCategories,
+    });
   }
 
   return (
@@ -134,7 +148,7 @@ export const SideFilter = memo(function SideFilter({
               <div
                 key={color}
                 className={`colors__color is-${color} ${
-                  selectedColors.includes(color) && 'is-selected'
+                  colorsSelected.includes(color) && 'is-selected'
                 }`}
                 data-color={color}
                 onClick={() => handleColorClick(color)}
@@ -147,11 +161,11 @@ export const SideFilter = memo(function SideFilter({
         <div className="filters-item__title">Collection</div>
         <div className="filters-item__content item-content">
           <div className="item-content__collection collection">
-            {balancerCollection?.map(({ collection }) => (
+            {balancerCollection.map(({ collection }) => (
               <div
                 key={collection}
                 className={`collection__year ${
-                  selectedCollections.includes(collection) && 'is-selected'
+                  collectionsSelected.includes(collection) && 'is-selected'
                 }`}
                 data-collection={collection}
                 onClick={() => handleCollectionClick(collection.toString())}
@@ -172,7 +186,7 @@ export const SideFilter = memo(function SideFilter({
               value={priseMin || ''}
               maxLength={4}
               onChange={(e) =>
-                handleInputChange(e.target.value, priseMax!.toString(), setSelectedPrice)
+                handleInputChange('priceSelected', e.target.value, priseMax!.toString())
               }
             />
             <span className="item-content-position__start">$</span>
@@ -182,7 +196,7 @@ export const SideFilter = memo(function SideFilter({
               value={priseMax || ''}
               maxLength={4}
               onChange={(e) =>
-                handleInputChange(priseMin!.toString(), e.target.value, setSelectedPrice)
+                handleInputChange('priceSelected', priseMin!.toString(), e.target.value)
               }
             />
             <span className="item-content-position__end">$</span>
@@ -190,7 +204,7 @@ export const SideFilter = memo(function SideFilter({
           <Slider
             className="slider"
             onAfterChange={(value: [number, number]) =>
-              handleSliderChange(value, setSelectedPrice, setPrice)
+              handleSliderChange('priceSelected', value, setPrice)
             }
             value={[priseMin!, priseMax!]}
             min={PRICE_MIN}
@@ -208,7 +222,7 @@ export const SideFilter = memo(function SideFilter({
               className="box-start"
               maxLength={3}
               onChange={(e) =>
-                handleInputChange(e.target.value, sizeMax!.toString(), setSelectedSize)
+                handleInputChange('sizeSelected', e.target.value, sizeMax!.toString())
               }
             />
             <span className="item-content-position__start">cm</span>
@@ -218,7 +232,7 @@ export const SideFilter = memo(function SideFilter({
               className="box-end"
               maxLength={3}
               onChange={(e) =>
-                handleInputChange(sizeMin!.toString(), e.target.value, setSelectedSize)
+                handleInputChange('sizeSelected', sizeMin!.toString(), e.target.value)
               }
             />
             <span className="item-content-position__end">cm</span>
@@ -226,7 +240,7 @@ export const SideFilter = memo(function SideFilter({
           <Slider
             className="slider"
             onAfterChange={(value: [number, number]) =>
-              handleSliderChange(value, setSelectedSize, setSize)
+              handleSliderChange('sizeSelected', value, setSize)
             }
             value={[sizeMin!, sizeMax!]}
             min={SIZE_MIN}
@@ -237,7 +251,7 @@ export const SideFilter = memo(function SideFilter({
       <div className="filters__item filters-item">
         <div className="filters-item__title">Category</div>
         <div className="filters-item__content item-content">
-          {balancerCategory?.map(({ category: categoryName, count }) => {
+          {balancerCategory.map(({ category: categoryName, count }) => {
             const id = categoryName.toLowerCase().replace(' ', '-');
             return (
               <div key={id} className="item-content__category category">
@@ -248,7 +262,7 @@ export const SideFilter = memo(function SideFilter({
                 <input
                   id={id}
                   type="checkbox"
-                  checked={selectedCategory.includes(categoryName)}
+                  checked={selectedFilters.categorySelected.includes(categoryName)}
                   className="category__checkbox"
                   onChange={() => categoryHandelChange(categoryName)}
                   data-categories={categoryName}
@@ -268,7 +282,7 @@ export const SideFilter = memo(function SideFilter({
               className="box-start"
               maxLength={2}
               onChange={(e) =>
-                handleInputChange(e.target.value, stockMax!.toString(), setSelectedStock)
+                handleInputChange('stockSelected', e.target.value, stockMax!.toString())
               }
             />
             <input
@@ -277,14 +291,14 @@ export const SideFilter = memo(function SideFilter({
               className="box-end"
               maxLength={2}
               onChange={(e) =>
-                handleInputChange(stockMin!.toString(), e.target.value, setSelectedStock)
+                handleInputChange('stockSelected', stockMin!.toString(), e.target.value)
               }
             />
           </div>
           <Slider
             className="slider"
             onAfterChange={(value: [number, number]) =>
-              handleSliderChange(value, setSelectedStock, setStock)
+              handleSliderChange('stockSelected', value, setStock)
             }
             value={[stockMin!, stockMax!]}
             min={STOCK_MIN}
@@ -292,9 +306,7 @@ export const SideFilter = memo(function SideFilter({
           />
         </div>
       </div>
-      <ButtonCross onClickCross={onClickHideFilter} />
+      <ButtonCross onClickCross={onClickHideFilter} adittionClassName="close-side-filters-cross" />
     </div>
   );
-});
-
-// export default SideFilter;
+}

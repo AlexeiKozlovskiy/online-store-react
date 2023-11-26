@@ -7,6 +7,7 @@ import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/reducer
 import { formatPrice } from '@/helpers/helpersFunc';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
+import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 interface ISummary {
   isHandelOrderClick: (e: React.MouseEvent) => void;
@@ -35,9 +36,9 @@ export function Summary({ isHandelOrderClick }: ISummary) {
   }
 
   return (
-    <div className="shopping-cart__summary">
+    <aside className="shopping-cart__summary">
       <div className="summery-info">
-        <div className="summery-info__header">SUMMARY</div>
+        <h3 className="summery-info__header">SUMMARY</h3>
         <div className="summery-info__order-container">
           <div className="order-container__content">
             <div className="order-container__items-count items-count">
@@ -64,12 +65,10 @@ export function Summary({ isHandelOrderClick }: ISummary) {
                       {name}-{discount}% OFF
                       <br></br>($-{formatPrice(totalPrice * (discount / 100))})
                     </div>
-                    <div
-                      className="promocodes__remove-btn remove-btn"
-                      onClick={() => removePromocode(id)}
-                    >
-                      <div className="remove-btn__icon"></div>
-                    </div>
+                    <ButtonCross
+                      onClickCross={() => removePromocode(id)}
+                      adittionClassName="summary-cross"
+                    />
                   </div>
                 );
               })}
@@ -86,20 +85,22 @@ export function Summary({ isHandelOrderClick }: ISummary) {
         </div>
       </div>
       <div className="shopping-promo">
-        <input
-          className="input-promo"
-          type="text"
-          placeholder="Enter promo code"
-          onChange={handleChange}
-          value={inputValue}
-        />
-        <button
-          className="button-apply"
-          onClick={handelClickBTN}
-          disabled={isPromocodeAvailable(inputRef.current!) ? false : true}
-        >
-          Apply
-        </button>
+        <div className="shopping-promo__container">
+          <input
+            className="input-promo"
+            type="text"
+            placeholder="Enter promo code"
+            onChange={handleChange}
+            value={inputValue}
+          />
+          <button
+            className="button-apply"
+            onClick={handelClickBTN}
+            disabled={isPromocodeAvailable(inputRef.current!) ? false : true}
+          >
+            Apply
+          </button>
+        </div>
         <div className="promo-test">
           Promo for test:{' '}
           {PROMOCODES.map(({ name, id }) => (
@@ -111,6 +112,6 @@ export function Summary({ isHandelOrderClick }: ISummary) {
           ))}
         </div>
       </div>
-    </div>
+    </aside>
   );
 }

@@ -110,7 +110,7 @@ export function ProfilePage() {
 
   return (
     <main className="profile">
-      <h3 className="profile__titel">MY PROFILE</h3>
+      <h2 className="profile__titel">MY PROFILE</h2>
       <div className="profile__container">
         <aside className="profile__panel">
           <ul className="profile__list">

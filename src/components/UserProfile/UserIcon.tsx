@@ -1,6 +1,6 @@
 import { useMyUserContext } from '@/context/UserContext';
 import './UserIcon.scss';
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 export interface IUserIcon {
   handleClick?: React.MouseEventHandler;
@@ -8,24 +8,29 @@ export interface IUserIcon {
 
 export const UserIcon = memo(function UserIcon({ handleClick }: IUserIcon) {
   const { user } = useMyUserContext();
+  const [userData, setUserData] = useState({ name: '', img: '' });
+  const { name, img } = userData;
 
-  function getFirstLettersOrImgUser() {
+  useEffect(() => {
     if (user) {
-      if (user.isGoogle) {
-        return (
-          <img className="google-logo" src={user.picture} alt={user.login} onClick={handleClick} />
-        );
+      const { isGoogle, picture: img, login } = user;
+
+      if (isGoogle && img) {
+        setUserData({ ...userData, img });
       } else {
-        return user.login
-          .split(' ')
-          .map((el) => el.slice(0, 1))
-          .join('');
+        const name = login.slice(0, 1).toUpperCase();
+        setUserData({ ...userData, name });
       }
     }
-  }
+  }, [user]);
+
+  const userPicture = (
+    <img className="google-logo" src={img} alt="user image" onClick={handleClick} />
+  );
+
   return (
     <div className="user-icon" onClick={handleClick}>
-      {getFirstLettersOrImgUser()}
+      {img ? userPicture : name}
     </div>
   );
 });

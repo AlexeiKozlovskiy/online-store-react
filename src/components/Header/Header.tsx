@@ -12,44 +12,42 @@ import { UserIcon } from '@/components/UserProfile/UserIcon';
 import { UserModal } from '@/components/ModalWindow/User/UserModal';
 import { useMyUserContext } from '@/context/UserContext';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
-import { Preloader } from '@/components//Preloader/Preloader';
+import { Preloader } from '@/components/Preloader/Preloader';
 import { useSelector } from 'react-redux';
 import { Authentication, RootReducerProps } from '@/types/types';
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
-export const Header = memo(function Header() {
-  const { curPageCart, perCartPageOption } = useMyURLContext();
+export function Header() {
+  const [showBurgerMenu, setShowBurgerMenu] = useState(false);
+  const { cartUrl } = useMyURLContext();
   const { removeAllSelected } = useMyRemoveFiltSortContext();
   const { totalPriceByPromocodes } = useMyTotalPriceContext();
   const { totalItems } = useMyTotalItemsContext();
   const {
-    openModalSignUP,
-    setOpenModalSignUP,
-    openModalSignIN,
-    setOpenModalSignIN,
-    openModalUser,
-    setOpenModalUser,
     handelCloseModalSignUP,
     handelCloseModalSignIN,
     handelCloseModalUser,
     closeModalUserAnimation,
+    openModals,
+    setOpenModals,
   } = useCloseOpenModalsContext();
   const { authenticated, isFetching } = useMyUserContext();
   const { idUser } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
-  const [showBurgerMenu, setShowBurgerMenu] = useState(false);
+
+  const { signUP, signIN, user } = openModals;
 
   function handleShowBurgerMenu() {
     showBurgerMenu ? setShowBurgerMenu(false) : setShowBurgerMenu(true);
   }
 
   function getSignIN() {
-    setOpenModalSignIN(true);
+    setOpenModals({ ...openModals, signIN: true });
     setShowBurgerMenu(false);
   }
 
   function getSignUP() {
-    setOpenModalSignUP(true);
+    setOpenModals({ ...openModals, signUP: true });
     setShowBurgerMenu(false);
   }
 
@@ -58,16 +56,7 @@ export const Header = memo(function Header() {
     setShowBurgerMenu(false);
   }
 
-  function getCartUrl() {
-    let url = `/cart`;
-    if (+perCartPageOption.value !== 3) {
-      url = `/cart?page=${curPageCart}&perPage=${perCartPageOption.value}`;
-    }
-    return url;
-  }
-
-  const userIcon = <UserIcon handleClick={() => setOpenModalUser(true)} />;
-
+  const userIcon = <UserIcon handleClick={() => setOpenModals({ ...openModals, user: true })} />;
   const authBar = (
     <>
       <div className="header-auth__btn" onClick={getSignIN}>
@@ -84,9 +73,9 @@ export const Header = memo(function Header() {
 
   return (
     <header className="header wrapper">
-      {openModalSignUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
-      {openModalSignIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
-      {openModalUser && (
+      {signUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
+      {signIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
+      {user && (
         <UserModal
           onClickOutside={handelCloseModalUser}
           closeModalUserAnimation={closeModalUserAnimation}
@@ -97,7 +86,7 @@ export const Header = memo(function Header() {
           <HeaderLogo />
         </Link>
         <div className="header-nav" data-show={showBurgerMenu}>
-          <ButtonCross onClickCross={handleShowBurgerMenu} />
+          <ButtonCross onClickCross={handleShowBurgerMenu} adittionClassName="close-burger-cross" />
           <Link to="/" className="header-link" onClick={logoClikBurger}>
             <HeaderLogo />
           </Link>
@@ -105,7 +94,7 @@ export const Header = memo(function Header() {
             {isFetching ? <Preloader /> : authenticated && userIcon}
             {!idUser && !isFetching && authBar}
           </div>
-          <Link to={getCartUrl()} className="header-cart" onClick={() => setShowBurgerMenu(false)}>
+          <Link to={cartUrl} className="header-cart" onClick={() => setShowBurgerMenu(false)}>
             <div className="header-cart__img"></div>
             <div className="header-cart__amount-container">
               <p className="header-cart__amount">{totalItems}</p>
@@ -117,4 +106,4 @@ export const Header = memo(function Header() {
       </div>
     </header>
   );
-});
+}

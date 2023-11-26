@@ -63,24 +63,13 @@ export interface SelectedFilter {
   (values: [number | null, number | null]): void;
 }
 
-export interface Filters extends SelectedFilters, SetSelectedFilters {}
-
 export interface SelectedFilters {
-  selectedColors: string[];
-  selectedCollections: number[];
-  selectedPrice: [number | null, number | null];
-  selectedSize: [number | null, number | null];
-  selectedStock: [number | null, number | null];
-  selectedCategory: string[];
-}
-
-export interface SetSelectedFilters {
-  setSelectedCollections: (value: number[]) => void;
-  setSelectedColors: (value: string[]) => void;
-  setSelectedPrice: SelectedFilter;
-  setSelectedSize: SelectedFilter;
-  setSelectedStock: SelectedFilter;
-  setSelectedCategory: (value: string[]) => void;
+  colorsSelected: string[];
+  collectionsSelected: number[];
+  categorySelected: string[];
+  priceSelected: [number | null, number | null];
+  sizeSelected: [number | null, number | null];
+  stockSelected: [number | null, number | null];
 }
 
 export interface BalancerColor {
@@ -100,6 +89,9 @@ export interface Balancers {
   balancerColor: BalancerColor[];
   balancerCollection: BalancerCollection[];
   balancerCategory: BalancerCategory[];
+  balanserPrise: [number | null, number | null];
+  balanserSize: [number | null, number | null];
+  balanserStock: [number | null, number | null];
 }
 
 export interface InputSearch {
@@ -116,7 +108,7 @@ export interface PageClickEvent {
   selected: number;
 }
 
-export enum Select {
+export enum SORTING_SELECT {
   NAME = 'name',
   PRICE_ASC = 'price-asc',
   PRICE_DESC = 'price-desc',
@@ -248,19 +240,6 @@ interface RegisterType {
     | 'formSignIN.password';
 }
 
-export interface FormErrorMessages {
-  msgName?: null | FORM_MESSAGES;
-  msgLogin?: null | FORM_MESSAGES;
-  msgAdress?: null | FORM_MESSAGES;
-  msgEmail?: null | FORM_MESSAGES;
-  msgPhone?: null | FORM_MESSAGES;
-  msgNameCard?: null | FORM_MESSAGES;
-  msgNumberCard?: null | FORM_MESSAGES;
-  msgDateCard?: null | FORM_MESSAGES;
-  msgCvvCard?: null | FORM_MESSAGES;
-  msgPassword?: null | FORM_MESSAGES;
-}
-
 interface errorsForm {
   errors:
     | LiteralUnion<
@@ -283,6 +262,19 @@ interface errorsForm {
         string
       >
     | undefined;
+}
+
+export interface FormErrorMessages {
+  msgName?: null | FORM_MESSAGES;
+  msgLogin?: null | FORM_MESSAGES;
+  msgAdress?: null | FORM_MESSAGES;
+  msgEmail?: null | FORM_MESSAGES;
+  msgPhone?: null | FORM_MESSAGES;
+  msgNameCard?: null | FORM_MESSAGES;
+  msgNumberCard?: null | FORM_MESSAGES;
+  msgDateCard?: null | FORM_MESSAGES;
+  msgCvvCard?: null | FORM_MESSAGES;
+  msgPassword?: null | FORM_MESSAGES;
 }
 
 export enum FORM_MESSAGES {
@@ -312,4 +304,11 @@ export enum FORM_MESSAGES {
   INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
   SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google.',
   SOMETHING_WRONG = 'Something wrong.',
+}
+
+export interface CloseOpenModals {
+  payment: boolean;
+  signUP: boolean;
+  signIN: boolean;
+  user: boolean;
 }

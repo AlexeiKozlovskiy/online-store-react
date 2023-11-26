@@ -14,20 +14,20 @@ export function QuantityPieces({
   handelArrowAppClick,
 }: IQuantityPieces) {
   return (
-    <div className="cart-item__qty">
-      <div className="cart-item-qty__value-container">
+    <div className="amount-item">
+      <div className="amount-item__value-container">
         <input
-          className="cart-item-qty__value-container quantity-input"
+          className="amount-item__value-container amount-input"
           type="number"
           value={inputValue}
           onChange={handelInput}
         />
       </div>
-      <div className="cart-item-qty__arrow-container arrow-up" onClick={handelArrowAppClick}>
-        <div className="cart-item-qty__arrow-up"></div>
+      <div className="amount-item__arrow-container arrow-up" onClick={handelArrowAppClick}>
+        <div className="amount-item__arrow-up"></div>
       </div>
-      <div className="cart-item-qty__arrow-container arrow-down" onClick={handelArrowDownClick}>
-        <div className="cart-item-qty__arrow-down"></div>
+      <div className="amount-item__arrow-container arrow-down" onClick={handelArrowDownClick}>
+        <div className="amount-item__arrow-down"></div>
       </div>
     </div>
   );

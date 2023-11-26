@@ -1,14 +1,9 @@
+import { CloseOpenModals } from '@/types/types';
 import { useState, createContext, useContext, ReactNode } from 'react';
 
 interface ICloseOpenModalsContext {
-  openModalSignUP: boolean;
-  setOpenModalSignUP: (value: boolean) => void;
-  openModalSignIN: boolean;
-  setOpenModalSignIN: (value: boolean) => void;
-  openModalUser: boolean;
-  setOpenModalUser: (value: boolean) => void;
-  openModalPayment: boolean;
-  setOpenModalPayment: (value: boolean) => void;
+  openModals: CloseOpenModals;
+  setOpenModals: React.Dispatch<React.SetStateAction<CloseOpenModals>>;
   handelCloseModalSignUP: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handelCloseModalSignIN: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   handelCloseModalUser: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -21,14 +16,13 @@ interface ICloseOpenModalsContext {
 export const useCloseOpenModalsContext = () => useContext(CloseOpenModalsContext);
 
 export const CloseOpenModalsContext = createContext<ICloseOpenModalsContext>({
-  openModalSignUP: false,
-  setOpenModalSignUP: () => null,
-  openModalSignIN: false,
-  setOpenModalSignIN: () => null,
-  openModalUser: false,
-  setOpenModalUser: () => null,
-  openModalPayment: false,
-  setOpenModalPayment: () => null,
+  openModals: {
+    payment: false,
+    signUP: false,
+    signIN: false,
+    user: false,
+  },
+  setOpenModals: () => null,
   handelCloseModalSignUP: () => null,
   handelCloseModalSignIN: () => null,
   handelCloseModalUser: () => null,
@@ -39,16 +33,18 @@ export const CloseOpenModalsContext = createContext<ICloseOpenModalsContext>({
 });
 
 export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNode }) => {
-  const [openModalPayment, setOpenModalPayment] = useState(false);
-  const [openModalSignUP, setOpenModalSignUP] = useState(false);
-  const [openModalSignIN, setOpenModalSignIN] = useState(false);
-  const [openModalUser, setOpenModalUser] = useState(false);
+  const [openModals, setOpenModals] = useState<CloseOpenModals>({
+    payment: false,
+    signUP: false,
+    signIN: false,
+    user: false,
+  });
 
   function closeModalSignInAnimation() {
     const modalWindow = document.querySelector('.signIN-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
-      setOpenModalSignIN(false);
+      setOpenModals({ ...openModals, signIN: false });
     }, 400);
   }
 
@@ -56,7 +52,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
     const modalWindow = document.querySelector('.signUP-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
-      setOpenModalSignUP(false);
+      setOpenModals({ ...openModals, signUP: false });
     }, 400);
   }
 
@@ -64,7 +60,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
     const modalWindow = document.querySelector('.user-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal-user');
     setTimeout(() => {
-      setOpenModalUser(false);
+      setOpenModals({ ...openModals, user: false });
     }, 300);
   }
 
@@ -72,7 +68,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
     const modalWindow = document.querySelector('.profile-modal') as HTMLDivElement;
     modalWindow.classList.toggle('hide-modal');
     setTimeout(() => {
-      setOpenModalPayment(false);
+      setOpenModals({ ...openModals, payment: false });
     }, 300);
   }
 
@@ -107,14 +103,8 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
   return (
     <CloseOpenModalsContext.Provider
       value={{
-        openModalSignUP,
-        setOpenModalSignUP,
-        openModalSignIN,
-        setOpenModalSignIN,
-        openModalUser,
-        setOpenModalUser,
-        openModalPayment,
-        setOpenModalPayment,
+        openModals,
+        setOpenModals,
         handelCloseModalSignUP,
         handelCloseModalSignIN,
         handelCloseModalUser,

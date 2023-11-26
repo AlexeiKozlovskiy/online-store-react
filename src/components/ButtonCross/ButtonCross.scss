@@ -1,21 +1,37 @@
-@import 'src/assets/styles/common.scss';
-
-.close-btn {
+.common-cross-btn {
+  background: url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=24&height=24')
+    no-repeat center center / contain;
   width: 36px;
   height: 36px;
-  position: absolute;
-  z-index: 2;
-  background: white
-    url('https://api.iconify.design/typcn/delete-outline.svg?color=%238b9d93&width=36&height=36')
-    no-repeat center;
-  right: 20px;
-  top: 25px;
-  display: none;
-  transition: transform 0.3s;
+  transition: transform 0.2s;
+  border: none;
 
   &:hover {
     cursor: pointer;
     transform: scale(1.1);
-    transition: transform 0.3s;
+    transition: transform 0.2s;
   }
+}
+
+.cart-item-cross {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.close-modal-cross,
+.close-burger-cross,
+.close-side-filters-cross {
+  position: absolute;
+  display: none;
+  right: 20px;
+  top: 25px;
+  z-index: 2;
+}
+
+.summary-cross {
+  width: 20px;
+  height: 20px;
 }

@@ -1,5 +1,5 @@
 import './TopMainPanel.scss';
-import { useState, useEffect, memo } from 'react';
+import { useState, useLayoutEffect } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/helpers/constant';
 import { useMyFiltersContext } from '@/context/FiltersContext';
@@ -8,10 +8,10 @@ import { ISelect } from '@/types/types';
 import { CustomSelect } from '@/components/Select/Select';
 
 interface ISortedFilters {
-  onClickShowFilter: (event: React.MouseEvent) => void;
+  onClickShowFilter: (event: React.MouseEvent<Element, MouseEvent>) => void;
 }
 
-export const SortedSelect = memo(function SortedSelect({ onClickShowFilter }: ISortedFilters) {
+export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
   const { itemsCount } = useMyFiltersContext();
   const {
     isEmptyFilters,
@@ -24,7 +24,7 @@ export const SortedSelect = memo(function SortedSelect({ onClickShowFilter }: IS
   } = useMyURLContext();
   const [selectedPagination, setSelectedPagination] = useState<ISelect | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setSelectedPagination(perMainPageOption);
   }, [perMainPageOption]);
 
@@ -42,7 +42,7 @@ export const SortedSelect = memo(function SortedSelect({ onClickShowFilter }: IS
 
   return (
     <>
-      {isEmptyFilters ? <BreadCrumdPanel /> : ''}
+      {!isEmptyFilters && <BreadCrumdPanel />}
       <div className="main-center-section__sorted sorted-filters">
         <div className="sorted-filters__filters-menu filters-menu">
           <div onClick={onClickShowFilter} className="filters-menu__icon"></div>
@@ -67,15 +67,15 @@ export const SortedSelect = memo(function SortedSelect({ onClickShowFilter }: IS
         </div>
         <div className="sorted-filters__switch-view switch-view">
           <div
-            className={`switch-view__line ${swichedView === 'row' ? 'switch-active' : ''} `}
+            className={`switch-view__line ${swichedView === 'row' && 'switch-active'} `}
             onClick={() => switcherView('row')}
           ></div>
           <div
-            className={`switch-view__block ${swichedView === 'block' ? 'switch-active' : ''} `}
+            className={`switch-view__block ${swichedView === 'block' && 'switch-active'} `}
             onClick={() => switcherView('block')}
           ></div>
         </div>
       </div>
     </>
   );
-});
+}

@@ -9,18 +9,20 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
   const [copedLink, setCopedLink] = useState(false);
   const { removeAllSelected } = useMyRemoveFiltSortContext();
   const { removeItemFilterClick } = useMyFiltersContext();
-  const {
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
-  } = useMyURLContext();
+  const { selectedFilters } = useMyURLContext();
 
-  const [minPrice, maxPrice] = selectedPrice;
-  const [minSize, maxSize] = selectedSize;
-  const [minStock, maxStock] = selectedStock;
+  const {
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
+  } = selectedFilters;
+
+  const [minPrice, maxPrice] = priceSelected;
+  const [minSize, maxSize] = sizeSelected;
+  const [minStock, maxStock] = stockSelected;
 
   function handelCopyLink() {
     setCopedLink(true);
@@ -29,7 +31,8 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
       setCopedLink(false);
     }, 1000);
   }
-  const colorFilter = selectedColors?.map((color) => {
+
+  const colorFilter = colorsSelected.map((color) => {
     return (
       <div key={color} className="selected-filters__item selected-item">
         <div className="selected-item__name">{color}</div>
@@ -43,7 +46,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
     );
   });
 
-  const collectionFilter = selectedCollections?.map((collection) => {
+  const collectionFilter = collectionsSelected.map((collection) => {
     return (
       <div key={collection} className="selected-filters__item selected-item">
         <div className="selected-item__name">{collection}</div>
@@ -56,7 +59,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
       </div>
     );
   });
-  const categoryFilter = selectedCategory?.map((category) => {
+  const categoryFilter = categorySelected.map((category) => {
     return (
       <div key={category} className="selected-filters__item selected-item">
         <div className="selected-item__name">{category}</div>
@@ -86,6 +89,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
       );
     }
   };
+
   const sizeFilter = () => {
     if (minSize !== SIZE_MIN || maxSize !== SIZE_MAX) {
       return (
@@ -120,7 +124,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
     }
   };
 
-  const selectedFilters = [
+  const allSelectedFilters = [
     colorFilter,
     collectionFilter,
     categoryFilter,
@@ -138,7 +142,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
   return (
     <div className="selected-section__filters selected-filters">
       <div className="selected-filters__title">Selected filters:</div>
-      {selectedFilters}
+      {allSelectedFilters}
       <div className="selected-filters__remove-filters" onClick={removeAllSelected}>
         Clear all
       </div>

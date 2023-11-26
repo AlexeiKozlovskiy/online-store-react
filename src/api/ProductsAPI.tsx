@@ -8,13 +8,16 @@ export const productsApi = createApi({
     baseUrl: `${BASE_URL}`,
     mode: 'cors',
   }),
+  tagTypes: ['Products'],
   endpoints: (builder) => ({
     getProducts: builder.query<Product[], void>({
-      query: () => `/products`,
+      query: () => `products`,
+      providesTags: (result) =>
+        result ? result.map(({ id }) => ({ type: 'Products', id })) : ['Products'],
     }),
-
     getProduct: builder.query<Product, string>({
-      query: (id: string) => ({ url: `/products/${id}` }),
+      query: (id) => `products/${id}`,
+      providesTags: (_result, _error, id) => [{ type: 'Products', id }],
     }),
   }),
 });
