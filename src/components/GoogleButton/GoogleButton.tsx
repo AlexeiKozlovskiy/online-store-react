@@ -6,15 +6,17 @@ import { useEffect } from 'react';
 import { CredentialGoogle, GoogleResp } from '@/types/types';
 
 export function GoogleButton() {
-  const { openModalSignUP, openModalSignIN, closeModalSignInAnimation, closeModalSignUPAnimation } =
+  const { openModals, closeModalSignInAnimation, closeModalSignUPAnimation } =
     useCloseOpenModalsContext();
   const { setGoogleData } = useMyUserContext();
+
+  const { signIN, signUP } = openModals;
 
   function hadelCallbackResponse(response: GoogleResp) {
     const googleData = jwtDecode<CredentialGoogle>(response.credential);
     setGoogleData(googleData);
-    openModalSignUP && closeModalSignUPAnimation();
-    openModalSignIN && closeModalSignInAnimation();
+    signUP && closeModalSignUPAnimation();
+    signIN && closeModalSignInAnimation();
   }
 
   useEffect(() => {
@@ -28,11 +30,7 @@ export function GoogleButton() {
       locale: 'EN',
       width: '400',
     });
-  }, [openModalSignIN, openModalSignUP]);
+  }, [signUP, signIN]);
 
-  return (
-    <>
-      <div className="google-btn" id="signInDiv"></div>
-    </>
-  );
+  return <button className="google-btn" id="signInDiv"></button>;
 }

@@ -10,10 +10,10 @@ import {
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
 } from '@/helpers/constant';
+import { ISelect, InputSearch, SelectedFilters } from '@/types/types';
+import { useLocation } from 'react-router-dom';
 
-import { Filters, ISelect, InputSearch } from '../types/types';
-
-interface IURLContext extends Filters, InputSearch {
+interface IURLContext extends InputSearch {
   sortindViewOption: ISelect;
   setSortindViewOption: (selectedOption: ISelect) => void;
   curPageMain: number;
@@ -29,6 +29,9 @@ interface IURLContext extends Filters, InputSearch {
   setSwichedView: (value: string) => void;
   productNameFromURL: string;
   setProductNameFromURL: (value: string) => void;
+  cartUrl: string;
+  selectedFilters: SelectedFilters;
+  setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilters>>;
 }
 
 export const useMyURLContext = () => useContext(URLContext);
@@ -36,18 +39,6 @@ export const useMyURLContext = () => useContext(URLContext);
 export const URLContext = createContext<IURLContext>({
   inputSearchValue: '',
   setInputSearchValue: () => null,
-  selectedColors: [],
-  setSelectedColors: () => null,
-  selectedCollections: [],
-  setSelectedCollections: () => null,
-  selectedCategory: [],
-  setSelectedCategory: () => null,
-  selectedPrice: [PRICE_MIN, PRICE_MAX],
-  setSelectedPrice: () => null,
-  selectedSize: [SIZE_MIN, SIZE_MAX],
-  setSelectedSize: () => null,
-  selectedStock: [STOCK_MIN, STOCK_MAX],
-  setSelectedStock: () => null,
   sortindViewOption: SORT_OPTIONS[0],
   setSortindViewOption: () => null,
   curPageMain: 1,
@@ -63,24 +54,27 @@ export const URLContext = createContext<IURLContext>({
   setSwichedView: () => null,
   productNameFromURL: '',
   setProductNameFromURL: () => null,
+  cartUrl: '',
+  selectedFilters: {
+    colorsSelected: [],
+    collectionsSelected: [],
+    categorySelected: [],
+    priceSelected: [PRICE_MIN, PRICE_MAX],
+    sizeSelected: [SIZE_MIN, SIZE_MAX],
+    stockSelected: [STOCK_MIN, STOCK_MAX],
+  },
+  setSelectedFilters: () => null,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedCollections, setSelectedCollections] = useState<number[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedPrice, setSelectedPrice] = useState<[number | null, number | null]>([
-    PRICE_MIN,
-    PRICE_MAX,
-  ]);
-  const [selectedSize, setSelectedSize] = useState<[number | null, number | null]>([
-    SIZE_MIN,
-    SIZE_MAX,
-  ]);
-  const [selectedStock, setSelectedStock] = useState<[number | null, number | null]>([
-    STOCK_MIN,
-    STOCK_MAX,
-  ]);
+  const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>({
+    colorsSelected: [],
+    collectionsSelected: [],
+    categorySelected: [],
+    priceSelected: [PRICE_MIN, PRICE_MAX],
+    sizeSelected: [SIZE_MIN, SIZE_MAX],
+    stockSelected: [STOCK_MIN, STOCK_MAX],
+  });
   const [inputSearchValue, setInputSearchValue] = useState<string | null>('');
   const [sortindViewOption, setSortindViewOption] = useState<ISelect>(SORT_OPTIONS[0]);
   const [curPageMain, setCurPageMain] = useState<number>(1);
@@ -90,38 +84,29 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
   const [swichedView, setSwichedView] = useState('block');
   const [productNameFromURL, setProductNameFromURL] = useState<string>('');
+  const [cartUrl, setCartUrl] = useState('/cart');
+  const location = useLocation();
 
-  const [minPrice, maxPrice] = selectedPrice;
-  const [minSize, maxSize] = selectedSize;
-  const [minStock, maxStock] = selectedStock;
+  const {
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
+  } = selectedFilters;
+
+  const [minPrice, maxPrice] = priceSelected;
+  const [minSize, maxSize] = sizeSelected;
+  const [minStock, maxStock] = stockSelected;
 
   useEffect(() => {
-    function checkIsEmptyFilters() {
-      if (
-        !selectedColors.length &&
-        !selectedCollections.length &&
-        !selectedCategory.length &&
-        minPrice === PRICE_MIN &&
-        maxPrice === PRICE_MAX &&
-        minSize === SIZE_MIN &&
-        maxSize === SIZE_MAX &&
-        minStock === STOCK_MIN &&
-        maxStock === STOCK_MAX
-      ) {
-        setIsEmptyFilters(false);
-      } else {
-        setIsEmptyFilters(true);
-      }
+    if (hasEmptyFilters) {
+      setIsEmptyFilters(true);
+    } else {
+      setIsEmptyFilters(false);
     }
-    checkIsEmptyFilters();
-  }, [
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
-  ]);
+  }, [selectedFilters]);
 
   useEffect(() => {
     function setDataFromUrl() {
@@ -147,66 +132,23 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         .map((el, ind, arr) => (el === 'product' ? arr[ind + 1] : ''))
         .join('');
 
-      if (colors) {
-        setSelectedColors(colors?.split(','));
-      }
-      if (collections) {
-        setSelectedCollections(collections?.split(',').map(Number));
-      }
-      if (categories) {
-        setSelectedCategory(categories?.split(','));
-      }
-      if (valMinPrice.length || valMaxPrice.length) {
-        setSelectedPrice([+valMinPrice, +valMaxPrice]);
-      }
-      if (valMinSize.length || valMaxSize.length) {
-        setSelectedSize([+valMinSize, +valMaxSize]);
-      }
-      if (valMinStock.length || valMaxStock.length) {
-        setSelectedStock([+valMinStock, +valMaxStock]);
-      }
+      updatedFilters(
+        colors,
+        collections,
+        categories,
+        valMinPrice,
+        valMaxPrice,
+        valMinSize,
+        valMaxSize,
+        valMinStock,
+        valMaxStock
+      );
+
+      updatedRowBlockView(viewOption);
+      updatedPagination(curPageMain, perMainOption, curPageCart, perCartOption);
+
       if (search) {
         setInputSearchValue(search);
-      }
-      if (viewOption) {
-        setSortindViewOption({
-          value: viewOption,
-          label: SORT_OPTIONS.filter(({ value, label }) => {
-            if (value === viewOption) {
-              return label;
-            }
-          })[0].label,
-        });
-      }
-
-      if (curPageMain && location.pathname === '/') {
-        setCurPageMain(+curPageMain);
-      }
-
-      if (perMainOption && location.pathname === '/') {
-        setPerMainPageOption({
-          value: perMainOption,
-          label: ITEMS_IN_PAGE.filter(({ value, label }) => {
-            if (value === perMainOption) {
-              return label;
-            }
-          })[0].label,
-        });
-      }
-
-      if (curPageCart && location.pathname === '/cart') {
-        setCurPageCart(+curPageCart);
-      }
-
-      if (perCartOption && location.pathname === '/cart') {
-        setPerCartPageOption({
-          value: perCartOption,
-          label: ITEMS_IN_PAGE_CART.filter(({ value, label }) => {
-            if (value === perCartOption) {
-              return label;
-            }
-          })[0].label,
-        });
       }
 
       if (swichedViews) {
@@ -217,24 +159,22 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setProductNameFromURL(productName);
       }
     }
+
     setDataFromUrl();
-  }, [location.reload]);
+  }, [location]);
 
   useEffect(() => {
     function setDataInURL() {
       const params = new URLSearchParams();
-      const [minPrice, maxPrice] = selectedPrice;
-      const [minSize, maxSize] = selectedSize;
-      const [minStock, maxStock] = selectedStock;
 
-      if (selectedColors.length) {
-        params.set('colors', selectedColors.join(','));
+      if (colorsSelected.length) {
+        params.set('colors', colorsSelected.join(','));
       }
-      if (selectedCollections.length) {
-        params.set('collections', selectedCollections.join(','));
+      if (collectionsSelected.length) {
+        params.set('collections', collectionsSelected.join(','));
       }
-      if (selectedCategory.length) {
-        params.set('categories', selectedCategory.join(','));
+      if (categorySelected.length) {
+        params.set('categories', categorySelected.join(','));
       }
       if (minPrice !== PRICE_MIN || maxPrice !== PRICE_MAX) {
         if (minPrice && maxPrice) {
@@ -257,6 +197,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       if (inputSearchValue) {
         params.set('q', inputSearchValue);
       }
+
       if (sortindViewOption.value.length) {
         params.set('sortBy', sortindViewOption.value);
       }
@@ -286,12 +227,12 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     }
     setDataInURL();
   }, [
-    selectedColors,
-    selectedCollections,
-    selectedCategory,
-    selectedPrice,
-    selectedSize,
-    selectedStock,
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
     inputSearchValue,
     sortindViewOption.value,
     curPageMain,
@@ -301,22 +242,118 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     swichedView,
   ]);
 
+  useEffect(() => {
+    if (+perCartPageOption.value !== 3) {
+      setCartUrl(`/cart?page=${curPageCart}&perPage=${perCartPageOption.value}`);
+    }
+    if (+perCartPageOption.value === 3 && curPageCart !== 1) {
+      setCartUrl(`/cart?page=${curPageCart}`);
+    }
+    if (+perCartPageOption.value === 3 && curPageCart === 1) {
+      setCartUrl(`/cart`);
+    }
+  }, [perCartPageOption, perCartPageOption, curPageCart]);
+
+  function updatedFilters(
+    colors: string,
+    collections: string,
+    categories: string,
+    valMinPrice: string[],
+    valMaxPrice: string[],
+    valMinSize: string[],
+    valMaxSize: string[],
+    valMinStock: string[],
+    valMaxStock: string[]
+  ) {
+    let filters = { ...selectedFilters };
+
+    if (colors) {
+      filters = { ...filters, colorsSelected: colors.split(',') };
+    }
+    if (collections) {
+      filters = { ...filters, collectionsSelected: collections.split(',').map(Number) };
+    }
+    if (categories) {
+      filters = { ...filters, categorySelected: categories.split(',') };
+    }
+    if (valMinPrice.length || valMaxPrice.length) {
+      filters = { ...filters, priceSelected: [+valMinPrice, +valMaxPrice] };
+    }
+    if (valMinSize.length || valMaxSize.length) {
+      filters = { ...filters, sizeSelected: [+valMinSize, +valMaxSize] };
+    }
+    if (valMinStock.length || valMaxStock.length) {
+      filters = { ...filters, stockSelected: [+valMinStock, +valMaxStock] };
+    }
+
+    setSelectedFilters(filters);
+  }
+
+  function updatedPagination(
+    curPageMain: string,
+    perMainOption: string,
+    curPageCart: string,
+    perCartOption: string
+  ) {
+    if (curPageMain && location.pathname === '/') {
+      setCurPageMain(+curPageMain);
+    }
+
+    if (perMainOption && location.pathname === '/') {
+      setPerMainPageOption({
+        value: perMainOption,
+        label: ITEMS_IN_PAGE.filter(({ value, label }) => {
+          if (value === perMainOption) {
+            return label;
+          }
+        })[0].label,
+      });
+    }
+
+    if (curPageCart && location.pathname === '/cart') {
+      setCurPageCart(+curPageCart);
+    }
+
+    if (perCartOption && location.pathname === '/cart') {
+      setPerCartPageOption({
+        value: perCartOption,
+        label: ITEMS_IN_PAGE_CART.filter(({ value, label }) => {
+          if (value === perCartOption) {
+            return label;
+          }
+        })[0].label,
+      });
+    }
+  }
+
+  function updatedRowBlockView(viewOption: string) {
+    if (viewOption) {
+      setSortindViewOption({
+        value: viewOption,
+        label: SORT_OPTIONS.filter(({ value, label }) => {
+          if (value === viewOption) {
+            return label;
+          }
+        })[0].label,
+      });
+    }
+  }
+
+  const hasEmptyFilters =
+    !colorsSelected.length &&
+    !collectionsSelected.length &&
+    !categorySelected.length &&
+    minPrice === PRICE_MIN &&
+    maxPrice === PRICE_MAX &&
+    minSize === SIZE_MIN &&
+    maxSize === SIZE_MAX &&
+    minStock === STOCK_MIN &&
+    maxStock === STOCK_MAX;
+
   return (
     <URLContext.Provider
       value={{
         isEmptyFilters,
-        selectedColors,
-        setSelectedColors,
-        selectedCollections,
-        setSelectedCollections,
-        selectedCategory,
-        setSelectedCategory,
-        selectedPrice,
-        setSelectedPrice,
-        selectedSize,
-        setSelectedSize,
-        selectedStock,
-        setSelectedStock,
         sortindViewOption,
         setSortindViewOption,
         inputSearchValue,
@@ -333,6 +370,9 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setSwichedView,
         productNameFromURL,
         setProductNameFromURL,
+        cartUrl,
+        selectedFilters,
+        setSelectedFilters,
       }}
     >
       {children}

@@ -114,10 +114,10 @@ export function commonError(err: unknown) {
   return { error: message, data: null };
 }
 
-export const handlerScrollUp = () => {
+export function handlerScrollUp() {
   window.scrollTo({
     top: 0,
     left: 0,
     behavior: 'smooth',
   });
-};
+}

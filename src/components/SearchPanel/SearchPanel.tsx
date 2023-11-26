@@ -29,9 +29,9 @@ export const SearchPanel = memo(function SearchPanel() {
           <div className="snow-blocks__snow1"></div>
           <div className="snow-blocks__snow2"></div>
         </div>
-        <div className="find-title">
+        <h2 className="find-title">
           Find Christmas decorations to create a festive atmosphere at your home
-        </div>
+        </h2>
         <div className="find-input-wrapper">
           <input
             className="find-input"

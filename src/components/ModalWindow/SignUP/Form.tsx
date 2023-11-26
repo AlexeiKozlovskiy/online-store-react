@@ -10,7 +10,7 @@ import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook'
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function Form() {
-  const { signUP, showPreloader, errorUser } = useMyUserContext();
+  const { getSignUP, showPreloader, errorUser } = useMyUserContext();
   const {
     register,
     handleSubmit,
@@ -29,7 +29,7 @@ export function Form() {
   });
   useFormsInputsHelper({ watch, setValue });
   const { validateLogin, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
-  const { setOpenModalSignUP, setOpenModalSignIN } = useCloseOpenModalsContext();
+  const { openModals, setOpenModals } = useCloseOpenModalsContext();
 
   const { formSignUP } = errors;
   const { login, password, email } = formSignUP || {};
@@ -38,13 +38,12 @@ export function Form() {
   const errorsEmail = email?.type;
 
   const onSubmit = (formSignUP: MyForms) => {
-    signUP(formSignUP);
+    getSignUP(formSignUP);
     reset({ formSignUP: { password: '' } });
   };
 
   function getSigneIN() {
-    setOpenModalSignUP(false);
-    setOpenModalSignIN(true);
+    setOpenModals({ ...openModals, signIN: true, signUP: false });
   }
 
   const ErrorSignUP = <div className="form-error-response">{errorUser}</div>;

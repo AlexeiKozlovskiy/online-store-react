@@ -5,22 +5,20 @@ import { ProductsList } from '@/components/Products/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';
-import { useMySortingsContext } from '@/context/SortingsContext';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const { emptyCatalog } = useMyFiltersContext();
-  const { sortProducts } = useMySortingsContext();
   const { isFetching } = useGetProductsQuery();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
   }
 
-  const noItemsFound = <div className="empty-catalog">No items found</div>;
-  const productsList = isFetching ? <Preloader /> : <ProductsList products={sortProducts} />;
+  const noItemsFound = <section className="empty-catalog">No items found</section>;
+  const productsList = isFetching ? <Preloader /> : <ProductsList />;
 
   return (
     <main className="MainPage-container wrapper">

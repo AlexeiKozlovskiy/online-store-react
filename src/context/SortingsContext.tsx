@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { ISelect, Select, Product } from '../types/types';
+import { ISelect, SORTING_SELECT, Product } from '@/types/types';
 import {
   sortByFavorite,
   sortByName,
@@ -10,7 +10,7 @@ import {
   sortByStockDesc,
 } from '@/helpers/helpersFunc';
 import { useMyURLContext } from '@/context/URLContext';
-import { useMyFiltersContext } from './FiltersContext';
+import { useMyFiltersContext } from '@/context/FiltersContext';
 
 export const useMySortingsContext = () => useContext(SortingsContext);
 
@@ -37,23 +37,23 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
     const { value } = viewOption;
 
     switch (value) {
-      case Select.NAME:
+      case SORTING_SELECT.NAME:
         const sortName = sortByName(filtersProducts);
         setSortProducts(sortName);
         break;
-      case Select.PRICE_ASC:
+      case SORTING_SELECT.PRICE_ASC:
         const priceAsc = sortByKey(filtersProducts, sortByPriceAsc);
         setSortProducts(priceAsc);
         break;
-      case Select.PRICE_DESC:
+      case SORTING_SELECT.PRICE_DESC:
         const priceDesc = sortByKey(filtersProducts, sortByPriceDesc);
         setSortProducts(priceDesc);
         break;
-      case Select.STOCK_ASC:
+      case SORTING_SELECT.STOCK_ASC:
         const stockAsc = sortByKey(filtersProducts, sortByStockAsc);
         setSortProducts(stockAsc);
         break;
-      case Select.STOCK_DESC:
+      case SORTING_SELECT.STOCK_DESC:
         const stockDesc = sortByKey(filtersProducts, sortByStockDesc);
         setSortProducts(stockDesc);
         break;

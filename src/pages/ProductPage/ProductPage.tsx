@@ -23,6 +23,7 @@ export function ProductPage() {
   const { data: products } = useGetProductsQuery();
   const navigate = useNavigate();
   const cartItems = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
+  const { cartUrl } = useMyURLContext();
 
   useEffect(() => {
     if (products) {
@@ -52,8 +53,14 @@ export function ProductPage() {
   }
 
   function handelAddClick() {
-    setResetInput(true);
     addProductsToCart(id, products!, Number(quantity));
+    setResetInput(true);
+  }
+
+  function handelBuyNowBtn() {
+    addProductsToCart(id, products!, Number(quantity));
+    setResetInput(true);
+    navigate(cartUrl);
   }
 
   const qtyChange = (value: string) => {
@@ -89,7 +96,7 @@ export function ProductPage() {
             <div className="bread-crumbs__path">{category}</div>
             <div className="bread-crumbs__path">{name}</div>
           </div>
-          <div className="product-page wrapper">
+          <section className="product-page wrapper">
             <ArrowBack />
             <div className="product-page__img-container">
               <div className="img-container__slider">
@@ -113,9 +120,9 @@ export function ProductPage() {
               />
             </div>
             <div className="product-page__summaru-item product-summary">
-              <div className="product-summary__description">
+              <h3 className="product-summary__description">
                 {name} | {color} | {size}cm | ${formatPrice(price)}
-              </div>
+              </h3>
               {isInCart ? inCart : ''}
             </div>
             <div className="product-page__cart-container">
@@ -127,40 +134,48 @@ export function ProductPage() {
               {isInCart ? addMore : addToCart}
             </div>
             <div className="product-page__specifications-container">
-              <div className="specifications__title wrapper">Product specifications</div>
-              <div className="specifications__name-content-container wrapper">
-                <div className="specifications__name-container">
-                  <div className="specifications__name-title">Item number</div>
-                  <div className="specifications__name-title">Color</div>
-                  <div className="specifications__name-title">Collection</div>
-                  <div className="specifications__name-title">Price</div>
-                  <div className="specifications__name-title">Size</div>
-                  <div className="specifications__name-title">Category</div>
-                  <div
-                    className={`specifications__name-title in-stock ${
-                      isShake ? 'shake-product' : ''
-                    }`}
-                  >
-                    In stock
-                  </div>
-                </div>
-                <div className="specifications__content-container">
-                  <div className="specifications__item specifications-item-number">
-                    {id?.slice(-5)}
-                  </div>
-                  <div className="specifications__item specifications-color">{color}</div>
-                  <div className="specifications__item specifications-collection">{collection}</div>
-                  <div className="specifications__item specifications-price">${price}</div>
-                  <div className="specifications__item specifications-size">{size} cm</div>
-                  <div className="specifications__item specifications-category">{category}</div>
-                  <div className="specifications__item specifications-in-stock">{stock}</div>
-                </div>
-              </div>
-              <button className="button-buy-now button" data-id={isInCart}>
+              <h4 className="product-page__specifications-title">Product specifications</h4>
+              <table className="product-page__table">
+                <tbody>
+                  <tr className="table__row">
+                    <td className="table__title">Item number</td>
+                    <td className="table__info">{id?.slice(-5)}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">Color</td>
+                    <td className="table__info">{color}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">Collection</td>
+                    <td className="table__info">{collection}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">Price</td>
+                    <td className="table__info">${price}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">Size</td>
+                    <td className="table__info">{size}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">Category</td>
+                    <td className="table__info">{category}</td>
+                  </tr>
+                  <tr className="table__row">
+                    <td className="table__title">In stock</td>
+                    <td className={`table__info ${isShake && 'shake-product'}`}>{stock}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <button
+                className="button-buy-now button"
+                data-id={isInCart}
+                onClick={handelBuyNowBtn}
+              >
                 BUY NOW
               </button>
             </div>
-          </div>
+          </section>
         </>
       )}
     </main>

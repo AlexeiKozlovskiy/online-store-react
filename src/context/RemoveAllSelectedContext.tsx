@@ -24,28 +24,25 @@ export const RemoveAllSelectedContext = createContext<IRemoveAllSelectedContext>
 
 export const RemoveAllSelectedContextProvider = ({ children }: { children: ReactNode }) => {
   const {
-    setSelectedColors,
-    setSelectedCollections,
-    setSelectedCategory,
-    setSelectedPrice,
-    setSelectedSize,
-    setSelectedStock,
     setInputSearchValue,
     setSortindViewOption,
     setCurPageMain,
     setPerMainPageOption,
     setPerCartPageOption,
     setCurPageCart,
+    setSelectedFilters,
   } = useMyURLContext();
 
   function removeAllSelected() {
+    setSelectedFilters({
+      colorsSelected: [],
+      collectionsSelected: [],
+      categorySelected: [],
+      priceSelected: [PRICE_MIN, PRICE_MAX],
+      sizeSelected: [SIZE_MIN, SIZE_MAX],
+      stockSelected: [STOCK_MIN, STOCK_MAX],
+    });
     setInputSearchValue('');
-    setSelectedColors([]);
-    setSelectedCollections([]);
-    setSelectedCategory([]);
-    setSelectedPrice([PRICE_MIN, PRICE_MAX]);
-    setSelectedSize([SIZE_MIN, SIZE_MAX]);
-    setSelectedStock([STOCK_MIN, STOCK_MAX]);
     setSortindViewOption(SORT_OPTIONS[0]);
     setCurPageMain(1);
     setPerMainPageOption(ITEMS_IN_PAGE[2]);

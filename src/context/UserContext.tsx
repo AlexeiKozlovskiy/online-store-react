@@ -7,7 +7,7 @@ import {
   RootReducerProps,
   FORM_MESSAGES,
 } from '@/types/types';
-import { useCloseOpenModalsContext } from './CloseOpenModalsContext';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/reducers/controller';
 import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from '@/api/AuthAPI';
@@ -16,8 +16,8 @@ interface IUserContext {
   user: User | null;
   authenticated: boolean;
   logOut: () => void;
-  signIn: ({ formSignIN }: MyForms) => void;
-  signUP: ({ formSignUP }: MyForms) => void;
+  getSignIN: ({ formSignIN }: MyForms) => void;
+  getSignUP: ({ formSignUP }: MyForms) => void;
   showPreloader: boolean;
   errorUser: string | null;
   isFetching: boolean;
@@ -31,8 +31,8 @@ export const UserContext = createContext<IUserContext>({
   user: null,
   authenticated: false,
   logOut: () => null,
-  signIn: () => null,
-  signUP: () => null,
+  getSignIN: () => null,
+  getSignUP: () => null,
   showPreloader: false,
   errorUser: null,
   isFetching: false,
@@ -46,25 +46,21 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [isFetching, setIsFetching] = useState(false);
   const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
   const [showPreloader, setShowPreloader] = useState(false);
-  const {
-    openModalSignUP,
-    openModalSignIN,
-    setOpenModalSignIN,
-    setOpenModalSignUP,
-    closeModalSignInAnimation,
-  } = useCloseOpenModalsContext();
+  const { closeModalSignInAnimation, openModals, setOpenModals } = useCloseOpenModalsContext();
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, refreshToken, expiresIn, idUser } = authState;
 
+  const { signUP, signIN } = openModals;
+
   useEffect(() => {
     function resetErrorByCloseModal() {
-      if (!openModalSignUP || !openModalSignUP) {
+      if (!signUP || !signIN) {
         setErrorUser(null);
       }
     }
     resetErrorByCloseModal();
-  }, [openModalSignUP, openModalSignIN]);
+  }, [signUP, signIN]);
 
   useEffect(() => {
     async function checkRefreshTokens() {
@@ -103,7 +99,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [googleData]);
 
-  async function signIn(formSignIN: MyForms) {
+  async function getSignIN(formSignIN: MyForms) {
     setShowPreloader(true);
     const signInData = await signInApi(formSignIN);
     setShowPreloader(false);
@@ -176,7 +172,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  async function signUP(formSignUP: MyForms) {
+  async function getSignUP(formSignUP: MyForms) {
     setShowPreloader(true);
     const signUPData = await signUPApi(formSignUP);
     const { error } = signUPData;
@@ -186,8 +182,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       setErrorUser(error);
     }
     if (!error) {
-      setOpenModalSignUP(false);
-      setOpenModalSignIN(true);
+      setOpenModals({ ...openModals, signIN: true, signUP: false });
     }
   }
 
@@ -203,8 +198,8 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         user,
         authenticated,
         logOut,
-        signIn,
-        signUP,
+        getSignIN,
+        getSignUP,
         showPreloader,
         errorUser,
         isFetching,

@@ -11,7 +11,11 @@ export function PaymentModal({ handelCloseModalPayment }: IPaymentModal) {
   return (
     <div className="modal-page" onClick={handelCloseModalPayment} data-id="close-modal-profile">
       <div className="modal-page__container profile-modal animation-view-form">
-        <ButtonCross onClickCross={() => handelCloseModalPayment} dataId={'close-modal-profile'} />
+        <ButtonCross
+          dataId="close-modal-profile"
+          onClickCross={() => handelCloseModalPayment}
+          adittionClassName="close-modal-cross"
+        />
         <Form />
       </div>
     </div>

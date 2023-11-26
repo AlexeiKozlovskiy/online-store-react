@@ -8,6 +8,7 @@ import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { useMyURLContext } from '@/context/URLContext';
 import { memo } from 'react';
+import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 export const CartListItem = memo(function CartListItem({
   itemNumber,
@@ -17,7 +18,7 @@ export const CartListItem = memo(function CartListItem({
   const { setProductNameFromURL } = useMyURLContext();
   const { data: products } = useGetProductsQuery();
 
-  function handelCrossClick(e: React.MouseEvent<HTMLElement>) {
+  function handelCrossClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
     removeProductsFromCartAll(dataset.id!, products!);
   }
@@ -25,30 +26,40 @@ export const CartListItem = memo(function CartListItem({
   const isShake = useAnimations({ quantity, stock });
 
   return (
-    <div className="cart-item">
-      <div className="cart-item__content">
-        <div className="cart-item__number">{itemNumber}</div>
+    <tr className="cart-table__cart-item">
+      <th className="cart-item__number">
+        <span className="number-round">{itemNumber}</span>
+      </th>
+      <th className="cart-item__img-container">
         <Link
           to={`/product/${formatNameForURL(name)}`}
           onClick={() => setProductNameFromURL(formatNameForURL(name))}
         >
           <img className="cart-item__img" data-id={id} src={images[0]} alt="product image" />
         </Link>
-        <div className="cart-item__info">
-          <div className="cart-item-info__name">{name}</div>
-          <div className="cart-item-info__color">Color: {color}</div>
-          <div className="cart-item-info__collecrion">Collection: {collection}</div>
-          <div className="cart-item-info__size">Size: {size}cm</div>
-          <div className="cart-item-info__category">Category: {category}</div>
-          <div className={`cart-item-info__instock ${isShake ? 'shake-cart' : ''}`} data-id={id}>
-            In stock: {stock}
-          </div>
+      </th>
+      <th className="cart-item__info">
+        <h4 className="cart-item-info__name">{name}</h4>
+        <div className="cart-item-info__color">Color: {color}</div>
+        <div className="cart-item-info__collecrion">Collection: {collection}</div>
+        <div className="cart-item-info__size">Size: {size}cm</div>
+        <div className="cart-item-info__category">Category: {category}</div>
+        <div className={`cart-item-info__instock ${isShake ? 'shake-cart' : ''}`} data-id={id}>
+          In stock: {stock}
         </div>
-        <div className="cart-item__price">${price}</div>
+      </th>
+      <th className="cart-item__price">${price}</th>
+      <th className="cart-item__quantity">
         <QuantityPiecesCart id={id} quantity={quantity} stock={stock} />
-        <div className="cart-item__subtotal">${formatPrice(price * quantity)}</div>
-      </div>
-      <div className="cart-item__cross" data-id={id} onClick={(e) => handelCrossClick(e)}></div>
-    </div>
+      </th>
+      <th className="cart-item__subtotal">
+        ${formatPrice(price * quantity)}
+        <ButtonCross
+          dataId={id}
+          onClickCross={(e) => handelCrossClick(e)}
+          adittionClassName="cart-item-cross"
+        />
+      </th>
+    </tr>
   );
 });
