@@ -7,11 +7,13 @@ import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
+import { useBackToScrollPosition } from '@/components/CustomHook/BackToScrollHook';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const { emptyCatalog } = useMyFiltersContext();
   const { isFetching } = useGetProductsQuery();
+  useBackToScrollPosition();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
