@@ -17,6 +17,7 @@ import { useSelector } from 'react-redux';
 import { Authentication, RootReducerProps } from '@/types/types';
 import { useState } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
+import { Client, Server } from 'react-hydration-provider';
 
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
@@ -92,7 +93,8 @@ export function Header() {
           </Link>
           <div className="header-nav-contents">
             {isFetching ? <Preloader /> : authenticated && userIcon}
-            {!idUser && !isFetching && authBar}
+            <Client>{!idUser && !isFetching && authBar}</Client>
+            <Server>{<Preloader />}</Server>
           </div>
           <Link to={cartUrl} className="header-cart" onClick={() => setShowBurgerMenu(false)}>
             <div className="header-cart__img"></div>

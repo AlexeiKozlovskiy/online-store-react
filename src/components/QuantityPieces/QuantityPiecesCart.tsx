@@ -14,12 +14,12 @@ interface IQuantity {
 }
 
 export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
-  const [inputValue, setInputValue] = useState(quantity.toString());
+  const [inputValue, setInputValue] = useState(quantity);
   const { data: products } = useGetProductsQuery();
 
   useEffect(() => {
     if (quantity >= 1) {
-      setInputValue(quantity.toString());
+      setInputValue(quantity);
     }
   }, [quantity]);
 
@@ -35,13 +35,13 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
     const { value } = e.target as HTMLInputElement;
 
     if (+value < 0) {
-      setInputValue('1');
+      setInputValue(1);
       addProductsToCart(id, products!);
     } else if (+value >= stock) {
-      setInputValue(stock.toString());
+      setInputValue(stock);
       setProductsQuantityInCart(id, stock, products!);
     } else {
-      setInputValue(value);
+      setInputValue(+value);
       setProductsQuantityInCart(id, +value, products!);
     }
   }

@@ -1,8 +1,6 @@
 import './Pagination.scss';
 import ReactPaginate from 'react-paginate';
 import { PageClickEvent } from '@/types/types';
-import { useEffect } from 'react';
-import { handlerScrollUp } from '@/helpers/helpersFunc';
 
 interface IPagination {
   curPage: number;
@@ -11,10 +9,6 @@ interface IPagination {
 }
 
 export function Pagination({ curPage, handlePageClick, countPages }: IPagination) {
-  useEffect(() => {
-    handlerScrollUp();
-  }, [curPage]);
-
   return (
     <div className="pagination-button-container">
       <ReactPaginate

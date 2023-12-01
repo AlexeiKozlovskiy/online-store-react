@@ -1,22 +1,28 @@
 import './Product.scss';
 import { Link } from 'react-router-dom';
-import { Product } from '@/types/types';
-import { addProductsToCart, removeProductsFromCartAll } from '@/reducers/controller';
+import { Product, ROUTE } from '@/types/types';
+import {
+  addProductsToCart,
+  clearChooseProduct,
+  removeProductsFromCartAll,
+  setChooseProduct,
+} from '@/reducers/controller';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
-import { useMyURLContext } from '@/context/URLContext';
 import { formatNameForURL } from '@/helpers/helpersFunc';
-import { memo } from 'react';
+import { useEffect } from 'react';
 
 type ProductViewData = {
-  isInCart: boolean;
+  isInCart?: boolean;
   product: Product;
 };
 
-export const ProductItem = memo(function ProductItem({ isInCart, product }: ProductViewData) {
-  const { setProductNameFromURL } = useMyURLContext();
+export function ProductItem({ isInCart, product }: ProductViewData) {
   const { data: products } = useGetProductsQuery();
-
   const { id, images, name, price, color, collection, size, category, stock } = product;
+
+  useEffect(() => {
+    clearChooseProduct();
+  }, []);
 
   function productItemAddClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
@@ -44,14 +50,11 @@ export const ProductItem = memo(function ProductItem({ isInCart, product }: Prod
 
   return (
     <div className="product-item">
-      <Link to={`/product/${formatNameForURL(name)}`}>
-        <img
-          className="product-item__img"
-          onClick={() => setProductNameFromURL(formatNameForURL(name))}
-          data-id={id}
-          src={images[0]}
-          alt="product image"
-        />
+      <Link
+        to={`${ROUTE.PRODUCT}/${formatNameForURL(name)}`}
+        onClick={() => setChooseProduct({ id, name })}
+      >
+        <img className="product-item__img" data-id={id} src={images[0]} alt="product image" />
       </Link>
       <div className="product-item__text-wrapper">{!isInCart ? addToCart : inCart}</div>
       <div className="product-item__info">
@@ -67,4 +70,4 @@ export const ProductItem = memo(function ProductItem({ isInCart, product }: Prod
       </div>
     </div>
   );
-});
+}

@@ -13,6 +13,8 @@ import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useMyUserContext } from '@/context/UserContext';
 import { useCartPaginationHook } from '@/components/CustomHook/CartPaginationHook';
+import { Client, Server } from 'react-hydration-provider';
+import { Preloader } from '@/components/Preloader/Preloader';
 
 export function CartPage() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
@@ -31,64 +33,64 @@ export function CartPage() {
   }
 
   const emtyCart = (
-    <main>
-      <div className="shopping-cart__empty">
-        <h2 className="shopping-cart__empty-title">SHOPPING CART</h2>
-        <div className="shopping-cart__empty-subtitle">
-          You have no items in your shopping cart. Click
-          <br />
-          <Link to="/">here</Link> to continue shopping.
-        </div>
+    <>
+      <div className="shopping-cart__empty-subtitle">
+        You have no items in your shopping cart. Click
+        <br />
+        <Link to="/">here</Link> to continue shopping.
       </div>
-    </main>
+    </>
+  );
+
+  const takenCart = (
+    <>
+      {openModals.payment && <PaymentModal handelCloseModalPayment={handelCloseModalPayment} />}
+      <div className="shopping-cart__container">
+        <div className="shopping-cart__pagination-table-container">
+          <div className="shopping-cart__pagination-container">
+            <Client>
+              <CustomSelect
+                selectedItem={perCartPageOption}
+                handleChange={(selectedOption) => setPerCartPageOption(selectedOption!)}
+                options={ITEMS_IN_PAGE_CART}
+              />
+            </Client>
+          </div>
+          <table className="shopping-cart__table">
+            <thead className="cart-table__header-container">
+              <tr className="cart-table__content">
+                <th className="cart-table__number">№</th>
+                <th className="cart-table__item">Item</th>
+                <th className="cart-table__info">Info</th>
+                <th className="cart-table__price">Price</th>
+                <th className="cart-table__amount">Amount</th>
+                <th className="cart-table__subtotal">Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems &&
+                currentItems.map((cartItem: CartItem) => (
+                  <CartListItem key={cartItem.cartID} {...cartItem} />
+                ))}
+            </tbody>
+          </table>
+        </div>
+        <Summary isHandelOrderClick={checkAuth} />
+      </div>
+      <Pagination curPage={curPageCart} countPages={countPages} handlePageClick={handlePageClick} />
+    </>
   );
 
   return (
     <>
-      {!countCartItem ? (
-        emtyCart
-      ) : (
-        <main className="shopping-cart wrapper">
-          {openModals.payment && <PaymentModal handelCloseModalPayment={handelCloseModalPayment} />}
-          <h2 className="shopping-cart__header">SHOPPING CART</h2>
-          <ArrowBack />
-          <div className="shopping-cart__container">
-            <div className="shopping-cart__pagination-table-container">
-              <div className="shopping-cart__pagination-container">
-                <CustomSelect
-                  selectedItem={perCartPageOption}
-                  handleChange={(selectedOption) => setPerCartPageOption(selectedOption!)}
-                  options={ITEMS_IN_PAGE_CART}
-                />
-              </div>
-              <table className="shopping-cart__table">
-                <thead className="cart-table__header">
-                  <tr className="cart-table__content">
-                    <th>№</th>
-                    <th>Item</th>
-                    <th></th>
-                    <th>Price</th>
-                    <th>Amount</th>
-                    <th>Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {currentItems &&
-                    currentItems.map((cartItem: CartItem) => (
-                      <CartListItem key={cartItem.cartID} {...cartItem} />
-                    ))}
-                </tbody>
-              </table>
-            </div>
-            <Summary isHandelOrderClick={checkAuth} />
-          </div>
-          <Pagination
-            curPage={curPageCart}
-            countPages={countPages}
-            handlePageClick={handlePageClick}
-          />
-        </main>
-      )}
+      <main className="shopping-cart wrapper">
+        <h2 className="shopping-cart__header">SHOPPING CART</h2>
+        <ArrowBack />
+        <Client>{!countCartItem ? emtyCart : takenCart}</Client>
+        <Server>
+          <div className="shopping-cart__server-preloader">{<Preloader />}</div>
+        </Server>
+      </main>
     </>
   );
 }

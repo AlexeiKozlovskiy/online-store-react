@@ -7,20 +7,18 @@ import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { Preloader } from '@/components/Preloader/Preloader';
-import { useBackToScrollPosition } from '@/components/CustomHook/BackToScrollHook';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const { emptyCatalog } = useMyFiltersContext();
   const { isFetching } = useGetProductsQuery();
-  useBackToScrollPosition();
+  // useBackToScrollPosition();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
   }
 
   const noItemsFound = <section className="empty-catalog">No items found</section>;
-  const productsList = isFetching ? <Preloader /> : <ProductsList />;
 
   return (
     <main className="MainPage-container wrapper">
@@ -32,7 +30,8 @@ export function MainPage() {
           </aside>
           <div className="main-catalog__center-section main-center-section">
             <SortedSelect onClickShowFilter={handleShowFilters} />
-            {emptyCatalog ? noItemsFound : productsList}
+            {isFetching && <Preloader />}
+            {emptyCatalog ? noItemsFound : <ProductsList />}
           </div>
         </section>
       </div>

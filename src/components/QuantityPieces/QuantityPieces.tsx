@@ -1,7 +1,7 @@
 import './QuantityPieces.scss';
 
 interface IQuantityPieces {
-  inputValue: string;
+  inputValue: number;
   handelInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handelArrowAppClick: (event: React.MouseEvent) => void;
   handelArrowDownClick: (event: React.MouseEvent) => void;
