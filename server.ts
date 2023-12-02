@@ -5,7 +5,8 @@ import { createServer as createViteServer } from 'vite';
 import path from 'path';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = 5173;
+// const serverUrl = 5173;
+const serverUrl = 'https://online-store-mbvi.onrender.com';
 
 async function createServer(): Promise<void> {
   const app = express();
@@ -38,7 +39,8 @@ async function createServer(): Promise<void> {
     }
   });
 
-  app.listen(PORT, () => console.log(`http://localhost:${PORT}/`));
+  // app.listen(serverUrl);
+  app.listen(serverUrl, () => console.log(`http://localhost:${serverUrl}/`));
 }
 
 createServer();

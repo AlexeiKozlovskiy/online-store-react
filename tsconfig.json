@@ -6,6 +6,8 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "baseUrl": "./",
+    "types": ["vite/client"],
+
     // "typeRoots": ["./src/types", "./types"],
 
     /* Bundler mode */
@@ -27,7 +29,6 @@
       "components/*": ["./src/components/*"]
     }
   },
-  "include": ["src"],
   // "references": [{ "path": "./tsconfig.node.json" }],
   "ts-node": {
     "esm": true
