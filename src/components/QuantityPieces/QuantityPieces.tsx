@@ -18,9 +18,10 @@ export function QuantityPieces({
       <div className="amount-item__value-container">
         <input
           className="amount-item__value-container amount-input"
-          type="number"
+          type="text"
           value={inputValue}
           onChange={handelInput}
+          maxLength={3}
         />
       </div>
       <div className="amount-item__arrow-container arrow-up" onClick={handelArrowAppClick}>

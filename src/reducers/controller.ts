@@ -1,4 +1,4 @@
-import { Product, Authentication } from '@/types/types';
+import { Product, Authentication, ChooseProduct } from '@/types/types';
 import store from '@/reducers/store';
 import {
   addProductToCart,
@@ -9,6 +9,7 @@ import {
 } from '@/reducers/cart';
 import { addAppliedPromocode, removeAppliedPromocode } from '@/reducers/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
+import { chooseProduct, resetChooseProduct } from './chooseProduct';
 
 export function addProductsToCart(id: string, products: Product[], quantity: number = 1) {
   const product = products.find((product: Product) => product.id === id);
@@ -67,4 +68,14 @@ export function setAuthParams(authParams: Authentication): void {
 
 export function clearAuthParams() {
   store.dispatch(clearAuthUser());
+}
+
+export function setChooseProduct(product: ChooseProduct) {
+  if (product) {
+    store.dispatch(chooseProduct(product));
+  }
+}
+
+export function clearChooseProduct() {
+  store.dispatch(resetChooseProduct());
 }

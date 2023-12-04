@@ -1,3 +1,4 @@
+import { backScrollPosition } from '@/helpers/helpersFunc';
 import { useEffect, useRef } from 'react';
 
 export function useBackToScrollPosition() {
@@ -8,13 +9,9 @@ export function useBackToScrollPosition() {
     const scrollPosition = sessionStorage.getItem('scrollPosition');
     window.addEventListener('scroll', handleScroll);
 
-    if (scrollPosition) {
-      if (+scrollPosition > 0) {
-        body.style.opacity = '0';
-        setTimeout(() => {
-          window.scrollTo(0, +scrollPosition);
-        }, 0);
-      }
+    if (scrollPosition && +scrollPosition > 0) {
+      body.style.opacity = '0';
+      backScrollPosition(+scrollPosition);
     }
 
     function handleScroll() {
@@ -27,7 +24,7 @@ export function useBackToScrollPosition() {
 
       setTimeout(() => {
         body.style.opacity = '100';
-      }, 20);
+      }, 100);
     };
   }, []);
 }

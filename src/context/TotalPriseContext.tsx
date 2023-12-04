@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode, useLayoutEffect, useMemo } from 'react';
+import { useState, createContext, useContext, ReactNode, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem, PromocodeData } from '@/types/types';
 
@@ -28,11 +28,11 @@ export const TotalPriceContextProvider = ({ children }: { children: ReactNode })
     return promocodeState.applied.reduce((acc, { discount }) => acc + discount, 0);
   }, [promocodeState]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setTotalPrice(getTotalPrice);
   }, [cartItemsState]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (getTotalDiscount) {
       setTotalPriceByPromocodes(getTotalPrice - (getTotalDiscount / 100) * getTotalPrice);
     } else {

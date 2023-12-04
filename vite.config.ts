@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -8,9 +10,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         additionalData: `
-        @import '/src/assets/styles/animation.scss';
-        @import '/src/assets/styles/normalize.scss';
-        @import '/src/assets/styles/variables.scss';
+           @import '/src/assets/styles/common.scss';
         `,
       },
     },
@@ -20,5 +20,19 @@ export default defineConfig({
       { find: '@', replacement: '/src' },
       { find: 'components', replacement: '/src/components' },
     ],
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('react-router-dom') || id.includes('react-router')) {
+            return '@react-router';
+          }
+          if (id.includes('@reduxjs/toolkit')) {
+            return '@reduxjs';
+          }
+        },
+      },
+    },
   },
 });

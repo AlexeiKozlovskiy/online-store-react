@@ -1,4 +1,5 @@
 import './SearchPanel.scss';
+
 import { memo, useEffect, useState } from 'react';
 import { useMyURLContext } from '@/context/URLContext';
 

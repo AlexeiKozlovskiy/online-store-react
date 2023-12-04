@@ -1,11 +1,13 @@
 import './TopMainPanel.scss';
-import { useState, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BreadCrumdPanel } from './BreadCrumdPanel';
 import { ITEMS_IN_PAGE, SORT_OPTIONS } from '@/helpers/constant';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useMyURLContext } from '@/context/URLContext';
 import { ISelect } from '@/types/types';
 import { CustomSelect } from '@/components/Select/Select';
+import { ServerSelect } from '../Select/ServerSelect';
+import { Server, Client } from 'react-hydration-provider';
 
 interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent<Element, MouseEvent>) => void;
@@ -24,7 +26,7 @@ export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
   } = useMyURLContext();
   const [selectedPagination, setSelectedPagination] = useState<ISelect | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setSelectedPagination(perMainPageOption);
   }, [perMainPageOption]);
 
@@ -50,19 +52,29 @@ export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
         </div>
         <div className="sorted-filters__item-count">{itemsCount} items</div>
         <div className="sorted-filters__select">
-          <CustomSelect
-            selectedItem={sortindViewOption}
-            handleChange={handleChangeSort}
-            options={SORT_OPTIONS}
-          />
+          <Client>
+            <CustomSelect
+              selectedItem={sortindViewOption}
+              handleChange={handleChangeSort}
+              options={SORT_OPTIONS}
+            />
+          </Client>
+          <Server>
+            <ServerSelect selectedItem={sortindViewOption.label} />
+          </Server>
         </div>
         <div className="sorted-filters__select">
           <div className="pagination__select">
-            <CustomSelect
-              selectedItem={selectedPagination}
-              handleChange={handleChangePagination}
-              options={ITEMS_IN_PAGE}
-            />
+            <Client>
+              <CustomSelect
+                selectedItem={selectedPagination}
+                handleChange={handleChangePagination}
+                options={ITEMS_IN_PAGE}
+              />
+            </Client>
+            <Server>
+              <ServerSelect selectedItem={perMainPageOption.label} />
+            </Server>
           </div>
         </div>
         <div className="sorted-filters__switch-view switch-view">

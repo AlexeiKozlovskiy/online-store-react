@@ -1,18 +1,19 @@
 import { useMySortingsContext } from '@/context/SortingsContext';
 import { useMyURLContext } from '@/context/URLContext';
+import { handlerScrollUp } from '@/helpers/helpersFunc';
 import { PageClickEvent, Product } from '@/types/types';
 import { useState, useEffect, useLayoutEffect } from 'react';
 
 export function useMainPagination() {
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const { sortProducts: products } = useMySortingsContext();
+  const countProducts = products.length;
   const { curPageMain, setCurPageMain, perMainPageOption, inputSearchValue, isEmptyFilters } =
     useMyURLContext();
   const [countPages, setCountPages] = useState(curPageMain);
-  const [itemOffset, setItemOffset] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(+perMainPageOption.value);
-
-  const countProducts = products.length;
+  const [itemOffset, setItemOffset] = useState(0);
+  const useClientLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
   useEffect(() => {
     if (perMainPageOption.value === 'all' && countProducts) {
@@ -22,14 +23,14 @@ export function useMainPagination() {
     }
   }, [perMainPageOption, countProducts]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const newOffset = ((curPageMain - 1) * itemsPerPage) % countProducts;
     if (newOffset) {
       setItemOffset(newOffset);
     }
   }, [curPageMain, itemsPerPage, products]);
 
-  useEffect(() => {
+  useClientLayoutEffect(() => {
     if (countProducts && itemsPerPage) {
       const endOffset = itemOffset + itemsPerPage;
       setCurrentItems(products.slice(itemOffset, endOffset));
@@ -38,25 +39,30 @@ export function useMainPagination() {
   }, [itemOffset, itemsPerPage, products]);
 
   useEffect(() => {
-    resetOnFirstPageBySearch();
+    inputSearchValue && resetOnFirstPage();
   }, [inputSearchValue, products]);
 
   useEffect(() => {
-    resetOnFirstPageByFilters();
+    !isEmptyFilters && resetOnFirstPage();
   }, [isEmptyFilters, products]);
 
-  function resetOnFirstPageBySearch() {
-    inputSearchValue && handlePageClick({ selected: 0 });
-  }
+  useEffect(() => {
+    if (countProducts) {
+      if (curPageMain > countPages) {
+        resetOnFirstPage();
+      }
+    }
+  }, [countPages, curPageMain, countProducts]);
 
-  function resetOnFirstPageByFilters() {
-    !isEmptyFilters && handlePageClick({ selected: 0 });
+  function resetOnFirstPage() {
+    handlePageClick({ selected: 0 });
   }
 
   const handlePageClick = (event: PageClickEvent) => {
     const newOffset = (event.selected * itemsPerPage) % countProducts;
     setItemOffset(newOffset);
     setCurPageMain(event.selected + 1);
+    handlerScrollUp();
   };
 
   return { countPages, curPageMain, currentItems, handlePageClick };

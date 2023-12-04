@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode, useLayoutEffect, useMemo } from 'react';
+import { useState, createContext, useContext, ReactNode, useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem } from '@/types/types';
 
@@ -20,7 +20,7 @@ export const TotalItemsContextProvider = ({ children }: { children: ReactNode })
     return cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0);
   }, [cartItemsState]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setTotalItems(getTotalItems);
   }, [cartItemsState]);
 

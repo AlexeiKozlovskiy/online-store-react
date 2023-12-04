@@ -27,8 +27,6 @@ interface IURLContext extends InputSearch {
   setPerCartPageOption: (selectedOption: ISelect) => void;
   swichedView: string;
   setSwichedView: (value: string) => void;
-  productNameFromURL: string;
-  setProductNameFromURL: (value: string) => void;
   cartUrl: string;
   selectedFilters: SelectedFilters;
   setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilters>>;
@@ -52,9 +50,7 @@ export const URLContext = createContext<IURLContext>({
   setPerCartPageOption: () => null,
   swichedView: 'block',
   setSwichedView: () => null,
-  productNameFromURL: '',
-  setProductNameFromURL: () => null,
-  cartUrl: '',
+  cartUrl: '/cart',
   selectedFilters: {
     colorsSelected: [],
     collectionsSelected: [],
@@ -83,7 +79,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [curPageCart, setCurPageCart] = useState<number>(1);
   const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
   const [swichedView, setSwichedView] = useState('block');
-  const [productNameFromURL, setProductNameFromURL] = useState<string>('');
   const [cartUrl, setCartUrl] = useState('/cart');
   const location = useLocation();
 
@@ -127,10 +122,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       const [curPageCart] = queryParams.getAll('page');
       const [perCartOption] = queryParams.getAll('perPage');
       const [swichedViews] = queryParams.getAll('switchView');
-      const productName = location.pathname
-        .split('/')
-        .map((el, ind, arr) => (el === 'product' ? arr[ind + 1] : ''))
-        .join('');
 
       updatedFilters(
         colors,
@@ -147,17 +138,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       updatedRowBlockView(viewOption);
       updatedPagination(curPageMain, perMainOption, curPageCart, perCartOption);
 
-      if (search) {
-        setInputSearchValue(search);
-      }
-
-      if (swichedViews) {
-        setSwichedView(swichedViews);
-      }
-
-      if (productName) {
-        setProductNameFromURL(productName);
-      }
+      search && setInputSearchValue(search);
+      swichedViews && setSwichedView(swichedViews);
     }
 
     setDataFromUrl();
@@ -285,7 +267,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     if (valMinStock.length || valMaxStock.length) {
       filters = { ...filters, stockSelected: [+valMinStock, +valMaxStock] };
     }
-
     setSelectedFilters(filters);
   }
 
@@ -327,7 +308,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   function updatedRowBlockView(viewOption: string) {
-    if (viewOption) {
+    viewOption &&
       setSortindViewOption({
         value: viewOption,
         label: SORT_OPTIONS.filter(({ value, label }) => {
@@ -336,7 +317,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
           }
         })[0].label,
       });
-    }
   }
 
   const hasEmptyFilters =
@@ -368,8 +348,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         setPerCartPageOption,
         swichedView,
         setSwichedView,
-        productNameFromURL,
-        setProductNameFromURL,
         cartUrl,
         selectedFilters,
         setSelectedFilters,

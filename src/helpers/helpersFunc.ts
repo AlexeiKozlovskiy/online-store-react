@@ -115,9 +115,17 @@ export function commonError(err: unknown) {
 }
 
 export function handlerScrollUp() {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth',
-  });
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, 20);
+}
+
+export function backScrollPosition(scrollPosition: number) {
+  setTimeout(() => {
+    window.scrollTo(0, scrollPosition);
+  }, 0);
 }

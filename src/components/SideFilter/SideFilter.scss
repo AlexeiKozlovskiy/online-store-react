@@ -313,42 +313,10 @@
   margin-bottom: 25px;
 }
 
-.item-content-position {
-  &__end,
-  &__start {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: $Roboto;
-    color: $darkGray;
-    font-size: 0.9rem;
-    overflow: hidden;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  &__end {
-    right: 20px;
-  }
-
-  &__start {
-    right: 140px;
-  }
-}
-
 .price,
 .size,
 .stock {
   position: relative;
-}
-
-.box-start,
-.box-end {
-  width: 80px;
-  height: 30px;
-  overflow: hidden;
-  padding-right: 15px;
 }
 
 .dual-range {
@@ -459,5 +427,36 @@
 
   &:focus {
     outline: none;
+  }
+}
+
+.item-content__input {
+  width: 80px;
+  height: 30px;
+  overflow: hidden;
+  padding-right: 15px;
+}
+
+.item-content-position {
+  &__end,
+  &__start {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: $Roboto;
+    color: $darkGray;
+    font-size: 0.9rem;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+  &__end {
+    right: 20px;
+  }
+
+  &__start {
+    right: 140px;
   }
 }

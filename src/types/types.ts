@@ -34,10 +34,16 @@ export interface CartItem extends CartItemArg {
   itemNumber: number;
 }
 
+export interface ChooseProduct {
+  id: string;
+  name: string;
+}
+
 export interface RootReducerProps {
   cart: CartItem[];
   promocode: PromocodeData;
   auth: Authentication;
+  chooseProduct: ChooseProduct;
 }
 
 export interface PaginationData {
@@ -120,6 +126,13 @@ export enum CARD {
   EXPRESS = '3',
   VISA = '4',
   MASTERCARD = '5',
+}
+
+export enum ROUTE {
+  MAIN = '/',
+  CART = 'cart',
+  PRODUCT = 'product',
+  PROFILE = 'profile',
 }
 
 export interface CardImages {

@@ -1,47 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootReducerProps, CartItem } from '@/types/types';
 import { QuantityPieces } from './QuantityPieces';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
 
 interface IQuantity {
-  clickId: string;
   onChangeQuantity: (value: string) => void;
   onResetInput: boolean;
+  stock: number;
 }
 
-export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, clickId }: IQuantity) {
-  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
-  const { data: products = [] } = useGetProductsQuery();
+export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, stock }: IQuantity) {
   const [inputValue, setInputValue] = useState('1');
-  const [stock, setStock] = useState(0);
 
   useEffect(() => {
-    products.find(({ id, stock }) => {
-      if (id === clickId) {
-        setStock(stock);
-      }
-    });
-  }, [cartItemsState, clickId]);
+    onChangeQuantity(inputValue.toString());
+  }, [inputValue]);
 
   useEffect(() => {
-    onChangeQuantity(inputValue);
-  }, [inputValue, onChangeQuantity]);
-
-  useEffect(() => {
-    if (onResetInput) {
-      setInputValue('1');
-    }
+    onResetInput && setInputValue('1');
   }, [onResetInput]);
 
   function handelArrowAppClick() {
-    if (+inputValue < stock) {
+    if (inputValue && stock && +inputValue < stock) {
       setInputValue((el) => (+el + 1).toString());
     }
   }
 
   function handelArrowDownClick() {
-    if (+inputValue > 1) {
+    if (inputValue && +inputValue > 1) {
       setInputValue((el) => (+el - 1).toString());
     } else {
       setInputValue('1');
@@ -50,12 +34,14 @@ export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, clickId 
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
-    if (+value < 0) {
+    if (value.match(/[^0-9]/g)) {
+      setInputValue('1');
+    } else if (+value < 0) {
       setInputValue('1');
     } else if (+value >= stock) {
       setInputValue(stock.toString());
     } else {
-      setInputValue(e.target.value);
+      setInputValue(value);
     }
   }
 
