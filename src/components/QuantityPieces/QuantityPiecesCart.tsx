@@ -48,7 +48,7 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
 
   return (
     <QuantityPieces
-      inputValue={inputValue}
+      inputValue={inputValue.toString()}
       handelInput={handelInput}
       handelArrowAppClick={handelArrowAppClick}
       handelArrowDownClick={handelArrowDownClick}

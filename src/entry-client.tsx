@@ -1,8 +1,8 @@
+import './index.scss';
 import { StrictMode } from 'react';
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from '@/App.tsx';
-import '@/index.scss';
 import { FiltersContextProvider } from '@/context/FiltersContext';
 import { SortingsContextProvider } from '@/context/SortingsContext';
 import { RemoveAllSelectedContextProvider } from '@/context/RemoveAllSelectedContext';
@@ -17,8 +17,7 @@ import { CloseOpenModalsContextProvider } from '@/context/CloseOpenModalsContext
 import { ProfileUserContextProvider } from '@/context/ProfileUserContext';
 import { HydrationProvider } from 'react-hydration-provider';
 
-hydrateRoot(
-  document.getElementById('root') as HTMLElement,
+const RootApp = (
   <StrictMode>
     <Provider store={store}>
       <HydrationProvider>
@@ -49,3 +48,11 @@ hydrateRoot(
     </Provider>
   </StrictMode>
 );
+
+const isSSR = import.meta.env.VITE_SIDE_MODE === 'SSR';
+
+if (isSSR) {
+  hydrateRoot(document.getElementById('root') as HTMLElement, RootApp);
+} else {
+  createRoot(document.getElementById('root')!).render(RootApp);
+}

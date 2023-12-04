@@ -21,4 +21,18 @@ export default defineConfig({
       { find: 'components', replacement: '/src/components' },
     ],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id: string) {
+          if (id.includes('react-router-dom') || id.includes('react-router')) {
+            return '@react-router';
+          }
+          if (id.includes('@reduxjs/toolkit')) {
+            return '@reduxjs';
+          }
+        },
+      },
+    },
+  },
 });

@@ -8,8 +8,6 @@
     "baseUrl": "./",
     "types": ["vite/client"],
 
-    // "typeRoots": ["./src/types", "./types"],
-
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
@@ -29,7 +27,6 @@
       "components/*": ["./src/components/*"]
     }
   },
-  // "references": [{ "path": "./tsconfig.node.json" }],
   "ts-node": {
     "esm": true
   }

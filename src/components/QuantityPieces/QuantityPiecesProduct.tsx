@@ -8,40 +8,40 @@ interface IQuantity {
 }
 
 export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, stock }: IQuantity) {
-  const [inputValue, setInputValue] = useState(1);
+  const [inputValue, setInputValue] = useState('1');
 
   useEffect(() => {
     onChangeQuantity(inputValue.toString());
-  }, [inputValue, onChangeQuantity]);
+  }, [inputValue]);
 
   useEffect(() => {
-    onResetInput && setInputValue(1);
+    onResetInput && setInputValue('1');
   }, [onResetInput]);
 
   function handelArrowAppClick() {
-    if (stock && inputValue < stock) {
-      console.log(stock);
-
-      setInputValue((el) => el + 1);
+    if (inputValue && stock && +inputValue < stock) {
+      setInputValue((el) => (+el + 1).toString());
     }
   }
 
   function handelArrowDownClick() {
-    if (inputValue > 1) {
-      setInputValue((el) => el - 1);
+    if (inputValue && +inputValue > 1) {
+      setInputValue((el) => (+el - 1).toString());
     } else {
-      setInputValue(1);
+      setInputValue('1');
     }
   }
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
-    if (+value < 0) {
-      setInputValue(1);
+    if (value.match(/[^0-9]/g)) {
+      setInputValue('1');
+    } else if (+value < 0) {
+      setInputValue('1');
     } else if (+value >= stock) {
-      setInputValue(stock);
+      setInputValue(stock.toString());
     } else {
-      setInputValue(+e.target.value);
+      setInputValue(value);
     }
   }
 

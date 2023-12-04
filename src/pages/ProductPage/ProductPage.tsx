@@ -20,7 +20,7 @@ interface ProductPage {
 export function ProductPage() {
   const [curImage, setCurImage] = useState(0);
   const [isInCart, setIsInCart] = useState(false);
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState('1');
   const [resetInput, setResetInput] = useState(false);
   const chooseProduct = useSelector<RootReducerProps, ChooseProduct>(
     (state) => state.chooseProduct
@@ -69,10 +69,6 @@ export function ProductPage() {
     setResetInput(true);
     navigate(cartUrl);
   }
-
-  const qtyChange = (value: string) => {
-    setQuantity(value);
-  };
 
   const inCart = <div className="product-summary__state-in-cart">In cart</div>;
 
@@ -133,14 +129,14 @@ export function ProductPage() {
               <h3 className="product-summary__description">
                 {name} | {color} | {size}cm | ${formatPrice(price)}
               </h3>
-              {isInCart ? inCart : ''}
+              {isInCart && inCart}
             </div>
           )}
         </Client>
         <div className="product-page__cart-container">
           <QuantityPiecesProduct
             stock={stock}
-            onChangeQuantity={qtyChange}
+            onChangeQuantity={(value) => setQuantity(value)}
             onResetInput={resetInput}
           />
           {isInCart ? addMore : addToCart}

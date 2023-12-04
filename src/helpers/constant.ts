@@ -1,3 +1,17 @@
+export const NEST_SERVICE_URL = 'https://online-store-api-7fyt.onrender.com';
+// export const NEST_SERVICE_URL = 'http://localhost:4000';
+
+export const API_ROUTES = {
+  SIGN_UP: `${NEST_SERVICE_URL}/auth/register`,
+  SIGN_IN: `${NEST_SERVICE_URL}/auth/login`,
+  SIGN_IN_GOOGLE: `${NEST_SERVICE_URL}/auth/login/google`,
+  GET_USER: `${NEST_SERVICE_URL}/user/`,
+  REFRESH: `${NEST_SERVICE_URL}/auth/refresh/`,
+  PROFILE: `${NEST_SERVICE_URL}/profile/`,
+  PROFILE_CREATE: `${NEST_SERVICE_URL}/profile/create`,
+  PROFILE_UPDATE: `${NEST_SERVICE_URL}/profile/update`,
+};
+
 export const PRICE_MIN = 1.99;
 export const PRICE_MAX = 34.99;
 export const SIZE_MIN = 1;
@@ -65,20 +79,6 @@ export const PROMOCODES = [
     discount: 10,
   },
 ];
-
-export const BASE_URL = 'https://online-store-api-7fyt.onrender.com';
-// export const BASE_URL = 'http://localhost:4000';
-
-export const API_ROUTES = {
-  SIGN_UP: `${BASE_URL}/auth/register`,
-  SIGN_IN: `${BASE_URL}/auth/login`,
-  SIGN_IN_GOOGLE: `${BASE_URL}/auth/login/google`,
-  GET_USER: `${BASE_URL}/user/`,
-  REFRESH: `${BASE_URL}/auth/refresh/`,
-  PROFILE: `${BASE_URL}/profile/`,
-  PROFILE_CREATE: `${BASE_URL}/profile/create`,
-  PROFILE_UPDATE: `${BASE_URL}/profile/update`,
-};
 
 export const CARD_IMAGES = {
   3: 'cards__img-express',
