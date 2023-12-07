@@ -4,4 +4,8 @@
   margin-bottom: 50px;
   display: grid;
   grid-template-columns: 1fr 4fr;
+
+  &__products {
+    min-height: 1100px;
+  }
 }

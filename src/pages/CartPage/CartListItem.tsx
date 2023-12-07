@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 import { CartItem, ROUTE } from '@/types/types';
 import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
-import { clearChooseProduct, removeProductsFromCartAll, setChooseProduct } from '@/reducers/controller';
+import {
+  clearChooseProduct,
+  removeProductsFromCartAll,
+  setChooseProduct,
+} from '@/reducers/controller';
 import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { memo, useEffect } from 'react';

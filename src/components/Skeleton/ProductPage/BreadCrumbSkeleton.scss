@@ -1,0 +1,9 @@
+.bread-crumb-skeleton {
+  height: 15px;
+  width: 400px;
+
+  @media screen and (max-width: 768px) {
+    height: 12px;
+    width: 300px;
+  }
+}

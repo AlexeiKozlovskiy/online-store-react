@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CardImages, CartItem, MyForms, RootReducerProps, UserProfile } from '@/types/types';
+import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps, UserProfile } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
@@ -85,7 +85,7 @@ export function Form() {
       setShowPreloader(false);
       reset();
       removeAllProductsFromCart();
-      navigate('/');
+      navigate(ROUTE.MAIN);
     }, 2000);
   };
 

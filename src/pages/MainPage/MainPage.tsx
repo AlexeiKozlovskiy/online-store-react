@@ -1,18 +1,14 @@
 import './MainPage.scss';
 import { useState } from 'react';
 import { SortedSelect } from '@/components/TopMainPanel/SortedSelect';
-import { ProductsList } from '@/components/Products/ProductsList';
+import { ProductsList } from '@/pages/MainPage/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
-import { Preloader } from '@/components/Preloader/Preloader';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const { emptyCatalog } = useMyFiltersContext();
-  const { isFetching } = useGetProductsQuery();
-  // useBackToScrollPosition();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
@@ -30,7 +26,6 @@ export function MainPage() {
           </aside>
           <div className="main-catalog__center-section main-center-section">
             <SortedSelect onClickShowFilter={handleShowFilters} />
-            {isFetching && <Preloader />}
             {emptyCatalog ? noItemsFound : <ProductsList />}
           </div>
         </section>

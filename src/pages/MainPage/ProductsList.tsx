@@ -8,6 +8,7 @@ import { useMainPagination } from '@/components/CustomHook/MainPaginationHook';
 import { Server, Client } from 'react-hydration-provider';
 import products from '@/assets/data/products.json';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
+import { MainSkeleton } from '@/components/Skeleton/MainPage/MainSkeleton';
 
 export function ProductsList() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
@@ -15,8 +16,11 @@ export function ProductsList() {
   const { countPages, curPageMain, currentItems, handlePageClick } = useMainPagination();
   const { isFetching } = useGetProductsQuery();
 
+  const { perMainPageOption } = useMyURLContext();
+
   return (
     <>
+      {isFetching && <MainSkeleton amount={+perMainPageOption.value} />}
       <Client>
         <div className={`main-catalog__products ${swichedView === 'row' && 'row-view'}`}>
           {currentItems &&
@@ -30,13 +34,13 @@ export function ProductsList() {
               />
             ))}
         </div>
-        {!isFetching && (
+        {
           <Pagination
             curPage={curPageMain}
             countPages={countPages}
             handlePageClick={handlePageClick}
           />
-        )}
+        }
       </Client>
       <Server>
         <div className="main-catalog__products hide">
