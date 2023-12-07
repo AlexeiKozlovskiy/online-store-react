@@ -9,13 +9,11 @@ import { useSelector } from 'react-redux';
 import { useAnimations } from '@/components/CustomHook/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { useGetProductQuery, useGetProductsQuery } from '@/api/ProductsAPI';
-import { Preloader } from '@/components/Preloader/Preloader';
 import { useMyURLContext } from '@/context/URLContext';
-import { Client, Server } from 'react-hydration-provider';
-
-interface ProductPage {
-  idProduct: string;
-}
+import { NameSkeleton } from '@/components/Skeleton/ProductPage/NameSkeleton';
+import { ImgsSkeleton } from '@/components/Skeleton/ProductPage/ImgsSkeleton';
+import { SpecSkeleton } from '@/components/Skeleton/ProductPage/SpecSkeleton';
+import { BreadCrumbSkeleton } from '@/components/Skeleton/ProductPage/BreadCrumbSkeleton';
 
 export function ProductPage() {
   const [curImage, setCurImage] = useState(0);
@@ -84,55 +82,64 @@ export function ProductPage() {
     </button>
   );
 
+  const pageImages = (
+    <div className="product-page__img-container">
+      <div className="img-container__slider">
+        <img
+          className={`product-page-img-min ${!curImage && 'active-img'}`}
+          src={firstImg}
+          alt="product image"
+          onClick={() => handelImageClick(0)}
+        />
+        <img
+          className={`product-page-img-min ${curImage && 'active-img'}`}
+          src={secondImg}
+          alt="product image"
+          onClick={() => handelImageClick(1)}
+        />
+      </div>
+      <img
+        className="product-page__img-main"
+        src={images && images[curImage]}
+        alt="product image"
+      />
+    </div>
+  );
+
+  const productName = (
+    <h3 className="product-summary__description">
+      {name} | {color} | {size}cm | ${formatPrice(price)}
+    </h3>
+  );
+
+  const breadCrumbs = (
+    <div className="product-page__bread-crumbs bread-crumbs">
+      {isFetching ? (
+        <BreadCrumbSkeleton />
+      ) : (
+        <>
+          <div className="bread-crumbs__path">
+            <Link to="/" className="bread-crumbs__home-link">
+              Home
+            </Link>
+          </div>
+          <div className="bread-crumbs__path">{category}</div>
+          <div className="bread-crumbs__path">{name}</div>
+        </>
+      )}
+    </div>
+  );
+
   const productPage = (
     <>
-      <div className="product-page__bread-crumbs bread-crumbs">
-        <div className="bread-crumbs__path">
-          <Link to="/" className="bread-crumbs__home-link">
-            Home
-          </Link>
-        </div>
-        <div className="bread-crumbs__path">{category}</div>
-        <div className="bread-crumbs__path">{name}</div>
-      </div>
+      {breadCrumbs}
       <section className="product-page wrapper">
         <ArrowBack />
-        <Client>
-          {!isFetching && (
-            <div className="product-page__img-container">
-              <div className="img-container__slider">
-                <img
-                  className={`product-page-img-min ${!curImage && 'active-img'}`}
-                  src={firstImg}
-                  alt="product image"
-                  onClick={() => handelImageClick(0)}
-                />
-                <img
-                  className={`product-page-img-min ${curImage && 'active-img'}`}
-                  src={secondImg}
-                  alt="product image"
-                  onClick={() => handelImageClick(1)}
-                />
-              </div>
-              <img
-                className="product-page__img-main"
-                src={images && images[curImage]}
-                alt="product image"
-              />
-            </div>
-          )}
-        </Client>
-        <Server>{<Preloader />}</Server>
-        <Client>
-          {!isFetching && (
-            <div className="product-page__summaru-item product-summary">
-              <h3 className="product-summary__description">
-                {name} | {color} | {size}cm | ${formatPrice(price)}
-              </h3>
-              {isInCart && inCart}
-            </div>
-          )}
-        </Client>
+        {isFetching ? <ImgsSkeleton /> : pageImages}
+        <div className="product-page__summaru-item product-summary">
+          {isFetching ? <NameSkeleton /> : productName}
+          {isInCart && inCart}
+        </div>
         <div className="product-page__cart-container">
           <QuantityPiecesProduct
             stock={stock}
@@ -147,41 +154,39 @@ export function ProductPage() {
             <tbody>
               <tr className="table__row">
                 <td className="table__title">Item number</td>
-                <Client>
-                  <td className="table__info">{id?.slice(-5)}</td>
-                </Client>
+                <td className="table__info">
+                  {isFetching ? <SpecSkeleton width={80} /> : id?.slice(-5)}
+                </td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">Color</td>
-                <Client>
-                  <td className="table__info">{color}</td>
-                </Client>
+                <td className="table__info">{isFetching ? <SpecSkeleton width={60} /> : color}</td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">Collection</td>
-                <Client>{!isFetching && <td className="table__info">{collection}</td>}</Client>
+                <td className="table__info">
+                  {isFetching ? <SpecSkeleton width={100} /> : collection}
+                </td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">Price</td>
-                <Client>{!isFetching && <td className="table__info">${price}</td>}</Client>
+                <td className="table__info">{isFetching ? <SpecSkeleton width={100} /> : price}</td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">Size</td>
-                <Client>{!isFetching && <td className="table__info">{size}</td>}</Client>
+                <td className="table__info">{isFetching ? <SpecSkeleton width={40} /> : size}</td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">Category</td>
-                <Client>
-                  <td className="table__info">{category}</td>
-                </Client>
+                <td className="table__info">
+                  {isFetching ? <SpecSkeleton width={160} /> : category}
+                </td>
               </tr>
               <tr className="table__row">
                 <td className="table__title">In stock</td>
-                <Client>
-                  {!isFetching && (
-                    <td className={`table__info ${isShake && 'shake-product'}`}>{stock}</td>
-                  )}
-                </Client>
+                <td className={`table__info ${isShake && 'shake-product'}`}>
+                  {isFetching ? <SpecSkeleton width={40} /> : stock}
+                </td>
               </tr>
             </tbody>
           </table>

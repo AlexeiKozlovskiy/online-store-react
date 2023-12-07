@@ -1,0 +1,30 @@
+.cards-skeleton-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 50px 30px;
+}
+
+.card-skeleton {
+  width: 250px;
+  height: 468px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__img {
+    height: 250px;
+    width: 250px;
+    border-radius: 3px;
+  }
+
+  &__name {
+    padding-bottom: 40px;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+}

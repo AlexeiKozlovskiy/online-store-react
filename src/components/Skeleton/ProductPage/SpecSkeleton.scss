@@ -1,0 +1,7 @@
+.spec-skeleton {
+  height: 20px;
+
+  @media screen and (max-width: 768px) {
+    height: 15px;
+  }
+}

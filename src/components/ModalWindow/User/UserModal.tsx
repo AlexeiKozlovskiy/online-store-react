@@ -2,6 +2,7 @@ import { useMyUserContext } from '@/context/UserContext';
 import './UserModal.scss';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { Link, useNavigate } from 'react-router-dom';
+import { ROUTE } from '@/types/types';
 
 interface IUserModal {
   onClickOutside: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
@@ -15,7 +16,7 @@ export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModa
   function handelClickLogout() {
     closeModalUserAnimation();
     logOut();
-    navigate('/');
+    navigate(ROUTE.MAIN);
   }
 
   return (

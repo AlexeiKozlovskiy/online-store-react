@@ -73,6 +73,7 @@
   &__section {
     width: 500px;
     margin: 0 auto;
+    position: relative;
   }
 }
 
@@ -114,4 +115,9 @@
     transform: scale(0.98);
     transition: transform 0.3s;
   }
+}
+
+.profile-preloader-container {
+  position: absolute;
+  right: 5px;
 }

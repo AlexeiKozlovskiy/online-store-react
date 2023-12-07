@@ -48,13 +48,11 @@ export function CartPage() {
       <div className="shopping-cart__container">
         <div className="shopping-cart__pagination-table-container">
           <div className="shopping-cart__pagination-container">
-            <Client>
-              <CustomSelect
-                selectedItem={perCartPageOption}
-                handleChange={(selectedOption) => setPerCartPageOption(selectedOption!)}
-                options={ITEMS_IN_PAGE_CART}
-              />
-            </Client>
+            <CustomSelect
+              selectedItem={perCartPageOption}
+              handleChange={(selectedOption) => setPerCartPageOption(selectedOption!)}
+              options={ITEMS_IN_PAGE_CART}
+            />
           </div>
           <table className="shopping-cart__table">
             <thead className="cart-table__header-container">

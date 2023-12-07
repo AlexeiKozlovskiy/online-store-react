@@ -10,6 +10,7 @@ export const API_ROUTES = {
   PROFILE: `${NEST_SERVICE_URL}/profile/`,
   PROFILE_CREATE: `${NEST_SERVICE_URL}/profile/create`,
   PROFILE_UPDATE: `${NEST_SERVICE_URL}/profile/update`,
+  PODUCTS: 'products',
 };
 
 export const PRICE_MIN = 1.99;
