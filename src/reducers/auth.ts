@@ -6,6 +6,7 @@ const initialState: Authentication = {
   refreshToken: null,
   expiresIn: null,
   idUser: null,
+  authenticated: false,
 };
 
 const authSlice = createSlice({
@@ -13,18 +14,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setAuthUser: (state, action: PayloadAction<Authentication>) => {
-      const { accessToken, refreshToken, expiresIn, idUser } = action.payload;
+      const { accessToken, refreshToken, expiresIn, idUser, authenticated } = action.payload;
 
       state.accessToken = accessToken;
       state.refreshToken = refreshToken;
       state.expiresIn = expiresIn;
       state.idUser = idUser;
+      state.authenticated = authenticated;
     },
     clearAuthUser: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
       state.expiresIn = null;
       state.idUser = null;
+      state.authenticated = false;
     },
   },
 });

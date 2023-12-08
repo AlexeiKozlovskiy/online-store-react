@@ -10,7 +10,7 @@ export async function signInApi({ formSignIN }: MyForms) {
       url: API_ROUTES.SIGN_IN,
       data: formSignIN,
     });
-    return { error: null, data: response.data };
+    return { error: null, data: { ...response.data, authenticated: true } };
   } catch (err) {
     return commonError(err);
   }
@@ -25,7 +25,7 @@ export async function signInGoogleApi(dataGoogle: CredentialGoogle) {
       url: API_ROUTES.SIGN_IN_GOOGLE,
       data: { email, login, picture, isGoogle: true },
     });
-    return { error: null, data: response.data };
+    return { error: null, data: { ...response.data, authenticated: true } };
   } catch (err) {
     return commonError(err);
   }
@@ -68,7 +68,7 @@ export async function refreshTokensApi(refreshToken: string) {
         Authorization: `Refresh ${refreshToken}`,
       },
     });
-    return { error: null, data: response.data };
+    return { error: null, data: { ...response.data, authenticated: true } };
   } catch (err) {
     return commonError(err);
   }
