@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { CartItem, RootReducerProps } from '@/types/types';
+import { Authentication, CartItem, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartListItem } from './CartListItem';
 import { useSelector } from 'react-redux';
@@ -11,7 +11,6 @@ import { useMyURLContext } from '@/context/URLContext';
 import { Summary } from './Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
-import { useMyUserContext } from '@/context/UserContext';
 import { useCartPaginationHook } from '@/components/CustomHook/CartPaginationHook';
 import { Client, Server } from 'react-hydration-provider';
 import { Preloader } from '@/components/Preloader/Preloader';
@@ -21,7 +20,7 @@ export function CartPage() {
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption } = useMyURLContext();
   const { handelCloseModalPayment, openModals, setOpenModals } = useCloseOpenModalsContext();
-  const { authenticated } = useMyUserContext();
+  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { countPages, curPageCart, currentItems, handlePageClick } = useCartPaginationHook();
 
   function checkAuth() {
