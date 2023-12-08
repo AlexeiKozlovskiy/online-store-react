@@ -33,8 +33,8 @@ export function Header() {
     openModals,
     setOpenModals,
   } = useCloseOpenModalsContext();
-  const { authenticated, isFetching } = useMyUserContext();
-  const { idUser } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const { isFetching } = useMyUserContext();
+  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
 
   const { signUP, signIN, user } = openModals;
 
@@ -92,8 +92,10 @@ export function Header() {
             <HeaderLogo />
           </Link>
           <div className="header-nav-contents">
-            {isFetching ? <Preloader /> : authenticated && userIcon}
-            <Client>{!idUser && !isFetching && authBar}</Client>
+            <Client>
+              {isFetching ? <Preloader /> : authenticated && userIcon}
+              {!authenticated && !isFetching && authBar}
+            </Client>
             <Server>{<Preloader />}</Server>
           </div>
           <Link to={cartUrl} className="header-cart" onClick={() => setShowBurgerMenu(false)}>

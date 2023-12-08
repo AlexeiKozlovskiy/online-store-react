@@ -1,0 +1,24 @@
+.user-profile-skeleton {
+  &__container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 36px;
+  }
+
+  &__round {
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+  }
+
+  &__row-one {
+    width: 25px;
+    height: 15px;
+  }
+
+  &__row-two {
+    width: 140px;
+    height: 12px;
+  }
+}

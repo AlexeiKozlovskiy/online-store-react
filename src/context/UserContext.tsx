@@ -14,7 +14,6 @@ import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from
 
 interface IUserContext {
   user: User | null;
-  authenticated: boolean;
   logOut: () => void;
   getSignIN: ({ formSignIN }: MyForms) => void;
   getSignUP: ({ formSignUP }: MyForms) => void;
@@ -29,7 +28,6 @@ export const useMyUserContext = () => useContext(UserContext);
 
 export const UserContext = createContext<IUserContext>({
   user: null,
-  authenticated: false,
   logOut: () => null,
   getSignIN: () => null,
   getSignUP: () => null,
@@ -42,14 +40,13 @@ export const UserContext = createContext<IUserContext>({
 
 export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [authenticated, setAutenticated] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
   const [showPreloader, setShowPreloader] = useState(false);
   const { closeModalSignInAnimation, openModals, setOpenModals } = useCloseOpenModalsContext();
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
-  const { accessToken, refreshToken, expiresIn, idUser } = authState;
+  const { accessToken, refreshToken, expiresIn, idUser, authenticated } = authState;
 
   const { signUP, signIN } = openModals;
 
@@ -88,7 +85,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
       setUser(user);
-      setAutenticated(auth);
     }
     getUserDetails();
   }, [accessToken, refreshToken, expiresIn, idUser]);
@@ -108,9 +104,9 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = signInData;
 
       if (data) {
-        const { user, backendTokens } = data;
+        const { user, backendTokens, authenticated } = data;
         const { id: idUser } = user;
-        setAuthParams({ ...backendTokens, idUser });
+        setAuthParams({ ...backendTokens, idUser, authenticated });
         closeModalSignInAnimation();
       } else {
         setErrorUser(`${FORM_MESSAGES.INCORRECT_USERNAME_OR_PASSWORD} ${error}.`);
@@ -130,10 +126,9 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       const { data, error } = signInGoogleData;
 
       if (data) {
-        const { user, backendTokens } = data;
+        const { user, backendTokens, authenticated } = data;
         const { id: idUser } = user;
-        setAuthParams({ ...backendTokens, idUser });
-        setAutenticated(true);
+        setAuthParams({ ...backendTokens, idUser, authenticated });
       } else {
         setErrorUser(`${FORM_MESSAGES.SOMETHING_WRONG_WITH_GOOGLE} ${error}.`);
       }
@@ -166,7 +161,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     const { data, error } = token;
 
     if (data) {
-      setAuthParams({ ...data.backendTokens, idUser });
+      setAuthParams({ ...data.backendTokens, idUser, authenticated });
     } else if (error) {
       setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
     }
@@ -189,14 +184,12 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   function logOut() {
     clearAuthParams();
     setUser(null);
-    setAutenticated(false);
   }
 
   return (
     <UserContext.Provider
       value={{
         user,
-        authenticated,
         logOut,
         getSignIN,
         getSignUP,

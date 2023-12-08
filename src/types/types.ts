@@ -183,6 +183,7 @@ export interface AuthDataResp {
 
 export interface Authentication extends BackendTokens {
   idUser: string | null;
+  authenticated: boolean;
 }
 
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
