@@ -2,8 +2,8 @@
 
 This project is an online store built using React and Nest, designed to provide a seamless shopping experience. With its intuitive interface and dynamic functionalities, the Online Store offers a user-friendly platform for customers.
 
-## Deploy app
-[Online-store](https://online-store-react-94.netlify.app/).
+## Deploy app in [here](https://online-store-react-94.netlify.app/).
+First fetching data is can take near 1-3 minutes, further is fast.
 
 ## Features for customers
 - Product Catalog: Browse through a diverse range of products neatly organized into categories.
@@ -12,12 +12,13 @@ This project is an online store built using React and Nest, designed to provide 
 - Checkout Process: Seamless checkout with payment options for smooth transactions.
 
 ## Developer features
-- Using [own backend service](https://github.com/AlexeiKozlovskiy/online-store-nest) built on Nest, with using prisma database.
+- Using [own backend service](https://github.com/AlexeiKozlovskiy/online-store-nest) built on Nest, with using prisma database. Servise deploed in [here](https://render.com/).
 - Standard and google authentication, using bearer token, with opportunity his refreshing. 
 - Forms introduced in all modal windows and profile page, made using react-hook-form, with possibility common validation all fields. 
 - Cart products, and auth state build with Redux Toolkit.
 - Fetching products, and product by ID developed using RTK Query. Fetching all app data using axios, in future I keep in mind add React Qwery.
 - Interaction with application components, such as filters, sorting, search, pagination, viewswitcher changes and saves in URL parameters.
+- Product filters have balancers. When you change one or several filters, and the search field, other filters will be changed based on the displayed products.
 - SSR mode, for now work only **locally**. In Netlifae deploy available CSR mode.
 - Using other small libraries, such as: paginate, select, slider, skeleton, persist.
 
@@ -40,9 +41,10 @@ This project is an online store built using React and Nest, designed to provide 
 ## Installation
 To run this project locally, follow these steps:
 
-- Clone this repository.
+- Clone this repository. `https://github.com/AlexeiKozlovskiy/online-store-react.git`
+- Checkout to the development branch `git checkout develop`
 - Install dependencies using `npm install`.
-- Rename .env.example.
+- Rename `.env.example` to `.env`
 - Run locally with SSR mode `npm run start`.
 
 ## Pages
@@ -57,13 +59,16 @@ To run this project locally, follow these steps:
  <img src="./public/assets/readme/readme-cart.png" alt="image" width="800">
 
 ### Profile page
+You can open profile page, pressed the "My profile" button in profile modal window.
+
  <img src="./public/assets/readme/readme-profile.png" alt="image" width="800">
+
+### Profile modal
+You can call the user modal window, pressed the user logo nearby the cart logo. You must be **authorization**. 
+ <img src="./public/assets/readme/readme-modal-profile.png" alt="image" width="600">
 
 ### Sign Up modal
  <img src="./public/assets/readme/readme-modal-sign-up.png" alt="image" width="800">
-
-### Profile modal
- <img src="./public/assets/readme/readme-modal-profile.png" alt="image" width="600">
 
 
 
