@@ -1,75 +1,76 @@
 import { getProfile, createProfile, updateProfile } from '@/api/ProfileUserAPI';
-import { Authentication, UserProfile, RootReducerProps } from '@/types/types';
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { Authentication, Profile, RootReducerProps } from '@/types/types';
+import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useMutation, useQuery } from 'react-query';
 
 interface IProfileUserContext {
-  getUserProfile: () => Promise<UserProfile | null>;
-  isFetching: boolean;
-  showPreloaderChanges: boolean;
-  createUserProfile: (data: UserProfile) => void;
-  isEmptyProfile: boolean;
-  updateUserProfile: (data: UserProfile) => void;
+  createUserProfile: (data: Profile) => void;
+  updateUserProfile: (data: Profile) => void;
+  profileData: Profile | null | undefined;
+  profileLoading: boolean;
 }
 
 export const useMyProfileUserContext = () => useContext(ProfileUserContext);
 
 export const ProfileUserContext = createContext<IProfileUserContext>({
-  getUserProfile: async () => null,
-  isFetching: false,
-  showPreloaderChanges: false,
   createUserProfile: () => null,
-  isEmptyProfile: true,
   updateUserProfile: () => null,
+  profileData: null,
+  profileLoading: false,
 });
 
 export const ProfileUserContextProvider = ({ children }: { children: ReactNode }) => {
+  const [profileLoading, setProfileLoading] = useState(false);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, idUser } = authState;
-  const [isFetching, setIsFetching] = useState(false);
-  const [isEmptyProfile, setIsEmptyProfile] = useState(true);
-  const [showPreloaderChanges, setShowPreloaderChanges] = useState(false);
+  const createUserMutation = useMutation((data: Profile) => createProfile(data, idUser!));
+  const updateUserMutation = useMutation((data: Profile) => updateProfile(data, idUser!));
+  const {
+    data: profileData,
+    isLoading: profileDataLoading,
+    refetch,
+  } = useQuery(['profile', accessToken, idUser], () => getProfile(accessToken, idUser), {
+    enabled: !!accessToken && !!idUser,
+  });
+  const { isLoading: updateProfileLoading } = updateUserMutation;
+  const { isLoading: createProfileLoading } = createUserMutation;
 
-  async function createUserProfile(data: UserProfile) {
-    setIsFetching(true);
-    idUser && (await createProfile(data, idUser));
-    setIsFetching(false);
-  }
+  useEffect(() => {
+    commonPreloadingProfile();
+  }, [profileDataLoading, updateProfileLoading, createProfileLoading]);
 
-  async function updateUserProfile(data: UserProfile) {
-    setShowPreloaderChanges(true);
-    idUser && (await updateProfile(data, idUser));
-    setShowPreloaderChanges(false);
-  }
-
-  async function getUserProfile() {
-    if (!accessToken || !idUser) {
-      return null;
+  const createUserProfile = async (data: Profile) => {
+    try {
+      await createUserMutation.mutateAsync(data);
+      await refetch();
+    } catch (error) {
+      console.error(createUserMutation, error);
     }
-    setIsFetching(true);
-    const profile = await getProfile(accessToken, idUser);
-    setIsFetching(false);
+  };
 
-    const { data } = profile;
-
-    if (data) {
-      setIsEmptyProfile(false);
-      return data;
-    } else {
-      setIsEmptyProfile(true);
-      return null;
+  const updateUserProfile = async (data: Profile) => {
+    try {
+      await updateUserMutation.mutateAsync(data);
+      await refetch();
+    } catch (error) {
+      console.error(updateUserMutation, error);
     }
+  };
+
+  function commonPreloadingProfile() {
+    if (profileDataLoading || updateProfileLoading || createProfileLoading) {
+      setProfileLoading(true);
+    } else setProfileLoading(false);
   }
 
   return (
     <ProfileUserContext.Provider
       value={{
-        getUserProfile,
-        isFetching,
+        profileData,
         createUserProfile,
-        isEmptyProfile,
         updateUserProfile,
-        showPreloaderChanges,
+        profileLoading,
       }}
     >
       {children}

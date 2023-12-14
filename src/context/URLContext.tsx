@@ -35,8 +35,8 @@ interface IURLContext extends InputSearch {
 export const useMyURLContext = () => useContext(URLContext);
 
 export const URLContext = createContext<IURLContext>({
-  inputSearchValue: '',
-  setInputSearchValue: () => null,
+  inputSearchURL: '',
+  setInputSearchURL: () => null,
   sortindViewOption: SORT_OPTIONS[0],
   setSortindViewOption: () => null,
   curPageMain: 1,
@@ -71,7 +71,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     sizeSelected: [SIZE_MIN, SIZE_MAX],
     stockSelected: [STOCK_MIN, STOCK_MAX],
   });
-  const [inputSearchValue, setInputSearchValue] = useState<string | null>('');
+  const [inputSearchURL, setInputSearchURL] = useState<string | null>('');
   const [sortindViewOption, setSortindViewOption] = useState<ISelect>(SORT_OPTIONS[0]);
   const [curPageMain, setCurPageMain] = useState<number>(1);
   const [perMainPageOption, setPerMainPageOption] = useState<ISelect>(ITEMS_IN_PAGE[2]);
@@ -101,7 +101,14 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     } else {
       setIsEmptyFilters(false);
     }
-  }, [selectedFilters]);
+  }, [
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
+  ]);
 
   useEffect(() => {
     function setDataFromUrl() {
@@ -138,7 +145,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       updatedRowBlockView(viewOption);
       updatedPagination(curPageMain, perMainOption, curPageCart, perCartOption);
 
-      search && setInputSearchValue(search);
+      search && setInputSearchURL(search);
       swichedViews && setSwichedView(swichedViews);
     }
 
@@ -176,8 +183,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
           params.set('maxStock', maxStock!.toString());
         }
       }
-      if (inputSearchValue) {
-        params.set('q', inputSearchValue);
+      if (inputSearchURL) {
+        params.set('q', inputSearchURL);
       }
 
       if (sortindViewOption.value.length) {
@@ -215,7 +222,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
     priceSelected,
     sizeSelected,
     stockSelected,
-    inputSearchValue,
+    inputSearchURL,
     sortindViewOption.value,
     curPageMain,
     perMainPageOption,
@@ -336,8 +343,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         isEmptyFilters,
         sortindViewOption,
         setSortindViewOption,
-        inputSearchValue,
-        setInputSearchValue,
+        inputSearchURL,
+        setInputSearchURL,
         curPageMain,
         setCurPageMain,
         perMainPageOption,

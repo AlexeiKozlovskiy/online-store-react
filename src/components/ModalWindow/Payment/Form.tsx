@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps, UserProfile } from '@/types/types';
+import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps, Profile } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
@@ -15,7 +15,8 @@ import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 
 export function Form() {
   const { totalPriceByPromocodes } = useMyTotalPriceContext();
-  const [imageValue, setImageValue] = useState('');
+  const imageCard = useRef('');
+
   const navigate = useNavigate();
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const {
@@ -42,10 +43,8 @@ export function Form() {
   } = useFormsValidation();
   const { user } = useMyUserContext();
   useFormsInputsHelper({ watch, setValue });
-  const { getUserProfile, createUserProfile, isEmptyProfile, updateUserProfile } =
-    useMyProfileUserContext();
+  const { profileData, createUserProfile, updateUserProfile } = useMyProfileUserContext();
   const [showPreloader, setShowPreloader] = useState(false);
-  const [profileFromBackEnd, setProfileFromBackEnd] = useState({});
 
   const { formProfile } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } =
@@ -61,7 +60,6 @@ export function Form() {
 
   const onSubmit = ({ formProfile }: MyForms) => {
     setShowPreloader(true);
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, ...dataForm } = formProfile;
     checkForm(dataForm);
@@ -91,9 +89,9 @@ export function Form() {
 
   useEffect(() => {
     async function getProfile() {
-      const userProfile = await getUserProfile();
-      userProfile && setValue('formProfile', userProfile);
-      setProfileFromBackEnd(userProfile!);
+      if (profileData) {
+        setValue('formProfile', profileData);
+      }
     }
 
     getProfile();
@@ -102,7 +100,7 @@ export function Form() {
   useEffect(() => {
     function checkImageCard() {
       const curImage = CARD_IMAGES[+watch('formProfile.numberCard')![0] as keyof CardImages];
-      setImageValue(curImage);
+      imageCard.current = curImage;
     }
     checkImageCard();
   }, [watch('formProfile'), watch('formProfile.numberCard')]);
@@ -111,10 +109,10 @@ export function Form() {
     user && setValue('formProfile.email', user.email);
   }, [watch('formProfile')]);
 
-  function checkForm(dataForm: UserProfile) {
-    if (isEmptyProfile) {
+  function checkForm(dataForm: Profile) {
+    if (!profileData) {
       createUserProfile(dataForm);
-    } else if (JSON.stringify(dataForm) !== JSON.stringify(profileFromBackEnd)) {
+    } else if (JSON.stringify(dataForm) !== JSON.stringify(profileData)) {
       updateUserProfile(dataForm);
     }
   }
@@ -180,7 +178,7 @@ export function Form() {
         </div>
         <div className="payment-method__top">
           <h4 className="profile-form__title">PAYMENT METHOD</h4>
-          <div className={`payment-method__cards ${imageValue}`}>
+          <div className={`payment-method__cards ${imageCard.current}`}>
             <div className="cards__img"></div>
           </div>
         </div>

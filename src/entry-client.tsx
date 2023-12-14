@@ -11,39 +11,41 @@ import store from '@/reducers/store';
 import { URLContextProvider } from '@/context/URLContext';
 import { TotalPriceContextProvider } from '@/context/TotalPriseContext';
 import { TotalItemsContextProvider } from '@/context/TotalItemsContext';
-// import { PersistGate } from 'redux-persist/integration/react';
 import { UserContextProvider } from '@/context/UserContext';
 import { CloseOpenModalsContextProvider } from '@/context/CloseOpenModalsContext';
 import { ProfileUserContextProvider } from '@/context/ProfileUserContext';
 import { HydrationProvider } from 'react-hydration-provider';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 const RootApp = (
   <StrictMode>
     <Provider store={store}>
       <HydrationProvider>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
         <BrowserRouter>
-          <URLContextProvider>
-            <FiltersContextProvider>
-              <SortingsContextProvider>
-                <RemoveAllSelectedContextProvider>
-                  <TotalPriceContextProvider>
-                    <TotalItemsContextProvider>
-                      <CloseOpenModalsContextProvider>
-                        <UserContextProvider>
-                          <ProfileUserContextProvider>
-                            <App />
-                          </ProfileUserContextProvider>
-                        </UserContextProvider>
-                      </CloseOpenModalsContextProvider>
-                    </TotalItemsContextProvider>
-                  </TotalPriceContextProvider>
-                </RemoveAllSelectedContextProvider>
-              </SortingsContextProvider>
-            </FiltersContextProvider>
-          </URLContextProvider>
+          <QueryClientProvider client={queryClient}>
+            <URLContextProvider>
+              <FiltersContextProvider>
+                <SortingsContextProvider>
+                  <RemoveAllSelectedContextProvider>
+                    <TotalPriceContextProvider>
+                      <TotalItemsContextProvider>
+                        <CloseOpenModalsContextProvider>
+                          <UserContextProvider>
+                            <ProfileUserContextProvider>
+                              <App />
+                            </ProfileUserContextProvider>
+                          </UserContextProvider>
+                        </CloseOpenModalsContextProvider>
+                      </TotalItemsContextProvider>
+                    </TotalPriceContextProvider>
+                  </RemoveAllSelectedContextProvider>
+                </SortingsContextProvider>
+              </FiltersContextProvider>
+            </URLContextProvider>
+          </QueryClientProvider>
         </BrowserRouter>
-        {/* </PersistGate> */}
       </HydrationProvider>
     </Provider>
   </StrictMode>

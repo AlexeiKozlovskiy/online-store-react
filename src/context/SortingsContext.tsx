@@ -31,7 +31,7 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
 
   useEffect(() => {
     sortingView(sortindViewOption);
-  }, [sortindViewOption, filtersProducts]);
+  }, [sortindViewOption, filtersProducts.length]);
 
   function sortingView(viewOption: ISelect) {
     const { value } = viewOption;

@@ -53,18 +53,18 @@ export const FiltersContext = createContext<IFiltersContext>({
 });
 
 export const FiltersContextProvider = ({ children }: { children: ReactNode }) => {
-  const { inputSearchValue, selectedFilters, setSelectedFilters } = useMyURLContext();
+  const { inputSearchURL, selectedFilters, setSelectedFilters } = useMyURLContext();
   const { data: products = [], isFetching } = useGetProductsQuery();
   const [filtersProducts, setFiltersProducts] = useState<Product[]>(products);
   const [itemsCount, setItemsCount] = useState<number>(0);
   const [emptyCatalog, setEmptyCatalog] = useState<boolean>(false);
   const [sortProductsSearch, setSortProductsSearch] = useState<Product[]>([]);
-  const [sortColor, setSortColor] = useState<Product[]>([]);
-  const [sortCollections, setSortCollections] = useState<Product[]>([]);
-  const [sortPrice, setSortPrice] = useState<Product[]>([]);
-  const [sortSize, setSortSize] = useState<Product[]>([]);
-  const [sortCategory, setSortCategory] = useState<Product[]>([]);
-  const [sortStock, setSortStock] = useState<Product[]>([]);
+  const [sortProductsColor, setSortProductsColor] = useState<Product[]>([]);
+  const [sortProductsCollections, setSortProductsCollections] = useState<Product[]>([]);
+  const [sortProductsPrice, setSortProductsPrice] = useState<Product[]>([]);
+  const [sortProductsSize, setSortProductsSize] = useState<Product[]>([]);
+  const [sortProductsCategory, setSortProductsCategory] = useState<Product[]>([]);
+  const [sortProductsStock, setSortProductsStock] = useState<Product[]>([]);
   const [balanserFilters, setBalanserFilters] = useState<Balancers>({
     balancerColor: COLOR_STOCK,
     balancerCollection: COLLECTION_STOCK,
@@ -88,164 +88,125 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [minStock, maxStock] = stockSelected;
 
   useEffect(() => {
-    filterColors();
-  }, [colorsSelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterColors();
+    }
+  }, [colorsSelected, products.length]);
 
   useEffect(() => {
-    filterCollections();
-  }, [collectionsSelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterCollections();
+    }
+  }, [collectionsSelected, products.length]);
 
   useEffect(() => {
-    filterPrice();
-  }, [minPrice, maxPrice, priceSelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterPrice();
+    }
+  }, [minPrice, maxPrice, priceSelected, products.length]);
 
   useEffect(() => {
-    filterSize();
-  }, [minSize, maxSize, sizeSelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterSize();
+    }
+  }, [minSize, maxSize, sizeSelected, products.length]);
 
   useEffect(() => {
-    filterCategory();
-  }, [categorySelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterCategory();
+    }
+  }, [categorySelected, products.length]);
 
   useEffect(() => {
-    filterStock();
-  }, [minStock, maxStock, stockSelected, isFetching, sortProductsSearch]);
+    if (products.length) {
+      filterStock();
+    }
+  }, [minStock, maxStock, stockSelected, products.length]);
 
   useEffect(() => {
-    commonProducts();
-  }, [sortColor, sortCollections, sortSize, sortPrice, sortStock, sortCategory]);
+    if (products.length) {
+      findItemsInSearchInput();
+    }
+  }, [inputSearchURL, products.length]);
 
   useEffect(() => {
-    findItemsInSearchInput();
-  }, [inputSearchValue, isFetching]);
-
-  useEffect(() => {
-    setBalanser();
-  }, [filtersProducts]);
-
-  useEffect(() => {
-    countProducts();
+    if (filtersProducts.length) {
+      setBalanser();
+    }
   }, [filtersProducts.length]);
 
-  function filterColors() {
-    if (inputSearchValue) {
-      const sortColor = sortProductsSearch.filter(({ color }) => colorsSelected.includes(color));
-      if (!sortColor.length && colorsSelected.length) {
-        setFiltersProducts([]);
-      } else if (!colorsSelected.length && sortProductsSearch.length) {
-        setSortColor(sortProductsSearch);
-      } else if (colorsSelected.length) {
-        setSortColor(sortColor);
-      }
-    } else {
-      const sortColor = products.filter(({ color }) => colorsSelected.includes(color));
-      colorsSelected.length ? setSortColor(sortColor) : setSortColor(products);
+  useEffect(() => {
+    if (filtersProducts.length) {
+      countProducts();
     }
+  }, [filtersProducts.length]);
+
+  useEffect(() => {
+    if (products.length) {
+      commonProducts();
+    }
+  }, [
+    sortProductsColor,
+    sortProductsCollections,
+    sortProductsSize,
+    sortProductsPrice,
+    sortProductsStock,
+    sortProductsCategory,
+    sortProductsSearch,
+  ]);
+
+  function filterColors() {
+    const sortColor = products.filter(({ color }) => colorsSelected.includes(color));
+    colorsSelected.length ? setSortProductsColor(sortColor) : setSortProductsColor(products);
   }
 
   function filterCollections() {
-    if (inputSearchValue) {
-      const sortCollections = sortProductsSearch.filter(({ collection }) =>
-        collectionsSelected.includes(collection)
-      );
-      if (!sortCollections.length && collectionsSelected.length) {
-        setFiltersProducts([]);
-      } else if (!collectionsSelected.length && sortProductsSearch.length) {
-        setSortCollections(sortProductsSearch);
-      } else if (collectionsSelected.length) {
-        setSortCollections(sortCollections);
-      }
-    } else {
-      const sortCollections = products.filter(({ collection }) =>
-        collectionsSelected.includes(collection)
-      );
-      collectionsSelected.length
-        ? setSortCollections(sortCollections)
-        : setSortCollections(products);
-    }
+    const sortCollections = products.filter(({ collection }) =>
+      collectionsSelected.includes(collection)
+    );
+    collectionsSelected.length
+      ? setSortProductsCollections(sortCollections)
+      : setSortProductsCollections(products);
   }
 
   function filterPrice() {
-    if (inputSearchValue) {
-      const sortPrice = sortProductsSearch.filter(
-        ({ price }) => minPrice! <= price && maxPrice! >= price
-      );
-      if (!sortPrice.length) {
-        setFiltersProducts([]);
-      } else if (sortPrice.length) {
-        setSortPrice(sortPrice);
-      } else {
-        setSortPrice(sortProductsSearch);
-      }
-    } else {
-      const sortPrice = products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
-      sortPrice.length ? setSortPrice(sortPrice) : setSortPrice(products);
-    }
+    const sortPrice = products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
+    sortPrice.length ? setSortProductsPrice(sortPrice) : setSortProductsPrice(products);
   }
 
   function filterSize() {
-    if (inputSearchValue) {
-      const sortSize = sortProductsSearch.filter(
-        ({ size }) => minSize! <= size && maxSize! >= size
-      );
-      if (!sortSize.length) {
-        setFiltersProducts([]);
-      } else if (sortSize.length) {
-        setSortSize(sortSize);
-      } else {
-        setSortSize(sortProductsSearch);
-      }
-    } else {
-      const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
-      sortSize.length ? setSortSize(sortSize) : setSortSize(products);
-    }
+    const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
+    sortSize.length ? setSortProductsSize(sortSize) : setSortProductsSize(products);
   }
 
   function filterCategory() {
-    if (inputSearchValue) {
-      const sortCategory = sortProductsSearch.filter(({ category }) =>
-        categorySelected.includes(category)
-      );
-      if (!sortCategory.length && categorySelected.length) {
-        setFiltersProducts([]);
-      } else if (!categorySelected.length && sortProductsSearch.length) {
-        setSortCategory(sortProductsSearch);
-      } else if (categorySelected.length) {
-        setSortCategory(sortCategory);
-      }
-    } else {
-      const sortCategory = products.filter(({ category }) => categorySelected.includes(category));
-      categorySelected.length ? setSortCategory(sortCategory) : setSortCategory(products);
-    }
+    const sortCategory = products.filter(({ category }) => categorySelected.includes(category));
+    categorySelected.length
+      ? setSortProductsCategory(sortCategory)
+      : setSortProductsCategory(products);
   }
 
   function filterStock() {
-    if (inputSearchValue) {
-      const sortStock = sortProductsSearch.filter(
-        ({ stock }) => minStock! <= stock && maxStock! >= stock
-      );
-      if (!sortStock.length) {
-        setFiltersProducts([]);
-      } else if (sortStock.length) {
-        setSortStock(sortStock);
-      } else {
-        setSortStock(sortProductsSearch);
-      }
-    } else {
-      const sortStock = products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
-      sortStock.length ? setSortStock(sortStock) : setSortStock(products);
-    }
+    const sortStock = products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
+    sortStock.length ? setSortProductsStock(sortStock) : setSortProductsStock(products);
+  }
+
+  function findItemsInSearchInput() {
+    const searchItems = products.filter(({ name }) =>
+      name.toLowerCase().includes(inputSearchURL!.toLowerCase())
+    );
+    searchItems.length ? setSortProductsSearch(searchItems) : setFiltersProducts([]);
   }
 
   function commonProducts() {
     const commonProduct = findCommonProducts(
-      products,
-      sortColor,
-      sortCollections,
-      sortPrice,
-      sortSize,
-      sortStock,
-      sortCategory
+      sortProductsColor,
+      sortProductsCollections,
+      sortProductsPrice,
+      sortProductsSize,
+      sortProductsStock,
+      sortProductsCategory,
+      sortProductsSearch
     );
     setFiltersProducts(commonProduct);
   }
@@ -304,7 +265,11 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const colorsValues = sortColorBalancer(colorBalancer(filtersProducts));
         balanser = { ...balanser, balancerColor: colorsValues };
       } else {
-        const commonProduct = findCommonProducts(sortCategory, sortCollections, sortProductsSearch);
+        const commonProduct = findCommonProducts(
+          sortProductsCollections,
+          sortProductsCategory,
+          sortProductsSearch
+        );
         const colorsValues = sortColorBalancer(colorBalancer(commonProduct));
         balanser = { ...balanser, balancerColor: colorsValues };
       }
@@ -313,7 +278,11 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const collectionsValues = sortCollectionBalancer(collectionBalancer(filtersProducts));
         balanser = { ...balanser, balancerCollection: collectionsValues };
       } else {
-        const commonProduct = findCommonProducts(sortCategory, sortColor, sortProductsSearch);
+        const commonProduct = findCommonProducts(
+          sortProductsColor,
+          sortProductsCategory,
+          sortProductsSearch
+        );
         const collectionsValues = sortCollectionBalancer(collectionBalancer(commonProduct));
         balanser = { ...balanser, balancerCollection: collectionsValues };
       }
@@ -322,7 +291,11 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const categoryValues = categoryBalancer(filtersProducts);
         balanser = { ...balanser, balancerCategory: categoryValues };
       } else {
-        const commonProduct = findCommonProducts(sortColor, sortCollections, sortProductsSearch);
+        const commonProduct = findCommonProducts(
+          sortProductsCollections,
+          sortProductsColor,
+          sortProductsSearch
+        );
         const categoryValues = categoryBalancer(commonProduct);
         balanser = { ...balanser, balancerCategory: categoryValues };
       }
@@ -355,22 +328,8 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     setBalanserFilters(balanser);
   }
 
-  function findItemsInSearchInput() {
-    if (inputSearchValue && products.length) {
-      const searchItems = products.filter(({ name }) =>
-        name.toLowerCase().includes(inputSearchValue.toLowerCase())
-      );
-      if (searchItems) {
-        setFiltersProducts(searchItems);
-        setSortProductsSearch(searchItems);
-      }
-    } else {
-      setFiltersProducts(products);
-    }
-  }
-
   function countProducts() {
-    !isFetching && setItemsCount(filtersProducts.length);
+    setItemsCount(filtersProducts.length);
     if (!filtersProducts.length && !isFetching) {
       setEmptyCatalog(true);
     } else {

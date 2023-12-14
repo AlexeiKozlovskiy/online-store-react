@@ -1,10 +1,10 @@
 import './ProfilePage.scss';
 
-export function MyShopping() {
+export function FavoritesSection() {
   return (
     <>
       <section className="profile__section section-my-shopping">
-        <p>My shopping section in developing...</p>
+        <p>Favorites section in developing...</p>
       </section>
     </>
   );

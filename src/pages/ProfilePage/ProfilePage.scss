@@ -115,6 +115,11 @@
     transform: scale(0.98);
     transition: transform 0.3s;
   }
+
+  &:disabled {
+    transform: none;
+    background: $greyBorder;
+  }
 }
 
 .profile-preloader-container {

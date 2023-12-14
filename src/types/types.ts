@@ -101,8 +101,8 @@ export interface Balancers {
 }
 
 export interface InputSearch {
-  inputSearchValue: string | null;
-  setInputSearchValue: (value: string | null) => void;
+  inputSearchURL: string | null;
+  setInputSearchURL: (value: string | null) => void;
 }
 
 export interface ISelect {
@@ -189,10 +189,10 @@ export interface Authentication extends BackendTokens {
 export type ErrorType = LiteralUnion<'required' | 'validate', string>;
 
 export interface UserProfileResp {
-  data: UserProfile;
+  data: Profile;
 }
 
-export interface UserProfile {
+export interface Profile {
   name: string;
   address: string;
   email?: string;
@@ -217,7 +217,7 @@ export interface FormSignIN {
 export interface MyForms {
   formSignIN: FormSignIN;
   formSignUP: FormSignUP;
-  formProfile: UserProfile;
+  formProfile: Profile;
 }
 
 export interface InputComponents extends errorsForm, RegisterType {
