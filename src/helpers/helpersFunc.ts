@@ -17,9 +17,20 @@ export const thisYear = new Date().getFullYear().toString().substring(2, 4);
 
 export const thisMonth = new Date().getMonth().toString();
 
-export function findCommonProducts<T>(...arrays: T[][]): T[] {
-  const nonEmptyArrays = arrays.filter((array) => array.length > 0);
-  if (nonEmptyArrays.length === 0) {
+export function commonFiltersProducts<T>(arraysSearch: T[], ...arrays: T[][]): T[] {
+  if (!arraysSearch.length) {
+    return [];
+  }
+  return getCommonObjects([arraysSearch, ...arrays]);
+}
+
+export function commonBalanserProducts<T>(...arrays: T[][]): T[] {
+  return getCommonObjects(arrays);
+}
+
+function getCommonObjects<T>(arrays: T[][]): T[] {
+  const nonEmptyArrays = arrays.filter((array) => array.length);
+  if (!nonEmptyArrays.length) {
     return [];
   }
   const arraysAsArrays = nonEmptyArrays.map((arrayLike) => Array.from(arrayLike));

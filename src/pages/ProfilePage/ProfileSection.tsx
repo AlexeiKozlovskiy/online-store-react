@@ -1,9 +1,16 @@
 import './ProfilePage.scss';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useForm } from 'react-hook-form';
-import { MyForms, CardImages, RootReducerProps, Authentication, ROUTE } from '@/types/types';
+import {
+  MyForms,
+  CardImages,
+  RootReducerProps,
+  Authentication,
+  ROUTE,
+  Profile,
+} from '@/types/types';
 import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
 import { Preloader } from '@/components/Preloader/Preloader';
@@ -15,8 +22,9 @@ import { UserProfileSkeleton } from '@/components/Skeleton/UserProfile/UserProfi
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-export function Profile() {
-  const [imageValue, setImageValue] = useState('');
+export function ProfileSection() {
+  const imageCard = useRef('');
+
   const {
     register,
     handleSubmit,
@@ -40,14 +48,8 @@ export function Profile() {
   } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
   const { user } = useMyUserContext();
-  const {
-    getUserProfile,
-    isFetching: isFetchingProfile,
-    createUserProfile,
-    isEmptyProfile,
-    updateUserProfile,
-    showPreloaderChanges,
-  } = useMyProfileUserContext();
+  const { profileData, profileLoading, createUserProfile, updateUserProfile } =
+    useMyProfileUserContext();
   const { isFetching: isFetchingUser } = useMyUserContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const navigate = useNavigate();
@@ -67,11 +69,7 @@ export function Profile() {
   const onSubmit = ({ formProfile }: MyForms) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, ...dataForm } = formProfile;
-    if (isEmptyProfile) {
-      createUserProfile(dataForm);
-    } else if (!isEmptyProfile) {
-      updateUserProfile(dataForm);
-    }
+    checkForm(dataForm);
   };
 
   useEffect(() => {
@@ -80,16 +78,17 @@ export function Profile() {
 
   useEffect(() => {
     async function getProfile() {
-      const profile = await getUserProfile();
-      profile && setValue('formProfile', profile);
+      if (profileData) {
+        setValue('formProfile', profileData);
+      }
     }
     getProfile();
-  }, []);
+  }, [profileData]);
 
   useEffect(() => {
     function checkImageCard() {
       const curImage = CARD_IMAGES[+watch('formProfile.numberCard')![0] as keyof CardImages];
-      setImageValue(curImage);
+      imageCard.current = curImage;
     }
     checkImageCard();
   }, [watch('formProfile'), watch('formProfile.numberCard')]);
@@ -100,6 +99,14 @@ export function Profile() {
 
   function testDataClick() {
     setValue('formProfile', TEST_USER_DATA);
+  }
+
+  function checkForm(dataForm: Profile) {
+    if (!profileData) {
+      createUserProfile(dataForm);
+    } else if (JSON.stringify(dataForm) !== JSON.stringify(profileData)) {
+      updateUserProfile(dataForm);
+    }
   }
 
   const preloaderProfile = (
@@ -113,8 +120,7 @@ export function Profile() {
       <section className="profile__section section-profile">
         <Client>{isFetchingUser ? <UserProfileSkeleton /> : <UserProfile />}</Client>
         <Server>{<div className="profile-preloader-user-container"></div>}</Server>
-        {isFetchingProfile && preloaderProfile}
-        {showPreloaderChanges && preloaderProfile}
+        {profileLoading && preloaderProfile}
         <form className="profile-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="profile-form__info">
             <h4 className="profile-form__title">PAYMENT DETAILS</h4>
@@ -171,7 +177,7 @@ export function Profile() {
           </div>
           <div className="payment-method__top">
             <h4 className="profile-form__title">PAYMENT METHOD</h4>
-            <div className={`payment-method__cards ${imageValue}`}>
+            <div className={`payment-method__cards ${imageCard.current}`}>
               <div className="cards__img"></div>
             </div>
           </div>
@@ -229,7 +235,7 @@ export function Profile() {
               />
             </div>
           </div>
-          <button className="profile-btn">{isEmptyProfile ? `Save` : 'Change'}</button>
+          <button className="profile-btn">{!profileData ? `Save` : 'Change'}</button>
           <div className="payment-test" onClick={testDataClick}>
             Test user data
           </div>

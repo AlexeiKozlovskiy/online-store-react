@@ -24,7 +24,7 @@ export const RemoveAllSelectedContext = createContext<IRemoveAllSelectedContext>
 
 export const RemoveAllSelectedContextProvider = ({ children }: { children: ReactNode }) => {
   const {
-    setInputSearchValue,
+    setInputSearchURL,
     setSortindViewOption,
     setCurPageMain,
     setPerMainPageOption,
@@ -42,7 +42,7 @@ export const RemoveAllSelectedContextProvider = ({ children }: { children: React
       sizeSelected: [SIZE_MIN, SIZE_MAX],
       stockSelected: [STOCK_MIN, STOCK_MAX],
     });
-    setInputSearchValue('');
+    setInputSearchURL('');
     setSortindViewOption(SORT_OPTIONS[0]);
     setCurPageMain(1);
     setPerMainPageOption(ITEMS_IN_PAGE[2]);

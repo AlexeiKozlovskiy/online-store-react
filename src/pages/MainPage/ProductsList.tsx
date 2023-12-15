@@ -15,7 +15,6 @@ export function ProductsList() {
   const { swichedView } = useMyURLContext();
   const { countPages, curPageMain, currentItems, handlePageClick } = useMainPagination();
   const { isFetching } = useGetProductsQuery();
-
   const { perMainPageOption } = useMyURLContext();
 
   return (

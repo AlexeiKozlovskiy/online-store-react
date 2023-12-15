@@ -2,26 +2,23 @@ import './SearchPanel.scss';
 
 import { memo, useEffect, useState } from 'react';
 import { useMyURLContext } from '@/context/URLContext';
+import { useDebounce } from '../CustomHook/DebounceHook';
 
 export const SearchPanel = memo(function SearchPanel() {
   const [inputValue, setInputValue] = useState<string | null>('');
-  const { inputSearchValue, setInputSearchValue } = useMyURLContext();
+  const { inputSearchURL, setInputSearchURL } = useMyURLContext();
+  const debouncedValue = useDebounce(inputValue);
 
   useEffect(() => {
     function setFromURL() {
-      setInputValue(inputSearchValue);
+      setInputValue(inputSearchURL);
     }
     setFromURL();
-  }, [inputSearchValue]);
+  }, [inputSearchURL]);
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setInputSearchValue(inputValue);
-    }, 500);
-    return () => {
-      clearInterval(id);
-    };
-  }, [inputValue]);
+    setInputSearchURL(debouncedValue);
+  }, [debouncedValue]);
 
   return (
     <label htmlFor="find-input">

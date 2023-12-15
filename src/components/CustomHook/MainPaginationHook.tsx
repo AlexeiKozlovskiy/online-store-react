@@ -8,7 +8,7 @@ export function useMainPagination() {
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const { sortProducts: products } = useMySortingsContext();
   const countProducts = products.length;
-  const { curPageMain, setCurPageMain, perMainPageOption, inputSearchValue, isEmptyFilters } =
+  const { curPageMain, setCurPageMain, perMainPageOption, inputSearchURL, isEmptyFilters } =
     useMyURLContext();
   const [countPages, setCountPages] = useState(curPageMain);
   const [itemsPerPage, setItemsPerPage] = useState(+perMainPageOption.value);
@@ -39,8 +39,8 @@ export function useMainPagination() {
   }, [itemOffset, itemsPerPage, products]);
 
   useEffect(() => {
-    inputSearchValue && resetOnFirstPage();
-  }, [inputSearchValue, products]);
+    inputSearchURL && resetOnFirstPage();
+  }, [inputSearchURL, products]);
 
   useEffect(() => {
     !isEmptyFilters && resetOnFirstPage();
