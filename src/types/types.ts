@@ -13,6 +13,16 @@ export interface Product {
   images: string[];
 }
 
+export interface SortProducts {
+  filterColor: Product[];
+  filterCollection: Product[];
+  filteSize: Product[];
+  filtePrice: Product[];
+  filteStock: Product[];
+  filteCategory: Product[];
+  filteSearch: Product[];
+}
+
 export interface CartItemArg {
   product: Product;
   quantity: number;

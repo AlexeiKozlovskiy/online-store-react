@@ -16,11 +16,13 @@ import {
   BalancerColor,
   Product,
   Balancers,
+  SortProducts,
 } from '@/types/types';
 import {
-  findCommonProducts,
   sortColorBalancer,
   sortCollectionBalancer,
+  commonBalanserProducts,
+  commonFiltersProducts,
 } from '@/helpers/helpersFunc';
 import { useMyURLContext } from '@/context/URLContext';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
@@ -58,13 +60,15 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [filtersProducts, setFiltersProducts] = useState<Product[]>(products);
   const [itemsCount, setItemsCount] = useState<number>(0);
   const [emptyCatalog, setEmptyCatalog] = useState<boolean>(false);
-  const [sortProductsSearch, setSortProductsSearch] = useState<Product[]>([]);
-  const [sortProductsColor, setSortProductsColor] = useState<Product[]>([]);
-  const [sortProductsCollections, setSortProductsCollections] = useState<Product[]>([]);
-  const [sortProductsPrice, setSortProductsPrice] = useState<Product[]>([]);
-  const [sortProductsSize, setSortProductsSize] = useState<Product[]>([]);
-  const [sortProductsCategory, setSortProductsCategory] = useState<Product[]>([]);
-  const [sortProductsStock, setSortProductsStock] = useState<Product[]>([]);
+  const [commonFilters, setCommonFilters] = useState<SortProducts>({
+    filterColor: [],
+    filterCollection: [],
+    filteSize: [],
+    filtePrice: [],
+    filteStock: [],
+    filteCategory: [],
+    filteSearch: [],
+  });
   const [balanserFilters, setBalanserFilters] = useState<Balancers>({
     balancerColor: COLOR_STOCK,
     balancerCollection: COLLECTION_STOCK,
@@ -73,6 +77,16 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     balanserSize: [SIZE_MIN, SIZE_MAX],
     balanserStock: [STOCK_MIN, STOCK_MAX],
   });
+
+  const {
+    filterColor,
+    filterCollection,
+    filteSize,
+    filtePrice,
+    filteStock,
+    filteCategory,
+    filteSearch,
+  } = commonFilters;
 
   const {
     colorsSelected,
@@ -88,57 +102,13 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   const [minStock, maxStock] = stockSelected;
 
   useEffect(() => {
-    if (products.length) {
-      filterColors();
-    }
-  }, [colorsSelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      filterCollections();
-    }
-  }, [collectionsSelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      filterPrice();
-    }
-  }, [minPrice, maxPrice, priceSelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      filterSize();
-    }
-  }, [minSize, maxSize, sizeSelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      filterCategory();
-    }
-  }, [categorySelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      filterStock();
-    }
-  }, [minStock, maxStock, stockSelected, products.length]);
-
-  useEffect(() => {
-    if (products.length) {
-      findItemsInSearchInput();
-    }
-  }, [inputSearchURL, products.length]);
-
-  useEffect(() => {
     if (filtersProducts.length) {
       setBalanser();
     }
   }, [filtersProducts.length]);
 
   useEffect(() => {
-    if (filtersProducts.length) {
-      countProducts();
-    }
+    countProducts();
   }, [filtersProducts.length]);
 
   useEffect(() => {
@@ -146,69 +116,94 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
       commonProducts();
     }
   }, [
-    sortProductsColor,
-    sortProductsCollections,
-    sortProductsSize,
-    sortProductsPrice,
-    sortProductsStock,
-    sortProductsCategory,
-    sortProductsSearch,
+    filterColor,
+    filterCollection,
+    filteSize,
+    filtePrice,
+    filteStock,
+    filteCategory,
+    filteSearch,
   ]);
 
-  function filterColors() {
-    const sortColor = products.filter(({ color }) => colorsSelected.includes(color));
-    colorsSelected.length ? setSortProductsColor(sortColor) : setSortProductsColor(products);
-  }
-
-  function filterCollections() {
-    const sortCollections = products.filter(({ collection }) =>
-      collectionsSelected.includes(collection)
-    );
-    collectionsSelected.length
-      ? setSortProductsCollections(sortCollections)
-      : setSortProductsCollections(products);
-  }
-
-  function filterPrice() {
-    const sortPrice = products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
-    sortPrice.length ? setSortProductsPrice(sortPrice) : setSortProductsPrice(products);
-  }
-
-  function filterSize() {
-    const sortSize = products.filter(({ size }) => minSize! <= size && maxSize! >= size);
-    sortSize.length ? setSortProductsSize(sortSize) : setSortProductsSize(products);
-  }
-
-  function filterCategory() {
-    const sortCategory = products.filter(({ category }) => categorySelected.includes(category));
-    categorySelected.length
-      ? setSortProductsCategory(sortCategory)
-      : setSortProductsCategory(products);
-  }
-
-  function filterStock() {
-    const sortStock = products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
-    sortStock.length ? setSortProductsStock(sortStock) : setSortProductsStock(products);
-  }
-
-  function findItemsInSearchInput() {
-    const searchItems = products.filter(({ name }) =>
-      name.toLowerCase().includes(inputSearchURL!.toLowerCase())
-    );
-    searchItems.length ? setSortProductsSearch(searchItems) : setFiltersProducts([]);
-  }
+  useEffect(() => {
+    if (products.length) {
+      let filters = { ...commonFilters };
+      filters = { ...filters, filterColor: applyColorFilter(products, colorsSelected) };
+      filters = { ...filters, filteCategory: applyCategoryFilter(products, categorySelected) };
+      filters = { ...filters, filtePrice: applyPriseFilter(products, minPrice!, maxPrice!) };
+      filters = { ...filters, filteSize: applySizeFilter(products, minSize!, maxSize!) };
+      filters = { ...filters, filteStock: applyStockFilter(products, minStock!, maxStock!) };
+      filters = { ...filters, filteSearch: applySearchFilter(products, inputSearchURL!) };
+      filters = {
+        ...filters,
+        filterCollection: applyCollectionsFilter(products, collectionsSelected),
+      };
+      setCommonFilters(filters);
+    }
+  }, [
+    colorsSelected,
+    collectionsSelected,
+    priceSelected,
+    sizeSelected,
+    categorySelected,
+    stockSelected,
+    inputSearchURL,
+    minPrice,
+    maxPrice,
+    minSize,
+    maxSize,
+    minStock,
+    maxStock,
+    products.length,
+  ]);
 
   function commonProducts() {
-    const commonProduct = findCommonProducts(
-      sortProductsColor,
-      sortProductsCollections,
-      sortProductsPrice,
-      sortProductsSize,
-      sortProductsStock,
-      sortProductsCategory,
-      sortProductsSearch
+    const commonProduct = commonFiltersProducts(
+      filteSearch,
+      filterColor,
+      filterCollection,
+      filteSize,
+      filtePrice,
+      filteStock,
+      filteCategory,
+      filteSearch
     );
     setFiltersProducts(commonProduct);
+  }
+  function applyColorFilter(products: Product[], colorsSelected: string[]) {
+    return colorsSelected.length
+      ? products.filter(({ color }) => colorsSelected.includes(color))
+      : products;
+  }
+
+  function applyCollectionsFilter(products: Product[], collectionsSelected: number[]) {
+    return collectionsSelected.length
+      ? products.filter(({ collection }) => collectionsSelected.includes(collection))
+      : products;
+  }
+
+  function applyCategoryFilter(products: Product[], categorySelected: string[]) {
+    return categorySelected.length
+      ? products.filter(({ category }) => categorySelected.includes(category))
+      : products;
+  }
+
+  function applyPriseFilter(products: Product[], minPrice: number, maxPrice: number) {
+    return products.filter(({ price }) => minPrice! <= price && maxPrice! >= price);
+  }
+
+  function applySizeFilter(products: Product[], minSize: number, maxSize: number) {
+    return products.filter(({ size }) => minSize! <= size && maxSize! >= size);
+  }
+
+  function applyStockFilter(products: Product[], minStock: number, maxStock: number) {
+    return products.filter(({ stock }) => minStock! <= stock && maxStock! >= stock);
+  }
+
+  function applySearchFilter(products: Product[], inputSearchURL: string) {
+    return products.filter(({ name }) =>
+      name.toLowerCase().includes(inputSearchURL!.toLowerCase())
+    );
   }
 
   function colorBalancer(products: Product[]) {
@@ -265,11 +260,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const colorsValues = sortColorBalancer(colorBalancer(filtersProducts));
         balanser = { ...balanser, balancerColor: colorsValues };
       } else {
-        const commonProduct = findCommonProducts(
-          sortProductsCollections,
-          sortProductsCategory,
-          sortProductsSearch
-        );
+        const commonProduct = commonBalanserProducts(filterCollection, filteCategory, filteSearch);
         const colorsValues = sortColorBalancer(colorBalancer(commonProduct));
         balanser = { ...balanser, balancerColor: colorsValues };
       }
@@ -278,11 +269,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const collectionsValues = sortCollectionBalancer(collectionBalancer(filtersProducts));
         balanser = { ...balanser, balancerCollection: collectionsValues };
       } else {
-        const commonProduct = findCommonProducts(
-          sortProductsColor,
-          sortProductsCategory,
-          sortProductsSearch
-        );
+        const commonProduct = commonBalanserProducts(filterColor, filteCategory, filteSearch);
         const collectionsValues = sortCollectionBalancer(collectionBalancer(commonProduct));
         balanser = { ...balanser, balancerCollection: collectionsValues };
       }
@@ -291,11 +278,7 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
         const categoryValues = categoryBalancer(filtersProducts);
         balanser = { ...balanser, balancerCategory: categoryValues };
       } else {
-        const commonProduct = findCommonProducts(
-          sortProductsCollections,
-          sortProductsColor,
-          sortProductsSearch
-        );
+        const commonProduct = commonBalanserProducts(filterColor, filterCollection, filteSearch);
         const categoryValues = categoryBalancer(commonProduct);
         balanser = { ...balanser, balancerCategory: categoryValues };
       }
@@ -310,12 +293,12 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
           balanserStock: stockBalancer(filtersProducts),
         };
       }
-    } else if (sortProductsSearch.length) {
+    } else if (filteSearch.length) {
       balanser = {
         ...balanser,
-        balanserPrise: priceBalancer(sortProductsSearch),
-        balanserSize: sizeBalancer(sortProductsSearch),
-        balanserStock: stockBalancer(sortProductsSearch),
+        balanserPrise: priceBalancer(filteSearch),
+        balanserSize: sizeBalancer(filteSearch),
+        balanserStock: stockBalancer(filteSearch),
       };
     } else {
       balanser = {
