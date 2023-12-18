@@ -14,13 +14,14 @@ First fetching data is can take near 1-3 minutes, further is fast.
 ## Developer features
 - Using [own backend service](https://github.com/AlexeiKozlovskiy/online-store-nest) built on Nest, with using prisma database. Servise deploed in [here](https://render.com/).
 - Standard and google authentication, using bearer token, with opportunity his refreshing. 
-- Forms introduced in all modal windows and profile page, made using react-hook-form, with possibility common validation all fields. 
+- Forms introduced in all modal windows and profile page, made using React Hook Form, with possibility common validation all fields. 
 - Cart products, and auth state build with Redux Toolkit.
-- Fetching products, and product by ID developed using RTK Query. Fetching all app data using axios, in future I keep in mind add React Qwery.
+- Product fetching is developed using RTK Query. Fetching profile user data using React Query + axios. Fetching all app data using axios.
 - Interaction with application components, such as filters, sorting, search, pagination, viewswitcher changes and saves in URL parameters.
 - Product filters have balancers. When you change one or several filters, and the search field, other filters will be changed based on the displayed products.
 - SSR mode, for now work only **locally**. In Netlifae deploy available CSR mode.
 - Using other small libraries, such as: paginate, select, slider, skeleton, persist.
+- Maintaining a list of tasks, pull requests, commits, task board.
 
 ## Common stack
 - TS
@@ -31,6 +32,7 @@ First fetching data is can take near 1-3 minutes, further is fast.
 - React Router
 - Reduxjs Toolkit
 - RTK Query
+- React Query
 - Axios
 - React Hook Form
 - React Loading Skeleton
@@ -56,6 +58,8 @@ To run this project locally, follow these steps:
  <img src="./public/assets/readme/readme-product.png" alt="image" width="800">
 
 ### Cart page
+You can open cart page, pressed the cart logo in header.
+
  <img src="./public/assets/readme/readme-cart.png" alt="image" width="800">
 
 ### Profile page
@@ -67,8 +71,16 @@ You can open profile page, pressed the "My profile" button in profile modal wind
 You can call the user modal window, pressed the user logo nearby the cart logo. You must be **authorization**. 
  <img src="./public/assets/readme/readme-modal-profile.png" alt="image" width="600">
 
-### Sign Up modal
+### Sign UP modal
  <img src="./public/assets/readme/readme-modal-sign-up.png" alt="image" width="800">
+
+### Sign IN modal
+ <img src="./public/assets/readme/readme-modal-sign-in.png" alt="image" width="800">
+
+### Payment modal
+You can call the Payment modal window, pressed the user Proceed to Checkout button in cart page. You must be authorization.
+ <img src="./public/assets/readme/readme-modal-payment.png" alt="image" width="800">
+
 
 
 
