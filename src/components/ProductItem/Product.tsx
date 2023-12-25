@@ -6,7 +6,7 @@ import {
   clearChooseProduct,
   removeProductsFromCartAll,
   setChooseProduct,
-} from '@/reducers/controller';
+} from '@/store/controller';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { formatNameForURL } from '@/helpers/helpersFunc';
 import { useEffect } from 'react';

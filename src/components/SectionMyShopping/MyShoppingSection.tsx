@@ -1,4 +1,4 @@
-import './ProfilePage.scss';
+import '@/pages/ProfilePage/ProfilePage.scss';
 
 export function MyShoppingSection() {
   return (

@@ -14,7 +14,7 @@ import { useMyUserContext } from '@/context/UserContext';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useSelector } from 'react-redux';
-import { Authentication, RootReducerProps } from '@/types/types';
+import { Authentication, ROUTE, RootReducerProps } from '@/types/types';
 import { useState } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 import { Client, Server } from 'react-hydration-provider';
@@ -60,14 +60,14 @@ export function Header() {
   const userIcon = <UserIcon handleClick={() => setOpenModals({ ...openModals, user: true })} />;
   const authBar = (
     <>
-      <div className="header-auth__btn" onClick={getSignIN}>
+      <button className="header-auth__btn-sign-in" onClick={getSignIN}>
         Sign In
-      </div>
+      </button>
       <div className="header-auth-signup">
-        <div className="header-auth__text">Not a Member?</div>
-        <div className="header-auth__link" onClick={getSignUP}>
+        <p className="header-auth__text">Not a Member?</p>
+        <button className="header-auth__btn-sign-up" onClick={getSignUP}>
           Sign up
-        </div>
+        </button>
       </div>
     </>
   );
@@ -83,12 +83,12 @@ export function Header() {
         />
       )}
       <div className="header__container">
-        <Link to="/" className="header-link" onClick={removeAllSelected}>
+        <Link to={ROUTE.MAIN} className="header-link" onClick={removeAllSelected}>
           <HeaderLogo />
         </Link>
         <div className="header-nav" data-show={showBurgerMenu}>
           <ButtonCross onClickCross={handleShowBurgerMenu} adittionClassName="close-burger-cross" />
-          <Link to="/" className="header-link" onClick={logoClikBurger}>
+          <Link to={ROUTE.MAIN} className="header-link" onClick={logoClikBurger}>
             <HeaderLogo />
           </Link>
           <div className="header-nav-contents">

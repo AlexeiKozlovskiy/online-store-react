@@ -5,6 +5,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  min-height: calc(100vh - 150px);
 
   @media screen and (max-width: 670px) {
     padding: 0px 10px;
@@ -20,7 +21,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: calc(100vh - 118px - 151px);
+    min-height: calc(100vh - 235px);
   }
 
   &__empty-subtitle {
@@ -41,8 +42,13 @@
     }
   }
 
+  &__server {
+    min-height: calc(100vh - 100px);
+    // min-height: 600px;
+  }
+
   &__server-preloader {
-    margin-top: 100px;
+    padding-top: 100px;
   }
 
   &__header {

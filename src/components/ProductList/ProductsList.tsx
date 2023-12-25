@@ -1,10 +1,10 @@
 import './ProductsList.scss';
-import { ProductItem } from './Product';
+import { ProductItem } from '../ProductItem/Product';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
-import { useMainPagination } from '@/components/CustomHook/MainPaginationHook';
+import { useMainPagination } from '@/hooks/MainPaginationHook';
 import { Server, Client } from 'react-hydration-provider';
 import products from '@/assets/data/products.json';
 import { useGetProductsQuery } from '@/api/ProductsAPI';

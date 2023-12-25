@@ -121,7 +121,7 @@ export function sortByName(products: Product[]) {
 export function commonError(err: unknown) {
   const error = err as AxiosError<Error>;
   const { message } = error.response!.data;
-  console.error(error.response!.data);
+  console.warn(error.response!.data);
   return { error: message, data: null };
 }
 

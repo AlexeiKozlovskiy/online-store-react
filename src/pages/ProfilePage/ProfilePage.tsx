@@ -1,8 +1,8 @@
 import './ProfilePage.scss';
 import { useState } from 'react';
-import { ProfileSection } from './ProfileSection';
-import { FavoritesSection } from './FavoritesSection';
-import { MyShoppingSection } from './MyShoppingSection';
+import { ProfileSection } from '@/components/SectionProfile/ProfileSection';
+import { FavoritesSection } from '@/components/SectionFavorites/FavoritesSection';
+import { MyShoppingSection } from '@/components/SectionMyShopping/MyShoppingSection';
 
 export function ProfilePage() {
   const [currentSection, setCurrentSection] = useState('profile');

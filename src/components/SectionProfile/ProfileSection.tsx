@@ -1,4 +1,4 @@
-import './ProfilePage.scss';
+import '@/pages/ProfilePage/ProfilePage.scss';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useForm } from 'react-hook-form';
 import {
@@ -9,10 +9,10 @@ import {
   ROUTE,
   Profile,
 } from '@/types/types';
-import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
+import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useEffect, useRef } from 'react';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
-import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
+import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
 import { useMyUserContext } from '@/context/UserContext';

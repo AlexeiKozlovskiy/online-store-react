@@ -6,6 +6,7 @@ import { Header } from '@/components/Header/Header';
 import { ProductPage } from '@/pages/ProductPage/ProductPage';
 import { ProfilePage } from '@/pages/ProfilePage/ProfilePage';
 import { ROUTE } from '@/types/types';
+import { Footer } from './components/Footer/Footer';
 
 export const App = () => {
   const location = useLocation();
@@ -27,6 +28,7 @@ export const App = () => {
       <div className="appContent">
         <Router />
       </div>
+      <Footer />
     </div>
   );
 };

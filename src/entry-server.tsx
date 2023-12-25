@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom/server';
 import { App } from './App';
-import store from '@/reducers/store';
+import store from '@/store/store';
 import { renderToString } from 'react-dom/server';
 import { StrictMode } from 'react';
 

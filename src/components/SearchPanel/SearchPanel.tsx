@@ -2,7 +2,7 @@ import './SearchPanel.scss';
 
 import { memo, useEffect, useState } from 'react';
 import { useMyURLContext } from '@/context/URLContext';
-import { useDebounce } from '../CustomHook/DebounceHook';
+import { useDebounce } from '@/hooks/DebounceHook';
 
 export const SearchPanel = memo(function SearchPanel() {
   const [inputValue, setInputValue] = useState<string | null>('');

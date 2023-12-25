@@ -1,17 +1,17 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { Authentication, CartItem, RootReducerProps } from '@/types/types';
+import { Authentication, CartItem, ROUTE, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
-import { CartListItem } from './CartListItem';
+import { CartList } from '../../components/CartList/CartList';
 import { useSelector } from 'react-redux';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/context/URLContext';
-import { Summary } from './Summary';
+import { Summary } from '../../components/CartSummary/Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
-import { useCartPaginationHook } from '@/components/CustomHook/CartPaginationHook';
+import { useCartPaginationHook } from '@/hooks/CartPaginationHook';
 import { Client, Server } from 'react-hydration-provider';
 import { Preloader } from '@/components/Preloader/Preloader';
 
@@ -33,10 +33,12 @@ export function CartPage() {
 
   const emtyCart = (
     <>
-      <div className="shopping-cart__empty-subtitle">
-        You have no items in your shopping cart. Click
-        <br />
-        <Link to="/">here</Link> to continue shopping.
+      <div className="shopping-cart__empty">
+        <div className="shopping-cart__empty-subtitle">
+          You have no items in your shopping cart. Click
+          <br />
+          <Link to={ROUTE.MAIN}>here</Link> to continue shopping.
+        </div>
       </div>
     </>
   );
@@ -67,7 +69,7 @@ export function CartPage() {
             <tbody>
               {currentItems &&
                 currentItems.map((cartItem: CartItem) => (
-                  <CartListItem key={cartItem.cartID} {...cartItem} />
+                  <CartList key={cartItem.cartID} {...cartItem} />
                 ))}
             </tbody>
           </table>
@@ -85,7 +87,9 @@ export function CartPage() {
         <ArrowBack />
         <Client>{!countCartItem ? emtyCart : takenCart}</Client>
         <Server>
-          <div className="shopping-cart__server-preloader">{<Preloader />}</div>
+          <div className="shopping-cart__server">
+            <div className="shopping-cart__server-preloader">{<Preloader />}</div>
+          </div>
         </Server>
       </main>
     </>

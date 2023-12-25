@@ -2,11 +2,11 @@ import { HeaderLogo } from '@/components/HeaderLogo/HeaderLogo';
 import { useForm } from 'react-hook-form';
 import { MyForms } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
-import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
+import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { useMyUserContext } from '@/context/UserContext';
 import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 import { FormInput } from '@/components/FormInput/FormInput';
-import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
+import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function Form() {

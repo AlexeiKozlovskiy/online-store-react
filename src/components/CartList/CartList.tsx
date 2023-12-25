@@ -1,4 +1,4 @@
-import './CartPage.scss';
+import '@/pages/CartPage/CartPage.scss';
 import { Link } from 'react-router-dom';
 import { CartItem, ROUTE } from '@/types/types';
 import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
@@ -7,13 +7,13 @@ import {
   clearChooseProduct,
   removeProductsFromCartAll,
   setChooseProduct,
-} from '@/reducers/controller';
-import { useAnimations } from '@/components/CustomHook/AnimationsHook';
+} from '@/store/controller';
+import { useAnimations } from '@/hooks/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { memo, useEffect } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
-export const CartListItem = memo(function CartListItem({
+export const CartList = memo(function CartListItem({
   itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },

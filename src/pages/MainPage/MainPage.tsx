@@ -1,7 +1,7 @@
 import './MainPage.scss';
 import { useState } from 'react';
 import { SortedSelect } from '@/components/TopMainPanel/SortedSelect';
-import { ProductsList } from '@/pages/MainPage/ProductsList';
+import { ProductsList } from '@/components/ProductList/ProductsList';
 import { SearchPanel } from '@/components/SearchPanel/SearchPanel';
 import { SideFilter } from '@/components/SideFilter/SideFilter';
 import { useMyFiltersContext } from '@/context/FiltersContext';

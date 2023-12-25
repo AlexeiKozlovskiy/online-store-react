@@ -1,13 +1,13 @@
 import { Product, Authentication, ChooseProduct } from '@/types/types';
-import store from '@/reducers/store';
+import store from '@/store/store';
 import {
   addProductToCart,
   removeProductFromCart,
   setProductQuantityInCart,
   removeProductFromCartAll,
   removeAllProductFromCart,
-} from '@/reducers/cart';
-import { addAppliedPromocode, removeAppliedPromocode } from '@/reducers/promocode';
+} from '@/store/cart';
+import { addAppliedPromocode, removeAppliedPromocode } from '@/store/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
 import { chooseProduct, resetChooseProduct } from './chooseProduct';
 

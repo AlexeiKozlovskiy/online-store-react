@@ -9,7 +9,7 @@ import {
 } from '@/types/types';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
-import { setAuthParams, clearAuthParams } from '@/reducers/controller';
+import { setAuthParams, clearAuthParams } from '@/store/controller';
 import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from '@/api/AuthAPI';
 
 interface IUserContext {

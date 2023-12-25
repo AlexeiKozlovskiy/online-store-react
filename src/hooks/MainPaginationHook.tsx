@@ -43,7 +43,9 @@ export function useMainPagination() {
   }, [inputSearchURL, products]);
 
   useEffect(() => {
-    !isEmptyFilters && resetOnFirstPage();
+    if (!isEmptyFilters && curPageMain !== 1) {
+      resetOnFirstPage();
+    }
   }, [isEmptyFilters, products]);
 
   useEffect(() => {
