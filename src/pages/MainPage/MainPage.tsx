@@ -8,10 +8,16 @@ import { useMyFiltersContext } from '@/context/FiltersContext';
 
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
+  const [clickFilters, setClickFilters] = useState(false);
+
   const { emptyCatalog } = useMyFiltersContext();
 
   function handleShowFilters() {
     showFilters ? setShowFilters(false) : setShowFilters(true);
+  }
+
+  function handleClickFilters(value: boolean) {
+    setClickFilters(value);
   }
 
   const noItemsFound = <section className="empty-catalog">No items found</section>;
@@ -22,11 +28,15 @@ export function MainPage() {
       <div className="store-page">
         <section className="main-catalog">
           <aside className="main-catalog__filters">
-            <SideFilter showFilters={showFilters} onClickHideFilter={handleShowFilters} />
+            <SideFilter
+              showFilters={showFilters}
+              onClickHideFilter={handleShowFilters}
+              handleClickFilters={handleClickFilters}
+            />
           </aside>
           <div className="main-catalog__center-section main-center-section">
             <SortedSelect onClickShowFilter={handleShowFilters} />
-            {emptyCatalog ? noItemsFound : <ProductsList />}
+            {emptyCatalog ? noItemsFound : <ProductsList clickFilters={clickFilters} />}
           </div>
         </section>
       </div>

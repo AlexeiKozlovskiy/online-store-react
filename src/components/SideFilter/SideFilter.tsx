@@ -12,9 +12,10 @@ import { DualRangeInput } from './DualRangeInput';
 interface ISideFilter {
   showFilters: boolean;
   onClickHideFilter: (event: React.MouseEvent<Element, MouseEvent>) => void;
+  handleClickFilters: (value: boolean) => void;
 }
 
-export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
+export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters }: ISideFilter) {
   const { selectedFilters, setSelectedFilters } = useMyURLContext();
   const { balanserFilters } = useMyFiltersContext();
   const [[priseMin, priseMax], setPrice] = useState<[number | null, number | null]>([null, null]);
@@ -85,6 +86,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   ]);
 
   function handleColorClick(color: string) {
+    handleClickFilters(true);
     if (colorsSelected.includes(color)) {
       setSelectedFilters({
         ...selectedFilters,
@@ -99,6 +101,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   }
 
   function handleCollectionClick(collection: string) {
+    handleClickFilters(true);
     if (collectionsSelected.includes(+collection)) {
       setSelectedFilters({
         ...selectedFilters,
@@ -123,6 +126,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
     value: [number, number],
     setFilter: SelectedFilter
   ) => {
+    handleClickFilters(true);
     setSelectedFilters({
       ...selectedFilters,
       [selectedType]: value,
@@ -131,6 +135,7 @@ export function SideFilter({ showFilters, onClickHideFilter }: ISideFilter) {
   };
 
   function categoryHandelChange(category: string) {
+    handleClickFilters(true);
     const updatedCategories = [...categorySelected];
     const index = [...categorySelected].indexOf(category);
     index !== -1 ? updatedCategories.splice(index, 1) : updatedCategories.push(category);
