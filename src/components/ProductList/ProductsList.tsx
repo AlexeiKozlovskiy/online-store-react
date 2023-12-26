@@ -1,19 +1,25 @@
 import './ProductsList.scss';
-import { ProductItem } from './Product';
+import { ProductItem } from '../ProductItem/Product';
 import { useSelector } from 'react-redux';
 import { RootReducerProps, CartItem } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
-import { useMainPagination } from '@/components/CustomHook/MainPaginationHook';
+import { useMainPagination } from '@/hooks/MainPaginationHook';
 import { Server, Client } from 'react-hydration-provider';
 import products from '@/assets/data/products.json';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { MainSkeleton } from '@/components/Skeleton/MainPage/MainSkeleton';
 
-export function ProductsList() {
+interface ProductsList {
+  clickFilters: boolean;
+}
+
+export function ProductsList({ clickFilters }: ProductsList) {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const { swichedView } = useMyURLContext();
-  const { countPages, curPageMain, currentItems, handlePageClick } = useMainPagination();
+  const { countPages, curPageMain, currentItems, handlePageClick } = useMainPagination({
+    clickFilters,
+  });
   const { isFetching } = useGetProductsQuery();
   const { perMainPageOption } = useMyURLContext();
 

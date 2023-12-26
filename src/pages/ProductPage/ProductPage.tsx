@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
 import { formatPrice } from '@/helpers/helpersFunc';
-import { RootReducerProps, CartItem, ChooseProduct } from '@/types/types';
-import { addProductsToCart } from '@/reducers/controller';
+import { RootReducerProps, CartItem, ChooseProduct, ROUTE } from '@/types/types';
+import { addProductsToCart } from '@/store/controller';
 import { useSelector } from 'react-redux';
-import { useAnimations } from '@/components/CustomHook/AnimationsHook';
+import { useAnimations } from '@/hooks/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { useGetProductQuery, useGetProductsQuery } from '@/api/ProductsAPI';
 import { useMyURLContext } from '@/context/URLContext';
@@ -119,7 +119,7 @@ export function ProductPage() {
       ) : (
         <>
           <div className="bread-crumbs__path">
-            <Link to="/" className="bread-crumbs__home-link">
+            <Link to={ROUTE.MAIN} className="bread-crumbs__home-link">
               Home
             </Link>
           </div>

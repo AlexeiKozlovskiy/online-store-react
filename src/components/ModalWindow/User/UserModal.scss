@@ -48,20 +48,23 @@
       transition: background-color 0.3s;
 
       &:hover {
-        cursor: pointer;
         background-color: $olivaHover;
         transition: background-color 0.3s;
       }
     }
   }
-}
 
-.my-profile-link {
-  &:visited {
+  &__button {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
     color: black;
-  }
-  &:link {
-    color: #0000d0;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

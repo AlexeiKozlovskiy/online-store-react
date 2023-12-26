@@ -7,7 +7,7 @@ import { FiltersContextProvider } from '@/context/FiltersContext';
 import { SortingsContextProvider } from '@/context/SortingsContext';
 import { RemoveAllSelectedContextProvider } from '@/context/RemoveAllSelectedContext';
 import { Provider } from 'react-redux';
-import store from '@/reducers/store';
+import store from '@/store/store';
 import { URLContextProvider } from '@/context/URLContext';
 import { TotalPriceContextProvider } from '@/context/TotalPriseContext';
 import { TotalItemsContextProvider } from '@/context/TotalItemsContext';

@@ -1,0 +1,48 @@
+.footer {
+  background: linear-gradient(45deg, $winter 10%, $winterHover 50%, $winter 80%);
+  animation: background-gradient 3s infinite alternate;
+  border-radius: 2px;
+
+  &__container {
+    height: 60px;
+    box-sizing: border-box;
+    padding: 0 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font: 1.2rem $Roboto;
+    color: #fff;
+
+    @media screen and (max-width: 768px) {
+      padding: 5px 10px;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 1rem;
+    }
+  }
+
+  .github-link {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: filter 0.3s;
+
+    &:hover {
+      cursor: pointer;
+      filter: invert(100%);
+      transition: filter 0.3s;
+    }
+
+    &__img {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url('../../assets/img/github.svg') no-repeat center;
+      filter: invert(100%);
+    }
+
+    &__person {
+    }
+  }
+}

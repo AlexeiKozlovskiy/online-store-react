@@ -1,7 +1,7 @@
 import { useMyUserContext } from '@/context/UserContext';
 import './UserModal.scss';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '@/types/types';
 
 interface IUserModal {
@@ -12,6 +12,11 @@ interface IUserModal {
 export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModal) => {
   const { logOut } = useMyUserContext();
   const navigate = useNavigate();
+
+  function handelClickProfile() {
+    closeModalUserAnimation();
+    navigate(ROUTE.PROFILE);
+  }
 
   function handelClickLogout() {
     closeModalUserAnimation();
@@ -26,13 +31,11 @@ export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModa
         <UserProfile />
         <hr className="user-modal__line"></hr>
         <ul className="user-modal__list">
-          <li className="user-modal__my-profile">
-            <Link to="profile" className="my-profile-link" onClick={closeModalUserAnimation}>
-              My profile
-            </Link>
+          <li className="user-modal__my-profile" onClick={handelClickProfile}>
+            <button className="user-modal__button">My profile</button>
           </li>
-          <li className="user-modal__log-out" onClick={() => handelClickLogout()}>
-            Logout
+          <li className="user-modal__log-out" onClick={handelClickLogout}>
+            <button className="user-modal__button">Logout</button>
           </li>
         </ul>
       </div>

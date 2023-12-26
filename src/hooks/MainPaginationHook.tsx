@@ -1,16 +1,20 @@
 import { useMySortingsContext } from '@/context/SortingsContext';
 import { useMyURLContext } from '@/context/URLContext';
+import { MAX_PAGES } from '@/helpers/constant';
 import { handlerScrollUp } from '@/helpers/helpersFunc';
 import { PageClickEvent, Product } from '@/types/types';
 import { useState, useEffect, useLayoutEffect } from 'react';
 
-export function useMainPagination() {
+interface MainPagination {
+  clickFilters: boolean;
+}
+
+export function useMainPagination({ clickFilters }: MainPagination) {
   const [currentItems, setCurrentItems] = useState<Product[]>([]);
   const { sortProducts: products } = useMySortingsContext();
   const countProducts = products.length;
-  const { curPageMain, setCurPageMain, perMainPageOption, inputSearchURL, isEmptyFilters } =
-    useMyURLContext();
-  const [countPages, setCountPages] = useState(curPageMain);
+  const { curPageMain, setCurPageMain, perMainPageOption, inputSearchURL } = useMyURLContext();
+  const [countPages, setCountPages] = useState(MAX_PAGES);
   const [itemsPerPage, setItemsPerPage] = useState(+perMainPageOption.value);
   const [itemOffset, setItemOffset] = useState(0);
   const useClientLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
@@ -43,16 +47,16 @@ export function useMainPagination() {
   }, [inputSearchURL, products]);
 
   useEffect(() => {
-    !isEmptyFilters && resetOnFirstPage();
-  }, [isEmptyFilters, products]);
+    clickFilters && handlePageClick({ selected: 0 });
+  }, [clickFilters]);
 
   useEffect(() => {
-    if (countProducts) {
+    if (countProducts && countPages !== 1) {
       if (curPageMain > countPages) {
         resetOnFirstPage();
       }
     }
-  }, [countPages, curPageMain, countProducts]);
+  }, [curPageMain, countProducts]);
 
   function resetOnFirstPage() {
     handlePageClick({ selected: 0 });

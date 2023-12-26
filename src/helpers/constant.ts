@@ -50,6 +50,8 @@ export const SORT_OPTIONS = [
   { value: 'stock-desc', label: 'Stock descending' },
 ];
 
+export const MAX_PAGES = 12;
+
 export const ITEMS_IN_PAGE = [
   { value: '5', label: 'Show items: 5' },
   { value: '10', label: 'Show items: 10' },

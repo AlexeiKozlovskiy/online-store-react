@@ -1,5 +1,6 @@
 .profile {
   font-family: $Roboto;
+  min-height: calc(100vh - 150px);
 
   &__titel {
     font-weight: 400;
@@ -42,7 +43,8 @@
   &__list {
     list-style-type: none;
     margin: 8px 8px;
-    min-height: 600px;
+    min-height: calc(100vh - 300px);
+
     font-size: 1.2rem;
 
     @media screen and (max-width: 550px) {

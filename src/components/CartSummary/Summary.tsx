@@ -1,9 +1,9 @@
-import './CartPage.scss';
+import '@/pages/CartPage/CartPage.scss';
 import { useRef, useState } from 'react';
 import { PromocodeData, RootReducerProps } from '@/types/types';
 import { PROMOCODES } from '@/helpers/constant';
 import { useSelector } from 'react-redux';
-import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/reducers/controller';
+import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/store/controller';
 import { formatPrice } from '@/helpers/helpersFunc';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 import { useMyTotalItemsContext } from '@/context/TotalItemsContext';

@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps, Profile } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
-import { useFormsInputsHelper } from '@/components/CustomHook/FormsInputsHelperHook';
+import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
-import { useFormsValidation } from '@/components/CustomHook/FormsValidationHook';
+import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
 import { useMyUserContext } from '@/context/UserContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
-import { removeAllProductsFromCart } from '@/reducers/controller';
+import { removeAllProductsFromCart } from '@/store/controller';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 
 export function Form() {

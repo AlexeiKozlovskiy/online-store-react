@@ -3,7 +3,7 @@ import {
   addProductsToCart,
   removeProductsFromCart,
   setProductsQuantityInCart,
-} from '@/reducers/controller';
+} from '@/store/controller';
 import { QuantityPieces } from './QuantityPieces';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 
