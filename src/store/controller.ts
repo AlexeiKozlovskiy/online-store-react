@@ -1,4 +1,4 @@
-import { Product, Authentication, ChooseProduct } from '@/types/types';
+import { Product, Authentication, ChosenProduct } from '@/types/types';
 import store from '@/store/store';
 import {
   addProductToCart,
@@ -9,12 +9,12 @@ import {
 } from '@/store/cart';
 import { addAppliedPromocode, removeAppliedPromocode } from '@/store/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
-import { chooseProduct, resetChooseProduct } from './chooseProduct';
+import { chosenProduct, resetChosenProduct } from './chosenProduct';
 
 export function addProductsToCart(id: string, products: Product[], quantity: number = 1) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(addProductToCart({ product: product, quantity: quantity }));
+    store.dispatch(addProductToCart({ product, quantity }));
   }
 }
 export function removeProductsFromCart(id: string, products: Product[]) {
@@ -24,10 +24,10 @@ export function removeProductsFromCart(id: string, products: Product[]) {
   }
 }
 
-export function setProductsQuantityInCart(id: string, value: number, products: Product[]) {
+export function setProductsQuantityInCart(id: string, quantity: number, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(setProductQuantityInCart({ product: product, quantity: value }));
+    store.dispatch(setProductQuantityInCart({ product, quantity }));
   }
 }
 
@@ -70,12 +70,12 @@ export function clearAuthParams() {
   store.dispatch(clearAuthUser());
 }
 
-export function setChooseProduct(product: ChooseProduct) {
+export function setChosenProduct(product: ChosenProduct) {
   if (product) {
-    store.dispatch(chooseProduct(product));
+    store.dispatch(chosenProduct(product));
   }
 }
 
-export function clearChooseProduct() {
-  store.dispatch(resetChooseProduct());
+export function clearChosenProduct() {
+  store.dispatch(resetChosenProduct());
 }

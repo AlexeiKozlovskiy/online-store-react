@@ -44,16 +44,16 @@ export interface CartItem extends CartItemArg {
   itemNumber: number;
 }
 
-export interface ChooseProduct {
-  id: string;
-  name: string;
+export interface ChosenProduct {
+  id: string | null;
+  name: string | null;
 }
 
 export interface RootReducerProps {
   cart: CartItem[];
   promocode: PromocodeData;
   auth: Authentication;
-  chooseProduct: ChooseProduct;
+  chosenProduct: ChosenProduct;
 }
 
 export interface PaginationData {

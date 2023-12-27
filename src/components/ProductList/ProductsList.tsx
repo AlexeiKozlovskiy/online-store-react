@@ -27,7 +27,10 @@ export function ProductsList({ clickFilters }: ProductsList) {
     <>
       {isFetching && <MainSkeleton amount={+perMainPageOption.value} />}
       <Client>
-        <div className={`main-catalog__products ${swichedView === 'row' && 'row-view'}`}>
+        <div
+          className={`main-catalog__products ${swichedView === 'row' && 'row-view'}`}
+          data-testid="main-catalog"
+        >
           {currentItems &&
             currentItems.map((product) => (
               <ProductItem

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
 import { formatPrice } from '@/helpers/helpersFunc';
-import { RootReducerProps, CartItem, ChooseProduct, ROUTE } from '@/types/types';
+import { RootReducerProps, CartItem, ChosenProduct, ROUTE } from '@/types/types';
 import { addProductsToCart } from '@/store/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/hooks/AnimationsHook';
@@ -20,8 +20,8 @@ export function ProductPage() {
   const [isInCart, setIsInCart] = useState(false);
   const [quantity, setQuantity] = useState('1');
   const [resetInput, setResetInput] = useState(false);
-  const chooseProduct = useSelector<RootReducerProps, ChooseProduct>(
-    (state) => state.chooseProduct
+  const chosenProduct = useSelector<RootReducerProps, ChosenProduct>(
+    (state) => state.chosenProduct
   );
   const {
     data: product = {
@@ -36,7 +36,7 @@ export function ProductPage() {
       images: [],
     },
     isFetching,
-  } = useGetProductQuery(chooseProduct.id);
+  } = useGetProductQuery(chosenProduct.id!);
   const { data: products } = useGetProductsQuery();
   const navigate = useNavigate();
   const cartItems = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
