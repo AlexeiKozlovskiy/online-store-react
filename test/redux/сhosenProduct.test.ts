@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import chooseProductSlise, { chosenProduct, resetChosenProduct } from '@/store/chosenProduct';
 import { configureStore } from '@reduxjs/toolkit';
 
-describe('Redux Chosen Product', () => {
+describe('Redux Chosen Product Actions', () => {
   let store: any;
 
   const PRODUCT = {
