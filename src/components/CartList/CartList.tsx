@@ -5,7 +5,7 @@ import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
 import {
   clearChosenProduct,
-  removeProductsFromCartAll,
+  removeAllProductsFromCart,
   setChosenProduct,
 } from '@/store/controller';
 import { useAnimations } from '@/hooks/AnimationsHook';
@@ -26,7 +26,7 @@ export const CartList = memo(function CartListItem({
 
   function handelCrossClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!, products!);
   }
 
   const isShake = useAnimations({ quantity, stock });

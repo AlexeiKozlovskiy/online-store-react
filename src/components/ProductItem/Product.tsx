@@ -2,9 +2,9 @@ import './Product.scss';
 import { Link } from 'react-router-dom';
 import { Product, ROUTE } from '@/types/types';
 import {
-  addProductsToCart,
+  addProductToCart,
   clearChosenProduct,
-  removeProductsFromCartAll,
+  removeAllProductsFromCart,
   setChosenProduct,
 } from '@/store/controller';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
@@ -27,13 +27,13 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
   function productItemAddClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    addProductsToCart(dataset.id!, products!);
+    addProductToCart(dataset.id!, products!);
   }
 
   function productItemRemoveClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!, products!);
   }
 
   const addToCart = (

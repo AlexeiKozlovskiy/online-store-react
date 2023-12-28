@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import cartSlice, {
-  addProductToCart,
-  removeAllProductFromCart,
-  removeProductFromCart,
-  removeProductFromCartAll,
-  setProductQuantityInCart,
+  addToCart,
+  removeItemFromCart,
+  removeAllItemsFromCart,
+  setQuantityItemInCart,
+  removeCart,
 } from '@/store/cart';
 import { configureStore } from '@reduxjs/toolkit';
 
@@ -41,7 +41,7 @@ const PRODUCT_TWO = {
   ],
 };
 
-describe('Redux Cart Actions', () => {
+describe('Redux cart reducers', () => {
   let store: any;
 
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe('Redux Cart Actions', () => {
 
   it('should add a product to the cart', async () => {
     const quantity = 1;
-    store.dispatch(addProductToCart({ product: PRODUCT_ONE, quantity }));
+    store.dispatch(addToCart({ product: PRODUCT_ONE, quantity }));
     const updatedState = store.getState().cart;
 
     expect(updatedState.length).toBe(1);
@@ -65,13 +65,13 @@ describe('Redux Cart Actions', () => {
     const quantityOne = 1;
     const quantityTwo = 100;
 
-    store.dispatch(addProductToCart({ product: PRODUCT_ONE, quantity: quantityOne }));
+    store.dispatch(addToCart({ product: PRODUCT_ONE, quantity: quantityOne }));
     const updatedState = store.getState().cart;
 
     expect(updatedState.length).toBe(1);
     expect(updatedState[0].product).toHaveProperty('name', 'Gingerbread House');
 
-    store.dispatch(addProductToCart({ product: PRODUCT_ONE, quantity: quantityTwo }));
+    store.dispatch(addToCart({ product: PRODUCT_ONE, quantity: quantityTwo }));
     const updatedStateTwo = store.getState().cart;
 
     expect(updatedStateTwo[0].quantity).toBe(PRODUCT_ONE.stock);
@@ -79,7 +79,7 @@ describe('Redux Cart Actions', () => {
 
   it('should add a quantity product to the cart', async () => {
     const quantity = 10;
-    store.dispatch(setProductQuantityInCart({ product: PRODUCT_TWO, quantity }));
+    store.dispatch(setQuantityItemInCart({ product: PRODUCT_TWO, quantity }));
     const updatedState = store.getState().cart;
 
     expect(updatedState.length).toBe(1);
@@ -89,13 +89,13 @@ describe('Redux Cart Actions', () => {
 
   it('should remove one item a product from the cart', () => {
     const quantity = 10;
-    store.dispatch(setProductQuantityInCart({ product: PRODUCT_ONE, quantity }));
+    store.dispatch(setQuantityItemInCart({ product: PRODUCT_ONE, quantity }));
     const addedState = store.getState().cart;
 
     expect(addedState.length).toBe(1);
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
 
-    store.dispatch(removeProductFromCart(PRODUCT_ONE));
+    store.dispatch(removeItemFromCart(PRODUCT_ONE));
     const removeState = store.getState().cart;
 
     expect(removeState[0].quantity).toBe(quantity - 1);
@@ -104,14 +104,14 @@ describe('Redux Cart Actions', () => {
 
   it('should remove all item product from the cart', () => {
     const quantity = 10;
-    store.dispatch(setProductQuantityInCart({ product: PRODUCT_ONE, quantity }));
+    store.dispatch(setQuantityItemInCart({ product: PRODUCT_ONE, quantity }));
 
     const addedState = store.getState().cart;
 
     expect(addedState.length).toBe(1);
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
 
-    store.dispatch(removeProductFromCartAll(PRODUCT_ONE));
+    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE));
     const removeState = store.getState().cart;
 
     expect(removeState.length).toBe(0);
@@ -119,8 +119,8 @@ describe('Redux Cart Actions', () => {
 
   it('should remove all products from the cart', () => {
     const quantity = 10;
-    store.dispatch(setProductQuantityInCart({ product: PRODUCT_ONE, quantity }));
-    store.dispatch(setProductQuantityInCart({ product: PRODUCT_TWO, quantity }));
+    store.dispatch(setQuantityItemInCart({ product: PRODUCT_ONE, quantity }));
+    store.dispatch(setQuantityItemInCart({ product: PRODUCT_TWO, quantity }));
 
     const addedState = store.getState().cart;
 
@@ -128,7 +128,7 @@ describe('Redux Cart Actions', () => {
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
     expect(addedState[1].product).toHaveProperty('name', 'LED lights warm');
 
-    store.dispatch(removeAllProductFromCart());
+    store.dispatch(removeCart());
     const removeState = store.getState().cart;
 
     expect(removeState.length).toBe(0);

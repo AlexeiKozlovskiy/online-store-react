@@ -8,7 +8,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addProductToCart: (state, action: PayloadAction<CartItemArg>) => {
+    addToCart: (state, action: PayloadAction<CartItemArg>) => {
       const { product, quantity } = action.payload;
 
       const item = state.find((item) => item.product.id === product.id);
@@ -34,7 +34,7 @@ const cartSlice = createSlice({
       return state;
     },
 
-    setProductQuantityInCart: (state, action: PayloadAction<CartItemArg>) => {
+    setQuantityItemInCart: (state, action: PayloadAction<CartItemArg>) => {
       const { product, quantity } = action.payload;
 
       const item = state.find((item) => item.product.id === product.id);
@@ -56,7 +56,7 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeProductFromCart: (state, action: PayloadAction<Product>) => {
+    removeItemFromCart: (state, action: PayloadAction<Product>) => {
       const { id } = action.payload;
 
       const item = state.find(({ product }) => product.id === id);
@@ -72,7 +72,7 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeProductFromCartAll: (state, action: PayloadAction<Product>) => {
+    removeAllItemsFromCart: (state, action: PayloadAction<Product>) => {
       const { id } = action.payload;
 
       const item = state.find(({ product }) => product.id === id);
@@ -84,7 +84,7 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeAllProductFromCart: (state) => {
+    removeCart: (state) => {
       state = [];
       return state;
     },
@@ -92,10 +92,10 @@ const cartSlice = createSlice({
 });
 
 export const {
-  addProductToCart,
-  setProductQuantityInCart,
-  removeProductFromCart,
-  removeProductFromCartAll,
-  removeAllProductFromCart,
+  addToCart,
+  setQuantityItemInCart,
+  removeItemFromCart,
+  removeAllItemsFromCart,
+  removeCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

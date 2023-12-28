@@ -10,7 +10,7 @@ import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
 import { useMyUserContext } from '@/context/UserContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
-import { removeAllProductsFromCart } from '@/store/controller';
+import { removeAllCart } from '@/store/controller';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 
 export function Form() {
@@ -82,7 +82,7 @@ export function Form() {
     setTimeout(() => {
       setShowPreloader(false);
       reset();
-      removeAllProductsFromCart();
+      removeAllCart();
       navigate(ROUTE.MAIN);
     }, 2000);
   };

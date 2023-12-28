@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import authSlice, { clearAuthUser, setAuthUser } from '@/store/auth';
 import { configureStore } from '@reduxjs/toolkit';
 
-describe('Redux Auth', () => {
+describe('Redux auth reducers', () => {
   let store: any;
 
   const AUTH_PARAMS = {

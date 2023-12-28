@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
 import { formatPrice } from '@/helpers/helpersFunc';
 import { RootReducerProps, CartItem, ChosenProduct, ROUTE } from '@/types/types';
-import { addProductsToCart } from '@/store/controller';
+import { addProductToCart } from '@/store/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/hooks/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
@@ -58,12 +58,12 @@ export function ProductPage() {
   }
 
   function handelAddClick() {
-    addProductsToCart(id, products!, Number(quantity));
+    addProductToCart(id, products!, Number(quantity));
     setResetInput(true);
   }
 
   function handelBuyNowBtn() {
-    addProductsToCart(id, products!, Number(quantity));
+    addProductToCart(id, products!, Number(quantity));
     setResetInput(true);
     navigate(cartUrl);
   }

@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import chooseProductSlise, { chosenProduct, resetChosenProduct } from '@/store/chosenProduct';
+import chosenProductSlise, { chosenProduct, resetChosenProduct } from '@/store/chosenProduct';
 import { configureStore } from '@reduxjs/toolkit';
 
-describe('Redux Chosen Product Actions', () => {
+describe('Redux chosen product reducers', () => {
   let store: any;
 
   const PRODUCT = {
@@ -13,28 +13,28 @@ describe('Redux Chosen Product Actions', () => {
   beforeEach(() => {
     store = configureStore({
       reducer: {
-        chooseProduct: chooseProductSlise,
+        chosenProduct: chosenProductSlise,
       },
     });
   });
 
   it('should add to chosen product', async () => {
     store.dispatch(chosenProduct(PRODUCT));
-    const updatedState = store.getState();
+    const updatedState = store.getState().chosenProduct;
 
-    expect(updatedState.chooseProduct).toHaveProperty('name', 'Blowfish Glass');
+    expect(updatedState).toHaveProperty('name', 'Blowfish Glass');
   });
 
   it('should remove from chosen product', async () => {
     store.dispatch(chosenProduct(PRODUCT));
     const chosenState = store.getState();
 
-    expect(chosenState.chooseProduct).toHaveProperty('name', 'Blowfish Glass');
+    expect(chosenState.chosenProduct).toHaveProperty('name', 'Blowfish Glass');
 
     store.dispatch(resetChosenProduct());
-    const removeState = store.getState();
+    const removeState = store.getState().chosenProduct;
 
-    expect(removeState.chooseProduct.id).toBeNull();
-    expect(removeState.chooseProduct.name).toBeNull();
+    expect(removeState.id).toBeNull();
+    expect(removeState.name).toBeNull();
   });
 });

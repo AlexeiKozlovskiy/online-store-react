@@ -1,45 +1,46 @@
 import { Product, Authentication, ChosenProduct } from '@/types/types';
 import store from '@/store/store';
 import {
-  addProductToCart,
-  removeProductFromCart,
-  setProductQuantityInCart,
-  removeProductFromCartAll,
-  removeAllProductFromCart,
+  addToCart,
+  removeItemFromCart,
+  removeAllItemsFromCart,
+  setQuantityItemInCart,
+  removeCart,
 } from '@/store/cart';
 import { addAppliedPromocode, removeAppliedPromocode } from '@/store/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
 import { chosenProduct, resetChosenProduct } from './chosenProduct';
 
-export function addProductsToCart(id: string, products: Product[], quantity: number = 1) {
+export function addProductToCart(id: string, products: Product[], quantity: number = 1) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(addProductToCart({ product, quantity }));
+    store.dispatch(addToCart({ product, quantity }));
   }
 }
-export function removeProductsFromCart(id: string, products: Product[]) {
+
+export function removeProductFromCart(id: string, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(removeProductFromCart(product));
+    store.dispatch(removeItemFromCart(product));
   }
 }
 
 export function setProductsQuantityInCart(id: string, quantity: number, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(setProductQuantityInCart({ product, quantity }));
+    store.dispatch(setQuantityItemInCart({ product, quantity }));
   }
 }
 
-export function removeProductsFromCartAll(id: string, products: Product[]) {
+export function removeAllProductsFromCart(id: string, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(removeProductFromCartAll(product));
+    store.dispatch(removeAllItemsFromCart(product));
   }
 }
 
-export function removeAllProductsFromCart() {
-  store.dispatch(removeAllProductFromCart());
+export function removeAllCart() {
+  store.dispatch(removeCart());
 }
 
 export function isPromocodeAvailable(name: string): boolean {
