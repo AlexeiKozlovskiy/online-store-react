@@ -62,9 +62,7 @@ export function removePromocode(id: number): void {
 }
 
 export function setAuthParams(authParams: Authentication): void {
-  if (authParams) {
-    store.dispatch(setAuthUser(authParams));
-  }
+  store.dispatch(setAuthUser(authParams));
 }
 
 export function clearAuthParams() {
@@ -72,9 +70,7 @@ export function clearAuthParams() {
 }
 
 export function setChosenProduct(product: ChosenProduct) {
-  if (product) {
-    store.dispatch(chosenProduct(product));
-  }
+  store.dispatch(chosenProduct(product));
 }
 
 export function clearChosenProduct() {

@@ -33,8 +33,8 @@ export function createPersistStorage() {
       getItem() {
         return Promise.resolve(null);
       },
-      setItem() {
-        return Promise.resolve();
+      setItem(_key: string, value: string) {
+        return Promise.resolve(value);
       },
       removeItem() {
         return Promise.resolve();
