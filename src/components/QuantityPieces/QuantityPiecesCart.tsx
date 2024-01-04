@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
-  addProductsToCart,
-  removeProductsFromCart,
+  addProductToCart,
+  removeProductFromCart,
   setProductsQuantityInCart,
 } from '@/store/controller';
 import { QuantityPieces } from './QuantityPieces';
@@ -24,11 +24,11 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   }, [quantity]);
 
   function handelArrowAppClick() {
-    addProductsToCart(id, products!);
+    addProductToCart(id, products!);
   }
 
   function handelArrowDownClick() {
-    removeProductsFromCart(id, products!);
+    removeProductFromCart(id, products!);
   }
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -36,7 +36,7 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
 
     if (+value < 0) {
       setInputValue(1);
-      addProductsToCart(id, products!);
+      addProductToCart(id, products!);
     } else if (+value >= stock) {
       setInputValue(stock);
       setProductsQuantityInCart(id, stock, products!);

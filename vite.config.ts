@@ -1,10 +1,12 @@
 /// <reference types="vite/client" />
 
-import { defineConfig } from 'vite';
+import { defineConfig, mergeConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import vitestConfig from './vitest.config';
 
 // https://vitejs.dev/config/
-export default defineConfig({
+
+const viteConfig = defineConfig({
   plugins: [react()],
   css: {
     preprocessorOptions: {
@@ -36,3 +38,5 @@ export default defineConfig({
     },
   },
 });
+
+export default mergeConfig(viteConfig, vitestConfig);

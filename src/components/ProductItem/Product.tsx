@@ -2,10 +2,10 @@ import './Product.scss';
 import { Link } from 'react-router-dom';
 import { Product, ROUTE } from '@/types/types';
 import {
-  addProductsToCart,
-  clearChooseProduct,
-  removeProductsFromCartAll,
-  setChooseProduct,
+  addProductToCart,
+  clearChosenProduct,
+  removeAllProductsFromCart,
+  setChosenProduct,
 } from '@/store/controller';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { formatNameForURL } from '@/helpers/helpersFunc';
@@ -21,19 +21,19 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
   const { id, images, name, price, color, collection, size, category, stock } = product;
 
   useEffect(() => {
-    clearChooseProduct();
+    clearChosenProduct();
   }, []);
 
   function productItemAddClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    addProductsToCart(dataset.id!, products!);
+    addProductToCart(dataset.id!, products!);
   }
 
   function productItemRemoveClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!, products!);
   }
 
   const addToCart = (
@@ -52,7 +52,7 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
     <div className="product-item">
       <Link
         to={`${ROUTE.PRODUCT}/${formatNameForURL(name)}`}
-        onClick={() => setChooseProduct({ id, name })}
+        onClick={() => setChosenProduct({ id, name })}
       >
         <img className="product-item__img" data-id={id} src={images[0]} alt="product image" />
       </Link>

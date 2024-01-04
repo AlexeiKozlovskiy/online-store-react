@@ -4,9 +4,9 @@ import { CartItem, ROUTE } from '@/types/types';
 import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
 import {
-  clearChooseProduct,
-  removeProductsFromCartAll,
-  setChooseProduct,
+  clearChosenProduct,
+  removeAllProductsFromCart,
+  setChosenProduct,
 } from '@/store/controller';
 import { useAnimations } from '@/hooks/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
@@ -21,12 +21,12 @@ export const CartList = memo(function CartListItem({
   const { data: products } = useGetProductsQuery();
 
   useEffect(() => {
-    clearChooseProduct();
+    clearChosenProduct();
   }, []);
 
   function handelCrossClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
-    removeProductsFromCartAll(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!, products!);
   }
 
   const isShake = useAnimations({ quantity, stock });
@@ -39,7 +39,7 @@ export const CartList = memo(function CartListItem({
       <th className="cart-item__img-container">
         <Link
           to={`/${ROUTE.PRODUCT}/${formatNameForURL(name)}`}
-          onClick={() => setChooseProduct({ id, name })}
+          onClick={() => setChosenProduct({ id, name })}
         >
           <img className="cart-item__img" data-id={id} src={images[0]} alt="product image" />
         </Link>

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { QuantityPiecesProduct } from '@/components/QuantityPieces/QuantityPiecesProduct';
 import { formatPrice } from '@/helpers/helpersFunc';
-import { RootReducerProps, CartItem, ChooseProduct, ROUTE } from '@/types/types';
-import { addProductsToCart } from '@/store/controller';
+import { RootReducerProps, CartItem, ChosenProduct, ROUTE } from '@/types/types';
+import { addProductToCart } from '@/store/controller';
 import { useSelector } from 'react-redux';
 import { useAnimations } from '@/hooks/AnimationsHook';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
@@ -20,8 +20,8 @@ export function ProductPage() {
   const [isInCart, setIsInCart] = useState(false);
   const [quantity, setQuantity] = useState('1');
   const [resetInput, setResetInput] = useState(false);
-  const chooseProduct = useSelector<RootReducerProps, ChooseProduct>(
-    (state) => state.chooseProduct
+  const chosenProduct = useSelector<RootReducerProps, ChosenProduct>(
+    (state) => state.chosenProduct
   );
   const {
     data: product = {
@@ -36,7 +36,7 @@ export function ProductPage() {
       images: [],
     },
     isFetching,
-  } = useGetProductQuery(chooseProduct.id);
+  } = useGetProductQuery(chosenProduct.id!);
   const { data: products } = useGetProductsQuery();
   const navigate = useNavigate();
   const cartItems = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
@@ -58,12 +58,12 @@ export function ProductPage() {
   }
 
   function handelAddClick() {
-    addProductsToCart(id, products!, Number(quantity));
+    addProductToCart(id, products!, Number(quantity));
     setResetInput(true);
   }
 
   function handelBuyNowBtn() {
-    addProductsToCart(id, products!, Number(quantity));
+    addProductToCart(id, products!, Number(quantity));
     setResetInput(true);
     navigate(cartUrl);
   }

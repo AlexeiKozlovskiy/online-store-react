@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import cartSlice from './cart';
 import promocodeSlice from './promocode';
 import authSlice from './auth';
-import chooseProductSlise from './chooseProduct';
+import chosenProductSlise from './chosenProduct';
 
 import {
   persistStore,
@@ -21,7 +21,7 @@ const rootReduser = combineReducers({
   cart: cartSlice,
   promocode: promocodeSlice,
   auth: authSlice,
-  chooseProduct: chooseProductSlise,
+  chosenProduct: chosenProductSlise,
   [productsApi.reducerPath]: productsApi.reducer,
 });
 
@@ -33,8 +33,8 @@ export function createPersistStorage() {
       getItem() {
         return Promise.resolve(null);
       },
-      setItem() {
-        return Promise.resolve();
+      setItem(_key: string, value: string) {
+        return Promise.resolve(value);
       },
       removeItem() {
         return Promise.resolve();

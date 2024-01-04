@@ -1,45 +1,46 @@
-import { Product, Authentication, ChooseProduct } from '@/types/types';
+import { Product, Authentication, ChosenProduct } from '@/types/types';
 import store from '@/store/store';
 import {
-  addProductToCart,
-  removeProductFromCart,
-  setProductQuantityInCart,
-  removeProductFromCartAll,
-  removeAllProductFromCart,
+  addToCart,
+  removeItemFromCart,
+  removeAllItemsFromCart,
+  setQuantityItemInCart,
+  removeCart,
 } from '@/store/cart';
 import { addAppliedPromocode, removeAppliedPromocode } from '@/store/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
-import { chooseProduct, resetChooseProduct } from './chooseProduct';
+import { chosenProduct, resetChosenProduct } from './chosenProduct';
 
-export function addProductsToCart(id: string, products: Product[], quantity: number = 1) {
+export function addProductToCart(id: string, products: Product[], quantity: number = 1) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(addProductToCart({ product: product, quantity: quantity }));
-  }
-}
-export function removeProductsFromCart(id: string, products: Product[]) {
-  const product = products.find((product: Product) => product.id === id);
-  if (product) {
-    store.dispatch(removeProductFromCart(product));
+    store.dispatch(addToCart({ product, quantity }));
   }
 }
 
-export function setProductsQuantityInCart(id: string, value: number, products: Product[]) {
+export function removeProductFromCart(id: string, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(setProductQuantityInCart({ product: product, quantity: value }));
+    store.dispatch(removeItemFromCart(product));
   }
 }
 
-export function removeProductsFromCartAll(id: string, products: Product[]) {
+export function setProductsQuantityInCart(id: string, quantity: number, products: Product[]) {
   const product = products.find((product: Product) => product.id === id);
   if (product) {
-    store.dispatch(removeProductFromCartAll(product));
+    store.dispatch(setQuantityItemInCart({ product, quantity }));
   }
 }
 
-export function removeAllProductsFromCart() {
-  store.dispatch(removeAllProductFromCart());
+export function removeAllProductsFromCart(id: string, products: Product[]) {
+  const product = products.find((product: Product) => product.id === id);
+  if (product) {
+    store.dispatch(removeAllItemsFromCart(product));
+  }
+}
+
+export function removeAllCart() {
+  store.dispatch(removeCart());
 }
 
 export function isPromocodeAvailable(name: string): boolean {
@@ -61,21 +62,17 @@ export function removePromocode(id: number): void {
 }
 
 export function setAuthParams(authParams: Authentication): void {
-  if (authParams) {
-    store.dispatch(setAuthUser(authParams));
-  }
+  store.dispatch(setAuthUser(authParams));
 }
 
 export function clearAuthParams() {
   store.dispatch(clearAuthUser());
 }
 
-export function setChooseProduct(product: ChooseProduct) {
-  if (product) {
-    store.dispatch(chooseProduct(product));
-  }
+export function setChosenProduct(product: ChosenProduct) {
+  store.dispatch(chosenProduct(product));
 }
 
-export function clearChooseProduct() {
-  store.dispatch(resetChooseProduct());
+export function clearChosenProduct() {
+  store.dispatch(resetChosenProduct());
 }
