@@ -47,7 +47,8 @@ export function ProductPage() {
   const isShake = useAnimations({ quantity: Number(quantity), stock });
 
   useEffect(() => {
-    const foundProductInCart = cartItems.map(({ product }) => product.id).includes(id);
+    const foundProductInCart =
+      Array.isArray(cartItems) && cartItems.map(({ product }) => product.id).includes(id);
     setIsInCart(foundProductInCart);
   }, [id, cartItems]);
 
@@ -71,7 +72,12 @@ export function ProductPage() {
   const inCart = <div className="product-summary__state-in-cart">In cart</div>;
 
   const addToCart = (
-    <button className="button-add-cart button" onClick={handelAddClick} data-id={id}>
+    <button
+      className="button-add-cart button"
+      onClick={handelAddClick}
+      data-id={id}
+      data-testid="button-add-cart"
+    >
       ADD TO CART
     </button>
   );
@@ -88,26 +94,26 @@ export function ProductPage() {
         <img
           className={`product-page-img-min ${!curImage && 'active-img'}`}
           src={firstImg}
-          alt="product image"
+          alt="product-image-one"
           onClick={() => handelImageClick(0)}
         />
         <img
           className={`product-page-img-min ${curImage && 'active-img'}`}
           src={secondImg}
-          alt="product image"
+          alt="product-image-two"
           onClick={() => handelImageClick(1)}
         />
       </div>
       <img
         className="product-page__img-main"
         src={images && images[curImage]}
-        alt="product image"
+        alt="product-image-main"
       />
     </div>
   );
 
   const productName = (
-    <h3 className="product-summary__description">
+    <h3 className="product-summary__description" data-testid="product-description">
       {name} | {color} | {size}cm | ${formatPrice(price)}
     </h3>
   );
@@ -130,8 +136,8 @@ export function ProductPage() {
     </div>
   );
 
-  const productPage = (
-    <>
+  return (
+    <main>
       {breadCrumbs}
       <section className="product-page wrapper">
         <ArrowBack />
@@ -190,13 +196,16 @@ export function ProductPage() {
               </tr>
             </tbody>
           </table>
-          <button className="button-buy-now button" data-id={isInCart} onClick={handelBuyNowBtn}>
+          <button
+            className="button-buy-now button"
+            data-id={isInCart}
+            data-testid="button-buy-now"
+            onClick={handelBuyNowBtn}
+          >
             BUY NOW
           </button>
         </div>
       </section>
-    </>
+    </main>
   );
-
-  return <main>{productPage}</main>;
 }

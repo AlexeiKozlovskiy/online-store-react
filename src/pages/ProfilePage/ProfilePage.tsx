@@ -24,6 +24,7 @@ export function ProfilePage() {
           <ul className="profile__list">
             <li
               data-id="profile"
+              data-testid="profile"
               className={`${currentSection === 'profile' && 'active-section'}`}
               onClick={handelClickList}
             >
@@ -31,6 +32,7 @@ export function ProfilePage() {
             </li>
             <li
               data-id="favorites"
+              data-testid="favorites"
               className={`${currentSection === 'favorites' && 'active-section'}`}
               onClick={handelClickList}
             >
@@ -38,6 +40,7 @@ export function ProfilePage() {
             </li>
             <li
               data-id="shopping"
+              data-testid="shopping"
               className={`${currentSection === 'shopping' && 'active-section'}`}
               onClick={handelClickList}
             >

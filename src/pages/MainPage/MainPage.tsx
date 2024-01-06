@@ -9,7 +9,6 @@ import { useMyFiltersContext } from '@/context/FiltersContext';
 export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [clickFilters, setClickFilters] = useState(false);
-
   const { emptyCatalog } = useMyFiltersContext();
 
   function handleShowFilters() {
@@ -20,7 +19,11 @@ export function MainPage() {
     setClickFilters(value);
   }
 
-  const noItemsFound = <section className="empty-catalog">No items found</section>;
+  const noItemsFound = (
+    <section className="empty-catalog" data-testid="empty-catalog">
+      No items found
+    </section>
+  );
 
   return (
     <main className="MainPage-container wrapper">

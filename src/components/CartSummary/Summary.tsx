@@ -1,6 +1,6 @@
 import '@/pages/CartPage/CartPage.scss';
 import { useRef, useState } from 'react';
-import { PromocodeData, RootReducerProps } from '@/types/types';
+import { Authentication, PromocodeData, RootReducerProps } from '@/types/types';
 import { PROMOCODES } from '@/helpers/constant';
 import { useSelector } from 'react-redux';
 import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/store/controller';
@@ -8,17 +8,16 @@ import { formatPrice } from '@/helpers/helpersFunc';
 import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
 import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
+import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
-interface ISummary {
-  isHandelOrderClick: (e: React.MouseEvent) => void;
-}
-
-export function Summary({ isHandelOrderClick }: ISummary) {
+export function Summary() {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<string | null>(null);
   const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
   const { totalPrice, totalPriceByPromocodes } = useMyTotalPriceContext();
   const { totalItems } = useMyTotalItemsContext();
+  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const { openModals, setOpenModals } = useCloseOpenModalsContext();
 
   function handelClickBTN() {
     setInputValue('');
@@ -33,6 +32,14 @@ export function Summary({ isHandelOrderClick }: ISummary) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setInputValue(e.target.value);
     inputRef.current = e.target.value;
+  }
+
+  function checkAuth() {
+    if (!authenticated) {
+      setOpenModals({ ...openModals, signIN: true });
+    } else {
+      setOpenModals({ ...openModals, payment: true });
+    }
   }
 
   return (
@@ -78,7 +85,7 @@ export function Summary({ isHandelOrderClick }: ISummary) {
             </div>
           </div>
           <div className="order-container-button">
-            <button className="button-order" onClick={isHandelOrderClick}>
+            <button className="button-order" onClick={checkAuth} data-testid="button-order">
               Proceed to Checkout
             </button>
           </div>

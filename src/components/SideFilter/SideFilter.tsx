@@ -146,7 +146,7 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
   }
 
   return (
-    <div className="filters" data-show={showFilters}>
+    <div className="filters" data-show={showFilters} data-testid="filterPanel">
       <div className="filters__item filters-item">
         <div className="filters-item__title">Color</div>
         <div className="filters-item__content item-content">
@@ -158,6 +158,7 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
                   colorsSelected.includes(color) && 'is-selected'
                 }`}
                 data-color={color}
+                data-testid={`button-color-${color}`}
                 onClick={() => handleColorClick(color)}
               ></div>
             ))}
