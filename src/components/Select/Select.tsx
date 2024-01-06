@@ -22,8 +22,6 @@ export function CustomSelect({ selectedItem, handleChange, options }: IMySelect)
       styles={customStyles}
       theme={customTheme}
       id={id}
-      // instanceId="long-value-select"
-      // inputId="long-value-select"
     />
   );
 }

@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form';
 import {
   MyForms,
   CardImages,
-  RootReducerProps,
-  Authentication,
-  ROUTE,
+  // RootReducerProps,
+  // Authentication,
+  // ROUTE,
   Profile,
 } from '@/types/types';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
@@ -19,8 +19,6 @@ import { useMyUserContext } from '@/context/UserContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
 import { Client, Server } from 'react-hydration-provider';
 import { UserProfileSkeleton } from '@/components/Skeleton/UserProfile/UserProfileSkeleton';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 
 export function ProfileSection() {
   const imageCard = useRef('');
@@ -51,8 +49,6 @@ export function ProfileSection() {
   const { profileData, profileLoading, createUserProfile, updateUserProfile } =
     useMyProfileUserContext();
   const { isFetching: isFetchingUser } = useMyUserContext();
-  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
-  const navigate = useNavigate();
 
   const { formProfile } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } =
@@ -71,10 +67,6 @@ export function ProfileSection() {
     const { email, ...dataForm } = formProfile;
     checkForm(dataForm);
   };
-
-  useEffect(() => {
-    !authenticated && navigate(ROUTE.MAIN);
-  }, []);
 
   useEffect(() => {
     async function getProfile() {

@@ -1,6 +1,6 @@
 import './CartPage.scss';
 import { Link } from 'react-router-dom';
-import { Authentication, CartItem, ROUTE, RootReducerProps } from '@/types/types';
+import { CartItem, ROUTE, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
 import { CartList } from '../../components/CartList/CartList';
 import { useSelector } from 'react-redux';
@@ -12,35 +12,24 @@ import { Summary } from '../../components/CartSummary/Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useCartPaginationHook } from '@/hooks/CartPaginationHook';
-import { Client, Server } from 'react-hydration-provider';
-import { Preloader } from '@/components/Preloader/Preloader';
+import { Client } from 'react-hydration-provider';
+// import { Preloader } from '@/components/Preloader/Preloader';
 
 export function CartPage() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption } = useMyURLContext();
-  const { handelCloseModalPayment, openModals, setOpenModals } = useCloseOpenModalsContext();
-  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const { handelCloseModalPayment, openModals } = useCloseOpenModalsContext();
   const { countPages, curPageCart, currentItems, handlePageClick } = useCartPaginationHook();
 
-  function checkAuth() {
-    if (!authenticated) {
-      setOpenModals({ ...openModals, signIN: true });
-    } else {
-      setOpenModals({ ...openModals, payment: true });
-    }
-  }
-
   const emtyCart = (
-    <>
-      <div className="shopping-cart__empty">
-        <div className="shopping-cart__empty-subtitle">
-          You have no items in your shopping cart. Click
-          <br />
-          <Link to={ROUTE.MAIN}>here</Link> to continue shopping.
-        </div>
+    <div className="shopping-cart__empty">
+      <div className="shopping-cart__empty-subtitle">
+        You have no items in your shopping cart. Click
+        <br />
+        <Link to={ROUTE.MAIN}>here</Link> to continue shopping.
       </div>
-    </>
+    </div>
   );
 
   const takenCart = (
@@ -74,7 +63,7 @@ export function CartPage() {
             </tbody>
           </table>
         </div>
-        <Summary isHandelOrderClick={checkAuth} />
+        <Summary />
       </div>
       <Pagination curPage={curPageCart} countPages={countPages} handlePageClick={handlePageClick} />
     </>
@@ -86,11 +75,12 @@ export function CartPage() {
         <h2 className="shopping-cart__header">SHOPPING CART</h2>
         <ArrowBack />
         <Client>{!countCartItem ? emtyCart : takenCart}</Client>
-        <Server>
+
+        {/* <Server>
           <div className="shopping-cart__server">
             <div className="shopping-cart__server-preloader">{<Preloader />}</div>
           </div>
-        </Server>
+        </Server> */}
       </main>
     </>
   );

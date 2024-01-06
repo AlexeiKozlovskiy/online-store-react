@@ -47,7 +47,11 @@ export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
       {!isEmptyFilters && <BreadCrumdPanel />}
       <div className="main-center-section__sorted sorted-filters">
         <div className="sorted-filters__filters-menu filters-menu">
-          <div onClick={onClickShowFilter} className="filters-menu__icon"></div>
+          <div
+            className="filters-menu__icon"
+            onClick={onClickShowFilter}
+            data-testid="showFilterButton"
+          ></div>
           <div className="filters-menu__title">Show filters</div>
         </div>
         <div className="sorted-filters__item-count">{itemsCount} items</div>

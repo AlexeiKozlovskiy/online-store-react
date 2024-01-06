@@ -50,11 +50,10 @@
     "ts-node": "^10.9.1",
     "uuid": "^9.0.1",
     "vite-plugin-istanbul": "^5.0.0",
-    "vite-plugin-ssr": "^0.4.13",
     "vite-tsconfig-paths": "^4.2.2"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/jest-dom": "^6.1.6",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.18",

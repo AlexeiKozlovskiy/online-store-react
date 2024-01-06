@@ -3,14 +3,10 @@ import { Link } from 'react-router-dom';
 import { CartItem, ROUTE } from '@/types/types';
 import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
-import {
-  clearChosenProduct,
-  removeAllProductsFromCart,
-  setChosenProduct,
-} from '@/store/controller';
+import { removeAllProductsFromCart, setChosenProduct } from '@/store/controller';
 import { useAnimations } from '@/hooks/AnimationsHook';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 export const CartList = memo(function CartListItem({
@@ -19,10 +15,6 @@ export const CartList = memo(function CartListItem({
   product: { id, images, name, color, collection, size, category, stock, price },
 }: CartItem) {
   const { data: products } = useGetProductsQuery();
-
-  useEffect(() => {
-    clearChosenProduct();
-  }, []);
 
   function handelCrossClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
