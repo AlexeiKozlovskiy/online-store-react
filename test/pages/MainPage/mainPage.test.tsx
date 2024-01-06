@@ -54,32 +54,4 @@ describe('Main page', () => {
     const buttonColor = screen.getByTestId('button-color-red');
     fireEvent.click(buttonColor);
   });
-
-  // TODO: think about ssr in tests
-
-  // it('renders "No items found" when emptyCatalog is true', () => {
-  //   vi.mock('@/context/FiltersContext', async () => {
-  //     const actual = await vi.importActual('@/context/FiltersContext');
-  //     return {
-  //       ...actual,
-  //       emptyCatalog: true,
-  //     };
-  //   });
-
-  //   render(
-  //     <Provider store={rootState}>
-  //       <BrowserRouter>
-  //           <MainPage />
-  //       </BrowserRouter>
-  //     </Provider>,
-  //     {
-  //       hydrate: true,
-  //     }
-  //   );
-
-  // const noItemsFoundElement = screen.getByTestId('empty-catalog');
-  // expect(noItemsFoundElement).toBeInTheDocument();
-  // console.log(noItemsFoundElement);
-  // expect(screen.getByText('No items found')).toBeInTheDocument();
-  // });
 });
