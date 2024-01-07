@@ -26,7 +26,7 @@ describe('Main page', () => {
     expect(screen.getByText(/Find Christmas decorations/i)).toBeInTheDocument();
   });
 
-  it('should display filter panel on click showFilters button', () => {
+  it('should display filter panel on click showFilters button', async () => {
     window.matchMedia = vi.fn().mockImplementation((query) => {
       return {
         matches: query === '(max-width: 767px)',
@@ -44,42 +44,20 @@ describe('Main page', () => {
     );
 
     const filterPanel = screen.getByTestId('filterPanel');
+    const showFilterButton = screen.getByTestId('showFilterButton');
+
     expect(filterPanel).toHaveAttribute('data-show', 'false');
 
-    const showFilterButton = screen.getByTestId('showFilterButton');
     fireEvent.click(showFilterButton);
 
     expect(filterPanel).toHaveAttribute('data-show', 'true');
 
     const buttonColor = screen.getByTestId('button-color-red');
     fireEvent.click(buttonColor);
+
+    const crossBtn = screen.getByTestId('crossBtn');
+    fireEvent.click(crossBtn);
+
+    expect(filterPanel).toHaveAttribute('data-show', 'false');
   });
-
-  // TODO: think about ssr in tests
-
-  // it('renders "No items found" when emptyCatalog is true', () => {
-  //   vi.mock('@/context/FiltersContext', async () => {
-  //     const actual = await vi.importActual('@/context/FiltersContext');
-  //     return {
-  //       ...actual,
-  //       emptyCatalog: true,
-  //     };
-  //   });
-
-  //   render(
-  //     <Provider store={rootState}>
-  //       <BrowserRouter>
-  //           <MainPage />
-  //       </BrowserRouter>
-  //     </Provider>,
-  //     {
-  //       hydrate: true,
-  //     }
-  //   );
-
-  // const noItemsFoundElement = screen.getByTestId('empty-catalog');
-  // expect(noItemsFoundElement).toBeInTheDocument();
-  // console.log(noItemsFoundElement);
-  // expect(screen.getByText('No items found')).toBeInTheDocument();
-  // });
 });
