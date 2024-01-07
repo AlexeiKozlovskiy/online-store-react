@@ -17,7 +17,6 @@ export function useMainPagination({ clickFilters }: MainPagination) {
   const [countPages, setCountPages] = useState(MAX_PAGES);
   const [itemsPerPage, setItemsPerPage] = useState(+perMainPageOption.value);
   const [itemOffset, setItemOffset] = useState(0);
-  const useClientLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
   useEffect(() => {
     if (perMainPageOption.value === 'all' && countProducts) {
@@ -34,7 +33,7 @@ export function useMainPagination({ clickFilters }: MainPagination) {
     }
   }, [curPageMain, itemsPerPage, products]);
 
-  useClientLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (countProducts && itemsPerPage) {
       const endOffset = itemOffset + itemsPerPage;
       setCurrentItems(products.slice(itemOffset, endOffset));

@@ -5,19 +5,17 @@ import { PROMOCODES } from '@/helpers/constant';
 import { useSelector } from 'react-redux';
 import { isPromocodeAvailable, applyPromocode, removePromocode } from '@/store/controller';
 import { formatPrice } from '@/helpers/helpersFunc';
-import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
-import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
+import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
 
 export function Summary() {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<string | null>(null);
-  const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
-  const { totalPrice, totalPriceByPromocodes } = useMyTotalPriceContext();
-  const { totalItems } = useMyTotalItemsContext();
-  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { openModals, setOpenModals } = useCloseOpenModalsContext();
+  const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
+  const { totalItems, totalPrice, totalPriseByPromocode } = useTotalCartInfo();
 
   function handelClickBTN() {
     setInputValue('');
@@ -81,7 +79,7 @@ export function Summary() {
               })}
             </div>
             <div className="promocode-order__total-value">
-              {promocodeState.applied.length ? `$${formatPrice(totalPriceByPromocodes)}` : ''}
+              {promocodeState.applied.length ? `$${formatPrice(totalPriseByPromocode)}` : ''}
             </div>
           </div>
           <div className="order-container-button">

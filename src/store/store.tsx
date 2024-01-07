@@ -3,7 +3,6 @@ import cartSlice from './cart';
 import promocodeSlice from './promocode';
 import authSlice from './auth';
 import chosenProductSlise from './chosenProduct';
-
 import {
   persistStore,
   persistReducer,
@@ -15,7 +14,7 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { productsApi } from '@/api/ProductsAPI';
-import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
+import storage from 'redux-persist/lib/storage';
 
 const rootReduser = combineReducers({
   cart: cartSlice,
@@ -25,28 +24,9 @@ const rootReduser = combineReducers({
   [productsApi.reducerPath]: productsApi.reducer,
 });
 
-export function createPersistStorage() {
-  const isServer = typeof window === 'undefined';
-
-  if (isServer) {
-    return {
-      getItem() {
-        return Promise.resolve(null);
-      },
-      setItem(_key: string, value: string) {
-        return Promise.resolve(value);
-      },
-      removeItem() {
-        return Promise.resolve();
-      },
-    };
-  }
-  return createWebStorage('local');
-}
-
 const persistConfig = {
   key: 'root',
-  storage: createPersistStorage(),
+  storage,
   blacklist: ['productsApi'],
 };
 

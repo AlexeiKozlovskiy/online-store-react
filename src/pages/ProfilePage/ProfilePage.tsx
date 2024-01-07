@@ -9,11 +9,7 @@ export function ProfilePage() {
 
   function handelClickList(e: React.MouseEvent<HTMLLIElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
-    const { id } = dataset;
-
-    if (id) {
-      setCurrentSection(id);
-    }
+    setCurrentSection(dataset.id!);
   }
 
   return (
