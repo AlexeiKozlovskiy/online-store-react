@@ -6,7 +6,6 @@ import { SelectedFilter } from '@/types/types';
 import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useMyURLContext } from '@/context/URLContext';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
-import { Client, Server } from 'react-hydration-provider';
 import { DualRangeInput } from './DualRangeInput';
 
 interface ISideFilter {
@@ -188,28 +187,22 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
         <div className="filters-item__title">Price</div>
         <div className="filters-item__content item-content">
           <div className="item-content__price price">
-            <Client>
-              <DualRangeInput
-                value={priseMin || ''}
-                unit={'$'}
-                unitPosition={'start'}
-                onChange={(e: { target: { value: string } }) =>
-                  handleInputChange('priceSelected', e.target.value, priseMax!.toString())
-                }
-              />
-              <DualRangeInput
-                value={priseMax || ''}
-                unit={'$'}
-                unitPosition={'end'}
-                onChange={(e: { target: { value: string } }) =>
-                  handleInputChange('priceSelected', priseMin!.toString(), e.target.value)
-                }
-              />
-            </Client>
-            <Server>
-              <DualRangeInput defaultValue={PRICE_MIN} unit={'$'} unitPosition={'start'} />
-              <DualRangeInput defaultValue={PRICE_MAX} unit={'$'} unitPosition={'end'} />
-            </Server>
+            <DualRangeInput
+              value={priseMin || ''}
+              unit={'$'}
+              unitPosition={'start'}
+              onChange={(e: { target: { value: string } }) =>
+                handleInputChange('priceSelected', e.target.value, priseMax!.toString())
+              }
+            />
+            <DualRangeInput
+              value={priseMax || ''}
+              unit={'$'}
+              unitPosition={'end'}
+              onChange={(e: { target: { value: string } }) =>
+                handleInputChange('priceSelected', priseMin!.toString(), e.target.value)
+              }
+            />
           </div>
           <Slider
             className="slider"
@@ -226,28 +219,22 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
         <div className="filters-item__title">Size</div>
         <div className="filters-item__content item-content">
           <div className="item-content__size size">
-            <Client>
-              <DualRangeInput
-                value={sizeMin || ''}
-                unit={'cm'}
-                unitPosition={'start'}
-                onChange={(e) =>
-                  handleInputChange('sizeSelected', e.target.value, sizeMax!.toString())
-                }
-              />
-              <DualRangeInput
-                value={sizeMax || ''}
-                unit={'cm'}
-                unitPosition={'end'}
-                onChange={(e: { target: { value: string } }) =>
-                  handleInputChange('sizeSelected', sizeMin!.toString(), e.target.value)
-                }
-              />
-            </Client>
-            <Server>
-              <DualRangeInput defaultValue={SIZE_MIN} unit={'cm'} unitPosition={'start'} />
-              <DualRangeInput defaultValue={SIZE_MAX} unit={'cm'} unitPosition={'end'} />
-            </Server>
+            <DualRangeInput
+              value={sizeMin || ''}
+              unit={'cm'}
+              unitPosition={'start'}
+              onChange={(e) =>
+                handleInputChange('sizeSelected', e.target.value, sizeMax!.toString())
+              }
+            />
+            <DualRangeInput
+              value={sizeMax || ''}
+              unit={'cm'}
+              unitPosition={'end'}
+              onChange={(e: { target: { value: string } }) =>
+                handleInputChange('sizeSelected', sizeMin!.toString(), e.target.value)
+              }
+            />
           </div>
           <Slider
             className="slider"
@@ -288,28 +275,22 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
         <div className="filters-item__title">In stock</div>
         <div className="filters-item__content item-content">
           <div className="item-content__stock stock">
-            <Client>
-              <DualRangeInput
-                value={stockMin || ''}
-                unit={''}
-                unitPosition={''}
-                onChange={(e: { target: { value: string } }) =>
-                  handleInputChange('stockSelected', e.target.value, stockMax!.toString())
-                }
-              />
-              <DualRangeInput
-                value={stockMax || ''}
-                unit={''}
-                unitPosition={''}
-                onChange={(e: { target: { value: string } }) =>
-                  handleInputChange('stockSelected', stockMin!.toString(), e.target.value)
-                }
-              />
-            </Client>
-            <Server>
-              <DualRangeInput defaultValue={STOCK_MIN} unit={''} unitPosition={''} />
-              <DualRangeInput defaultValue={STOCK_MAX} unit={''} unitPosition={''} />
-            </Server>
+            <DualRangeInput
+              value={stockMin || ''}
+              unit={''}
+              unitPosition={''}
+              onChange={(e: { target: { value: string } }) =>
+                handleInputChange('stockSelected', e.target.value, stockMax!.toString())
+              }
+            />
+            <DualRangeInput
+              value={stockMax || ''}
+              unit={''}
+              unitPosition={''}
+              onChange={(e: { target: { value: string } }) =>
+                handleInputChange('stockSelected', stockMin!.toString(), e.target.value)
+              }
+            />
           </div>
           <Slider
             className="slider"

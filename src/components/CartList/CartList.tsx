@@ -9,7 +9,7 @@ import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { memo } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
-export const CartList = memo(function CartListItem({
+export const CartItemList = memo(function CartListItem({
   itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },

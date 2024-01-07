@@ -6,8 +6,6 @@ import { useMyFiltersContext } from '@/context/FiltersContext';
 import { useMyURLContext } from '@/context/URLContext';
 import { ISelect } from '@/types/types';
 import { CustomSelect } from '@/components/Select/Select';
-import { ServerSelect } from '../Select/ServerSelect';
-import { Server, Client } from 'react-hydration-provider';
 
 interface ISortedFilters {
   onClickShowFilter: (event: React.MouseEvent<Element, MouseEvent>) => void;
@@ -56,29 +54,19 @@ export function SortedSelect({ onClickShowFilter }: ISortedFilters) {
         </div>
         <div className="sorted-filters__item-count">{itemsCount} items</div>
         <div className="sorted-filters__select">
-          <Client>
-            <CustomSelect
-              selectedItem={sortindViewOption}
-              handleChange={handleChangeSort}
-              options={SORT_OPTIONS}
-            />
-          </Client>
-          <Server>
-            <ServerSelect selectedItem={sortindViewOption.label} />
-          </Server>
+          <CustomSelect
+            selectedItem={sortindViewOption}
+            handleChange={handleChangeSort}
+            options={SORT_OPTIONS}
+          />
         </div>
         <div className="sorted-filters__select">
           <div className="pagination__select">
-            <Client>
-              <CustomSelect
-                selectedItem={selectedPagination}
-                handleChange={handleChangePagination}
-                options={ITEMS_IN_PAGE}
-              />
-            </Client>
-            <Server>
-              <ServerSelect selectedItem={perMainPageOption.label} />
-            </Server>
+            <CustomSelect
+              selectedItem={selectedPagination}
+              handleChange={handleChangePagination}
+              options={ITEMS_IN_PAGE}
+            />
           </div>
         </div>
         <div className="sorted-filters__switch-view switch-view">

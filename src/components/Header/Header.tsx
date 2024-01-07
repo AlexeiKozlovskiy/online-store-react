@@ -3,8 +3,6 @@ import './HeaderAuth.scss';
 import { Link } from 'react-router-dom';
 import { useMyRemoveFiltSortContext } from '@/context/RemoveAllSelectedContext';
 import { useMyURLContext } from '@/context/URLContext';
-import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
-import { useMyTotalItemsContext } from '@/context/TotalItemsContext';
 import { HeaderLogo } from '@/components/HeaderLogo/HeaderLogo';
 import { SignUPModal } from '@/components/ModalWindow/SignUP/SignUPModal';
 import { SignINModal } from '@/components/ModalWindow/SignIN/SignINModal';
@@ -17,14 +15,12 @@ import { useSelector } from 'react-redux';
 import { Authentication, ROUTE, RootReducerProps } from '@/types/types';
 import { useState } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
-import { Client, Server } from 'react-hydration-provider';
+import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
 
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const { cartUrl } = useMyURLContext();
   const { removeAllSelected } = useMyRemoveFiltSortContext();
-  const { totalPriceByPromocodes } = useMyTotalPriceContext();
-  const { totalItems } = useMyTotalItemsContext();
   const {
     handelCloseModalSignUP,
     handelCloseModalSignIN,
@@ -35,6 +31,7 @@ export function Header() {
   } = useCloseOpenModalsContext();
   const { isFetching } = useMyUserContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
+  const { totalItems, totalPriseByPromocode } = useTotalCartInfo();
 
   const { signUP, signIN, user } = openModals;
 
@@ -92,18 +89,15 @@ export function Header() {
             <HeaderLogo />
           </Link>
           <div className="header-nav-contents">
-            <Client>
-              {isFetching ? <Preloader /> : authenticated && userIcon}
-              {!authenticated && !isFetching && authBar}
-            </Client>
-            <Server>{<Preloader />}</Server>
+            {isFetching ? <Preloader /> : authenticated && userIcon}
+            {!authenticated && !isFetching && authBar}
           </div>
           <Link to={cartUrl} className="header-cart" onClick={() => setShowBurgerMenu(false)}>
             <div className="header-cart__img"></div>
             <div className="header-cart__amount-container">
               <p className="header-cart__amount">{totalItems}</p>
             </div>
-            <div className="header-cart__num">${totalPriceByPromocodes.toFixed(2)}</div>
+            <div className="header-cart__num">${totalPriseByPromocode.toFixed(2)}</div>
           </Link>
         </div>
         <div className="header-nav__icon" onClick={handleShowBurgerMenu}></div>

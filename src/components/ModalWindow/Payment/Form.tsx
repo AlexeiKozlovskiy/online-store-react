@@ -11,12 +11,10 @@ import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
 import { useMyUserContext } from '@/context/UserContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
 import { removeAllCart } from '@/store/controller';
-import { useMyTotalPriceContext } from '@/context/TotalPriseContext';
+import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
 
 export function Form() {
-  const { totalPriceByPromocodes } = useMyTotalPriceContext();
   const imageCard = useRef('');
-
   const navigate = useNavigate();
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const {
@@ -44,6 +42,7 @@ export function Form() {
   const { user } = useMyUserContext();
   useFormsInputsHelper({ watch, setValue });
   const { profileData, createUserProfile, updateUserProfile } = useMyProfileUserContext();
+  const { totalPriseByPromocode } = useTotalCartInfo();
   const [showPreloader, setShowPreloader] = useState(false);
 
   const { formProfile } = errors;
@@ -67,7 +66,7 @@ export function Form() {
     const orderExempleData = {
       userID: user?.id,
       paymentData: {
-        totalPriceOrder: totalPriceByPromocodes,
+        totalPriceOrder: totalPriseByPromocode,
       },
       buyProducts: cartItemsState.map(({ product, quantity }) => {
         return {

@@ -190,7 +190,10 @@ export function ProductPage() {
               </tr>
               <tr className="table__row">
                 <td className="table__title">In stock</td>
-                <td className={`table__info ${isShake && 'shake-product'}`}>
+                <td
+                  className={`table__info ${isShake && 'shake-product'}`}
+                  data-testid="shake-product"
+                >
                   {isFetching ? <SpecSkeleton width={40} /> : stock}
                 </td>
               </tr>

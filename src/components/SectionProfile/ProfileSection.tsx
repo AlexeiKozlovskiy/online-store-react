@@ -1,14 +1,7 @@
 import '@/pages/ProfilePage/ProfilePage.scss';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useForm } from 'react-hook-form';
-import {
-  MyForms,
-  CardImages,
-  // RootReducerProps,
-  // Authentication,
-  // ROUTE,
-  Profile,
-} from '@/types/types';
+import { MyForms, CardImages, Profile } from '@/types/types';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useEffect, useRef } from 'react';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
@@ -17,7 +10,6 @@ import { Preloader } from '@/components/Preloader/Preloader';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
 import { useMyUserContext } from '@/context/UserContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
-import { Client, Server } from 'react-hydration-provider';
 import { UserProfileSkeleton } from '@/components/Skeleton/UserProfile/UserProfileSkeleton';
 
 export function ProfileSection() {
@@ -110,8 +102,7 @@ export function ProfileSection() {
   return (
     <>
       <section className="profile__section section-profile">
-        <Client>{isFetchingUser ? <UserProfileSkeleton /> : <UserProfile />}</Client>
-        <Server>{<div className="profile-preloader-user-container"></div>}</Server>
+        {isFetchingUser ? <UserProfileSkeleton /> : <UserProfile />}
         {profileLoading && preloaderProfile}
         <form className="profile-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="profile-form__info">

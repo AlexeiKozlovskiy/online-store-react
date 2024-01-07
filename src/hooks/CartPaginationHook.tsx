@@ -12,7 +12,6 @@ export function useCartPaginationHook() {
   const [itemsPerPage, setItemsPerPage] = useState(+perCartPageOption.value);
   const [countPages, setCountPages] = useState(Math.ceil(countCartItem / itemsPerPage));
   const [itemOffset, setItemOffset] = useState(0);
-  const useClientLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
   useEffect(() => {
     if (curPageCart > countPages) {
@@ -28,12 +27,12 @@ export function useCartPaginationHook() {
     }
   }, [perCartPageOption, countCartItem]);
 
-  useClientLayoutEffect(() => {
+  useLayoutEffect(() => {
     const newOffset = ((curPageCart - 1) * itemsPerPage) % countCartItem;
     setItemOffset(newOffset);
   }, [curPageCart, itemsPerPage, countCartItem]);
 
-  useClientLayoutEffect(() => {
+  useLayoutEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(cartItemsState.slice(itemOffset, endOffset));
     setCountPages(Math.ceil(countCartItem / itemsPerPage));
