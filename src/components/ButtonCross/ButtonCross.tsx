@@ -12,6 +12,7 @@ export function ButtonCross({ onClickCross, dataId, adittionClassName }: IButton
       className={`common-cross-btn ${adittionClassName}`}
       onClick={onClickCross}
       data-id={dataId}
+      data-testid={'crossBtn'}
     ></button>
   );
 }
