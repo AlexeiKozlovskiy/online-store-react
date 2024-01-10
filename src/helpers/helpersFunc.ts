@@ -100,28 +100,18 @@ export function sortByStockDesc(a: Product, b: Product) {
 }
 
 export function sortByFavorite(products: Product[]) {
-  return [...products].sort(({ favorite }) => {
-    if (favorite === true) {
-      return -1;
-    }
-    if (favorite === false) {
-      return 1;
-    }
-    return 0;
-  });
+  return [...products].sort(({ favorite }) => (favorite ? -1 : 1));
 }
 
 export function sortByName(products: Product[]) {
   return [...products].sort((a, b) => {
     const nameA = a.name.toLowerCase();
     const nameB = b.name.toLowerCase();
-    if (nameA < nameB) {
-      return -1;
-    }
     if (nameA > nameB) {
       return 1;
+    } else {
+      return -1;
     }
-    return 0;
   });
 }
 
@@ -140,12 +130,6 @@ export function handlerScrollUp() {
       behavior: 'smooth',
     });
   }, 20);
-}
-
-export function backScrollPosition(scrollPosition: number) {
-  setTimeout(() => {
-    window.scrollTo(0, scrollPosition);
-  }, 0);
 }
 
 export function getTotalPrice(cartItemsState: CartItem[]) {

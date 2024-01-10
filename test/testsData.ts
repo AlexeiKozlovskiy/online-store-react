@@ -1,3 +1,38 @@
+export const sortColor = [
+  { color: 'black' },
+  { color: 'black' },
+  { color: 'blue' },
+  { color: 'green' },
+  { color: 'pink' },
+  { color: 'purple' },
+  { color: 'yellow' },
+];
+export const notSortColor = [
+  { color: 'green' },
+  { color: 'blue' },
+  { color: 'black' },
+  { color: 'yellow' },
+  { color: 'purple' },
+  { color: 'black' },
+  { color: 'pink' },
+];
+
+export const sortCategory = [
+  { category: 'Christmas decorations', count: 0 },
+  { category: 'Christmas decorations', count: 0 },
+  { category: 'Do It Yourself', count: 0 },
+  { category: 'Garland & Wreath', count: 0 },
+];
+export const notSortCategory = [
+  { category: 'Christmas decorations', count: 0 },
+  { category: 'Garland & Wreath', count: 0 },
+  { category: 'Do It Yourself', count: 0 },
+  { category: 'Christmas decorations', count: 0 },
+];
+
+export const sortCollection = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
+export const notSortCollection = [{ collection: 2023 }, { collection: 2022 }, { collection: 2021 }];
+
 export const products = [
   {
     id: '15',
@@ -145,5 +180,368 @@ export const cart = [
     itemNumber: 1,
     product: products[3],
     quantity: 1,
+  },
+];
+
+export const promocodes = {
+  applied: [
+    {
+      id: 1,
+      name: 'NEW-YEAR-2024',
+      discount: 7,
+    },
+    {
+      id: 2,
+      name: 'JOLLY-XMAS',
+      discount: 10,
+    },
+  ],
+  available: [
+    {
+      id: 1,
+      name: 'NEW-YEAR-2024',
+      discount: 7,
+    },
+    {
+      id: 2,
+      name: 'JOLLY-XMAS',
+      discount: 10,
+    },
+  ],
+};
+
+export const notSortingProduct = [
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByPriceAsk = [
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByPriceDesc = [
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByStockAsc = [
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByStockDesc = [
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByFavorite = [
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
+  },
+];
+
+export const sortingProductByName = [
+  {
+    id: '16',
+    name: 'Gingerbread House',
+    price: 4.99,
+    stock: 8,
+    collection: 2023,
+    color: 'brown',
+    size: 9,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm.jpg',
+      '/assets/products/glass-christmas-ornament-gingerbread-house-gold-9-cm (1).jpg',
+    ],
+  },
+  {
+    id: '20',
+    name: 'Luxury Christmas bauble with ice flowers',
+    price: 3.39,
+    stock: 31,
+    collection: 2021,
+    color: 'yellow',
+    size: 8,
+    favorite: true,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl.jpg',
+      '/assets/products/luxury-glass-christmas-bauble-with-ice-flowers-8-cm-pearl(1).jpg',
+    ],
+  },
+  {
+    id: '21',
+    name: 'Onion Glass Bauble',
+    price: 3.99,
+    stock: 2,
+    collection: 2023,
+    color: 'yellow',
+    size: 8,
+    favorite: false,
+    category: 'Tree decorations',
+    images: [
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm.jpg',
+      '/assets/products/onion-glass-bauble-lampion-champagne-8-cm(1).jpg',
+    ],
   },
 ];
