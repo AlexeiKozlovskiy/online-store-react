@@ -2,23 +2,23 @@ import './CartPage.scss';
 import { Link } from 'react-router-dom';
 import { CartItem, ISelect, ROUTE, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
-import { CartItemList } from '../../components/CartList/CartList';
+import { CartItemList } from '@/components/CartList/CartList';
 import { useSelector } from 'react-redux';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { CustomSelect } from '@/components/Select/Select';
 import { useMyURLContext } from '@/context/URLContext';
-import { Summary } from '../../components/CartSummary/Summary';
+import { Summary } from '@/components/CartSummary/Summary';
 import { PaymentModal } from '@/components/ModalWindow/Payment/PaymentModal';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
-import { useCartPaginationHook } from '@/hooks/CartPaginationHook';
+import { useCartPagination } from '@/hooks/CartPaginationHook';
 
 export function CartPage() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption } = useMyURLContext();
   const { handelCloseModalPayment, openModals } = useCloseOpenModalsContext();
-  const { countPages, curPageCart, currentItems, handlePageClick } = useCartPaginationHook();
+  const { countPages, curPageCart, currentItems, handlePageClick } = useCartPagination();
 
   function handleChangeSelect(selectedOption: ISelect | null) {
     setPerCartPageOption(selectedOption!);

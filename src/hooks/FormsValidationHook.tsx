@@ -55,7 +55,7 @@ export function useFormsValidation() {
 
   function validateAddress(value: string) {
     const words = value.split(' ');
-    if (words.length < 3 || !words.every((el) => el.length >= 1)) {
+    if (words.length < 4 || !words.every((el) => el.length >= 1)) {
       setFormErrors({ msgAdress: FORM_MESSAGES.ADDRESS_CONTAINS_THREE_WORDS });
       return false;
     } else return true;
@@ -93,19 +93,12 @@ export function useFormsValidation() {
     if (value.length < 4) {
       setFormErrors({ msgDateCard: FORM_MESSAGES.CARD_DATE_LENGTH });
       return false;
-    } else if (value.length > 4) {
-      if (year < +thisYear || year > +thisYear + 5) {
-        setFormErrors({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
-        return false;
-      }
-      if (month > 12) {
-        setFormErrors({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
-        return false;
-      }
-      if (year === +thisYear && +thisMonth >= month) {
-        setFormErrors({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
-        return false;
-      } else return true;
+    } else if (year < +thisYear || year > +thisYear + 5 || month > 12) {
+      setFormErrors({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
+      return false;
+    } else if (year === +thisYear && +thisMonth >= month) {
+      setFormErrors({ msgDateCard: FORM_MESSAGES.INVALID_CARD_DATE });
+      return false;
     } else return true;
   }
 

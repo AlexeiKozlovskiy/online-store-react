@@ -43,7 +43,7 @@ export function ProductPage() {
   const { cartUrl } = useMyURLContext();
 
   const { id, name, price, collection, stock, color, size, category, images } = product;
-  const [firstImg, secondImg] = images || [];
+  const [firstImg, secondImg] = images;
   const isShake = useAnimations({ quantity: Number(quantity), stock });
 
   useEffect(() => {

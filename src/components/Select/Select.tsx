@@ -17,7 +17,7 @@ export function CustomSelect({ selectedItem, handleChange, options }: IMySelect)
       classNamePrefix="react-select"
       className="filters-select"
       value={selectedItem}
-      onChange={handleChange}
+      onChange={(e) => handleChange(e)}
       options={options}
       styles={customStyles}
       theme={customTheme}
