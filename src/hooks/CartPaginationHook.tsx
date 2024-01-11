@@ -4,7 +4,7 @@ import { CartItem, PageClickEvent, RootReducerProps } from '@/types/types';
 import { useState, useEffect, useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-export function useCartPaginationHook() {
+export function useCartPagination() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, curPageCart, setCurPageCart } = useMyURLContext();
@@ -33,9 +33,11 @@ export function useCartPaginationHook() {
   }, [curPageCart, itemsPerPage, countCartItem]);
 
   useLayoutEffect(() => {
-    const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(cartItemsState.slice(itemOffset, endOffset));
-    setCountPages(Math.ceil(countCartItem / itemsPerPage));
+    if (countCartItem) {
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(cartItemsState.slice(itemOffset, endOffset));
+      setCountPages(Math.ceil(countCartItem / itemsPerPage));
+    }
   }, [itemOffset, itemsPerPage, cartItemsState]);
 
   function resetOnFirstPageByShowItems() {

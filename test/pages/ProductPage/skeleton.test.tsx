@@ -10,11 +10,7 @@ vi.mock('@/api/ProductsAPI', async () => {
   return {
     ...mod,
     useGetProductQuery: vi.fn(() => ({
-      data: {},
       isFetching: true,
-    })),
-    useGetProductsQuery: vi.fn(() => ({
-      data: [],
     })),
   };
 });

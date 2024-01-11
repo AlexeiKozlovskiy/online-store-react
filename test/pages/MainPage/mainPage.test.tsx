@@ -6,12 +6,16 @@ import { BrowserRouter } from 'react-router-dom';
 import { MainPage } from '@/pages/MainPage/MainPage';
 
 describe('Main page', () => {
+  const windowMock = {
+    scrollTo: vi.fn(),
+  };
+  Object.assign(global, global, windowMock);
+
   class ResizeObserverMock {
     observe() {}
     unobserve() {}
     disconnect() {}
   }
-
   global.ResizeObserver = ResizeObserverMock;
 
   it('should render Main page', async () => {
@@ -59,5 +63,26 @@ describe('Main page', () => {
     fireEvent.click(crossBtn);
 
     expect(filterPanel).toHaveAttribute('data-show', 'false');
+  });
+
+  it('should changes show items view', async () => {
+    render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </Provider>
+    );
+    expect(screen.getByText('Show items: 20')).toBeInTheDocument();
+
+    const customSelect = screen.getAllByRole('combobox');
+
+    fireEvent.change(customSelect[1], { target: { value: '5', label: 'Show items: 5' } });
+
+    expect(screen.getByText('Show items: 5')).toBeInTheDocument();
+
+    fireEvent.change(customSelect[1], { target: { value: '10', label: 'Show items: 10' } });
+
+    expect(screen.getByText('Show items: 10')).toBeInTheDocument();
   });
 });

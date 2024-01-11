@@ -1,4 +1,11 @@
-import { BalancerCategory, BalancerColor, BalancerCollection, Product } from '@/types/types';
+import {
+  BalancerCategory,
+  BalancerColor,
+  BalancerCollection,
+  Product,
+  CartItem,
+  PromocodeData,
+} from '@/types/types';
 import { AxiosError } from 'axios';
 
 export function formatPrice(price: number) {
@@ -139,4 +146,25 @@ export function backScrollPosition(scrollPosition: number) {
   setTimeout(() => {
     window.scrollTo(0, scrollPosition);
   }, 0);
+}
+
+export function getTotalPrice(cartItemsState: CartItem[]) {
+  return cartItemsState.reduce((acc, { product, quantity }) => acc + product.price * quantity, 0);
+}
+
+export function getTotalDiscount(promocodeState: PromocodeData) {
+  return promocodeState.applied.reduce((acc, { discount }) => acc + discount, 0);
+}
+
+export function getTotalPriseByPromocode(cartState: CartItem[], promocodeState: PromocodeData) {
+  const totalPrice = getTotalPrice(cartState);
+  const totalDiscount = getTotalDiscount(promocodeState);
+
+  if (totalDiscount) {
+    return totalPrice - (totalDiscount / 100) * totalPrice;
+  } else return totalPrice;
+}
+
+export function getTotalItems(cartItemsState: CartItem[]) {
+  return cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0);
 }
