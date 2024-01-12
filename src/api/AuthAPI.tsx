@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { API_ROUTES } from '@/helpers/constant';
 import { commonError } from '@/helpers/helpersFunc';
-import { UserResp, CredentialGoogle, AuthDataResp, MyForms } from '@/types/types';
+import { UserResp, CredentialGoogle, AuthDataResp, FormSignIN, FormSignUP } from '@/types/types';
 
-export async function signInApi({ formSignIN }: MyForms) {
+export async function signInApi(formSignIN: FormSignIN) {
   try {
     const response: AuthDataResp = await axios({
       method: 'POST',
@@ -46,7 +46,7 @@ export async function getUser(accessToken: string, idUser: string) {
   }
 }
 
-export async function signUPApi({ formSignUP }: MyForms) {
+export async function signUPApi(formSignUP: FormSignUP) {
   try {
     await axios({
       method: 'POST',

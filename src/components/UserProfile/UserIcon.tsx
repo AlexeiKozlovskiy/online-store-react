@@ -1,13 +1,13 @@
-import { useMyUserContext } from '@/context/UserContext';
 import './UserIcon.scss';
 import { memo, useEffect, useState } from 'react';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 
 export interface IUserIcon {
   handleClick?: React.MouseEventHandler;
 }
 
 export const UserIcon = memo(function UserIcon({ handleClick }: IUserIcon) {
-  const { user } = useMyUserContext();
+  const { user } = useMyUserAuthContext();
   const [userData, setUserData] = useState({ name: '', img: '' });
   const { name, img } = userData;
 
