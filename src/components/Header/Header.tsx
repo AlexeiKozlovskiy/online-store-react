@@ -8,7 +8,7 @@ import { SignUPModal } from '@/components/ModalWindow/SignUP/SignUPModal';
 import { SignINModal } from '@/components/ModalWindow/SignIN/SignINModal';
 import { UserIcon } from '@/components/UserProfile/UserIcon';
 import { UserModal } from '@/components/ModalWindow/User/UserModal';
-import { useMyUserContext } from '@/context/UserContext';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useSelector } from 'react-redux';
@@ -29,7 +29,7 @@ export function Header() {
     openModals,
     setOpenModals,
   } = useCloseOpenModalsContext();
-  const { isFetching } = useMyUserContext();
+  const { isFetching } = useMyUserAuthContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { totalItems, totalPriseByPromocode } = useTotalCartInfo();
 

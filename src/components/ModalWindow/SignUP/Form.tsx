@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form';
 import { MyForms } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
-import { useMyUserContext } from '@/context/UserContext';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { GoogleButton } from '@/components/GoogleButton/GoogleButton';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 
 export function Form() {
-  const { getSignUP, showPreloader, errorUser } = useMyUserContext();
+  const { getSignUP, showPreloader, errorUser } = useMyUserAuthContext();
   const {
     register,
     handleSubmit,
@@ -37,7 +37,7 @@ export function Form() {
   const errorsPassword = password?.type;
   const errorsEmail = email?.type;
 
-  const onSubmit = (formSignUP: MyForms) => {
+  const onSubmit = ({ formSignUP }: MyForms) => {
     getSignUP(formSignUP);
     reset({ formSignUP: { password: '' } });
   };

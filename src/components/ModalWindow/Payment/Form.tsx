@@ -8,7 +8,7 @@ import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
-import { useMyUserContext } from '@/context/UserContext';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
 import { removeAllCart } from '@/store/controller';
 import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
@@ -39,7 +39,7 @@ export function Form() {
     validateCvvCard,
     errorDefinitions,
   } = useFormsValidation();
-  const { user } = useMyUserContext();
+  const { user } = useMyUserAuthContext();
   useFormsInputsHelper({ watch, setValue });
   const { profileData, createUserProfile, updateUserProfile } = useMyProfileUserContext();
   const { totalPriseByPromocode } = useTotalCartInfo();

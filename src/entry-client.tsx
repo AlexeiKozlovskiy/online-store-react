@@ -9,7 +9,7 @@ import { RemoveAllSelectedContextProvider } from '@/context/RemoveAllSelectedCon
 import { Provider } from 'react-redux';
 import store from '@/store/store';
 import { URLContextProvider } from '@/context/URLContext';
-import { UserContextProvider } from '@/context/UserContext';
+import { UserAuthContextProvider } from '@/context/UserAuthContext';
 import { CloseOpenModalsContextProvider } from '@/context/CloseOpenModalsContext';
 import { ProfileUserContextProvider } from '@/context/ProfileUserContext';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -26,11 +26,11 @@ createRoot(document.getElementById('root')!).render(
               <SortingsContextProvider>
                 <RemoveAllSelectedContextProvider>
                   <CloseOpenModalsContextProvider>
-                    <UserContextProvider>
+                    <UserAuthContextProvider>
                       <ProfileUserContextProvider>
                         <App />
                       </ProfileUserContextProvider>
-                    </UserContextProvider>
+                    </UserAuthContextProvider>
                   </CloseOpenModalsContextProvider>
                 </RemoveAllSelectedContextProvider>
               </SortingsContextProvider>

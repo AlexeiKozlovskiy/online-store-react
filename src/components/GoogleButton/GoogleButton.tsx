@@ -1,14 +1,14 @@
 import './GoogleButton.scss';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { jwtDecode } from 'jwt-decode';
-import { useMyUserContext } from '@/context/UserContext';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { useEffect } from 'react';
 import { CredentialGoogle, GoogleResp } from '@/types/types';
 
 export function GoogleButton() {
   const { openModals, closeModalSignInAnimation, closeModalSignUPAnimation } =
     useCloseOpenModalsContext();
-  const { setGoogleData } = useMyUserContext();
+  const { setGoogleData } = useMyUserAuthContext();
 
   const { signIN, signUP } = openModals;
 

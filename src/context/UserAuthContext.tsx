@@ -1,22 +1,23 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import {
-  MyForms,
   User,
   CredentialGoogle,
   Authentication,
   RootReducerProps,
   FORM_MESSAGES,
+  FormSignIN,
+  FormSignUP,
 } from '@/types/types';
 import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/store/controller';
 import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from '@/api/AuthAPI';
 
-interface IUserContext {
+interface IUserAuthContext {
   user: User | null;
   logOut: () => void;
-  getSignIN: ({ formSignIN }: MyForms) => void;
-  getSignUP: ({ formSignUP }: MyForms) => void;
+  getSignIN: (formSignIN: FormSignIN) => void;
+  getSignUP: (formSignUP: FormSignUP) => void;
   showPreloader: boolean;
   errorUser: string | null;
   isFetching: boolean;
@@ -24,9 +25,9 @@ interface IUserContext {
   setErrorUser: (value: string | null) => void;
 }
 
-export const useMyUserContext = () => useContext(UserContext);
+export const useMyUserAuthContext = () => useContext(UserAuthContext);
 
-export const UserContext = createContext<IUserContext>({
+export const UserAuthContext = createContext<IUserAuthContext>({
   user: null,
   logOut: () => null,
   getSignIN: () => null,
@@ -38,7 +39,7 @@ export const UserContext = createContext<IUserContext>({
   setErrorUser: () => null,
 });
 
-export const UserContextProvider = ({ children }: { children: ReactNode }) => {
+export const UserAuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isFetching, setIsFetching] = useState(false);
   const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
@@ -60,11 +61,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }, [signUP, signIN]);
 
   useEffect(() => {
-    async function checkRefreshTokens() {
-      if (new Date().getTime() > +expiresIn!) {
-        refreshTokens();
-      }
-    }
     const id = setInterval(() => {
       if (authenticated) {
         checkRefreshTokens();
@@ -95,8 +91,15 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [googleData]);
 
-  async function getSignIN(formSignIN: MyForms) {
+  async function checkRefreshTokens() {
+    if (new Date().getTime() > +expiresIn!) {
+      refreshTokens();
+    }
+  }
+
+  async function getSignIN(formSignIN: FormSignIN) {
     setShowPreloader(true);
+
     const signInData = await signInApi(formSignIN);
     setShowPreloader(false);
 
@@ -167,7 +170,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  async function getSignUP(formSignUP: MyForms) {
+  async function getSignUP(formSignUP: FormSignUP) {
     setShowPreloader(true);
     const signUPData = await signUPApi(formSignUP);
     const { error } = signUPData;
@@ -187,7 +190,7 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <UserContext.Provider
+    <UserAuthContext.Provider
       value={{
         user,
         logOut,
@@ -201,6 +204,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-    </UserContext.Provider>
+    </UserAuthContext.Provider>
   );
 };

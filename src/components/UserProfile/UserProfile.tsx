@@ -1,10 +1,10 @@
-import { useMyUserContext } from '@/context/UserContext';
-import { UserIcon } from './UserIcon';
 import './UserProfile.scss';
 import { memo } from 'react';
+import { UserIcon } from './UserIcon';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 
 export const UserProfile = memo(function UserProfile() {
-  const { user } = useMyUserContext();
+  const { user } = useMyUserAuthContext();
 
   return (
     <div className="user-profile">

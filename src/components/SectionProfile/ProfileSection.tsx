@@ -8,7 +8,7 @@ import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { CARD_IMAGES, TEST_USER_DATA } from '@/helpers/constant';
-import { useMyUserContext } from '@/context/UserContext';
+import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { useMyProfileUserContext } from '@/context/ProfileUserContext';
 import { UserProfileSkeleton } from '@/components/Skeleton/UserProfile/UserProfileSkeleton';
 
@@ -37,10 +37,10 @@ export function ProfileSection() {
     errorDefinitions,
   } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
-  const { user } = useMyUserContext();
+  const { user } = useMyUserAuthContext();
   const { profileData, profileLoading, createUserProfile, updateUserProfile } =
     useMyProfileUserContext();
-  const { isFetching: isFetchingUser } = useMyUserContext();
+  const { isFetching: isFetchingUser } = useMyUserAuthContext();
 
   const { formProfile } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } =
