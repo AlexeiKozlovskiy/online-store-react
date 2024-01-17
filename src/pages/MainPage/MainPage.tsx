@@ -14,7 +14,7 @@ export function MainPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [clickFilters, setClickFilters] = useState(false);
   const { emptyCatalog } = useMyFiltersContext();
-  const qweryParams = useSelector<RootReducerProps, ProductsQweryParams>(
+  const { qweryParams } = useSelector<RootReducerProps, ProductsQweryParams>(
     (state) => state.productsQweryParams
   );
 
