@@ -4,7 +4,9 @@ import {
   addProductToCart,
   applyPromocode,
   clearAuthParams,
+  clearBalansersFilters,
   clearChosenProduct,
+  clearQweryParams,
   isPromocodeAvailable,
   removeAllCart,
   removeAllProductsFromCart,
@@ -13,8 +15,11 @@ import {
   setAuthParams,
   setChosenProduct,
   setProductsQuantityInCart,
+  setQweryParams,
+  updateBalancersPropertys,
 } from '@/store/controller';
 import { products } from '../testsData';
+import { COLLECTION_STOCK, COLOR_STOCK } from '@/helpers/constant';
 
 describe('Controller redux functions', () => {
   describe('Cart functions', () => {
@@ -199,6 +204,50 @@ describe('Controller redux functions', () => {
 
       expect(removeState.id).toBeNull();
       expect(removeState.name).toBeNull();
+    });
+  });
+  describe('Balanser products functions', () => {
+    const colorsValues = [{ color: 'black' }, { color: 'blue' }, { color: 'brown' }];
+    const collectionsValues = [{ collection: 2021 }, { collection: 2022 }];
+
+    it('should update balancer property', async () => {
+      updateBalancersPropertys('balancerColor', colorsValues);
+      const updatedState = store.getState().balansersFilters;
+
+      expect(updatedState.balancerColor.length).toBe(3);
+
+      updateBalancersPropertys('balancerCollection', collectionsValues);
+      const updatedStateTwo = store.getState().balansersFilters;
+
+      expect(updatedStateTwo.balancerColor.length).toBe(3);
+      expect(updatedStateTwo.balancerCollection.length).toBe(2);
+
+      clearBalansersFilters();
+      const updatedStateThree = store.getState().balansersFilters;
+
+      expect(updatedStateThree.balancerColor.length).toBe(COLOR_STOCK.length);
+      expect(updatedStateThree.balancerCollection.length).toBe(COLLECTION_STOCK.length);
+    });
+  });
+  describe('Query products functions', () => {
+    const queryOne = '?colors=black';
+    const queryTwo = '?colors=black?collections=2022';
+
+    it('should add qwery params and his remove', async () => {
+      setQweryParams(queryOne);
+      const updatedState = store.getState().productsQweryParams;
+
+      expect(updatedState).toHaveProperty('qweryParams', queryOne);
+
+      setQweryParams(queryTwo);
+      const updatedStateTwo = store.getState().productsQweryParams;
+
+      expect(updatedStateTwo).toHaveProperty('qweryParams', queryTwo);
+
+      clearQweryParams();
+      const updatedStateThree = store.getState().productsQweryParams;
+
+      expect(updatedStateThree).toHaveProperty('qweryParams', '');
     });
   });
 });

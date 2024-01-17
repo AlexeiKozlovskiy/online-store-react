@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
+  categoryBalancer,
+  collectionBalancer,
+  colorBalancer,
   commonError,
+  dualRangesBalancer,
   formatNameForURL,
   formatNameFromURL,
   formatPrice,
@@ -25,6 +29,7 @@ import {
   notSortCollection,
   notSortColor,
   notSortingProduct,
+  products,
   promocodes,
   sortCategory,
   sortCollection,
@@ -37,6 +42,7 @@ import {
   sortingProductByStockDesc,
 } from '../testsData';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { CATEGORIES_STOCK } from '@/helpers/constant';
 
 describe('helpers function', () => {
   it('should format price', () => {
@@ -167,6 +173,58 @@ describe('helpers function', () => {
       const totalItems = getTotalItems(cart);
 
       expect(totalItems).toStrictEqual(5);
+    });
+  });
+
+  describe('balanser function', () => {
+    const minPrice = 3.39;
+    const maxPrice = 12.99;
+    const minSize = 8;
+    const maxSize = 700;
+    const minStock = 2;
+    const maxStock = 40;
+
+    it('should return min & max value by key', () => {
+      const priceValue = dualRangesBalancer(products, 'price');
+      expect(priceValue).toStrictEqual([minPrice, maxPrice]);
+
+      const sizeValue = dualRangesBalancer(products, 'size');
+      expect(sizeValue).toStrictEqual([minSize, maxSize]);
+
+      const stockValue = dualRangesBalancer(products, 'stock');
+      expect(stockValue).toStrictEqual([minStock, maxStock]);
+    });
+
+    it('should return colors', () => {
+      const colorsValue = colorBalancer(products);
+
+      expect(colorsValue).toStrictEqual([
+        { color: 'blue' },
+        { color: 'brown' },
+        { color: 'yellow' },
+      ]);
+    });
+
+    it('should return collections', () => {
+      const colorsValue = collectionBalancer(products);
+
+      expect(colorsValue).toStrictEqual([
+        { collection: 2023 },
+        { collection: 2022 },
+        { collection: 2021 },
+      ]);
+    });
+
+    it('should return category', () => {
+      const colorsValue = categoryBalancer(products, CATEGORIES_STOCK);
+
+      expect(colorsValue).toStrictEqual([
+        { category: 'Christmas decorations', count: 1 },
+        { category: 'Garland & Wreath', count: 0 },
+        { category: 'Do It Yourself', count: 0 },
+        { category: 'Tree decorations', count: 4 },
+        { category: 'Christmas lights', count: 3 },
+      ]);
     });
   });
 });
