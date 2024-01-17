@@ -20,14 +20,7 @@ import {
 import { useMyURLContext } from '@/context/URLContext';
 import { useSelector } from 'react-redux';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
-import {
-  setBalansersCategory,
-  setBalansersCollection,
-  setBalansersColor,
-  setBalansersPrice,
-  setBalansersSize,
-  setBalansersStock,
-} from '@/store/controller';
+import { updateBalancersPropertys } from '@/store/controller';
 
 interface IFiltersContext {
   itemsCount: number;
@@ -70,19 +63,22 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     if (products.length) {
       if (!colorsSelected.length) {
         const colorsValues = sortColorBalancer(colorBalancer(products));
-        setBalansersColor(colorsValues);
+        updateBalancersPropertys('balancerColor', colorsValues);
       }
       if (!collectionsSelected.length) {
         const collectionsValues = sortCollectionBalancer(collectionBalancer(products));
-        setBalansersCollection(collectionsValues);
+        updateBalancersPropertys('balancerCollection', collectionsValues);
       }
       if (!categorySelected.length) {
         const categoryValues = categoryBalancer(products, CATEGORIES_STOCK);
-        setBalansersCategory(categoryValues);
+        updateBalancersPropertys('balancerCategory', categoryValues);
       }
-      setBalansersPrice(dualRangesBalancer(products, 'price'));
-      setBalansersSize(dualRangesBalancer(products, 'size'));
-      setBalansersStock(dualRangesBalancer(products, 'stock'));
+      const priseValues = dualRangesBalancer(products, 'price');
+      updateBalancersPropertys('balanserPrise', priseValues);
+      const sizeValues = dualRangesBalancer(products, 'size');
+      updateBalancersPropertys('balanserSize', sizeValues);
+      const stockValues = dualRangesBalancer(products, 'stock');
+      updateBalancersPropertys('balanserStock', stockValues);
     }
   }
 

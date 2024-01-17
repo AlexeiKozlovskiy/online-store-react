@@ -1,11 +1,4 @@
-import {
-  Product,
-  Authentication,
-  ChosenProduct,
-  BalancerColor,
-  BalancerCollection,
-  BalancerCategory,
-} from '@/types/types';
+import { Product, Authentication, ChosenProduct, Balancers } from '@/types/types';
 import store from '@/store/store';
 import {
   addToCart,
@@ -18,15 +11,7 @@ import { addAppliedPromocode, removeAppliedPromocode } from '@/store/promocode';
 import { clearAuthUser, setAuthUser } from './auth';
 import { chosenProduct, resetChosenProduct } from './chosenProduct';
 import { addQweryParams, resetQweryParams } from './productsQweryParams';
-import {
-  addBalancerCategory,
-  addBalancerCollection,
-  addBalancerColor,
-  addBalancerPrice,
-  addBalancerSize,
-  addBalancerStock,
-  resetBalansersFilters,
-} from './balansersFilters';
+import { resetBalansersFilters, updateBalancerProperty } from './balansersFilters';
 
 export function addProductToCart(id: string, products: Product[], quantity: number = 1) {
   const product = products.find((product: Product) => product.id === id);
@@ -96,27 +81,11 @@ export function clearQweryParams() {
   store.dispatch(resetQweryParams());
 }
 
-export function setBalansersColor(value: BalancerColor[]) {
-  store.dispatch(addBalancerColor(value));
-}
-
-export function setBalansersCollection(value: BalancerCollection[]) {
-  store.dispatch(addBalancerCollection(value));
-}
-
-export function setBalansersCategory(value: BalancerCategory[]) {
-  store.dispatch(addBalancerCategory(value));
-}
-
-export function setBalansersPrice(value: [number | null, number | null]) {
-  store.dispatch(addBalancerPrice(value));
-}
-
-export function setBalansersSize(value: [number | null, number | null]) {
-  store.dispatch(addBalancerSize(value));
-}
-export function setBalansersStock(value: [number | null, number | null]) {
-  store.dispatch(addBalancerStock(value));
+export function updateBalancersPropertys<T extends keyof Balancers>(
+  property: T,
+  value: Balancers[T]
+) {
+  store.dispatch(updateBalancerProperty({ property, value }));
 }
 
 export function clearBalansersFilters() {

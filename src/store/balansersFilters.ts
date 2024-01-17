@@ -9,7 +9,7 @@ import {
   STOCK_MAX,
   STOCK_MIN,
 } from '@/helpers/constant';
-import { BalancerCategory, BalancerCollection, BalancerColor, Balancers } from '@/types/types';
+import { Balancers } from '@/types/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: Balancers = {
@@ -25,50 +25,13 @@ const balansersFiltersSlise = createSlice({
   name: 'balansersFilters',
   initialState,
   reducers: {
-    addBalancerColor: (state, action: PayloadAction<BalancerColor[]>) => {
+    updateBalancerProperty: <T extends keyof Balancers>(
+      state: Balancers,
+      action: PayloadAction<{ property: T; value: Balancers[T] }>
+    ) => {
       state = {
         ...state,
-        balancerColor: action.payload,
-      };
-      return state;
-    },
-
-    addBalancerCollection: (state, action: PayloadAction<BalancerCollection[]>) => {
-      state = {
-        ...state,
-        balancerCollection: action.payload,
-      };
-      return state;
-    },
-
-    addBalancerCategory: (state, action: PayloadAction<BalancerCategory[]>) => {
-      state = {
-        ...state,
-        balancerCategory: action.payload,
-      };
-      return state;
-    },
-
-    addBalancerPrice: (state, action: PayloadAction<[number | null, number | null]>) => {
-      state = {
-        ...state,
-        balanserPrise: action.payload,
-      };
-      return state;
-    },
-
-    addBalancerSize: (state, action: PayloadAction<[number | null, number | null]>) => {
-      state = {
-        ...state,
-        balanserSize: action.payload,
-      };
-      return state;
-    },
-
-    addBalancerStock: (state, action: PayloadAction<[number | null, number | null]>) => {
-      state = {
-        ...state,
-        balanserStock: action.payload,
+        [action.payload.property]: action.payload.value,
       };
       return state;
     },
@@ -79,13 +42,5 @@ const balansersFiltersSlise = createSlice({
   },
 });
 
-export const {
-  addBalancerColor,
-  addBalancerCollection,
-  addBalancerCategory,
-  addBalancerPrice,
-  addBalancerSize,
-  addBalancerStock,
-  resetBalansersFilters,
-} = balansersFiltersSlise.actions;
+export const { updateBalancerProperty, resetBalansersFilters } = balansersFiltersSlise.actions;
 export default balansersFiltersSlise.reducer;
