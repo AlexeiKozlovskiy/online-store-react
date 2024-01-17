@@ -38,12 +38,12 @@ describe('Controller redux functions', () => {
       const id = '16';
       const fakeId = '444';
 
-      removeProductFromCart(id, products);
+      removeProductFromCart(id);
       const removeStateTwo = store.getState().cart;
 
       expect(removeStateTwo.length).toBe(0);
 
-      removeProductFromCart(fakeId, products);
+      removeProductFromCart(fakeId);
       const removeState = store.getState().cart;
 
       expect(removeState.length).toBe(0);
@@ -71,12 +71,12 @@ describe('Controller redux functions', () => {
       const id = '17';
       const fakeId = '555';
 
-      removeAllProductsFromCart(id, products);
+      removeAllProductsFromCart(id);
       const removeState = store.getState().cart;
 
       expect(removeState.length).toBe(0);
 
-      removeAllProductsFromCart(fakeId, products);
+      removeAllProductsFromCart(fakeId);
       const removeStateTwo = store.getState().cart;
 
       expect(removeStateTwo.length).toBe(0);

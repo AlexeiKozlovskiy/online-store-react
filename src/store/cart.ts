@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CartItem, CartItemArg, Product } from '@/types/types';
+import { CartItem, CartItemArg } from '@/types/types';
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState: CartItem[] = [];
@@ -56,8 +56,8 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeItemFromCart: (state, action: PayloadAction<Product>) => {
-      const { id } = action.payload;
+    removeItemFromCart: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
 
       const item = state.find(({ product }) => product.id === id);
       if (item) {
@@ -72,8 +72,8 @@ const cartSlice = createSlice({
       return state;
     },
 
-    removeAllItemsFromCart: (state, action: PayloadAction<Product>) => {
-      const { id } = action.payload;
+    removeAllItemsFromCart: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
 
       const item = state.find(({ product }) => product.id === id);
       if (item) {

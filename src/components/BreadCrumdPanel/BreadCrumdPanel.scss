@@ -1,0 +1,51 @@
+.selected-filters {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid $greyBorder;
+  font-family: $Roboto;
+  font-size: 0.9rem;
+  color: $darkGray;
+  align-items: center;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+  gap: 15px;
+  // animation: top-main-panel 0.2s ease-out;
+
+  &__item {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }
+
+  &__remove-filters,
+  &__copy-link {
+    padding: 7px;
+    &:hover {
+      cursor: pointer;
+      background-color: $olivaHover;
+      color: white;
+      border-radius: 5px;
+    }
+  }
+}
+
+.selected-item {
+  display: flex;
+  padding: 7px;
+  align-items: center;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &__name {
+    margin-right: 15px;
+    text-transform: capitalize;
+  }
+
+  &__remove-btn {
+    width: 16px;
+    height: 16px;
+    background: url('https://api.iconify.design/mdi/remove-circle.svg?color=%238b9d93&width=16&height=16')
+      no-repeat center center / contain;
+  }
+}

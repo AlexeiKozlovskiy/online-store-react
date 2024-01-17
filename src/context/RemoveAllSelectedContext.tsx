@@ -11,6 +11,7 @@ import {
   ITEMS_IN_PAGE,
   ITEMS_IN_PAGE_CART,
 } from '@/helpers/constant';
+import { clearQweryParams } from '@/store/controller';
 
 interface IRemoveAllSelectedContext {
   removeAllSelected: () => void;
@@ -48,6 +49,7 @@ export const RemoveAllSelectedContextProvider = ({ children }: { children: React
     setPerMainPageOption(ITEMS_IN_PAGE[2]);
     setPerCartPageOption(ITEMS_IN_PAGE_CART[1]);
     setCurPageCart(1);
+    clearQweryParams();
   }
   return (
     <RemoveAllSelectedContext.Provider

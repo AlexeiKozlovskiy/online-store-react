@@ -12,6 +12,7 @@ import {
 } from '@/helpers/constant';
 import { ISelect, InputSearch, SelectedFilters } from '@/types/types';
 import { useLocation } from 'react-router-dom';
+import { setQweryParams } from '@/store/controller';
 
 interface IURLContext extends InputSearch {
   sortindViewOption: ISelect;
@@ -20,7 +21,6 @@ interface IURLContext extends InputSearch {
   setCurPageMain: (value: number) => void;
   perMainPageOption: ISelect;
   setPerMainPageOption: (selectedOption: ISelect) => void;
-  isEmptyFilters: boolean;
   curPageCart: number;
   setCurPageCart: (value: number) => void;
   perCartPageOption: ISelect;
@@ -43,7 +43,6 @@ export const URLContext = createContext<IURLContext>({
   setCurPageMain: () => null,
   perMainPageOption: ITEMS_IN_PAGE[2],
   setPerMainPageOption: () => null,
-  isEmptyFilters: true,
   curPageCart: 1,
   setCurPageCart: () => null,
   perCartPageOption: ITEMS_IN_PAGE_CART[1],
@@ -75,7 +74,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [sortindViewOption, setSortindViewOption] = useState<ISelect>(SORT_OPTIONS[0]);
   const [curPageMain, setCurPageMain] = useState<number>(1);
   const [perMainPageOption, setPerMainPageOption] = useState<ISelect>(ITEMS_IN_PAGE[2]);
-  const [isEmptyFilters, setIsEmptyFilters] = useState(true);
   const [curPageCart, setCurPageCart] = useState<number>(1);
   const [perCartPageOption, setPerCartPageOption] = useState<ISelect>(ITEMS_IN_PAGE_CART[1]);
   const [swichedView, setSwichedView] = useState('block');
@@ -94,21 +92,6 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [minPrice, maxPrice] = priceSelected;
   const [minSize, maxSize] = sizeSelected;
   const [minStock, maxStock] = stockSelected;
-
-  useEffect(() => {
-    if (hasEmptyFilters) {
-      setIsEmptyFilters(true);
-    } else {
-      setIsEmptyFilters(false);
-    }
-  }, [
-    colorsSelected,
-    collectionsSelected,
-    categorySelected,
-    priceSelected,
-    sizeSelected,
-    stockSelected,
-  ]);
 
   useEffect(() => {
     function setDataFromUrl() {
@@ -155,61 +138,8 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     function setDataInURL() {
       const params = new URLSearchParams();
-
-      if (colorsSelected.length) {
-        params.set('colors', colorsSelected.join(','));
-      }
-      if (collectionsSelected.length) {
-        params.set('collections', collectionsSelected.join(','));
-      }
-      if (categorySelected.length) {
-        params.set('categories', categorySelected.join(','));
-      }
-      if (minPrice !== PRICE_MIN || maxPrice !== PRICE_MAX) {
-        if (minPrice && maxPrice) {
-          params.set('minPrice', minPrice!.toString());
-          params.set('maxPrice', maxPrice!.toString());
-        }
-      }
-      if (minSize !== SIZE_MIN || maxSize !== SIZE_MAX) {
-        if (minSize && maxSize) {
-          params.set('minSize', minSize!.toString());
-          params.set('maxSize', maxSize!.toString());
-        }
-      }
-      if (minStock !== STOCK_MIN || maxStock !== STOCK_MAX) {
-        if (minStock && maxStock) {
-          params.set('minStock', minStock!.toString());
-          params.set('maxStock', maxStock!.toString());
-        }
-      }
-      if (inputSearchURL) {
-        params.set('q', inputSearchURL);
-      }
-
-      if (sortindViewOption.value.length) {
-        params.set('sortBy', sortindViewOption.value);
-      }
-
-      if (curPageMain > 1 && location.pathname === '/') {
-        params.set('page', curPageMain.toString());
-      }
-
-      if (+perMainPageOption.value !== 20 && location.pathname === '/') {
-        params.set('perPage', perMainPageOption.value);
-      }
-
-      if (curPageCart > 1 && location.pathname === '/cart') {
-        params.set('page', curPageCart.toString());
-      }
-
-      if (+perCartPageOption.value !== 3 && location.pathname === '/cart') {
-        params.set('perPage', perCartPageOption.value);
-      }
-
-      if (swichedView === 'row') {
-        params.set('switchView', swichedView);
-      }
+      setFiltersQweryInParams(params);
+      setPagesQweryInParams(params);
 
       const newURL = `${location.pathname}?${params.toString()}`;
       window.history.replaceState(null, '', newURL);
@@ -232,6 +162,23 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   useEffect(() => {
+    function setDataInReduxState() {
+      const queryString = new URLSearchParams();
+      setFiltersQweryInParams(queryString);
+      setQweryParams(queryString.toString());
+    }
+    setDataInReduxState();
+  }, [
+    colorsSelected,
+    collectionsSelected,
+    categorySelected,
+    priceSelected,
+    sizeSelected,
+    stockSelected,
+    inputSearchURL,
+  ]);
+
+  useEffect(() => {
     if (+perCartPageOption.value !== 3) {
       setCartUrl(`/cart?page=${curPageCart}&perPage=${perCartPageOption.value}`);
     }
@@ -242,6 +189,60 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       setCartUrl(`/cart`);
     }
   }, [perCartPageOption, perCartPageOption, curPageCart]);
+
+  const setFiltersQweryInParams = (params: URLSearchParams) => {
+    if (colorsSelected.length) {
+      params.set('colors', colorsSelected.join(','));
+    }
+    if (collectionsSelected.length) {
+      params.set('collections', collectionsSelected.join(','));
+    }
+    if (categorySelected.length) {
+      params.set('categories', categorySelected.join(','));
+    }
+    if (minPrice !== PRICE_MIN || maxPrice !== PRICE_MAX) {
+      if (minPrice && maxPrice) {
+        params.set('minPrice', minPrice!.toString());
+        params.set('maxPrice', maxPrice!.toString());
+      }
+    }
+    if (minSize !== SIZE_MIN || maxSize !== SIZE_MAX) {
+      if (minSize && maxSize) {
+        params.set('minSize', minSize!.toString());
+        params.set('maxSize', maxSize!.toString());
+      }
+    }
+    if (minStock !== STOCK_MIN || maxStock !== STOCK_MAX) {
+      if (minStock && maxStock) {
+        params.set('minStock', minStock!.toString());
+        params.set('maxStock', maxStock!.toString());
+      }
+    }
+    if (inputSearchURL) {
+      params.set('q', inputSearchURL);
+    }
+  };
+
+  const setPagesQweryInParams = (params: URLSearchParams) => {
+    if (sortindViewOption.value.length) {
+      params.set('sortBy', sortindViewOption.value);
+    }
+    if (curPageMain > 1 && location.pathname === '/') {
+      params.set('page', curPageMain.toString());
+    }
+    if (+perMainPageOption.value !== 20 && location.pathname === '/') {
+      params.set('perPage', perMainPageOption.value);
+    }
+    if (curPageCart > 1 && location.pathname === '/cart') {
+      params.set('page', curPageCart.toString());
+    }
+    if (+perCartPageOption.value !== 3 && location.pathname === '/cart') {
+      params.set('perPage', perCartPageOption.value);
+    }
+    if (swichedView === 'row') {
+      params.set('switchView', swichedView);
+    }
+  };
 
   function updatedFilters(
     colors: string,
@@ -326,21 +327,9 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       });
   }
 
-  const hasEmptyFilters =
-    !colorsSelected.length &&
-    !collectionsSelected.length &&
-    !categorySelected.length &&
-    minPrice === PRICE_MIN &&
-    maxPrice === PRICE_MAX &&
-    minSize === SIZE_MIN &&
-    maxSize === SIZE_MAX &&
-    minStock === STOCK_MIN &&
-    maxStock === STOCK_MAX;
-
   return (
     <URLContext.Provider
       value={{
-        isEmptyFilters,
         sortindViewOption,
         setSortindViewOption,
         inputSearchURL,

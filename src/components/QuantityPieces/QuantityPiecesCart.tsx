@@ -15,7 +15,7 @@ interface IQuantity {
 
 export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   const [inputValue, setInputValue] = useState(quantity);
-  const { data: products } = useGetProductsQuery();
+  const { data: products } = useGetProductsQuery('');
 
   useEffect(() => {
     if (quantity >= 1) {
@@ -28,7 +28,7 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   }
 
   function handelArrowDownClick() {
-    removeProductFromCart(id, products!);
+    removeProductFromCart(id);
   }
 
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {

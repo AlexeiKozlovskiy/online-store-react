@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  commonBalanserProducts,
   commonError,
-  commonFiltersProducts,
   formatNameForURL,
   formatNameFromURL,
   formatPrice,
@@ -60,32 +58,6 @@ describe('helpers function', () => {
     const formattedName = formatNameFromURL(name);
 
     expect(formattedName).toBe('Luxury Christmas');
-  });
-
-  describe('common object', () => {
-    it('should return common filter object', () => {
-      const commmon = commonFiltersProducts([1, 3], [1, 2, 3], [1, 3], [1, 2, 3, 5]);
-
-      expect(commmon).toStrictEqual([1, 3]);
-
-      const empty = commonFiltersProducts([], [1, 2, 3], [4, 5], [1, 2, 3, 5]);
-
-      expect(empty).toStrictEqual([]);
-    });
-
-    it('should return common object', () => {
-      const commmon = commonBalanserProducts([0, 1, 3], [1, 2, 3], [1, 3], [1, 2, 3, 5]);
-
-      expect(commmon).toStrictEqual([1, 3]);
-
-      const commmonTwo = commonBalanserProducts([0, 1, 3], [1, 2, 3], [4, 5], [1, 2, 3, 5]);
-
-      expect(commmonTwo).toStrictEqual([]);
-
-      const empty = commonBalanserProducts([], [], [], []);
-
-      expect(empty).toStrictEqual([]);
-    });
   });
 
   it('should sort color balancer', () => {

@@ -2,11 +2,11 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import './MainSkeleton.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-export function MainSkeleton({ amount }: { amount: number }) {
+export function MainSkeleton({ itemsInPage }: { itemsInPage: number }) {
   return (
     <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e7e7e7">
       <div className="cards-skeleton-list">
-        {Array(amount)
+        {Array(itemsInPage)
           .fill(0)
           .map((_el, ind) => (
             <div key={ind} className="card-skeleton">

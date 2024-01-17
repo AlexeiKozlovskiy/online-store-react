@@ -37,7 +37,7 @@ export function ProductPage() {
     },
     isFetching,
   } = useGetProductQuery(chosenProduct.id!);
-  const { data: products } = useGetProductsQuery();
+  const { data: products } = useGetProductsQuery('');
   const navigate = useNavigate();
   const cartItems = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const { cartUrl } = useMyURLContext();

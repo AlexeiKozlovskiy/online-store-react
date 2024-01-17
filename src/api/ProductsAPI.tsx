@@ -10,8 +10,8 @@ export const productsApi = createApi({
   }),
   tagTypes: ['Products'],
   endpoints: (builder) => ({
-    getProducts: builder.query<Product[], void>({
-      query: () => API_ROUTES.PODUCTS,
+    getProducts: builder.query<Product[], string>({
+      query: (qweryParams) => `${API_ROUTES.PODUCTS}?${qweryParams}`,
       providesTags: (result) =>
         result ? result.map(({ id }) => ({ type: 'Products', id })) : ['Products'],
     }),

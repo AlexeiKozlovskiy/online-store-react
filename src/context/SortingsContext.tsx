@@ -1,5 +1,11 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import { ISelect, SORTING_SELECT, Product } from '@/types/types';
+import {
+  ISelect,
+  SORTING_SELECT,
+  Product,
+  ProductsQweryParams,
+  RootReducerProps,
+} from '@/types/types';
 import {
   sortByFavorite,
   sortByName,
@@ -10,7 +16,8 @@ import {
   sortByStockDesc,
 } from '@/helpers/helpersFunc';
 import { useMyURLContext } from '@/context/URLContext';
-import { useMyFiltersContext } from '@/context/FiltersContext';
+import { useGetProductsQuery } from '@/api/ProductsAPI';
+import { useSelector } from 'react-redux';
 
 export const useMySortingsContext = () => useContext(SortingsContext);
 
@@ -26,39 +33,45 @@ export const SortingsContext = createContext<ISortingsContext>({
 
 export const SortingsContextProvider = ({ children }: { children: ReactNode }) => {
   const { sortindViewOption } = useMyURLContext();
-  const { filtersProducts } = useMyFiltersContext();
   const [sortProducts, setSortProducts] = useState<Product[]>([]);
+  const { qweryParams } = useSelector<RootReducerProps, ProductsQweryParams>(
+    (state) => state.productsQweryParams
+  );
+
+  const { data: products = [] } = useGetProductsQuery(qweryParams, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     sortingView(sortindViewOption);
-  }, [sortindViewOption, filtersProducts.length]);
+  }, [sortindViewOption, products.length]);
 
   function sortingView(viewOption: ISelect) {
     const { value } = viewOption;
 
     switch (value) {
       case SORTING_SELECT.NAME:
-        const sortName = sortByName(filtersProducts);
+        const sortName = sortByName(products);
         setSortProducts(sortName);
         break;
       case SORTING_SELECT.PRICE_ASC:
-        const priceAsc = sortByKey(filtersProducts, sortByPriceAsc);
+        const priceAsc = sortByKey(products, sortByPriceAsc);
         setSortProducts(priceAsc);
         break;
       case SORTING_SELECT.PRICE_DESC:
-        const priceDesc = sortByKey(filtersProducts, sortByPriceDesc);
+        const priceDesc = sortByKey(products, sortByPriceDesc);
         setSortProducts(priceDesc);
         break;
       case SORTING_SELECT.STOCK_ASC:
-        const stockAsc = sortByKey(filtersProducts, sortByStockAsc);
+        const stockAsc = sortByKey(products, sortByStockAsc);
         setSortProducts(stockAsc);
         break;
       case SORTING_SELECT.STOCK_DESC:
-        const stockDesc = sortByKey(filtersProducts, sortByStockDesc);
+        const stockDesc = sortByKey(products, sortByStockDesc);
         setSortProducts(stockDesc);
         break;
       case '':
-        const recomend = sortByFavorite(filtersProducts);
+        const recomend = sortByFavorite(products);
         setSortProducts(recomend);
         break;
     }
