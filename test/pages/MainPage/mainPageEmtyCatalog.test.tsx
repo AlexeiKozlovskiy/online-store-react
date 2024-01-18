@@ -22,7 +22,9 @@ vi.mock('react-redux', async () => {
     ...mod,
     useSelector: vi
       .fn()
-      .mockImplementationOnce(() => '?colors=black')
+      .mockImplementationOnce(() => ({
+        qweryParams: '?colors=black',
+      }))
       .mockImplementation(() => ({
         balancerColor: COLOR_STOCK,
         balancerCollection: COLLECTION_STOCK,
@@ -63,6 +65,7 @@ describe('Main page, empty catalog', () => {
     );
 
     const noItemsFoundElement = screen.getByTestId('empty-catalog');
+
     expect(noItemsFoundElement).toBeInTheDocument();
     expect(screen.getByText('No items found')).toBeInTheDocument();
     expect(screen.getByText('Selected filters:')).toBeInTheDocument();
