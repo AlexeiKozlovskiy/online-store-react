@@ -16,6 +16,7 @@ import { Authentication, ROUTE, RootReducerProps } from '@/types/types';
 import { useState } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
+import { bodyNotScroll } from '@/helpers/helpersFunc';
 
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
@@ -37,6 +38,7 @@ export function Header() {
 
   function handleShowBurgerMenu() {
     showBurgerMenu ? setShowBurgerMenu(false) : setShowBurgerMenu(true);
+    bodyNotScroll();
   }
 
   function getSignIN() {

@@ -1,4 +1,4 @@
-import './TopMainPanel.scss';
+import './BreadCrumdPanel.scss';
 import { memo, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
 import { useMyFiltersContext } from '@/context/FiltersContext';

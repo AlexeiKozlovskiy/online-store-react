@@ -5,7 +5,6 @@ import { formatNameForURL, formatPrice } from '@/helpers/helpersFunc';
 import { QuantityPiecesCart } from '@/components/QuantityPieces/QuantityPiecesCart';
 import { removeAllProductsFromCart, setChosenProduct } from '@/store/controller';
 import { useAnimations } from '@/hooks/AnimationsHook';
-import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { memo } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
@@ -14,11 +13,9 @@ export const CartItemList = memo(function CartListItem({
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },
 }: CartItem) {
-  const { data: products } = useGetProductsQuery();
-
   function handelCrossClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dataset } = e.target as HTMLElement;
-    removeAllProductsFromCart(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!);
   }
 
   const isShake = useAnimations({ quantity, stock });

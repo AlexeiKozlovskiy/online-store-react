@@ -1,10 +1,10 @@
 import { URLContextProvider, useMyURLContext } from '@/context/URLContext';
 import { describe, expect, it } from 'vitest';
 import { rootState } from '@/store/store';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { SelectedFilters } from '@/types/types';
+import { ProductsQweryParams, RootReducerProps, SelectedFilters } from '@/types/types';
 
 describe('url context', () => {
   it('renders the context provider', () => {
@@ -32,7 +32,10 @@ describe('url context', () => {
     };
 
     const TestComponent = () => {
-      const { isEmptyFilters, selectedFilters, setSelectedFilters } = useMyURLContext();
+      const { qweryParams } = useSelector<RootReducerProps, ProductsQweryParams>(
+        (state) => state.productsQweryParams
+      );
+      const { selectedFilters, setSelectedFilters } = useMyURLContext();
 
       return (
         <div>
@@ -42,7 +45,7 @@ describe('url context', () => {
           ></button>
           <div data-testid="selectedFiltersValue">{JSON.stringify(selectedFilters)}</div>
           <div data-testid="emptyFiltersValue">
-            {isEmptyFilters ? 'no filters selected' : 'some filters is selected'}
+            {!qweryParams ? 'no filters selected' : 'some filters is selected'}
           </div>
         </div>
       );

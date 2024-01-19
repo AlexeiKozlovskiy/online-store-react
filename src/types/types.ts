@@ -13,15 +13,7 @@ export interface Product {
   images: string[];
 }
 
-export interface SortProducts {
-  filterColor: Product[];
-  filterCollection: Product[];
-  filteSize: Product[];
-  filtePrice: Product[];
-  filteStock: Product[];
-  filteCategory: Product[];
-  filteSearch: Product[];
-}
+export type DualRangesBalancer = Pick<Product, 'price' | 'size' | 'stock'>;
 
 export interface CartItemArg {
   product: Product;
@@ -49,11 +41,17 @@ export interface ChosenProduct {
   name: string | null;
 }
 
+export interface ProductsQweryParams {
+  qweryParams: string;
+}
+
 export interface RootReducerProps {
+  balansersFilters: Balancers;
   cart: CartItem[];
   promocode: PromocodeData;
   auth: Authentication;
   chosenProduct: ChosenProduct;
+  productsQweryParams: ProductsQweryParams;
 }
 
 export interface PaginationData {

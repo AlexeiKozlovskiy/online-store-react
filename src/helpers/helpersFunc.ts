@@ -5,8 +5,44 @@ import {
   Product,
   CartItem,
   PromocodeData,
+  DualRangesBalancer,
 } from '@/types/types';
 import { AxiosError } from 'axios';
+
+export function dualRangesBalancer(
+  products: Product[],
+  key: keyof DualRangesBalancer
+): [number, number] {
+  const value = products.map((el) => el[key]);
+  return [Math.min(...value), Math.max(...value)];
+}
+
+export function colorBalancer(products: Product[]) {
+  return products.reduce((acc: BalancerColor[], { color }) => {
+    const existingColor = acc.find((item) => item.color === color);
+    if (!existingColor) {
+      acc = [...acc, { color }];
+    }
+    return acc;
+  }, []);
+}
+
+export function collectionBalancer(products: Product[]) {
+  return products.reduce((acc: BalancerCollection[], { collection }) => {
+    const existingCollection = acc.find((item) => item.collection === collection);
+    if (!existingCollection) {
+      acc = [...acc, { collection }];
+    }
+    return acc;
+  }, []);
+}
+
+export function categoryBalancer(products: Product[], categoryStock: BalancerCategory[]) {
+  return categoryStock.map(({ category }) => ({
+    category,
+    count: products.filter((product) => product.category === category).length,
+  }));
+}
 
 export function formatPrice(price: number) {
   return price?.toFixed(2);
@@ -23,29 +59,6 @@ export function formatNameFromURL(name: string) {
 export const thisYear = new Date().getFullYear().toString().substring(2, 4);
 
 export const thisMonth = new Date().getMonth().toString();
-
-export function commonFiltersProducts<T>(arraysSearch: T[], ...arrays: T[][]): T[] {
-  if (!arraysSearch.length) {
-    return [];
-  }
-  return getCommonObjects([arraysSearch, ...arrays]);
-}
-
-export function commonBalanserProducts<T>(...arrays: T[][]): T[] {
-  return getCommonObjects(arrays);
-}
-
-function getCommonObjects<T>(arrays: T[][]): T[] {
-  const nonEmptyArrays = arrays.filter((array) => array.length);
-  if (!nonEmptyArrays.length) {
-    return [];
-  }
-  const arraysAsArrays = nonEmptyArrays.map((arrayLike) => Array.from(arrayLike));
-  const commonObjects = arraysAsArrays.reduce((acc, cur) => {
-    return acc.filter((objA) => cur.some((objB) => JSON.stringify(objA) === JSON.stringify(objB)));
-  });
-  return commonObjects;
-}
 
 export function sortColorBalancer(arr: BalancerColor[]): BalancerColor[] {
   return [...arr].sort((a, b) => {
@@ -151,4 +164,8 @@ export function getTotalPriseByPromocode(cartState: CartItem[], promocodeState: 
 
 export function getTotalItems(cartItemsState: CartItem[]) {
   return cartItemsState.reduce((count, cartItem) => count + cartItem.quantity, 0);
+}
+
+export function bodyNotScroll() {
+  document.body.classList.toggle('lock');
 }

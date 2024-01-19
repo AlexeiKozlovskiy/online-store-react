@@ -2,12 +2,12 @@ a {
   text-decoration: none;
 }
 
-html {
-  overflow-x: hidden;
-}
-
 body {
   min-width: 320px;
+}
+
+.lock {
+  overflow: hidden;
 }
 
 .App {

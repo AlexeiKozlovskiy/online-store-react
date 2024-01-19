@@ -17,7 +17,7 @@ type ProductViewData = {
 };
 
 export function ProductItem({ isInCart, product }: ProductViewData) {
-  const { data: products } = useGetProductsQuery();
+  const { data: products } = useGetProductsQuery('');
   const { id, images, name, price, color, collection, size, category, stock } = product;
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
   function productItemRemoveClick(e: React.MouseEvent<HTMLElement>) {
     e.stopPropagation();
     const { dataset } = e.target as HTMLElement;
-    removeAllProductsFromCart(dataset.id!, products!);
+    removeAllProductsFromCart(dataset.id!);
   }
 
   const addToCart = (

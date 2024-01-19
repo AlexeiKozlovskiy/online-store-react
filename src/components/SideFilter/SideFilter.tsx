@@ -2,11 +2,11 @@ import './SideFilter.scss';
 import Slider from 'react-slider';
 import { useEffect, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
-import { SelectedFilter } from '@/types/types';
-import { useMyFiltersContext } from '@/context/FiltersContext';
+import { Balancers, RootReducerProps, SelectedFilter } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 import { DualRangeInput } from './DualRangeInput';
+import { useSelector } from 'react-redux';
 
 interface ISideFilter {
   showFilters: boolean;
@@ -16,10 +16,17 @@ interface ISideFilter {
 
 export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters }: ISideFilter) {
   const { selectedFilters, setSelectedFilters } = useMyURLContext();
-  const { balanserFilters } = useMyFiltersContext();
   const [[priseMin, priseMax], setPrice] = useState<[number | null, number | null]>([null, null]);
   const [[sizeMin, sizeMax], setSize] = useState<[number | null, number | null]>([null, null]);
   const [[stockMin, stockMax], setStock] = useState<[number | null, number | null]>([null, null]);
+  const {
+    balancerColor,
+    balancerCollection,
+    balancerCategory,
+    balanserPrise,
+    balanserSize,
+    balanserStock,
+  } = useSelector<RootReducerProps, Balancers>((state) => state.balansersFilters);
 
   const {
     colorsSelected,
@@ -29,15 +36,6 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
     sizeSelected,
     stockSelected,
   } = selectedFilters;
-
-  const {
-    balancerColor,
-    balancerCollection,
-    balanserPrise,
-    balanserSize,
-    balancerCategory,
-    balanserStock,
-  } = balanserFilters;
 
   const [balancedMinPrice, balancedMaxPrice] = balanserPrise;
   const [balancedMinSize, balancedMaxSize] = balanserSize;

@@ -16,20 +16,32 @@ import {
   STOCK_MIN,
 } from '@/helpers/constant';
 
-vi.mock('@/context/FiltersContext', async () => {
-  const actual = await vi.importActual('@/context/FiltersContext');
+vi.mock('react-redux', async () => {
+  const mod = await vi.importActual('react-redux');
   return {
-    ...actual,
-    useMyFiltersContext: vi.fn(() => ({
-      emptyCatalog: true,
-      balanserFilters: {
+    ...mod,
+    useSelector: vi
+      .fn()
+      .mockImplementationOnce(() => ({
+        qweryParams: '?colors=black',
+      }))
+      .mockImplementation(() => ({
         balancerColor: COLOR_STOCK,
         balancerCollection: COLLECTION_STOCK,
         balancerCategory: CATEGORIES_STOCK,
         balanserPrise: [PRICE_MIN, PRICE_MAX],
         balanserSize: [SIZE_MIN, SIZE_MAX],
         balanserStock: [STOCK_MIN, STOCK_MAX],
-      },
+      })),
+  };
+});
+
+vi.mock('@/context/FiltersContext', async () => {
+  const actual = await vi.importActual('@/context/FiltersContext');
+  return {
+    ...actual,
+    useMyFiltersContext: vi.fn(() => ({
+      emptyCatalog: true,
     })),
   };
 });
@@ -53,7 +65,10 @@ describe('Main page, empty catalog', () => {
     );
 
     const noItemsFoundElement = screen.getByTestId('empty-catalog');
+
     expect(noItemsFoundElement).toBeInTheDocument();
     expect(screen.getByText('No items found')).toBeInTheDocument();
+    expect(screen.getByText('Selected filters:')).toBeInTheDocument();
+    expect(screen.getByText('Copy link')).toBeInTheDocument();
   });
 });

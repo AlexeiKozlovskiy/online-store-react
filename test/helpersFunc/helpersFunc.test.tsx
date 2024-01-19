@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
-  commonBalanserProducts,
+  categoryBalancer,
+  collectionBalancer,
+  colorBalancer,
   commonError,
-  commonFiltersProducts,
+  dualRangesBalancer,
   formatNameForURL,
   formatNameFromURL,
   formatPrice,
@@ -27,6 +29,7 @@ import {
   notSortCollection,
   notSortColor,
   notSortingProduct,
+  products,
   promocodes,
   sortCategory,
   sortCollection,
@@ -39,6 +42,7 @@ import {
   sortingProductByStockDesc,
 } from '../testsData';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { CATEGORIES_STOCK } from '@/helpers/constant';
 
 describe('helpers function', () => {
   it('should format price', () => {
@@ -60,32 +64,6 @@ describe('helpers function', () => {
     const formattedName = formatNameFromURL(name);
 
     expect(formattedName).toBe('Luxury Christmas');
-  });
-
-  describe('common object', () => {
-    it('should return common filter object', () => {
-      const commmon = commonFiltersProducts([1, 3], [1, 2, 3], [1, 3], [1, 2, 3, 5]);
-
-      expect(commmon).toStrictEqual([1, 3]);
-
-      const empty = commonFiltersProducts([], [1, 2, 3], [4, 5], [1, 2, 3, 5]);
-
-      expect(empty).toStrictEqual([]);
-    });
-
-    it('should return common object', () => {
-      const commmon = commonBalanserProducts([0, 1, 3], [1, 2, 3], [1, 3], [1, 2, 3, 5]);
-
-      expect(commmon).toStrictEqual([1, 3]);
-
-      const commmonTwo = commonBalanserProducts([0, 1, 3], [1, 2, 3], [4, 5], [1, 2, 3, 5]);
-
-      expect(commmonTwo).toStrictEqual([]);
-
-      const empty = commonBalanserProducts([], [], [], []);
-
-      expect(empty).toStrictEqual([]);
-    });
   });
 
   it('should sort color balancer', () => {
@@ -195,6 +173,58 @@ describe('helpers function', () => {
       const totalItems = getTotalItems(cart);
 
       expect(totalItems).toStrictEqual(5);
+    });
+  });
+
+  describe('balanser function', () => {
+    const minPrice = 3.39;
+    const maxPrice = 12.99;
+    const minSize = 8;
+    const maxSize = 700;
+    const minStock = 2;
+    const maxStock = 40;
+
+    it('should return min & max value by key', () => {
+      const priceValue = dualRangesBalancer(products, 'price');
+      expect(priceValue).toStrictEqual([minPrice, maxPrice]);
+
+      const sizeValue = dualRangesBalancer(products, 'size');
+      expect(sizeValue).toStrictEqual([minSize, maxSize]);
+
+      const stockValue = dualRangesBalancer(products, 'stock');
+      expect(stockValue).toStrictEqual([minStock, maxStock]);
+    });
+
+    it('should return colors', () => {
+      const colorsValue = colorBalancer(products);
+
+      expect(colorsValue).toStrictEqual([
+        { color: 'blue' },
+        { color: 'brown' },
+        { color: 'yellow' },
+      ]);
+    });
+
+    it('should return collections', () => {
+      const colorsValue = collectionBalancer(products);
+
+      expect(colorsValue).toStrictEqual([
+        { collection: 2023 },
+        { collection: 2022 },
+        { collection: 2021 },
+      ]);
+    });
+
+    it('should return category', () => {
+      const colorsValue = categoryBalancer(products, CATEGORIES_STOCK);
+
+      expect(colorsValue).toStrictEqual([
+        { category: 'Christmas decorations', count: 1 },
+        { category: 'Garland & Wreath', count: 0 },
+        { category: 'Do It Yourself', count: 0 },
+        { category: 'Tree decorations', count: 4 },
+        { category: 'Christmas lights', count: 3 },
+      ]);
     });
   });
 });

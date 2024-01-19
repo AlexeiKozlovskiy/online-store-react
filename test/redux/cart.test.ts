@@ -107,14 +107,14 @@ describe('Redux cart reducers', () => {
     expect(addedState.length).toBe(1);
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
 
-    store.dispatch(removeItemFromCart(PRODUCT_ONE));
+    store.dispatch(removeItemFromCart(PRODUCT_ONE.id));
     const removeState = store.getState().cart;
 
     expect(removeState[0].quantity).toBe(quantity - 1);
     expect(removeState.length).toBe(1);
 
-    store.dispatch(removeItemFromCart(PRODUCT_ONE));
-    store.dispatch(removeItemFromCart(PRODUCT_ONE));
+    store.dispatch(removeItemFromCart(PRODUCT_ONE.id));
+    store.dispatch(removeItemFromCart(PRODUCT_ONE.id));
 
     const removeStateTwo = store.getState().cart;
     expect(removeStateTwo.length).toBe(0);
@@ -130,12 +130,12 @@ describe('Redux cart reducers', () => {
     expect(addedState.length).toBe(1);
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
 
-    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE));
+    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE.id));
     const removeState = store.getState().cart;
 
     expect(removeState.length).toBe(0);
 
-    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE));
+    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE.id));
     const removeStateTwo = store.getState().cart;
 
     expect(removeStateTwo.length).toBe(0);
@@ -153,7 +153,7 @@ describe('Redux cart reducers', () => {
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
     expect(addedState[1].product).toHaveProperty('name', 'LED lights warm');
 
-    store.dispatch(removeItemFromCart(PRODUCT_ONE));
+    store.dispatch(removeItemFromCart(PRODUCT_ONE.id));
     const removeState = store.getState().cart;
 
     expect(removeState.length).toBe(1);
@@ -172,7 +172,7 @@ describe('Redux cart reducers', () => {
     expect(addedState[0].product).toHaveProperty('name', 'Gingerbread House');
     expect(addedState[1].product).toHaveProperty('name', 'LED lights warm');
 
-    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE));
+    store.dispatch(removeAllItemsFromCart(PRODUCT_ONE.id));
     const removeState = store.getState().cart;
 
     expect(removeState.length).toBe(1);
