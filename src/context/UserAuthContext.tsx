@@ -83,7 +83,7 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
       setUser(user);
     }
     getUserDetails();
-  }, [accessToken, refreshToken, expiresIn, idUser]);
+  }, [authState]);
 
   useEffect(() => {
     if (googleData) {
@@ -92,7 +92,11 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
   }, [googleData]);
 
   async function checkRefreshTokens() {
-    if (new Date().getTime() > +expiresIn!) {
+    const curTime = new Date().getTime();
+    if (curTime - 15000 > +expiresIn!) {
+      logOut();
+    }
+    if (curTime > +expiresIn!) {
       refreshTokens();
     }
   }
@@ -166,6 +170,7 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
     if (data) {
       setAuthParams({ ...data.backendTokens, idUser, authenticated });
     } else if (error) {
+      logOut();
       setErrorUser(FORM_MESSAGES.SOMETHING_WRONG);
     }
   }

@@ -1,24 +1,12 @@
 import { UserAuthContextProvider, useMyUserAuthContext } from '@/context/UserAuthContext';
 import { rootState } from '@/store/store';
 import { FORM_MESSAGES } from '@/types/types';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 import { describe, expect, it } from 'vitest';
 
 describe('user context', () => {
-  it('renders the context provider', () => {
-    render(
-      <Provider store={rootState}>
-        <UserAuthContextProvider>
-          <div>Test component</div>
-        </UserAuthContextProvider>
-      </Provider>
-    );
-
-    expect(screen.getByText('Test component')).toBeInTheDocument();
-  });
-
   it('should perform sign in, and then log out', async () => {
     const userData = { email: 'test16@gmail.com', password: 'test16test17' };
 

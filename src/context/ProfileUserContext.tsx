@@ -1,11 +1,11 @@
-import { getProfile, createProfile, updateProfile } from '@/api/ProfileUserAPI';
+import { getProfile, updateProfile } from '@/api/ProfileUserAPI';
 import { Authentication, Profile, RootReducerProps } from '@/types/types';
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useMutation, useQuery } from 'react-query';
+import { useMyUserAuthContext } from './UserAuthContext';
 
 interface IProfileUserContext {
-  createUserProfile: (data: Profile) => void;
   updateUserProfile: (data: Profile) => void;
   profileData: Profile | null | undefined;
   profileLoading: boolean;
@@ -14,7 +14,6 @@ interface IProfileUserContext {
 export const useMyProfileUserContext = () => useContext(ProfileUserContext);
 
 export const ProfileUserContext = createContext<IProfileUserContext>({
-  createUserProfile: () => null,
   updateUserProfile: () => null,
   profileData: null,
   profileLoading: false,
@@ -24,7 +23,7 @@ export const ProfileUserContextProvider = ({ children }: { children: ReactNode }
   const [profileLoading, setProfileLoading] = useState(false);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, idUser } = authState;
-  const createUserMutation = useMutation((data: Profile) => createProfile(data, idUser!));
+  const { logOut } = useMyUserAuthContext();
   const updateUserMutation = useMutation((data: Profile) => updateProfile(data, idUser!));
   const {
     data: profileData,
@@ -32,22 +31,14 @@ export const ProfileUserContextProvider = ({ children }: { children: ReactNode }
     refetch,
   } = useQuery(['profile', accessToken, idUser], () => getProfile(accessToken, idUser), {
     enabled: !!accessToken && !!idUser,
+    onError: () => logOut(),
+    refetchOnWindowFocus: false,
   });
   const { isLoading: updateProfileLoading } = updateUserMutation;
-  const { isLoading: createProfileLoading } = createUserMutation;
 
   useEffect(() => {
     commonPreloadingProfile();
-  }, [profileDataLoading, updateProfileLoading, createProfileLoading]);
-
-  const createUserProfile = async (data: Profile) => {
-    try {
-      await createUserMutation.mutateAsync(data);
-      await refetch();
-    } catch (error) {
-      console.error(createUserMutation, error);
-    }
-  };
+  }, [profileDataLoading, updateProfileLoading]);
 
   const updateUserProfile = async (data: Profile) => {
     try {
@@ -59,7 +50,7 @@ export const ProfileUserContextProvider = ({ children }: { children: ReactNode }
   };
 
   function commonPreloadingProfile() {
-    if (profileDataLoading || updateProfileLoading || createProfileLoading) {
+    if (profileDataLoading || updateProfileLoading) {
       setProfileLoading(true);
     } else setProfileLoading(false);
   }
@@ -68,7 +59,6 @@ export const ProfileUserContextProvider = ({ children }: { children: ReactNode }
     <ProfileUserContext.Provider
       value={{
         profileData,
-        createUserProfile,
         updateUserProfile,
         profileLoading,
       }}

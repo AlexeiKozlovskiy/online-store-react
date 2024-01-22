@@ -2,14 +2,12 @@ import './BreadCrumdPanel.scss';
 import { memo, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
 import { useMyFiltersContext } from '@/context/FiltersContext';
-import { useMyRemoveFiltSortContext } from '@/context/RemoveAllSelectedContext';
 import { useMyURLContext } from '@/context/URLContext';
 
 export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
   const [copedLink, setCopedLink] = useState(false);
-  const { removeAllSelected } = useMyRemoveFiltSortContext();
   const { removeItemFilterClick } = useMyFiltersContext();
-  const { selectedFilters } = useMyURLContext();
+  const { selectedFilters, removeAllSelected } = useMyURLContext();
 
   const {
     colorsSelected,

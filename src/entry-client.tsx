@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from '@/App.tsx';
 import { FiltersContextProvider } from '@/context/FiltersContext';
 import { SortingsContextProvider } from '@/context/SortingsContext';
-import { RemoveAllSelectedContextProvider } from '@/context/RemoveAllSelectedContext';
 import { Provider } from 'react-redux';
 import store from '@/store/store';
 import { URLContextProvider } from '@/context/URLContext';
@@ -24,15 +23,13 @@ createRoot(document.getElementById('root')!).render(
           <URLContextProvider>
             <FiltersContextProvider>
               <SortingsContextProvider>
-                <RemoveAllSelectedContextProvider>
-                  <CloseOpenModalsContextProvider>
-                    <UserAuthContextProvider>
-                      <ProfileUserContextProvider>
-                        <App />
-                      </ProfileUserContextProvider>
-                    </UserAuthContextProvider>
-                  </CloseOpenModalsContextProvider>
-                </RemoveAllSelectedContextProvider>
+                <CloseOpenModalsContextProvider>
+                  <UserAuthContextProvider>
+                    <ProfileUserContextProvider>
+                      <App />
+                    </ProfileUserContextProvider>
+                  </UserAuthContextProvider>
+                </CloseOpenModalsContextProvider>
               </SortingsContextProvider>
             </FiltersContextProvider>
           </URLContextProvider>
