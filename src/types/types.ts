@@ -20,6 +20,11 @@ export interface CartItemArg {
   quantity: number;
 }
 
+export interface CartItem extends CartItemArg {
+  cartID: string;
+  itemNumber: number;
+}
+
 export interface Promocode {
   id: number;
   name: string;
@@ -29,11 +34,6 @@ export interface Promocode {
 export interface PromocodeData {
   applied: Promocode[];
   available: Promocode[];
-}
-
-export interface CartItem extends CartItemArg {
-  cartID: string;
-  itemNumber: number;
 }
 
 export interface ChosenProduct {
@@ -62,6 +62,10 @@ export interface PaginationData {
   limit: number;
 }
 
+export type GetPriceByPromocodes = (promocodes?: Promocode[]) => number;
+
+export type DualRange = [number | null, number | null];
+
 export interface CartData {
   items: CartItem[];
   priceAfterDiscount: number;
@@ -71,19 +75,17 @@ export interface CartData {
   pagination: PaginationData;
 }
 
-export type GetPriceByPromocodes = (promocodes?: Promocode[]) => number;
-
 export interface SelectedFilter {
-  (values: [number | null, number | null]): void;
+  (values: DualRange): void;
 }
 
 export interface SelectedFilters {
   colorsSelected: string[];
   collectionsSelected: number[];
   categorySelected: string[];
-  priceSelected: [number | null, number | null];
-  sizeSelected: [number | null, number | null];
-  stockSelected: [number | null, number | null];
+  priceSelected: DualRange;
+  sizeSelected: DualRange;
+  stockSelected: DualRange;
 }
 
 export interface BalancerColor {
@@ -103,9 +105,9 @@ export interface Balancers {
   balancerColor: BalancerColor[];
   balancerCollection: BalancerCollection[];
   balancerCategory: BalancerCategory[];
-  balanserPrise: [number | null, number | null];
-  balanserSize: [number | null, number | null];
-  balanserStock: [number | null, number | null];
+  balanserPrise: DualRange;
+  balanserSize: DualRange;
+  balanserStock: DualRange;
 }
 
 export interface InputSearch {

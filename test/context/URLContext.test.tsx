@@ -2,28 +2,15 @@ import { URLContextProvider, useMyURLContext } from '@/context/URLContext';
 import { describe, expect, it } from 'vitest';
 import { rootState } from '@/store/store';
 import { Provider, useSelector } from 'react-redux';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ProductsQweryParams, RootReducerProps, SelectedFilters } from '@/types/types';
+import { PRICE_MAX, PRICE_MIN, SIZE_MAX, SIZE_MIN, STOCK_MAX, STOCK_MIN } from '@/helpers/constant';
 
 describe('url context', () => {
-  it('renders the context provider', () => {
-    render(
-      <Provider store={rootState}>
-        <BrowserRouter>
-          <URLContextProvider>
-            <div>Test component</div>
-          </URLContextProvider>
-        </BrowserRouter>
-      </Provider>
-    );
-
-    expect(screen.getByText('Test component')).toBeInTheDocument();
-  });
-
   it('updates selectedFilters when changes product filters', async () => {
     const testSelectedFilters: SelectedFilters = {
-      colorsSelected: ['red, black'],
+      colorsSelected: ['red', 'black'],
       collectionsSelected: [2023],
       categorySelected: ['Do It Yourself'],
       priceSelected: [9, 30],
@@ -337,5 +324,102 @@ describe('url context', () => {
     fireEvent.click(getByTestId('updateSwichedView'));
 
     expect(getByTestId('swichedViewValue').textContent).toBe('row');
+  });
+
+  it('should remove all selected', async () => {
+    const baseSelectedFilters = {
+      colorsSelected: [],
+      collectionsSelected: [],
+      categorySelected: [],
+      priceSelected: [PRICE_MIN, PRICE_MAX],
+      sizeSelected: [SIZE_MIN, SIZE_MAX],
+      stockSelected: [STOCK_MIN, STOCK_MAX],
+    };
+
+    const testSelectedFilters: SelectedFilters = {
+      colorsSelected: ['red, black'],
+      collectionsSelected: [2023],
+      categorySelected: ['Do It Yourself'],
+      priceSelected: [9, 30],
+      sizeSelected: [20, 500],
+      stockSelected: [3, 40],
+    };
+
+    const baseSearchValue = '';
+    const testSearchValue = 'test';
+
+    const baseSortViewOption = { value: '', label: 'Recommended' };
+    const testSortViewOption = { value: 'price-asc', label: 'Price ascending' };
+
+    const baseCurPageMain = 1;
+    const testCurPageMain = 5;
+    const TestComponent = () => {
+      const { removeAllSelected } = useMyURLContext();
+      const {
+        inputSearchURL,
+        selectedFilters,
+        sortindViewOption,
+        curPageMain,
+        setSelectedFilters,
+        setInputSearchURL,
+        setSortindViewOption,
+        setCurPageMain,
+      } = useMyURLContext();
+
+      function applyTestsValue() {
+        setSelectedFilters(testSelectedFilters);
+        setInputSearchURL(testSearchValue);
+        setSortindViewOption(testSortViewOption);
+        setCurPageMain(testCurPageMain);
+      }
+
+      return (
+        <div>
+          <div>
+            <button onClick={() => applyTestsValue()} data-testid="applyAllBtn"></button>
+            <button onClick={() => removeAllSelected()} data-testid="removeAllBtn"></button>
+          </div>
+          <div data-testid="selectedFiltersValue">{JSON.stringify(selectedFilters)}</div>
+          <div data-testid="searchValue">{inputSearchURL}</div>
+          <div data-testid="sortindViewValue">{JSON.stringify(sortindViewOption)}</div>
+          <div data-testid="curPageMainValue">{curPageMain}</div>
+        </div>
+      );
+    };
+
+    const { getByTestId } = render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <URLContextProvider>
+            <TestComponent />
+          </URLContextProvider>
+        </BrowserRouter>
+      </Provider>
+    );
+
+    expect(getByTestId('selectedFiltersValue').textContent).toBe(
+      JSON.stringify(baseSelectedFilters)
+    );
+    expect(getByTestId('searchValue').textContent).toBe(baseSearchValue);
+    expect(getByTestId('sortindViewValue').textContent).toBe(JSON.stringify(baseSortViewOption));
+    expect(getByTestId('curPageMainValue').textContent).toBe(baseCurPageMain.toString());
+
+    fireEvent.click(getByTestId('applyAllBtn'));
+
+    expect(getByTestId('selectedFiltersValue').textContent).toBe(
+      JSON.stringify(testSelectedFilters)
+    );
+    expect(getByTestId('searchValue').textContent).toBe(testSearchValue);
+    expect(getByTestId('sortindViewValue').textContent).toBe(JSON.stringify(testSortViewOption));
+    expect(getByTestId('curPageMainValue').textContent).toBe(testCurPageMain.toString());
+
+    fireEvent.click(getByTestId('removeAllBtn'));
+
+    expect(getByTestId('selectedFiltersValue').textContent).toBe(
+      JSON.stringify(baseSelectedFilters)
+    );
+    expect(getByTestId('searchValue').textContent).toBe(baseSearchValue);
+    expect(getByTestId('sortindViewValue').textContent).toBe(JSON.stringify(baseSortViewOption));
+    expect(getByTestId('curPageMainValue').textContent).toBe(baseCurPageMain.toString());
   });
 });
