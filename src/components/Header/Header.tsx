@@ -1,7 +1,6 @@
 import './Header.scss';
 import './HeaderAuth.scss';
 import { Link } from 'react-router-dom';
-import { useMyRemoveFiltSortContext } from '@/context/RemoveAllSelectedContext';
 import { useMyURLContext } from '@/context/URLContext';
 import { HeaderLogo } from '@/components/HeaderLogo/HeaderLogo';
 import { SignUPModal } from '@/components/ModalWindow/SignUP/SignUPModal';
@@ -20,8 +19,7 @@ import { bodyNotScroll } from '@/helpers/helpersFunc';
 
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
-  const { cartUrl } = useMyURLContext();
-  const { removeAllSelected } = useMyRemoveFiltSortContext();
+  const { cartUrl, removeAllSelected } = useMyURLContext();
   const {
     handelCloseModalSignUP,
     handelCloseModalSignIN,

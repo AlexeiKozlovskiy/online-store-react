@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps, Profile } from '@/types/types';
+import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
@@ -41,7 +41,7 @@ export function Form() {
   } = useFormsValidation();
   const { user } = useMyUserAuthContext();
   useFormsInputsHelper({ watch, setValue });
-  const { profileData, createUserProfile, updateUserProfile } = useMyProfileUserContext();
+  const { profileData, updateUserProfile } = useMyProfileUserContext();
   const { totalPriseByPromocode } = useTotalCartInfo();
   const [showPreloader, setShowPreloader] = useState(false);
 
@@ -61,7 +61,7 @@ export function Form() {
     setShowPreloader(true);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, ...dataForm } = formProfile;
-    checkForm(dataForm);
+    updateUserProfile(dataForm);
 
     const orderExempleData = {
       userID: user?.id,
@@ -92,7 +92,6 @@ export function Form() {
         setValue('formProfile', profileData);
       }
     }
-
     getProfile();
   }, [user]);
 
@@ -107,14 +106,6 @@ export function Form() {
   useEffect(() => {
     user && setValue('formProfile.email', user.email);
   }, [watch('formProfile')]);
-
-  function checkForm(dataForm: Profile) {
-    if (!profileData) {
-      createUserProfile(dataForm);
-    } else if (JSON.stringify(dataForm) !== JSON.stringify(profileData)) {
-      updateUserProfile(dataForm);
-    }
-  }
 
   function testDataClick() {
     setValue('formProfile', TEST_USER_DATA);

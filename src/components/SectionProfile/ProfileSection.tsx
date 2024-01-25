@@ -1,7 +1,7 @@
 import '@/pages/ProfilePage/ProfilePage.scss';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useForm } from 'react-hook-form';
-import { MyForms, CardImages, Profile } from '@/types/types';
+import { MyForms, CardImages } from '@/types/types';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useEffect, useRef } from 'react';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
@@ -37,10 +37,8 @@ export function ProfileSection() {
     errorDefinitions,
   } = useFormsValidation();
   useFormsInputsHelper({ watch, setValue });
-  const { user } = useMyUserAuthContext();
-  const { profileData, profileLoading, createUserProfile, updateUserProfile } =
-    useMyProfileUserContext();
-  const { isFetching: isFetchingUser } = useMyUserAuthContext();
+  const { user, isFetching } = useMyUserAuthContext();
+  const { profileData, profileLoading, updateUserProfile } = useMyProfileUserContext();
 
   const { formProfile } = errors;
   const { name, address, email, phone, nameCard, numberCard, cvvCard, dateCard } =
@@ -57,7 +55,7 @@ export function ProfileSection() {
   const onSubmit = ({ formProfile }: MyForms) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { email, ...dataForm } = formProfile;
-    checkForm(dataForm);
+    updateUserProfile(dataForm);
   };
 
   useEffect(() => {
@@ -85,14 +83,6 @@ export function ProfileSection() {
     setValue('formProfile', TEST_USER_DATA);
   }
 
-  function checkForm(dataForm: Profile) {
-    if (!profileData) {
-      createUserProfile(dataForm);
-    } else if (JSON.stringify(dataForm) !== JSON.stringify(profileData)) {
-      updateUserProfile(dataForm);
-    }
-  }
-
   const preloaderProfile = (
     <div className="profile-preloader-container">
       <Preloader />
@@ -102,7 +92,7 @@ export function ProfileSection() {
   return (
     <>
       <section className="profile__section section-profile">
-        {isFetchingUser ? <UserProfileSkeleton /> : <UserProfile />}
+        {isFetching ? <UserProfileSkeleton /> : <UserProfile />}
         {profileLoading && preloaderProfile}
         <form className="profile-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="profile-form__info">

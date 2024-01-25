@@ -22,12 +22,10 @@ import { useSelector } from 'react-redux';
 export const useMySortingsContext = () => useContext(SortingsContext);
 
 interface ISortingsContext {
-  sortingView: (selectedOption: ISelect) => void;
   sortProducts: Product[];
 }
 
 export const SortingsContext = createContext<ISortingsContext>({
-  sortingView: () => null,
   sortProducts: [],
 });
 
@@ -77,14 +75,5 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
     }
   }
 
-  return (
-    <SortingsContext.Provider
-      value={{
-        sortingView,
-        sortProducts,
-      }}
-    >
-      {children}
-    </SortingsContext.Provider>
-  );
+  return <SortingsContext.Provider value={{ sortProducts }}>{children}</SortingsContext.Provider>;
 };

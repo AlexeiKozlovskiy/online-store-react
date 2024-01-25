@@ -12,7 +12,7 @@ import {
 } from '@/helpers/constant';
 import { ISelect, InputSearch, SelectedFilters } from '@/types/types';
 import { useLocation } from 'react-router-dom';
-import { setQweryParams } from '@/store/controller';
+import { clearQweryParams, setQweryParams } from '@/store/controller';
 
 interface IURLContext extends InputSearch {
   sortindViewOption: ISelect;
@@ -30,6 +30,7 @@ interface IURLContext extends InputSearch {
   cartUrl: string;
   selectedFilters: SelectedFilters;
   setSelectedFilters: React.Dispatch<React.SetStateAction<SelectedFilters>>;
+  removeAllSelected: () => void;
 }
 
 export const useMyURLContext = () => useContext(URLContext);
@@ -59,6 +60,7 @@ export const URLContext = createContext<IURLContext>({
     stockSelected: [STOCK_MIN, STOCK_MAX],
   },
   setSelectedFilters: () => null,
+  removeAllSelected: () => null,
 });
 
 export const URLContextProvider = ({ children }: { children: ReactNode }) => {
@@ -327,6 +329,24 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
       });
   }
 
+  function removeAllSelected() {
+    setSelectedFilters({
+      colorsSelected: [],
+      collectionsSelected: [],
+      categorySelected: [],
+      priceSelected: [PRICE_MIN, PRICE_MAX],
+      sizeSelected: [SIZE_MIN, SIZE_MAX],
+      stockSelected: [STOCK_MIN, STOCK_MAX],
+    });
+    setInputSearchURL('');
+    setSortindViewOption(SORT_OPTIONS[0]);
+    setCurPageMain(1);
+    setPerMainPageOption(ITEMS_IN_PAGE[2]);
+    setPerCartPageOption(ITEMS_IN_PAGE_CART[1]);
+    setCurPageCart(1);
+    clearQweryParams();
+  }
+
   return (
     <URLContext.Provider
       value={{
@@ -347,6 +367,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
         cartUrl,
         selectedFilters,
         setSelectedFilters,
+        removeAllSelected,
       }}
     >
       {children}
