@@ -61,10 +61,12 @@ export function SortedShowItemsViewPanel({ onClickShowFilter }: ISortedShowItems
       </div>
       <div className="sorted-filters__switch-view switch-view">
         <div
+          data-testid="switch-view__row"
           className={`switch-view__line ${swichedView === 'row' && 'switch-active'} `}
           onClick={() => switcherView('row')}
         ></div>
         <div
+          data-testid="switch-view__block"
           className={`switch-view__block ${swichedView === 'block' && 'switch-active'} `}
           onClick={() => switcherView('block')}
         ></div>

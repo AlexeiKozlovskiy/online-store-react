@@ -2,8 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, expect, it, vi } from 'vitest';
 import { rootState } from '@/store/store';
+import { App } from '@/App';
 import { BrowserRouter } from 'react-router-dom';
 import { MainPage } from '@/pages/MainPage/MainPage';
+import { URLContextProvider } from '@/context/URLContext';
 
 describe('Main page', () => {
   const windowMock = {
@@ -30,7 +32,99 @@ describe('Main page', () => {
     expect(screen.getByText(/Find Christmas decorations/i)).toBeInTheDocument();
   });
 
-  it('should display filter panel on click showFilters button', async () => {
+  it('should changes input search', async () => {
+    const testSearchValue = 'test value';
+
+    render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const input: HTMLInputElement = screen.getByPlaceholderText('Search...');
+
+    fireEvent.change(input, { target: { value: testSearchValue } });
+
+    expect(input.value).toBe(testSearchValue);
+  });
+
+  it('should changes show items view, (left select)', async () => {
+    const { getByText, getAllByRole } = render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </Provider>
+    );
+    expect(getByText('Show items: 20')).toBeInTheDocument();
+
+    const customSelect = getAllByRole('combobox');
+
+    fireEvent.change(customSelect[1], { target: { value: '5', label: 'Show items: 5' } });
+
+    expect(getByText('Show items: 5')).toBeInTheDocument();
+
+    fireEvent.change(customSelect[1], { target: { value: '10', label: 'Show items: 10' } });
+
+    expect(getByText('Show items: 10')).toBeInTheDocument();
+
+    fireEvent.change(customSelect[1], { target: { value: 'all', label: 'All' } });
+
+    expect(getByText('All')).toBeInTheDocument();
+  });
+
+  it('should changed sorting view option, (right select)', () => {
+    const { getByText, getAllByRole } = render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <MainPage />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const select = getAllByRole('combobox')[0];
+
+    fireEvent.change(select, {
+      target: { value: 'price-asc', label: 'Price ascending' },
+    });
+
+    expect(getByText('Price ascending')).toBeInTheDocument();
+
+    fireEvent.change(select, {
+      target: { value: 'stock-asc', label: 'Stock ascending' },
+    });
+
+    expect(getByText('Stock ascending')).toBeInTheDocument();
+  });
+
+  it('should changed row/block view', () => {
+    const { getByTestId } = render(
+      <Provider store={rootState}>
+        <BrowserRouter>
+          <URLContextProvider>
+            <MainPage />
+          </URLContextProvider>
+        </BrowserRouter>
+      </Provider>
+    );
+
+    expect(getByTestId('switch-view__row').className).not.include('switch-active');
+    expect(getByTestId('switch-view__block').className).include('switch-active');
+
+    fireEvent.click(getByTestId('switch-view__row'));
+
+    expect(getByTestId('switch-view__row').className).include('switch-active');
+    expect(getByTestId('switch-view__block').className).not.include('switch-active');
+
+    fireEvent.click(getByTestId('switch-view__block'));
+
+    expect(getByTestId('switch-view__row').className).not.include('switch-active');
+    expect(getByTestId('switch-view__block').className).include('switch-active');
+  });
+
+  it('should view filter panel on click showFilters button', async () => {
     window.matchMedia = vi.fn().mockImplementation((query) => {
       return {
         matches: query === '(max-width: 767px)',
@@ -65,24 +159,22 @@ describe('Main page', () => {
     expect(filterPanel).toHaveAttribute('data-show', 'false');
   });
 
-  it('should changes show items view', async () => {
+  it('should renders app', () => {
+    class ResizeObserverMock {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    global.ResizeObserver = ResizeObserverMock;
+
     render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <MainPage />
+          <App />
         </BrowserRouter>
       </Provider>
     );
-    expect(screen.getByText('Show items: 20')).toBeInTheDocument();
 
-    const customSelect = screen.getAllByRole('combobox');
-
-    fireEvent.change(customSelect[1], { target: { value: '5', label: 'Show items: 5' } });
-
-    expect(screen.getByText('Show items: 5')).toBeInTheDocument();
-
-    fireEvent.change(customSelect[1], { target: { value: '10', label: 'Show items: 10' } });
-
-    expect(screen.getByText('Show items: 10')).toBeInTheDocument();
+    expect(screen.getByText(/Find Christmas decorations/i)).toBeInTheDocument();
   });
 });

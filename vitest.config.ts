@@ -12,7 +12,7 @@ const vitestConfig = defineConfig({
     coverage: {
       provider: 'istanbul',
       all: true,
-      exclude: ['src/types/types.ts', '.eslintrc.cjs'],
+      exclude: ['src/types/types.ts', '.eslintrc.cjs', 'test'],
     },
   },
   resolve: {

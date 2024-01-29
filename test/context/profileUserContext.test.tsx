@@ -12,7 +12,7 @@ describe('profile user context', () => {
 
   it('should update User Profile', async () => {
     const userLoginData = { email: 'test16@gmail.com', password: 'test16test17' };
-    const testUpdatedData = {
+    const updatedData = {
       address: 'United States, New-York, Times Square',
       cvvCard: '321',
       dateCard: '05/25',
@@ -23,7 +23,7 @@ describe('profile user context', () => {
       userId: 'a9cf1830-f151-4ac7-921c-f75e0a884380',
     };
 
-    const resetUpdatedData = {
+    const resetData = {
       address: 'United States, New-York, Times Square',
       cvvCard: '123',
       dateCard: '05/25',
@@ -47,8 +47,8 @@ describe('profile user context', () => {
           <div data-testid="profileData-cvvCard">{profileData?.cvvCard}</div>
           <div data-testid="profileData-nameCard">{profileData?.nameCard}</div>
           <div data-testid="profileData-numberCard">{profileData?.numberCard}</div>
-          <button onClick={() => updateUserProfile(testUpdatedData)}>Updated profile btn</button>
-          <button onClick={() => updateUserProfile(resetUpdatedData)}>Reset profile btn</button>
+          <button onClick={() => updateUserProfile(updatedData)}>Updated profile btn</button>
+          <button onClick={() => updateUserProfile(resetData)}>Reset profile btn</button>
           <button onClick={() => getSignIN(userLoginData)}>Sign In</button>
           <div>
             <div data-testid="user-context-email">{user ? user.email : 'No user'}</div>
@@ -84,15 +84,17 @@ describe('profile user context', () => {
 
     expect(getByTestId('user-context-preloader')).toHaveTextContent('show preloader');
 
+    await act(async () => {
+      fireEvent.click(getByText('Reset profile btn'));
+    });
+
     await waitFor(
       () => {
         expect(getByTestId('user-context-email')).toHaveTextContent('test16@gmail.com');
-        expect(getByTestId('profileData-name')).toHaveTextContent(resetUpdatedData.name);
-        expect(getByTestId('profileData-nameCard')).toHaveTextContent(resetUpdatedData.nameCard);
-        expect(getByTestId('profileData-numberCard')).toHaveTextContent(
-          resetUpdatedData.numberCard
-        );
-        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(resetUpdatedData.cvvCard);
+        expect(getByTestId('profileData-name')).toHaveTextContent(resetData.name);
+        expect(getByTestId('profileData-nameCard')).toHaveTextContent(resetData.nameCard);
+        expect(getByTestId('profileData-numberCard')).toHaveTextContent(resetData.numberCard);
+        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(resetData.cvvCard);
       },
       { timeout: 5000 }
     );
@@ -103,10 +105,10 @@ describe('profile user context', () => {
 
     await waitFor(
       () => {
-        expect(getByTestId('profileData-name')).toHaveTextContent(testUpdatedData.name);
-        expect(getByTestId('profileData-nameCard')).toHaveTextContent(testUpdatedData.nameCard);
-        expect(getByTestId('profileData-numberCard')).toHaveTextContent(testUpdatedData.numberCard);
-        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(testUpdatedData.cvvCard);
+        expect(getByTestId('profileData-name')).toHaveTextContent(updatedData.name);
+        expect(getByTestId('profileData-nameCard')).toHaveTextContent(updatedData.nameCard);
+        expect(getByTestId('profileData-numberCard')).toHaveTextContent(updatedData.numberCard);
+        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(updatedData.cvvCard);
       },
       { timeout: 5000 }
     );
@@ -117,12 +119,10 @@ describe('profile user context', () => {
 
     await waitFor(
       () => {
-        expect(getByTestId('profileData-name')).toHaveTextContent(resetUpdatedData.name);
-        expect(getByTestId('profileData-nameCard')).toHaveTextContent(resetUpdatedData.nameCard);
-        expect(getByTestId('profileData-numberCard')).toHaveTextContent(
-          resetUpdatedData.numberCard
-        );
-        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(resetUpdatedData.cvvCard);
+        expect(getByTestId('profileData-name')).toHaveTextContent(resetData.name);
+        expect(getByTestId('profileData-nameCard')).toHaveTextContent(resetData.nameCard);
+        expect(getByTestId('profileData-numberCard')).toHaveTextContent(resetData.numberCard);
+        expect(getByTestId('profileData-cvvCard')).toHaveTextContent(resetData.cvvCard);
       },
       { timeout: 5000 }
     );

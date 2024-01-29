@@ -29,7 +29,7 @@ import {
   notSortCollection,
   notSortColor,
   notSortingProduct,
-  products,
+  TEST_PRODUCTS,
   promocodes,
   sortCategory,
   sortCollection,
@@ -185,18 +185,18 @@ describe('helpers function', () => {
     const maxStock = 40;
 
     it('should return min & max value by key', () => {
-      const priceValue = dualRangesBalancer(products, 'price');
+      const priceValue = dualRangesBalancer(TEST_PRODUCTS, 'price');
       expect(priceValue).toStrictEqual([minPrice, maxPrice]);
 
-      const sizeValue = dualRangesBalancer(products, 'size');
+      const sizeValue = dualRangesBalancer(TEST_PRODUCTS, 'size');
       expect(sizeValue).toStrictEqual([minSize, maxSize]);
 
-      const stockValue = dualRangesBalancer(products, 'stock');
+      const stockValue = dualRangesBalancer(TEST_PRODUCTS, 'stock');
       expect(stockValue).toStrictEqual([minStock, maxStock]);
     });
 
     it('should return colors', () => {
-      const colorsValue = colorBalancer(products);
+      const colorsValue = colorBalancer(TEST_PRODUCTS);
 
       expect(colorsValue).toStrictEqual([
         { color: 'blue' },
@@ -206,7 +206,7 @@ describe('helpers function', () => {
     });
 
     it('should return collections', () => {
-      const colorsValue = collectionBalancer(products);
+      const colorsValue = collectionBalancer(TEST_PRODUCTS);
 
       expect(colorsValue).toStrictEqual([
         { collection: 2023 },
@@ -216,7 +216,7 @@ describe('helpers function', () => {
     });
 
     it('should return category', () => {
-      const colorsValue = categoryBalancer(products, CATEGORIES_STOCK);
+      const colorsValue = categoryBalancer(TEST_PRODUCTS, CATEGORIES_STOCK);
 
       expect(colorsValue).toStrictEqual([
         { category: 'Christmas decorations', count: 1 },

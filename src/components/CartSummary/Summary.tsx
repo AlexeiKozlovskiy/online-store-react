@@ -110,7 +110,11 @@ export function Summary() {
           Promo for test:{' '}
           {PROMOCODES.map(({ name, id }) => (
             <span key={id}>
-              <div className="promo-test__name" onClick={() => handelClickPromoCode(name)}>
+              <div
+                data-testid={name}
+                className="promo-test__name"
+                onClick={() => handelClickPromoCode(name)}
+              >
                 {name}
               </div>{' '}
             </span>

@@ -70,7 +70,7 @@ export function Header() {
   );
 
   return (
-    <header className="header wrapper">
+    <header data-testid="header" className="header wrapper">
       {signUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
       {signIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
       {user && (

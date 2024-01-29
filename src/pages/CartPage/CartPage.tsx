@@ -2,7 +2,7 @@ import './CartPage.scss';
 import { Link } from 'react-router-dom';
 import { CartItem, ISelect, ROUTE, RootReducerProps } from '@/types/types';
 import { ITEMS_IN_PAGE_CART } from '@/helpers/constant';
-import { CartItemList } from '@/components/CartList/CartList';
+import { CartItemList } from '@/components/CartItemList/CartItemList';
 import { useSelector } from 'react-redux';
 import { ArrowBack } from '@/components/ArrowBack/ArrowBack';
 import { Pagination } from '@/components/Pagination/Pagination';

@@ -15,6 +15,10 @@ export interface Product {
 
 export type DualRangesBalancer = Pick<Product, 'price' | 'size' | 'stock'>;
 
+export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
+
+export type SortingsValue = 'name' | 'price-asc' | 'price-desc' | 'stock-asc' | 'stock-desc';
+
 export interface CartItemArg {
   product: Product;
   quantity: number;
@@ -124,31 +128,11 @@ export interface PageClickEvent {
   selected: number;
 }
 
-export enum SORTING_SELECT {
-  NAME = 'name',
-  PRICE_ASC = 'price-asc',
-  PRICE_DESC = 'price-desc',
-  STOCK_ASC = 'stock-asc',
-  STOCK_DESC = 'stock-desc',
-}
-
-export enum CARD {
-  EXPRESS = '3',
-  VISA = '4',
-  MASTERCARD = '5',
-}
-
 export enum ROUTE {
   MAIN = '/',
   CART = 'cart',
   PRODUCT = 'product',
   PROFILE = 'profile',
-}
-
-export interface CardImages {
-  3: string;
-  4: string;
-  5: string;
 }
 
 export interface User {

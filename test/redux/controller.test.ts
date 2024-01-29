@@ -18,7 +18,7 @@ import {
   setQweryParams,
   updateBalancersPropertys,
 } from '@/store/controller';
-import { products } from '../testsData';
+import { TEST_PRODUCTS } from '../testsData';
 import { COLLECTION_STOCK, COLOR_STOCK } from '@/helpers/constant';
 
 describe('Controller redux functions', () => {
@@ -27,12 +27,12 @@ describe('Controller redux functions', () => {
       const id = '16';
       const fakeId = '333';
 
-      addProductToCart(fakeId, products);
+      addProductToCart(fakeId, TEST_PRODUCTS);
       const updatedState = store.getState().cart;
 
       expect(updatedState.length).toBe(0);
 
-      addProductToCart(id, products);
+      addProductToCart(id, TEST_PRODUCTS);
       const updatedStateTwo = store.getState().cart;
 
       expect(updatedStateTwo.length).toBe(1);
@@ -59,14 +59,14 @@ describe('Controller redux functions', () => {
       const fakeId = '444';
       const quantity = 10;
 
-      setProductsQuantityInCart(id, quantity, products);
+      setProductsQuantityInCart(id, quantity, TEST_PRODUCTS);
       const updatedState = store.getState().cart;
 
       expect(updatedState.length).toBe(1);
       expect(updatedState[0].quantity).toBe(10);
       expect(updatedState[0].product).toHaveProperty('name', 'LED lights warm');
 
-      setProductsQuantityInCart(fakeId, quantity, products);
+      setProductsQuantityInCart(fakeId, quantity, TEST_PRODUCTS);
       const updatedStateTwo = store.getState().cart;
 
       expect(updatedStateTwo.length).toBe(1);
@@ -97,8 +97,8 @@ describe('Controller redux functions', () => {
         quantity: 15,
       };
 
-      setProductsQuantityInCart(PRODUCT_ONE.id, PRODUCT_ONE.quantity, products);
-      setProductsQuantityInCart(PRODUCT_TWO.id, PRODUCT_TWO.quantity, products);
+      setProductsQuantityInCart(PRODUCT_ONE.id, PRODUCT_ONE.quantity, TEST_PRODUCTS);
+      setProductsQuantityInCart(PRODUCT_TWO.id, PRODUCT_TWO.quantity, TEST_PRODUCTS);
 
       const updatedState = store.getState().cart;
 

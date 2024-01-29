@@ -34,6 +34,10 @@ export function ProductsList({ clickFilters }: ProductsList) {
     }
   }, [perMainPageOption]);
 
+  function getIsInCart(id: string) {
+    return cartItemsState.some(({ product }) => product.id === id);
+  }
+
   return (
     <>
       {isFetching && <MainSkeleton itemsInPage={itemsInPage} />}
@@ -43,13 +47,7 @@ export function ProductsList({ clickFilters }: ProductsList) {
       >
         {currentItems &&
           currentItems.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              isInCart={cartItemsState.some(({ product: inCartProduct }) => {
-                return inCartProduct.id === product.id;
-              })}
-            />
+            <ProductItem key={product.id} product={product} isInCart={getIsInCart(product.id)} />
           ))}
       </div>
       {

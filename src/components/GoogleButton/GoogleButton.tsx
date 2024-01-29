@@ -32,5 +32,5 @@ export function GoogleButton() {
     });
   }, [signUP, signIN]);
 
-  return <button className="google-btn" id="signInDiv"></button>;
+  return <button data-testid="google-btn" className="google-btn" id="signInDiv"></button>;
 }
