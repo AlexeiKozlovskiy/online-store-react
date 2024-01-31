@@ -40,16 +40,16 @@ export function useCartPagination() {
     }
   }, [itemOffset, itemsPerPage, cartItemsState]);
 
-  function resetOnFirstPageByShowItems() {
-    handlePageClick({ selected: 0 });
-  }
-
   const handlePageClick = (event: PageClickEvent) => {
     const newOffset = (event.selected * itemsPerPage) % countCartItem;
     setItemOffset(newOffset);
     setCurPageCart(event.selected + 1);
     handlerScrollUp();
   };
+
+  function resetOnFirstPageByShowItems() {
+    handlePageClick({ selected: 0 });
+  }
 
   return { countPages, curPageCart, currentItems, handlePageClick };
 }

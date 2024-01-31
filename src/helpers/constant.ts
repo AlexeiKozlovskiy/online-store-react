@@ -1,4 +1,4 @@
-import { CardImg, SortingsValue } from '@/types/types';
+import { CardImg, ModalsValue, SortingsValue } from '@/types/types';
 
 export const NEST_SERVICE_URL = 'https://online-store-api-7fyt.onrender.com';
 // export const NEST_SERVICE_URL = 'http://localhost:4000';
@@ -21,6 +21,13 @@ export const SORTING_SELECT: Record<string, SortingsValue> = {
   PRICE_DESC: 'price-desc',
   STOCK_ASC: 'stock-asc',
   STOCK_DESC: 'stock-desc',
+};
+
+export const MODAL_WINDOWS: Record<string, ModalsValue> = {
+  SIGN_UP: 'modalSignUP',
+  SIGN_IN: 'modalSignIN',
+  USER: 'modalUser',
+  PAYMENT: 'modalPayment',
 };
 
 export const CARD_IMAGES: Record<string, CardImg> = {

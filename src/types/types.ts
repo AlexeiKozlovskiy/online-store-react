@@ -14,10 +14,10 @@ export interface Product {
 }
 
 export type DualRangesBalancer = Pick<Product, 'price' | 'size' | 'stock'>;
-
-export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
-
 export type SortingsValue = 'name' | 'price-asc' | 'price-desc' | 'stock-asc' | 'stock-desc';
+export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
+export type ModalsValue = 'modalSignUP' | 'modalSignIN' | 'modalUser' | 'modalPayment';
+export type ModalsWindows = Record<ModalsValue, boolean>;
 
 export interface CartItemArg {
   product: Product;
@@ -312,11 +312,4 @@ export enum FORM_MESSAGES {
   INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
   SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google.',
   SOMETHING_WRONG = 'Something wrong.',
-}
-
-export interface CloseOpenModals {
-  payment: boolean;
-  signUP: boolean;
-  signIN: boolean;
-  user: boolean;
 }

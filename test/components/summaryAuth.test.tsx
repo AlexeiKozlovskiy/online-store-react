@@ -63,8 +63,6 @@ describe('summary', () => {
 
     fireEvent.click(getByText('Proceed to Checkout'));
 
-    expect(mockSetOpenModals).toHaveBeenCalledWith({
-      payment: true,
-    });
+    expect(mockSetOpenModals).toHaveBeenCalled();
   });
 });

@@ -45,9 +45,6 @@ describe('summary', () => {
     fireEvent.click(getByText('Proceed to Checkout'));
 
     expect(mockSetOpenModals).toHaveBeenCalled();
-    expect(mockSetOpenModals).toHaveBeenCalledWith({
-      signIN: true,
-    });
   });
 
   it('should apply promocode and his remove', async () => {

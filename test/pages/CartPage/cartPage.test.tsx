@@ -24,7 +24,7 @@ vi.mock('@/context/URLContext', async () => ({
 vi.mock('@/context/CloseOpenModalsContext', async () => ({
   useCloseOpenModalsContext: vi.fn(() => ({
     openModals: {
-      payment: true,
+      modalPayment: true,
     },
   })),
 }));

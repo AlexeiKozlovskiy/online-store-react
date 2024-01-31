@@ -36,7 +36,7 @@ export function CartPage() {
 
   const takenCart = (
     <>
-      {openModals.payment && <PaymentModal handelCloseModal={handelCloseModal} />}
+      {openModals.modalPayment && <PaymentModal handelCloseModal={handelCloseModal} />}
       <div className="shopping-cart__container">
         <div className="shopping-cart__pagination-table-container">
           <div className="shopping-cart__pagination-container">

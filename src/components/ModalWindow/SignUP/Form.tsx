@@ -29,7 +29,7 @@ export function Form() {
   });
   useFormsInputsHelper({ watch, setValue });
   const { validateLogin, validateEmail, validatePassword, errorDefinitions } = useFormsValidation();
-  const { openModals, setOpenModals } = useCloseOpenModalsContext();
+  const { setOpenModals } = useCloseOpenModalsContext();
 
   const { formSignUP } = errors;
   const { login, password, email } = formSignUP || {};
@@ -42,8 +42,12 @@ export function Form() {
     reset({ formSignUP: { password: '' } });
   };
 
-  function getSigneIN() {
-    setOpenModals({ ...openModals, signIN: true, signUP: false });
+  function getSignIN() {
+    setOpenModals((prevOpenModals) => ({
+      ...prevOpenModals,
+      modalSignIN: true,
+      modalSignUP: false,
+    }));
   }
 
   const ErrorSignUP = <div className="form-error-response">{errorUser}</div>;
@@ -99,7 +103,7 @@ export function Form() {
           <button className="main-modal-btn">Get started now</button>
           <div className="signUP-already">
             <span>Already a user?</span>
-            <span className="signUP-already__highlight" onClick={getSigneIN}>
+            <span className="signUP-already__highlight" onClick={getSignIN}>
               Log In
             </span>
           </div>

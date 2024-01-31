@@ -98,22 +98,24 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     function setDataFromUrl() {
       const queryParams = new URLSearchParams(location.search);
-      const [colors] = queryParams.getAll('colors');
-      const [collections] = queryParams.getAll('collections');
-      const [categories] = queryParams.getAll('categories');
-      const valMinPrice = queryParams.getAll('minPrice');
-      const valMaxPrice = queryParams.getAll('maxPrice');
-      const valMinSize = queryParams.getAll('minSize');
-      const valMaxSize = queryParams.getAll('maxSize');
-      const valMinStock = queryParams.getAll('minStock');
-      const valMaxStock = queryParams.getAll('maxStock');
-      const [search] = queryParams.getAll('q');
-      const [viewOption] = queryParams.getAll('sortBy');
-      const [curPageMain] = queryParams.getAll('page');
-      const [perMainOption] = queryParams.getAll('perPage');
-      const [curPageCart] = queryParams.getAll('page');
-      const [perCartOption] = queryParams.getAll('perPage');
-      const [swichedViews] = queryParams.getAll('switchView');
+      const getQueryParam = (paramName: string) => queryParams.getAll(paramName);
+
+      const [colors] = getQueryParam('colors');
+      const [collections] = getQueryParam('collections');
+      const [categories] = getQueryParam('categories');
+      const valMinPrice = getQueryParam('minPrice');
+      const valMaxPrice = getQueryParam('maxPrice');
+      const valMinSize = getQueryParam('minSize');
+      const valMaxSize = getQueryParam('maxSize');
+      const valMinStock = getQueryParam('minStock');
+      const valMaxStock = getQueryParam('maxStock');
+      const [search] = getQueryParam('q');
+      const [viewOption] = getQueryParam('sortBy');
+      const [curPageMain] = getQueryParam('page');
+      const [perMainOption] = getQueryParam('perPage');
+      const [curPageCart] = getQueryParam('page');
+      const [perCartOption] = getQueryParam('perPage');
+      const [swichedViews] = getQueryParam('switchView');
 
       updatedFilters(
         colors,
