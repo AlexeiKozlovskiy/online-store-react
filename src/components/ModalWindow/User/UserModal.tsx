@@ -25,7 +25,12 @@ export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModa
   }
 
   return (
-    <div className="user-modal-overlay" onClick={onClickOutside} data-id="close-modal-user">
+    <div
+      data-testid="user-modal-overlay"
+      className="user-modal-overlay"
+      onClick={onClickOutside}
+      data-id="close-modal-user"
+    >
       <div className="user-modal">
         <div className="user-modal__account">Account</div>
         <UserProfile />

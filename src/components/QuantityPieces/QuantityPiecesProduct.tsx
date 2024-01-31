@@ -36,8 +36,6 @@ export function QuantityPiecesProduct({ onChangeQuantity, onResetInput, stock }:
     const { value } = e.target as HTMLInputElement;
     if (value.match(/[^0-9]/g)) {
       setInputValue('1');
-    } else if (+value < 0) {
-      setInputValue('1');
     } else if (+value >= stock) {
       setInputValue(stock.toString());
     } else {

@@ -33,7 +33,23 @@ export const notSortCategory = [
 export const sortCollection = [{ collection: 2021 }, { collection: 2022 }, { collection: 2023 }];
 export const notSortCollection = [{ collection: 2023 }, { collection: 2022 }, { collection: 2021 }];
 
-export const products = [
+export const TEST_PRODUCT = {
+  id: '15',
+  name: 'Nutcracker',
+  price: 10,
+  stock: 27,
+  collection: 2023,
+  color: 'blue',
+  size: 20,
+  favorite: true,
+  category: 'Christmas decorations',
+  images: [
+    '/assets/products/nutcracker-polyresin-20-cm.jpg',
+    '/assets/products/nutcracker-polyresin-20-cm(1).jpg',
+  ],
+};
+
+export const TEST_PRODUCTS = [
   {
     id: '15',
     name: 'Nutcracker',
@@ -160,25 +176,25 @@ export const cart = [
   {
     cartID: '10',
     itemNumber: 1,
-    product: products[0],
+    product: TEST_PRODUCTS[0],
     quantity: 1,
   },
   {
     cartID: '11',
     itemNumber: 2,
-    product: products[1],
+    product: TEST_PRODUCTS[1],
     quantity: 2,
   },
   {
     cartID: '12',
     itemNumber: 1,
-    product: products[2],
+    product: TEST_PRODUCTS[2],
     quantity: 1,
   },
   {
     cartID: '13',
     itemNumber: 1,
-    product: products[3],
+    product: TEST_PRODUCTS[3],
     quantity: 1,
   },
 ];

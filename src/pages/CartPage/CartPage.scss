@@ -248,6 +248,10 @@
 }
 
 .cart-item-info {
+  &__list {
+    list-style-type: none;
+  }
+
   &__name {
     font: 1.1rem $Roboto;
     padding-bottom: 10px;

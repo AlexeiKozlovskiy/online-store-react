@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { fireEvent, render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { SortingsContextProvider, useMySortingsContext } from '@/context/SortingsContext';
-import { products } from '../testsData';
+import { TEST_PRODUCTS } from '../testsData';
 import { URLContextProvider, useMyURLContext } from '@/context/URLContext';
 
 vi.mock('@/api/ProductsAPI', async () => {
@@ -12,7 +12,7 @@ vi.mock('@/api/ProductsAPI', async () => {
   return {
     ...mod,
     useGetProductsQuery: vi.fn(() => ({
-      data: products,
+      data: TEST_PRODUCTS,
     })),
   };
 });

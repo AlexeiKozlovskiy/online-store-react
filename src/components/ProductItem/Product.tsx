@@ -51,6 +51,7 @@ export function ProductItem({ isInCart, product }: ProductViewData) {
   return (
     <div className="product-item">
       <Link
+        data-testid="product-item-chose"
         to={`${ROUTE.PRODUCT}/${formatNameForURL(name)}`}
         onClick={() => setChosenProduct({ id, name })}
       >

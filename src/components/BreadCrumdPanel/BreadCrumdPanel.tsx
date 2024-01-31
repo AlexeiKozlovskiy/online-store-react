@@ -57,6 +57,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
       </div>
     );
   });
+
   const categoryFilter = categorySelected.map((category) => {
     return (
       <div key={category} className="selected-filters__item selected-item">
@@ -137,6 +138,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
       Copy link
     </div>
   );
+
   return (
     <div className="selected-section__filters selected-filters">
       <div className="selected-filters__title">Selected filters:</div>

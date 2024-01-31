@@ -1,7 +1,7 @@
 import '@/pages/ProfilePage/ProfilePage.scss';
 import { FormInput } from '@/components/FormInput/FormInput';
 import { useForm } from 'react-hook-form';
-import { MyForms, CardImages } from '@/types/types';
+import { MyForms } from '@/types/types';
 import { useFormsValidation } from '@/hooks/FormsValidationHook';
 import { useEffect, useRef } from 'react';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
@@ -69,7 +69,7 @@ export function ProfileSection() {
 
   useEffect(() => {
     function checkImageCard() {
-      const curImage = CARD_IMAGES[+watch('formProfile.numberCard')![0] as keyof CardImages];
+      const curImage = CARD_IMAGES[watch('formProfile.numberCard')[0]];
       imageCard.current = curImage;
     }
     checkImageCard();
@@ -150,7 +150,7 @@ export function ProfileSection() {
           </div>
           <div className="payment-method__top">
             <h4 className="profile-form__title">PAYMENT METHOD</h4>
-            <div className={`payment-method__cards ${imageCard.current}`}>
+            <div className={`payment-method__cards ${imageCard.current ? imageCard.current : ''}`}>
               <div className="cards__img"></div>
             </div>
           </div>

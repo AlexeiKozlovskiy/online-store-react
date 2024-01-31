@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { FiltersContextProvider, useMyFiltersContext } from '@/context/FiltersContext';
 import { URLContextProvider, useMyURLContext } from '@/context/URLContext';
-import { products } from '../testsData';
+import { TEST_PRODUCTS } from '../testsData';
 import { SelectedFilters } from '@/types/types';
 
 vi.mock('@/api/ProductsAPI', async () => {
@@ -14,7 +14,7 @@ vi.mock('@/api/ProductsAPI', async () => {
   return {
     ...mod,
     useGetProductsQuery: vi.fn(() => ({
-      data: products,
+      data: TEST_PRODUCTS,
     })),
   };
 });
@@ -92,7 +92,9 @@ describe('filters context', () => {
       </Provider>
     );
 
-    expect(getByTestId('filter-context-itemsCount')).toHaveTextContent(products.length.toString());
+    expect(getByTestId('filter-context-itemsCount')).toHaveTextContent(
+      TEST_PRODUCTS.length.toString()
+    );
     expect(getByTestId('filter-context-emptyCatalog').textContent).toBe('catalog is not empty');
 
     fireEvent.click(getByTestId('updateSelectedFilters'));

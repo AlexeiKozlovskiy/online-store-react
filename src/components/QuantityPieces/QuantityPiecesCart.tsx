@@ -14,13 +14,11 @@ interface IQuantity {
 }
 
 export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
-  const [inputValue, setInputValue] = useState(quantity);
+  const [inputValue, setInputValue] = useState(quantity.toString());
   const { data: products } = useGetProductsQuery('');
 
   useEffect(() => {
-    if (quantity >= 1) {
-      setInputValue(quantity);
-    }
+    setInputValue(quantity.toString());
   }, [quantity]);
 
   function handelArrowAppClick() {
@@ -34,14 +32,14 @@ export function QuantityPiecesCart({ id, quantity, stock }: IQuantity) {
   function handelInput(e: React.ChangeEvent<HTMLInputElement>) {
     const { value } = e.target as HTMLInputElement;
 
-    if (+value < 0) {
-      setInputValue(1);
+    if (value.match(/[^0-9]/g)) {
+      setInputValue('1');
       addProductToCart(id, products!);
     } else if (+value >= stock) {
-      setInputValue(stock);
+      setInputValue(stock.toString());
       setProductsQuantityInCart(id, stock, products!);
     } else {
-      setInputValue(+value);
+      setInputValue(value);
       setProductsQuantityInCart(id, +value, products!);
     }
   }

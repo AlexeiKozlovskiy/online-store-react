@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
 import { useMainPagination } from '@/hooks/MainPaginationHook';
 import { renderHook } from '@testing-library/react';
-import { products } from '../testsData';
+import { TEST_PRODUCTS } from '../testsData';
 
 vi.mock('@/context/SortingsContext', () => ({
   useMySortingsContext: vi.fn(() => ({
-    sortProducts: products,
+    sortProducts: TEST_PRODUCTS,
   })),
 }));
 

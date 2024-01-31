@@ -8,7 +8,7 @@ import { useAnimations } from '@/hooks/AnimationsHook';
 import { memo } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
-export const CartItemList = memo(function CartListItem({
+export const CartItemList = memo(function CartItemList({
   itemNumber,
   quantity,
   product: { id, images, name, color, collection, size, category, stock, price },
@@ -27,6 +27,7 @@ export const CartItemList = memo(function CartListItem({
       </th>
       <th className="cart-item__img-container">
         <Link
+          data-testid="product-item-chose"
           to={`/${ROUTE.PRODUCT}/${formatNameForURL(name)}`}
           onClick={() => setChosenProduct({ id, name })}
         >
@@ -35,13 +36,15 @@ export const CartItemList = memo(function CartListItem({
       </th>
       <th className="cart-item__info">
         <h4 className="cart-item-info__name">{name}</h4>
-        <div className="cart-item-info__color">Color: {color}</div>
-        <div className="cart-item-info__collecrion">Collection: {collection}</div>
-        <div className="cart-item-info__size">Size: {size}cm</div>
-        <div className="cart-item-info__category">Category: {category}</div>
-        <div className={`cart-item-info__instock ${isShake && 'shake-cart'}`} data-id={id}>
-          In stock: {stock}
-        </div>
+        <ul className="cart-item-info__list">
+          <li className="cart-item-info__color">Color: {color}</li>
+          <li className="cart-item-info__collecrion">Collection: {collection}</li>
+          <li className="cart-item-info__size">Size: {size}cm</li>
+          <li className="cart-item-info__category">Category: {category}</li>
+          <li className={`cart-item-info__instock ${isShake && 'shake-cart'}`} data-id={id}>
+            In stock: {stock}
+          </li>
+        </ul>
       </th>
       <th className="cart-item__price">${price}</th>
       <th className="cart-item__quantity">

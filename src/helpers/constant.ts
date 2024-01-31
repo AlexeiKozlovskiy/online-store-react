@@ -1,3 +1,5 @@
+import { CardImg, SortingsValue } from '@/types/types';
+
 export const NEST_SERVICE_URL = 'https://online-store-api-7fyt.onrender.com';
 // export const NEST_SERVICE_URL = 'http://localhost:4000';
 
@@ -11,6 +13,20 @@ export const API_ROUTES = {
   PROFILE_CREATE: `${NEST_SERVICE_URL}/profile/create`,
   PROFILE_UPDATE: `${NEST_SERVICE_URL}/profile/update`,
   PODUCTS: 'products',
+};
+
+export const SORTING_SELECT: Record<string, SortingsValue> = {
+  NAME: 'name',
+  PRICE_ASC: 'price-asc',
+  PRICE_DESC: 'price-desc',
+  STOCK_ASC: 'stock-asc',
+  STOCK_DESC: 'stock-desc',
+};
+
+export const CARD_IMAGES: Record<string, CardImg> = {
+  '3': 'cards__img-express',
+  '4': 'cards__img-visa',
+  '5': 'cards__img-mastercard',
 };
 
 export const PRICE_MIN = 1.99;
@@ -82,12 +98,6 @@ export const PROMOCODES = [
     discount: 10,
   },
 ];
-
-export const CARD_IMAGES = {
-  3: 'cards__img-express',
-  4: 'cards__img-visa',
-  5: 'cards__img-mastercard',
-};
 
 export const TEST_USER_DATA = {
   name: 'Rubi Rhod',

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CardImages, CartItem, MyForms, ROUTE, RootReducerProps } from '@/types/types';
+import { CartItem, MyForms, ROUTE, RootReducerProps } from '@/types/types';
 import { Preloader } from '@/components/Preloader/Preloader';
 import { useFormsInputsHelper } from '@/hooks/FormsInputsHelperHook';
 import { FormInput } from '@/components/FormInput/FormInput';
@@ -97,7 +97,7 @@ export function Form() {
 
   useEffect(() => {
     function checkImageCard() {
-      const curImage = CARD_IMAGES[+watch('formProfile.numberCard')![0] as keyof CardImages];
+      const curImage = CARD_IMAGES[watch('formProfile.numberCard')[0]];
       imageCard.current = curImage;
     }
     checkImageCard();
@@ -168,7 +168,7 @@ export function Form() {
         </div>
         <div className="payment-method__top">
           <h4 className="profile-form__title">PAYMENT METHOD</h4>
-          <div className={`payment-method__cards ${imageCard.current}`}>
+          <div className={`payment-method__cards ${imageCard.current ? imageCard.current : ''}`}>
             <div className="cards__img"></div>
           </div>
         </div>

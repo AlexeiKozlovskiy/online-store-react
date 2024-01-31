@@ -2,7 +2,7 @@ import './Footer.scss';
 
 export function Footer() {
   return (
-    <footer className="footer">
+    <footer data-testid="footer" className="footer">
       <div className="footer__container wrapper">
         <div className="footer__github">
           <a className="github-link" href="https://github.com/AlexeiKozlovskiy">

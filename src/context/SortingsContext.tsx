@@ -1,11 +1,5 @@
 import { createContext, useContext, ReactNode, useEffect, useState } from 'react';
-import {
-  ISelect,
-  SORTING_SELECT,
-  Product,
-  ProductsQweryParams,
-  RootReducerProps,
-} from '@/types/types';
+import { ISelect, Product, ProductsQweryParams, RootReducerProps } from '@/types/types';
 import {
   sortByFavorite,
   sortByName,
@@ -18,6 +12,7 @@ import {
 import { useMyURLContext } from '@/context/URLContext';
 import { useGetProductsQuery } from '@/api/ProductsAPI';
 import { useSelector } from 'react-redux';
+import { SORTING_SELECT } from '@/helpers/constant';
 
 export const useMySortingsContext = () => useContext(SortingsContext);
 
@@ -46,25 +41,26 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
 
   function sortingView(viewOption: ISelect) {
     const { value } = viewOption;
+    const { NAME, PRICE_ASC, PRICE_DESC, STOCK_ASC, STOCK_DESC } = SORTING_SELECT;
 
     switch (value) {
-      case SORTING_SELECT.NAME:
+      case NAME:
         const sortName = sortByName(products);
         setSortProducts(sortName);
         break;
-      case SORTING_SELECT.PRICE_ASC:
+      case PRICE_ASC:
         const priceAsc = sortByKey(products, sortByPriceAsc);
         setSortProducts(priceAsc);
         break;
-      case SORTING_SELECT.PRICE_DESC:
+      case PRICE_DESC:
         const priceDesc = sortByKey(products, sortByPriceDesc);
         setSortProducts(priceDesc);
         break;
-      case SORTING_SELECT.STOCK_ASC:
+      case STOCK_ASC:
         const stockAsc = sortByKey(products, sortByStockAsc);
         setSortProducts(stockAsc);
         break;
-      case SORTING_SELECT.STOCK_DESC:
+      case STOCK_DESC:
         const stockDesc = sortByKey(products, sortByStockDesc);
         setSortProducts(stockDesc);
         break;
