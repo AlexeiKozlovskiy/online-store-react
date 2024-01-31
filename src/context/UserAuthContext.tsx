@@ -44,7 +44,7 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
   const [isFetching, setIsFetching] = useState(false);
   const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
   const [showPreloader, setShowPreloader] = useState(false);
-  const { closeModalSignInAnimation, openModals, setOpenModals } = useCloseOpenModalsContext();
+  const { closeAnimationModal, openModals, setOpenModals } = useCloseOpenModalsContext();
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, refreshToken, expiresIn, idUser, authenticated } = authState;
@@ -114,7 +114,7 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
         const { user, backendTokens, authenticated } = data;
         const { id: idUser } = user;
         setAuthParams({ ...backendTokens, idUser, authenticated });
-        closeModalSignInAnimation();
+        closeAnimationModal('signIN');
       } else {
         setErrorUser(`${FORM_MESSAGES.INCORRECT_USERNAME_OR_PASSWORD} ${error}.`);
       }

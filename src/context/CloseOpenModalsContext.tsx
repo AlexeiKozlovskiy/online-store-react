@@ -5,9 +5,7 @@ interface ICloseOpenModalsContext {
   openModals: CloseOpenModals;
   setOpenModals: React.Dispatch<React.SetStateAction<CloseOpenModals>>;
   handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  closeModalSignInAnimation: () => void;
-  closeModalSignUPAnimation: () => void;
-  closeModalUserAnimation: () => void;
+  closeAnimationModal: (modalType: string) => void;
 }
 
 export const useCloseOpenModalsContext = () => useContext(CloseOpenModalsContext);
@@ -21,9 +19,7 @@ export const CloseOpenModalsContext = createContext<ICloseOpenModalsContext>({
   },
   setOpenModals: () => null,
   handelCloseModal: () => null,
-  closeModalSignInAnimation: () => null,
-  closeModalSignUPAnimation: () => null,
-  closeModalUserAnimation: () => null,
+  closeAnimationModal: () => null,
 });
 
 export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNode }) => {
@@ -38,51 +34,29 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
     const { dataset } = e.target as HTMLElement;
 
     switch (dataset.id) {
-      case 'close-modal-signUP':
-        closeModalSignUPAnimation();
+      case 'modal-signUP':
+        closeAnimationModal('signUP');
         break;
-      case 'close-modal-signIN':
-        closeModalSignInAnimation();
+      case 'modal-signIN':
+        closeAnimationModal('signIN');
         break;
-      case 'close-modal-user':
-        closeModalUserAnimation();
+      case 'modal-user':
+        closeAnimationModal('user');
         break;
-      case 'close-modal-profile':
-        closeModalPaymentAnimation();
+      case 'modal-profile':
+        closeAnimationModal('payment');
         break;
     }
   }
 
-  function closeModalSignInAnimation() {
-    const modalWindow = document.querySelector('.signIN-modal') as HTMLDivElement;
-    modalWindow.classList.toggle('hide-modal');
-    setTimeout(() => {
-      setOpenModals({ ...openModals, signIN: false });
-    }, 400);
-  }
-
-  function closeModalSignUPAnimation() {
-    const modalWindow = document.querySelector('.signUP-modal') as HTMLDivElement;
-    modalWindow.classList.toggle('hide-modal');
-    setTimeout(() => {
-      setOpenModals({ ...openModals, signUP: false });
-    }, 400);
-  }
-
-  function closeModalUserAnimation() {
-    const modalWindow = document.querySelector('.user-modal') as HTMLDivElement;
-    modalWindow.classList.toggle('hide-modal-user');
-    setTimeout(() => {
-      setOpenModals({ ...openModals, user: false });
-    }, 400);
-  }
-
-  function closeModalPaymentAnimation() {
-    const modalWindow = document.querySelector('.profile-modal') as HTMLDivElement;
-    modalWindow.classList.toggle('hide-modal');
-    setTimeout(() => {
-      setOpenModals({ ...openModals, payment: false });
-    }, 400);
+  function closeAnimationModal(modalType: string) {
+    const modalWindow: HTMLDivElement | null = document.querySelector(`.${modalType}-modal`);
+    if (modalWindow) {
+      modalWindow.classList.toggle(`${modalType}-hide-modal`);
+      setTimeout(() => {
+        setOpenModals((prevOpenModals) => ({ ...prevOpenModals, [modalType]: false }));
+      }, 400);
+    }
   }
 
   return (
@@ -91,9 +65,7 @@ export const CloseOpenModalsContextProvider = ({ children }: { children: ReactNo
         openModals,
         setOpenModals,
         handelCloseModal,
-        closeModalSignInAnimation,
-        closeModalSignUPAnimation,
-        closeModalUserAnimation,
+        closeAnimationModal,
       }}
     >
       {children}

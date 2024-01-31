@@ -16,7 +16,7 @@ describe('user modal', () => {
         <BrowserRouter>
           <UserModal
             handelCloseModal={mockOnClickOutside}
-            closeModalUserAnimation={mockCloseModalUserAnimation}
+            closeAnimationModal={mockCloseModalUserAnimation}
           />
         </BrowserRouter>
       </Provider>

@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 import { CredentialGoogle, GoogleResp } from '@/types/types';
 
 export function GoogleButton() {
-  const { openModals, closeModalSignInAnimation, closeModalSignUPAnimation } =
-    useCloseOpenModalsContext();
+  const { openModals, closeAnimationModal } = useCloseOpenModalsContext();
   const { setGoogleData } = useMyUserAuthContext();
 
   const { signIN, signUP } = openModals;
@@ -15,8 +14,8 @@ export function GoogleButton() {
   function hadelCallbackResponse(response: GoogleResp) {
     const googleData = jwtDecode<CredentialGoogle>(response.credential);
     setGoogleData(googleData);
-    signUP && closeModalSignUPAnimation();
-    signIN && closeModalSignInAnimation();
+    signUP && closeAnimationModal('signUP');
+    signIN && closeAnimationModal('signIN');
   }
 
   useEffect(() => {

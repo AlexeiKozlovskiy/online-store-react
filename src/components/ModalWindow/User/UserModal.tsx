@@ -6,20 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 interface IUserModal {
   handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  closeModalUserAnimation: () => void;
+  closeAnimationModal: (modalType: string) => void;
 }
 
-export const UserModal = ({ handelCloseModal, closeModalUserAnimation }: IUserModal) => {
+export const UserModal = ({ handelCloseModal, closeAnimationModal }: IUserModal) => {
   const { logOut } = useMyUserAuthContext();
   const navigate = useNavigate();
 
   function handelClickProfile() {
-    closeModalUserAnimation();
+    closeAnimationModal('user');
     navigate(ROUTE.PROFILE);
   }
 
   function handelClickLogout() {
-    closeModalUserAnimation();
+    closeAnimationModal('user');
     logOut();
     navigate(ROUTE.MAIN);
   }
@@ -29,7 +29,7 @@ export const UserModal = ({ handelCloseModal, closeModalUserAnimation }: IUserMo
       data-testid="user-modal-overlay"
       className="user-modal-overlay"
       onClick={handelCloseModal}
-      data-id="close-modal-user"
+      data-id="modal-user"
     >
       <div className="user-modal">
         <div className="user-modal__account">Account</div>

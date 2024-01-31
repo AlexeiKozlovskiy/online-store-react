@@ -9,10 +9,10 @@ interface ISignUPModal {
 
 export function SignUPModal({ handelCloseModal }: ISignUPModal) {
   return (
-    <div className="modal-page" onClick={handelCloseModal} data-id="close-modal-signUP">
+    <div className="modal-page" onClick={handelCloseModal} data-id="modal-signUP">
       <div className="modal-page__container signUP-modal animation-view-form">
         <ButtonCross
-          dataId="close-modal-signUP"
+          dataId="modal-signUP"
           onClickCross={() => handelCloseModal}
           adittionClassName="close-modal-cross"
         />

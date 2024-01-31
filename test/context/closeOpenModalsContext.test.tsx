@@ -21,7 +21,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, signIN: true })}>
               open sign in modal
             </button>
-            <div data-id="close-modal-signIN" onClick={handelCloseModal}>
+            <div data-id="modal-signIN" onClick={handelCloseModal}>
               close sign in modal
             </div>
           </div>
@@ -31,7 +31,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, signUP: true })}>
               open sign up modal
             </button>
-            <div data-id="close-modal-signUP" onClick={handelCloseModal}>
+            <div data-id="modal-signUP" onClick={handelCloseModal}>
               close sign up modal
             </div>
           </div>
@@ -41,7 +41,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, user: true })}>
               open user modal
             </button>
-            <div data-id="close-modal-user" onClick={handelCloseModal}>
+            <div data-id="modal-user" onClick={handelCloseModal}>
               close user modal
             </div>
           </div>
@@ -51,7 +51,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, payment: true })}>
               open payment modal
             </button>
-            <div data-id="close-modal-profile" onClick={handelCloseModal}>
+            <div data-id="modal-profile" onClick={handelCloseModal}>
               close payment modal
             </div>
           </div>

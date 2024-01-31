@@ -20,7 +20,7 @@ import { bodyNotScroll } from '@/helpers/helpersFunc';
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const { cartUrl, removeAllSelected } = useMyURLContext();
-  const { handelCloseModal, closeModalUserAnimation, openModals, setOpenModals } =
+  const { handelCloseModal, closeAnimationModal, openModals, setOpenModals } =
     useCloseOpenModalsContext();
   const { isFetching } = useMyUserAuthContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
@@ -68,10 +68,7 @@ export function Header() {
       {signUP && <SignUPModal handelCloseModal={handelCloseModal} />}
       {signIN && <SignINModal handelCloseModal={handelCloseModal} />}
       {user && (
-        <UserModal
-          handelCloseModal={handelCloseModal}
-          closeModalUserAnimation={closeModalUserAnimation}
-        />
+        <UserModal handelCloseModal={handelCloseModal} closeAnimationModal={closeAnimationModal} />
       )}
       <div className="header__container">
         <Link to={ROUTE.MAIN} className="header-link" onClick={removeAllSelected}>
