@@ -20,14 +20,8 @@ import { bodyNotScroll } from '@/helpers/helpersFunc';
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const { cartUrl, removeAllSelected } = useMyURLContext();
-  const {
-    handelCloseModalSignUP,
-    handelCloseModalSignIN,
-    handelCloseModalUser,
-    closeModalUserAnimation,
-    openModals,
-    setOpenModals,
-  } = useCloseOpenModalsContext();
+  const { handelCloseModal, closeModalUserAnimation, openModals, setOpenModals } =
+    useCloseOpenModalsContext();
   const { isFetching } = useMyUserAuthContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { totalItems, totalPriseByPromocode } = useTotalCartInfo();
@@ -71,11 +65,11 @@ export function Header() {
 
   return (
     <header data-testid="header" className="header wrapper">
-      {signUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
-      {signIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
+      {signUP && <SignUPModal handelCloseModal={handelCloseModal} />}
+      {signIN && <SignINModal handelCloseModal={handelCloseModal} />}
       {user && (
         <UserModal
-          onClickOutside={handelCloseModalUser}
+          handelCloseModal={handelCloseModal}
           closeModalUserAnimation={closeModalUserAnimation}
         />
       )}

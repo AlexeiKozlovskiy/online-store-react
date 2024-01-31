@@ -4,16 +4,16 @@ import { Form } from './Form';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 interface ISignINModal {
-  handelCloseModalSignIN: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export function SignINModal({ handelCloseModalSignIN }: ISignINModal) {
+export function SignINModal({ handelCloseModal }: ISignINModal) {
   return (
-    <div className="modal-page" onClick={handelCloseModalSignIN} data-id="close-modal-signIN">
+    <div className="modal-page" onClick={handelCloseModal} data-id="close-modal-signIN">
       <div className="modal-page__container signIN-modal animation-view-form">
         <ButtonCross
           dataId="close-modal-signIN"
-          onClickCross={() => handelCloseModalSignIN}
+          onClickCross={() => handelCloseModal}
           adittionClassName="close-modal-cross"
         />
         <Form />

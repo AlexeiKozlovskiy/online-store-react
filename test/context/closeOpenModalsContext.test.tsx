@@ -11,14 +11,7 @@ import {
 describe('filters context', () => {
   it('should close/open modals', async () => {
     const TestComponent = () => {
-      const {
-        openModals,
-        setOpenModals,
-        handelCloseModalSignUP,
-        handelCloseModalSignIN,
-        handelCloseModalUser,
-        handelCloseModalPayment,
-      } = useCloseOpenModalsContext();
+      const { openModals, setOpenModals, handelCloseModal } = useCloseOpenModalsContext();
 
       return (
         <>
@@ -28,7 +21,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, signIN: true })}>
               open sign in modal
             </button>
-            <div data-id="close-modal-signIN" onClick={handelCloseModalSignIN}>
+            <div data-id="close-modal-signIN" onClick={handelCloseModal}>
               close sign in modal
             </div>
           </div>
@@ -38,7 +31,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, signUP: true })}>
               open sign up modal
             </button>
-            <div data-id="close-modal-signUP" onClick={handelCloseModalSignUP}>
+            <div data-id="close-modal-signUP" onClick={handelCloseModal}>
               close sign up modal
             </div>
           </div>
@@ -48,7 +41,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, user: true })}>
               open user modal
             </button>
-            <div data-id="close-modal-user" onClick={handelCloseModalUser}>
+            <div data-id="close-modal-user" onClick={handelCloseModal}>
               close user modal
             </div>
           </div>
@@ -58,7 +51,7 @@ describe('filters context', () => {
             <button onClick={() => setOpenModals({ ...openModals, payment: true })}>
               open payment modal
             </button>
-            <div data-id="close-modal-profile" onClick={handelCloseModalPayment}>
+            <div data-id="close-modal-profile" onClick={handelCloseModal}>
               close payment modal
             </div>
           </div>

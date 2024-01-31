@@ -4,16 +4,16 @@ import { Form } from './Form';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 
 interface IPaymentModal {
-  handelCloseModalPayment: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
-export function PaymentModal({ handelCloseModalPayment }: IPaymentModal) {
+export function PaymentModal({ handelCloseModal }: IPaymentModal) {
   return (
-    <div className="modal-page" onClick={handelCloseModalPayment} data-id="close-modal-profile">
+    <div className="modal-page" onClick={handelCloseModal} data-id="close-modal-profile">
       <div className="modal-page__container profile-modal animation-view-form">
         <ButtonCross
           dataId="close-modal-profile"
-          onClickCross={() => handelCloseModalPayment}
+          onClickCross={() => handelCloseModal}
           adittionClassName="close-modal-cross"
         />
         <Form />

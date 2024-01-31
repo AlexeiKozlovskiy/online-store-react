@@ -5,11 +5,11 @@ import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { useNavigate } from 'react-router-dom';
 
 interface IUserModal {
-  onClickOutside: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   closeModalUserAnimation: () => void;
 }
 
-export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModal) => {
+export const UserModal = ({ handelCloseModal, closeModalUserAnimation }: IUserModal) => {
   const { logOut } = useMyUserAuthContext();
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModa
     <div
       data-testid="user-modal-overlay"
       className="user-modal-overlay"
-      onClick={onClickOutside}
+      onClick={handelCloseModal}
       data-id="close-modal-user"
     >
       <div className="user-modal">

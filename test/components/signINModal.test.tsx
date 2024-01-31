@@ -20,7 +20,7 @@ describe('signIN modal', () => {
     const { getByText, getByTestId } = render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <SignINModal handelCloseModalSignIN={mockHandelCloseModalSignIN} />
+          <SignINModal handelCloseModal={mockHandelCloseModalSignIN} />
         </BrowserRouter>
       </Provider>
     );
