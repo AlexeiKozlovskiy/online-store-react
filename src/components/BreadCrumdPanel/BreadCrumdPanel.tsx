@@ -36,7 +36,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
         <div className="selected-item__name">{color}</div>
         <div
           className="selected-item__remove-btn"
-          data-params="colors"
+          data-params="color"
           data-value={color}
           onClick={removeItemFilterClick}
         ></div>
@@ -50,7 +50,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
         <div className="selected-item__name">{collection}</div>
         <div
           className="selected-item__remove-btn"
-          data-params="collections"
+          data-params="collection"
           data-value={collection}
           onClick={removeItemFilterClick}
         ></div>
@@ -64,7 +64,7 @@ export const BreadCrumdPanel = memo(function BreadCrumdPanel() {
         <div className="selected-item__name">{category}</div>
         <div
           className="selected-item__remove-btn"
-          data-params="categories"
+          data-params="category"
           data-value={category}
           onClick={removeItemFilterClick}
         ></div>

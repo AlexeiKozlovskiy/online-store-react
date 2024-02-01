@@ -13,10 +13,14 @@ export interface Product {
   images: string[];
 }
 
-export type DualRangesBalancer = Pick<Product, 'price' | 'size' | 'stock'>;
+export type ProductFilters = Omit<Product, 'id' | 'name' | 'favorite' | 'images'>;
+
+export type ProductDualRangesFilters = Pick<ProductFilters, 'price' | 'size' | 'stock'>;
+
 export type SortingsValue = 'name' | 'price-asc' | 'price-desc' | 'stock-asc' | 'stock-desc';
-export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
+
 export type ModalsValue = 'modalSignUP' | 'modalSignIN' | 'modalUser' | 'modalPayment';
+
 export type ModalsWindows = Record<ModalsValue, boolean>;
 
 export interface CartItemArg {
@@ -109,9 +113,9 @@ export interface Balancers {
   balancerColor: BalancerColor[];
   balancerCollection: BalancerCollection[];
   balancerCategory: BalancerCategory[];
-  balanserPrise: DualRange;
-  balanserSize: DualRange;
-  balanserStock: DualRange;
+  balancerPrise: DualRange;
+  balancerSize: DualRange;
+  balancerStock: DualRange;
 }
 
 export interface InputSearch {
@@ -284,6 +288,8 @@ export interface FormErrorMessages {
   msgCvvCard?: null | FORM_MESSAGES;
   msgPassword?: null | FORM_MESSAGES;
 }
+
+export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
 
 export enum FORM_MESSAGES {
   ENTER_NAME = 'Please enter name',

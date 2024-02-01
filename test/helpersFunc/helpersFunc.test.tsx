@@ -42,7 +42,7 @@ import {
   sortingProductByStockDesc,
 } from '../testsData';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
-import { CATEGORIES_STOCK } from '@/helpers/constant';
+import { CATEGORIES_STOCK, PRODUCT_DUAL_RANGE_FILTER_FIELDS } from '@/helpers/constant';
 
 describe('helpers function', () => {
   it('should format price', () => {
@@ -185,13 +185,15 @@ describe('helpers function', () => {
     const maxStock = 40;
 
     it('should return min & max value by key', () => {
-      const priceValue = dualRangesBalancer(TEST_PRODUCTS, 'price');
+      const { PRICE, SIZE, STOCK } = PRODUCT_DUAL_RANGE_FILTER_FIELDS;
+
+      const priceValue = dualRangesBalancer(TEST_PRODUCTS, PRICE);
       expect(priceValue).toStrictEqual([minPrice, maxPrice]);
 
-      const sizeValue = dualRangesBalancer(TEST_PRODUCTS, 'size');
+      const sizeValue = dualRangesBalancer(TEST_PRODUCTS, SIZE);
       expect(sizeValue).toStrictEqual([minSize, maxSize]);
 
-      const stockValue = dualRangesBalancer(TEST_PRODUCTS, 'stock');
+      const stockValue = dualRangesBalancer(TEST_PRODUCTS, STOCK);
       expect(stockValue).toStrictEqual([minStock, maxStock]);
     });
 

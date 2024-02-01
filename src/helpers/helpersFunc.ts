@@ -5,13 +5,13 @@ import {
   Product,
   CartItem,
   PromocodeData,
-  DualRangesBalancer,
+  ProductDualRangesFilters,
 } from '@/types/types';
 import { AxiosError } from 'axios';
 
 export function dualRangesBalancer(
   products: Product[],
-  key: keyof DualRangesBalancer
+  key: keyof ProductDualRangesFilters
 ): [number, number] {
   const value = products.map((el) => el[key]);
   return [Math.min(...value), Math.max(...value)];

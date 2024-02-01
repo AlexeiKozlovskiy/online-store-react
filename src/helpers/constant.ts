@@ -1,4 +1,11 @@
-import { CardImg, ModalsValue, SortingsValue } from '@/types/types';
+import {
+  Balancers,
+  CardImg,
+  ModalsValue,
+  ProductDualRangesFilters,
+  ProductFilters,
+  SortingsValue,
+} from '@/types/types';
 
 export const NEST_SERVICE_URL = 'https://online-store-api-7fyt.onrender.com';
 // export const NEST_SERVICE_URL = 'http://localhost:4000';
@@ -13,6 +20,15 @@ export const API_ROUTES = {
   PROFILE_CREATE: `${NEST_SERVICE_URL}/profile/create`,
   PROFILE_UPDATE: `${NEST_SERVICE_URL}/profile/update`,
   PODUCTS: 'products',
+};
+
+export const BALANCERS: Record<string, keyof Balancers> = {
+  BALANCER_COLOR: 'balancerColor',
+  BALANCER_COLLECTION: 'balancerCollection',
+  BALANCER_CATEGORY: 'balancerCategory',
+  BALANCER_PRICE: 'balancerPrise',
+  BALANCER_SIZE: 'balancerSize',
+  BALANCER_STOCK: 'balancerStock',
 };
 
 export const SORTING_SELECT: Record<string, SortingsValue> = {
@@ -34,6 +50,18 @@ export const CARD_IMAGES: Record<string, CardImg> = {
   '3': 'cards__img-express',
   '4': 'cards__img-visa',
   '5': 'cards__img-mastercard',
+};
+
+export const PRODUCT_FILTER_FIELDS: Record<string, keyof ProductFilters> = {
+  COLOR: 'color',
+  COLLECTION: 'collection',
+  CATEGORY: 'category',
+};
+
+export const PRODUCT_DUAL_RANGE_FILTER_FIELDS: Record<string, keyof ProductDualRangesFilters> = {
+  PRICE: 'price',
+  SIZE: 'size',
+  STOCK: 'stock',
 };
 
 export const PRICE_MIN = 1.99;
