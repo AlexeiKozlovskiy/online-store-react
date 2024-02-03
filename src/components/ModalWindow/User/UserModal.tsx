@@ -3,23 +3,25 @@ import { ROUTE } from '@/types/types';
 import { useMyUserAuthContext } from '@/context/UserAuthContext';
 import { UserProfile } from '@/components/UserProfile/UserProfile';
 import { useNavigate } from 'react-router-dom';
+import { MODAL_WINDOWS } from '@/helpers/constant';
 
 interface IUserModal {
-  onClickOutside: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  closeModalUserAnimation: () => void;
+  handelCloseModal: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  closeAnimationModal: (modalType: string) => void;
 }
 
-export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModal) => {
+export const UserModal = ({ handelCloseModal, closeAnimationModal }: IUserModal) => {
   const { logOut } = useMyUserAuthContext();
   const navigate = useNavigate();
+  const { USER } = MODAL_WINDOWS;
 
   function handelClickProfile() {
-    closeModalUserAnimation();
+    closeAnimationModal(USER);
     navigate(ROUTE.PROFILE);
   }
 
   function handelClickLogout() {
-    closeModalUserAnimation();
+    closeAnimationModal(USER);
     logOut();
     navigate(ROUTE.MAIN);
   }
@@ -28,10 +30,10 @@ export const UserModal = ({ onClickOutside, closeModalUserAnimation }: IUserModa
     <div
       data-testid="user-modal-overlay"
       className="user-modal-overlay"
-      onClick={onClickOutside}
-      data-id="close-modal-user"
+      onClick={handelCloseModal}
+      data-id="modalUser"
     >
-      <div className="user-modal">
+      <div className="user-modal modalUser">
         <div className="user-modal__account">Account</div>
         <UserProfile />
         <hr className="user-modal__line"></hr>

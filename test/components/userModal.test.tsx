@@ -15,8 +15,8 @@ describe('user modal', () => {
       <Provider store={rootState}>
         <BrowserRouter>
           <UserModal
-            onClickOutside={mockOnClickOutside}
-            closeModalUserAnimation={mockCloseModalUserAnimation}
+            handelCloseModal={mockOnClickOutside}
+            closeAnimationModal={mockCloseModalUserAnimation}
           />
         </BrowserRouter>
       </Provider>

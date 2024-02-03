@@ -7,6 +7,9 @@ import {
   STOCK_MIN,
   STOCK_MAX,
   CATEGORIES_STOCK,
+  BALANCERS,
+  PRODUCT_FILTER_FIELDS,
+  PRODUCT_DUAL_RANGE_FILTER_FIELDS,
 } from '@/helpers/constant';
 import { RootReducerProps, ProductsQweryParams } from '@/types/types';
 import {
@@ -48,6 +51,19 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
   });
 
   const { colorsSelected, collectionsSelected, categorySelected } = selectedFilters;
+  const {
+    BALANCER_COLOR,
+    BALANCER_COLLECTION,
+    BALANCER_CATEGORY,
+    BALANCER_PRICE,
+    BALANCER_SIZE,
+    BALANCER_STOCK,
+  } = BALANCERS;
+
+  const { COLOR, COLLECTION, CATEGORY, PRICE, SIZE, STOCK } = Object.assign(
+    PRODUCT_FILTER_FIELDS,
+    PRODUCT_DUAL_RANGE_FILTER_FIELDS
+  );
 
   useEffect(() => {
     if (products.length) {
@@ -63,22 +79,22 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
     if (products.length) {
       if (!colorsSelected.length) {
         const colorsValues = sortColorBalancer(colorBalancer(products));
-        updateBalancersPropertys('balancerColor', colorsValues);
+        updateBalancersPropertys(BALANCER_COLOR, colorsValues);
       }
       if (!collectionsSelected.length) {
         const collectionsValues = sortCollectionBalancer(collectionBalancer(products));
-        updateBalancersPropertys('balancerCollection', collectionsValues);
+        updateBalancersPropertys(BALANCER_COLLECTION, collectionsValues);
       }
       if (!categorySelected.length) {
         const categoryValues = categoryBalancer(products, CATEGORIES_STOCK);
-        updateBalancersPropertys('balancerCategory', categoryValues);
+        updateBalancersPropertys(BALANCER_CATEGORY, categoryValues);
       }
-      const priseValues = dualRangesBalancer(products, 'price');
-      updateBalancersPropertys('balanserPrise', priseValues);
-      const sizeValues = dualRangesBalancer(products, 'size');
-      updateBalancersPropertys('balanserSize', sizeValues);
-      const stockValues = dualRangesBalancer(products, 'stock');
-      updateBalancersPropertys('balanserStock', stockValues);
+      const priseValues = dualRangesBalancer(products, PRICE);
+      updateBalancersPropertys(BALANCER_PRICE, priseValues);
+      const sizeValues = dualRangesBalancer(products, SIZE);
+      updateBalancersPropertys(BALANCER_SIZE, sizeValues);
+      const stockValues = dualRangesBalancer(products, STOCK);
+      updateBalancersPropertys(BALANCER_STOCK, stockValues);
     }
   }
 
@@ -93,39 +109,39 @@ export const FiltersContextProvider = ({ children }: { children: ReactNode }) =>
 
   function removeItemFilterClick(e: React.MouseEvent<HTMLElement>) {
     const { dataset } = e.target as HTMLElement;
-    const { value } = dataset;
-    switch (dataset.params) {
-      case 'colors':
+    const { value, params } = dataset;
+    switch (params) {
+      case COLOR:
         setSelectedFilters({
           ...selectedFilters,
           colorsSelected: colorsSelected.filter((el) => el !== value),
         });
         break;
-      case 'collections':
+      case COLLECTION:
         setSelectedFilters({
           ...selectedFilters,
           collectionsSelected: collectionsSelected.filter((el) => el !== Number(value)),
         });
         break;
-      case 'categories':
+      case CATEGORY:
         setSelectedFilters({
           ...selectedFilters,
           categorySelected: categorySelected.filter((el) => el !== value),
         });
         break;
-      case 'price':
+      case PRICE:
         setSelectedFilters({
           ...selectedFilters,
           priceSelected: [PRICE_MIN, PRICE_MAX],
         });
         break;
-      case 'size':
+      case SIZE:
         setSelectedFilters({
           ...selectedFilters,
           sizeSelected: [SIZE_MIN, SIZE_MAX],
         });
         break;
-      case 'stock':
+      case STOCK:
         setSelectedFilters({
           ...selectedFilters,
           stockSelected: [STOCK_MIN, STOCK_MAX],

@@ -12,6 +12,7 @@ import { useCloseOpenModalsContext } from '@/context/CloseOpenModalsContext';
 import { useSelector } from 'react-redux';
 import { setAuthParams, clearAuthParams } from '@/store/controller';
 import { refreshTokensApi, signInApi, signInGoogleApi, signUPApi, getUser } from '@/api/AuthAPI';
+import { MODAL_WINDOWS } from '@/helpers/constant';
 
 interface IUserAuthContext {
   user: User | null;
@@ -44,21 +45,22 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
   const [isFetching, setIsFetching] = useState(false);
   const [googleData, setGoogleData] = useState<CredentialGoogle | null>(null);
   const [showPreloader, setShowPreloader] = useState(false);
-  const { closeModalSignInAnimation, openModals, setOpenModals } = useCloseOpenModalsContext();
+  const { closeAnimationModal, openModals, setOpenModals } = useCloseOpenModalsContext();
   const [errorUser, setErrorUser] = useState<string | null>(null);
   const authState = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { accessToken, refreshToken, expiresIn, idUser, authenticated } = authState;
 
-  const { signUP, signIN } = openModals;
+  const { modalSignUP, modalSignIN } = openModals;
+  const { SIGN_IN } = MODAL_WINDOWS;
 
   useEffect(() => {
     function resetErrorByCloseModal() {
-      if (!signUP || !signIN) {
+      if (!modalSignUP || !modalSignIN) {
         setErrorUser(null);
       }
     }
     resetErrorByCloseModal();
-  }, [signUP, signIN]);
+  }, [modalSignUP, modalSignIN]);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -114,7 +116,7 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
         const { user, backendTokens, authenticated } = data;
         const { id: idUser } = user;
         setAuthParams({ ...backendTokens, idUser, authenticated });
-        closeModalSignInAnimation();
+        closeAnimationModal(SIGN_IN);
       } else {
         setErrorUser(`${FORM_MESSAGES.INCORRECT_USERNAME_OR_PASSWORD} ${error}.`);
       }
@@ -185,7 +187,11 @@ export const UserAuthContextProvider = ({ children }: { children: ReactNode }) =
       setErrorUser(error);
     }
     if (!error) {
-      setOpenModals({ ...openModals, signIN: true, signUP: false });
+      setOpenModals((prevOpenModals) => ({
+        ...prevOpenModals,
+        modalSignIN: true,
+        modalSignUP: false,
+      }));
     }
   }
 

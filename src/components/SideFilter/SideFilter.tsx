@@ -23,9 +23,9 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
     balancerColor,
     balancerCollection,
     balancerCategory,
-    balanserPrise,
-    balanserSize,
-    balanserStock,
+    balancerPrise,
+    balancerSize,
+    balancerStock,
   } = useSelector<RootReducerProps, Balancers>((state) => state.balansersFilters);
 
   const {
@@ -37,9 +37,9 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
     stockSelected,
   } = selectedFilters;
 
-  const [balancedMinPrice, balancedMaxPrice] = balanserPrise;
-  const [balancedMinSize, balancedMaxSize] = balanserSize;
-  const [balancedMinStock, balancedMaxStock] = balanserStock;
+  const [balancedMinPrice, balancedMaxPrice] = balancerPrise;
+  const [balancedMinSize, balancedMaxSize] = balancerSize;
+  const [balancedMinStock, balancedMaxStock] = balancerStock;
   const [selectedMinPrice, selectedMaxPrice] = priceSelected;
   const [selectedMinSize, selectedMaxSize] = sizeSelected;
   const [selectedMinStock, selectedMaxStock] = stockSelected;

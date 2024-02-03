@@ -12,7 +12,7 @@ describe('payment modal', () => {
     const { getByText, getByTestId } = render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <PaymentModal handelCloseModalPayment={mockHandelCloseModalPayment} />
+          <PaymentModal handelCloseModal={mockHandelCloseModalPayment} />
         </BrowserRouter>
       </Provider>
     );

@@ -17,7 +17,7 @@ export function CartPage() {
   const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const countCartItem = cartItemsState.length;
   const { perCartPageOption, setPerCartPageOption } = useMyURLContext();
-  const { handelCloseModalPayment, openModals } = useCloseOpenModalsContext();
+  const { handelCloseModal, openModals } = useCloseOpenModalsContext();
   const { countPages, curPageCart, currentItems, handlePageClick } = useCartPagination();
 
   function handleChangeSelect(selectedOption: ISelect | null) {
@@ -36,7 +36,7 @@ export function CartPage() {
 
   const takenCart = (
     <>
-      {openModals.payment && <PaymentModal handelCloseModalPayment={handelCloseModalPayment} />}
+      {openModals.modalPayment && <PaymentModal handelCloseModal={handelCloseModal} />}
       <div className="shopping-cart__container">
         <div className="shopping-cart__pagination-table-container">
           <div className="shopping-cart__pagination-container">

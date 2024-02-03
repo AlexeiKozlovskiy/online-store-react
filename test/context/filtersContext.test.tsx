@@ -54,14 +54,14 @@ describe('filters context', () => {
             data-testid="updateSelectedFilters"
           ></button>
           <div data-testid="filter-context-selectedFilters">{JSON.stringify(selectedFilters)}</div>
-          <button data-params="colors" data-value="red" onClick={removeItemFilterClick}>
+          <button data-params="color" data-value="red" onClick={removeItemFilterClick}>
             delete color
           </button>
-          <button data-params="collections" data-value="2023" onClick={removeItemFilterClick}>
+          <button data-params="collection" data-value="2023" onClick={removeItemFilterClick}>
             delete collections
           </button>
           <button
-            data-params="categories"
+            data-params="category"
             data-value="Do It Yourself"
             onClick={removeItemFilterClick}
           >

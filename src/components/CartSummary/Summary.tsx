@@ -12,7 +12,7 @@ import { useTotalCartInfo } from '@/hooks/TotalCartInfo';
 export function Summary() {
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<string | null>(null);
-  const { openModals, setOpenModals } = useCloseOpenModalsContext();
+  const { setOpenModals } = useCloseOpenModalsContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const promocodeState = useSelector<RootReducerProps, PromocodeData>((state) => state.promocode);
   const { totalItems, totalPrice, totalPriseByPromocode } = useTotalCartInfo();
@@ -34,9 +34,15 @@ export function Summary() {
 
   function checkAuth() {
     if (!authenticated) {
-      setOpenModals({ ...openModals, signIN: true });
+      setOpenModals((prevOpenModals) => ({
+        ...prevOpenModals,
+        modalSignIN: true,
+      }));
     } else {
-      setOpenModals({ ...openModals, payment: true });
+      setOpenModals((prevOpenModals) => ({
+        ...prevOpenModals,
+        modalPayment: true,
+      }));
     }
   }
 

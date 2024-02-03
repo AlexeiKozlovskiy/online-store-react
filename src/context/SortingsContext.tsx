@@ -30,7 +30,6 @@ export const SortingsContextProvider = ({ children }: { children: ReactNode }) =
   const { qweryParams } = useSelector<RootReducerProps, ProductsQweryParams>(
     (state) => state.productsQweryParams
   );
-
   const { data: products = [] } = useGetProductsQuery(qweryParams, {
     refetchOnMountOrArgChange: true,
   });

@@ -13,11 +13,15 @@ export interface Product {
   images: string[];
 }
 
-export type DualRangesBalancer = Pick<Product, 'price' | 'size' | 'stock'>;
+export type ProductFilters = Omit<Product, 'id' | 'name' | 'favorite' | 'images'>;
 
-export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
+export type ProductDualRangesFilters = Pick<ProductFilters, 'price' | 'size' | 'stock'>;
 
 export type SortingsValue = 'name' | 'price-asc' | 'price-desc' | 'stock-asc' | 'stock-desc';
+
+export type ModalsValue = 'modalSignUP' | 'modalSignIN' | 'modalUser' | 'modalPayment';
+
+export type ModalsWindows = Record<ModalsValue, boolean>;
 
 export interface CartItemArg {
   product: Product;
@@ -109,9 +113,9 @@ export interface Balancers {
   balancerColor: BalancerColor[];
   balancerCollection: BalancerCollection[];
   balancerCategory: BalancerCategory[];
-  balanserPrise: DualRange;
-  balanserSize: DualRange;
-  balanserStock: DualRange;
+  balancerPrise: DualRange;
+  balancerSize: DualRange;
+  balancerStock: DualRange;
 }
 
 export interface InputSearch {
@@ -285,6 +289,8 @@ export interface FormErrorMessages {
   msgPassword?: null | FORM_MESSAGES;
 }
 
+export type CardImg = 'cards__img-express' | 'cards__img-visa' | 'cards__img-mastercard';
+
 export enum FORM_MESSAGES {
   ENTER_NAME = 'Please enter name',
   ENTER_LOGIN = 'Please enter login',
@@ -312,11 +318,4 @@ export enum FORM_MESSAGES {
   INCORRECT_USERNAME_OR_PASSWORD = 'Incorrect username or password.',
   SOMETHING_WRONG_WITH_GOOGLE = 'Something wrong with google.',
   SOMETHING_WRONG = 'Something wrong.',
-}
-
-export interface CloseOpenModals {
-  payment: boolean;
-  signUP: boolean;
-  signIN: boolean;
-  user: boolean;
 }

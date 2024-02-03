@@ -16,9 +16,9 @@ const initialState: Balancers = {
   balancerColor: COLOR_STOCK,
   balancerCollection: COLLECTION_STOCK,
   balancerCategory: CATEGORIES_STOCK,
-  balanserPrise: [PRICE_MIN, PRICE_MAX],
-  balanserSize: [SIZE_MIN, SIZE_MAX],
-  balanserStock: [STOCK_MIN, STOCK_MAX],
+  balancerPrise: [PRICE_MIN, PRICE_MAX],
+  balancerSize: [SIZE_MIN, SIZE_MAX],
+  balancerStock: [STOCK_MIN, STOCK_MAX],
 };
 
 const balansersFiltersSlise = createSlice({

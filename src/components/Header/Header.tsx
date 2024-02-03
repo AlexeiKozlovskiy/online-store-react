@@ -20,19 +20,13 @@ import { bodyNotScroll } from '@/helpers/helpersFunc';
 export function Header() {
   const [showBurgerMenu, setShowBurgerMenu] = useState(false);
   const { cartUrl, removeAllSelected } = useMyURLContext();
-  const {
-    handelCloseModalSignUP,
-    handelCloseModalSignIN,
-    handelCloseModalUser,
-    closeModalUserAnimation,
-    openModals,
-    setOpenModals,
-  } = useCloseOpenModalsContext();
+  const { handelCloseModal, closeAnimationModal, openModals, setOpenModals } =
+    useCloseOpenModalsContext();
   const { isFetching } = useMyUserAuthContext();
   const { authenticated } = useSelector<RootReducerProps, Authentication>((state) => state.auth);
   const { totalItems, totalPriseByPromocode } = useTotalCartInfo();
 
-  const { signUP, signIN, user } = openModals;
+  const { modalSignUP, modalSignIN, modalUser } = openModals;
 
   function handleShowBurgerMenu() {
     showBurgerMenu ? setShowBurgerMenu(false) : setShowBurgerMenu(true);
@@ -40,12 +34,26 @@ export function Header() {
   }
 
   function getSignIN() {
-    setOpenModals({ ...openModals, signIN: true });
+    setOpenModals((prevOpenModals) => ({
+      ...prevOpenModals,
+      modalSignIN: true,
+    }));
     setShowBurgerMenu(false);
   }
 
   function getSignUP() {
-    setOpenModals({ ...openModals, signUP: true });
+    setOpenModals((prevOpenModals) => ({
+      ...prevOpenModals,
+      modalSignUP: true,
+    }));
+    setShowBurgerMenu(false);
+  }
+
+  function getProfile() {
+    setOpenModals((prevOpenModals) => ({
+      ...prevOpenModals,
+      modalUser: true,
+    }));
     setShowBurgerMenu(false);
   }
 
@@ -54,7 +62,7 @@ export function Header() {
     setShowBurgerMenu(false);
   }
 
-  const userIcon = <UserIcon handleClick={() => setOpenModals({ ...openModals, user: true })} />;
+  const userIcon = <UserIcon handleClick={getProfile} />;
   const authBar = (
     <>
       <button className="header-auth__btn-sign-in" onClick={getSignIN}>
@@ -71,13 +79,10 @@ export function Header() {
 
   return (
     <header data-testid="header" className="header wrapper">
-      {signUP && <SignUPModal handelCloseModalSignUP={handelCloseModalSignUP} />}
-      {signIN && <SignINModal handelCloseModalSignIN={handelCloseModalSignIN} />}
-      {user && (
-        <UserModal
-          onClickOutside={handelCloseModalUser}
-          closeModalUserAnimation={closeModalUserAnimation}
-        />
+      {modalSignUP && <SignUPModal handelCloseModal={handelCloseModal} />}
+      {modalSignIN && <SignINModal handelCloseModal={handelCloseModal} />}
+      {modalUser && (
+        <UserModal handelCloseModal={handelCloseModal} closeAnimationModal={closeAnimationModal} />
       )}
       <div className="header__container">
         <Link to={ROUTE.MAIN} className="header-link" onClick={removeAllSelected}>
