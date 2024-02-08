@@ -9,6 +9,7 @@
   left: 0px;
   top: 0px;
   border: none;
+  z-index: 1;
 
   &:hover {
     animation: 0.7s ease-in-out 0s normal none infinite running arrow-animation;

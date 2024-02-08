@@ -21,7 +21,7 @@ describe('ProfilePage', () => {
     expect(shopping).toBeInTheDocument();
 
     fireEvent.click(favorites);
-    expect(screen.getByText('Favorites section in developing...')).toBeInTheDocument();
+    expect(screen.getByText(`You don't have favorites`)).toBeInTheDocument();
 
     fireEvent.click(shopping);
     expect(screen.getByText('My shopping section in developing...')).toBeInTheDocument();

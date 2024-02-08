@@ -93,7 +93,7 @@ export function Form() {
       }
     }
     getProfile();
-  }, [user]);
+  }, [profileData]);
 
   useEffect(() => {
     function checkImageCard() {

@@ -1,7 +1,7 @@
 import './ProductsList.scss';
 import { ProductItem } from '../ProductItem/Product';
 import { useSelector } from 'react-redux';
-import { RootReducerProps, CartItem, ProductsQweryParams } from '@/types/types';
+import { RootReducerProps, ProductsQweryParams } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { Pagination } from '@/components/Pagination/Pagination';
 import { useMainPagination } from '@/hooks/MainPaginationHook';
@@ -14,7 +14,6 @@ interface ProductsList {
 }
 
 export function ProductsList({ clickFilters }: ProductsList) {
-  const cartItemsState = useSelector<RootReducerProps, CartItem[]>((state) => state.cart);
   const { swichedView } = useMyURLContext();
   const { countPages, curPageMain, currentItems, handlePageClick } = useMainPagination({
     clickFilters,
@@ -34,10 +33,6 @@ export function ProductsList({ clickFilters }: ProductsList) {
     }
   }, [perMainPageOption]);
 
-  function getIsInCart(id: string) {
-    return cartItemsState.some(({ product }) => product.id === id);
-  }
-
   return (
     <>
       {isFetching && <MainSkeleton itemsInPage={itemsInPage} />}
@@ -46,9 +41,7 @@ export function ProductsList({ clickFilters }: ProductsList) {
         data-testid="main-catalog"
       >
         {currentItems &&
-          currentItems.map((product) => (
-            <ProductItem key={product.id} product={product} isInCart={getIsInCart(product.id)} />
-          ))}
+          currentItems.map((product) => <ProductItem key={product.id} product={product} />)}
       </div>
       {
         <Pagination

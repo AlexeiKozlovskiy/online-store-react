@@ -7,6 +7,7 @@ import { removeAllProductsFromCart, setChosenProduct } from '@/store/controller'
 import { useAnimations } from '@/hooks/AnimationsHook';
 import { memo } from 'react';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
+import { FavoritesStar } from '@/components/FavoritesStar/FavoritesStar';
 
 export const CartItemList = memo(function CartItemList({
   itemNumber,
@@ -35,6 +36,11 @@ export const CartItemList = memo(function CartItemList({
         </Link>
       </th>
       <th className="cart-item__info">
+        <FavoritesStar
+          id={id}
+          add_style={'cart-favorites-add'}
+          added_style={'cart-favorites-added'}
+        />
         <h4 className="cart-item-info__name">{name}</h4>
         <ul className="cart-item-info__list">
           <li className="cart-item-info__color">Color: {color}</li>

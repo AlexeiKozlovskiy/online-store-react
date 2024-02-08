@@ -221,6 +221,7 @@
     color: $darkGray;
     padding-left: 5px;
     width: 300px;
+    position: relative;
 
     @media screen and (max-width: 670px) {
       font: 0.6rem $Roboto;

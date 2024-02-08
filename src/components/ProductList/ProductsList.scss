@@ -83,6 +83,21 @@
   width: 40%;
 }
 
+.row-view .product-item:hover > .product-add {
+  top: 10px;
+  left: 170px;
+}
+
+.row-view .product-add {
+  top: 0px;
+  left: 170px;
+}
+
+.row-view .product-added {
+  top: 10px;
+  left: 170px;
+}
+
 .row-view .product-item__cart-add,
 .row-view .product-item__cart-added {
   height: 50px;
