@@ -21,7 +21,7 @@ describe('main page product item', () => {
     const { getByText, getByTestId } = render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <ProductItem isInCart={false} product={TEST_PRODUCT} />
+          <ProductItem product={TEST_PRODUCT} />
         </BrowserRouter>
       </Provider>
     );
@@ -41,7 +41,7 @@ describe('main page product item', () => {
     const { getByText } = render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <ProductItem isInCart={false} product={TEST_PRODUCT} />
+          <ProductItem product={TEST_PRODUCT} />
         </BrowserRouter>
       </Provider>
     );
@@ -55,7 +55,7 @@ describe('main page product item', () => {
     const { getByText } = render(
       <Provider store={rootState}>
         <BrowserRouter>
-          <ProductItem isInCart={true} product={TEST_PRODUCT} />
+          <ProductItem product={TEST_PRODUCT} />
         </BrowserRouter>
       </Provider>
     );

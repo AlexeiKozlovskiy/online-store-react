@@ -14,6 +14,7 @@ import { NameSkeleton } from '@/components/Skeleton/ProductPage/NameSkeleton';
 import { ImgsSkeleton } from '@/components/Skeleton/ProductPage/ImgsSkeleton';
 import { SpecSkeleton } from '@/components/Skeleton/ProductPage/SpecSkeleton';
 import { BreadCrumbSkeleton } from '@/components/Skeleton/ProductPage/BreadCrumbSkeleton';
+import { FavoritesStar } from '@/components/FavoritesStar/FavoritesStar';
 
 export function ProductPage() {
   const [curImage, setCurImage] = useState(0);
@@ -90,6 +91,7 @@ export function ProductPage() {
 
   const pageImages = (
     <div className="product-page__img-container">
+      <FavoritesStar id={id} add_style={'productPage-add'} added_style={'productPage-added'} />
       <div className="img-container__slider">
         <img
           className={`product-page-img-min ${!curImage && 'active-img'}`}
@@ -113,9 +115,11 @@ export function ProductPage() {
   );
 
   const productName = (
-    <h3 className="product-summary__description" data-testid="product-description">
-      {name} | {color} | {size}cm | ${formatPrice(price)}
-    </h3>
+    <>
+      <h3 className="product-summary__description" data-testid="product-description">
+        {name} | {color} | {size}cm | ${formatPrice(price)}
+      </h3>
+    </>
   );
 
   const breadCrumbs = (
@@ -146,6 +150,7 @@ export function ProductPage() {
           {isFetching ? <NameSkeleton /> : productName}
           {isInCart && inCart}
         </div>
+
         <div className="product-page__cart-container">
           <QuantityPiecesProduct
             stock={stock}

@@ -1,0 +1,72 @@
+.favorite-star {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background-image: url('../../assets/img/zvezda.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &__add {
+    filter: opacity(0.4);
+    transition: box-shadow 0.2s;
+
+    &:hover {
+      cursor: pointer;
+      box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.2s;
+    }
+  }
+
+  &__added {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.product-add {
+  z-index: -1;
+  top: 0px;
+  right: 0px;
+}
+
+.product-added {
+  top: 10px;
+  right: 10px;
+}
+
+.product-item:hover > .product-add {
+  top: 10px;
+  right: 10px;
+  z-index: 0;
+  transition: 0.5s ease-out;
+}
+
+.productPage-add,
+.productPage-added {
+  top: 5px;
+  right: 10px;
+}
+
+.cart-favorites-add,
+.cart-favorites-added {
+  width: 20px;
+  height: 20px;
+  top: 40px;
+  left: -10px;
+}
+
+.cart-favorites-add {
+  z-index: -1;
+}
+
+.cart-favorites-added {
+  top: 40px;
+  left: -20px;
+}
+
+.cart-table__cart-item:hover > .cart-item__info > .cart-favorites-add {
+  z-index: 0;
+  left: -20px;
+  transition: 0.3s ease-out;
+}
