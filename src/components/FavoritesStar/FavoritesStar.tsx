@@ -17,7 +17,7 @@ export function FavoritesStar({ id, add_style, added_style }: IFavoritesStar) {
 
   function getIsInFavorites(id: string) {
     if (favoritesData) {
-      return favoritesData.favorites.some((el) => el === id);
+      return favoritesData.favorites.includes(id);
     }
   }
 

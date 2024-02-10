@@ -76,7 +76,9 @@ export function ProfileSection() {
   }, [watch('formProfile'), watch('formProfile.numberCard')]);
 
   useEffect(() => {
-    user && setValue('formProfile.email', user.email);
+    if (user) {
+      setValue('formProfile.email', user.email);
+    }
   }, [user, watch('formProfile.email')]);
 
   function testDataClick() {

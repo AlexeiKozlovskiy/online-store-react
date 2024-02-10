@@ -5,13 +5,13 @@ import { useMyURLContext } from '@/context/URLContext';
 import { useDebounce } from '@/hooks/DebounceHook';
 
 export const SearchPanel = memo(function SearchPanel() {
-  const [inputValue, setInputValue] = useState<string | null>('');
+  const [inputValue, setInputValue] = useState<string>('');
   const { inputSearchURL, setInputSearchURL } = useMyURLContext();
   const debouncedValue = useDebounce(inputValue);
 
   useEffect(() => {
     function setFromURL() {
-      setInputValue(inputSearchURL);
+      setInputValue(inputSearchURL ?? '');
     }
     setFromURL();
   }, [inputSearchURL]);
@@ -19,6 +19,10 @@ export const SearchPanel = memo(function SearchPanel() {
   useEffect(() => {
     setInputSearchURL(debouncedValue);
   }, [debouncedValue]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
 
   return (
     <label htmlFor="find-input">
@@ -36,8 +40,8 @@ export const SearchPanel = memo(function SearchPanel() {
             type="search"
             placeholder="Search..."
             id="find-input"
-            value={inputValue || ''}
-            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+            onChange={handleChange}
           />
           <div className="find-input-img_search"></div>
         </div>
