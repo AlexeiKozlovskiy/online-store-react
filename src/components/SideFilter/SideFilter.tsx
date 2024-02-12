@@ -2,7 +2,7 @@ import './SideFilter.scss';
 import Slider from 'react-slider';
 import { useEffect, useState } from 'react';
 import { PRICE_MIN, PRICE_MAX, SIZE_MIN, SIZE_MAX, STOCK_MIN, STOCK_MAX } from '@/helpers/constant';
-import { Balancers, RootReducerProps, SelectedFilter } from '@/types/types';
+import { Balancers, DualRange, RootReducerProps, SelectedFilter } from '@/types/types';
 import { useMyURLContext } from '@/context/URLContext';
 import { ButtonCross } from '@/components/ButtonCross/ButtonCross';
 import { DualRangeInput } from './DualRangeInput';
@@ -16,9 +16,9 @@ interface ISideFilter {
 
 export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters }: ISideFilter) {
   const { selectedFilters, setSelectedFilters } = useMyURLContext();
-  const [[priseMin, priseMax], setPrice] = useState<[number | null, number | null]>([null, null]);
-  const [[sizeMin, sizeMax], setSize] = useState<[number | null, number | null]>([null, null]);
-  const [[stockMin, stockMax], setStock] = useState<[number | null, number | null]>([null, null]);
+  const [[priseMin, priseMax], setPrice] = useState<DualRange>([null, null]);
+  const [[sizeMin, sizeMax], setSize] = useState<DualRange>([null, null]);
+  const [[stockMin, stockMax], setStock] = useState<DualRange>([null, null]);
   const {
     balancerColor,
     balancerCollection,
@@ -82,35 +82,30 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
     balancedMaxStock,
   ]);
 
-  function handleColorClick(color: string) {
+  const handleColorClick = (color: string) => {
     handleClickFilters(true);
-    if (colorsSelected.includes(color)) {
-      setSelectedFilters({
-        ...selectedFilters,
-        colorsSelected: colorsSelected.filter((el) => el !== color),
-      });
-    } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        colorsSelected: [...colorsSelected, color],
-      });
-    }
-  }
+    const updatedColors = colorsSelected.includes(color)
+      ? colorsSelected.filter((el) => el !== color)
+      : [...colorsSelected, color];
+    setSelectedFilters({ ...selectedFilters, colorsSelected: updatedColors });
+  };
 
-  function handleCollectionClick(collection: string) {
+  const handleCollectionClick = (collection: string) => {
     handleClickFilters(true);
-    if (collectionsSelected.includes(+collection)) {
-      setSelectedFilters({
-        ...selectedFilters,
-        collectionsSelected: collectionsSelected.filter((el) => el !== +collection),
-      });
-    } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        collectionsSelected: [...collectionsSelected, +collection],
-      });
-    }
-  }
+    const updatedCollections = collectionsSelected.includes(+collection)
+      ? collectionsSelected.filter((el) => el !== +collection)
+      : [...collectionsSelected, +collection];
+    setSelectedFilters({ ...selectedFilters, collectionsSelected: updatedCollections });
+  };
+
+  const handelCategoryChange = (category: string) => {
+    handleClickFilters(true);
+    const updatedCategories = categorySelected.includes(category)
+      ? selectedFilters.categorySelected.filter((el) => el !== category)
+      : [...selectedFilters.categorySelected, category];
+    setSelectedFilters({ ...selectedFilters, categorySelected: updatedCategories });
+  };
+
   function handleInputChange(selectedType: string, startValue: string, endValue: string) {
     setSelectedFilters({
       ...selectedFilters,
@@ -118,29 +113,11 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
     });
   }
 
-  const handleSliderChange = (
-    selectedType: string,
-    value: [number, number],
-    setFilter: SelectedFilter
-  ) => {
+  const handleSliderChange = (type: string, value: DualRange, setFilter: SelectedFilter) => {
     handleClickFilters(true);
-    setSelectedFilters({
-      ...selectedFilters,
-      [selectedType]: value,
-    });
+    setSelectedFilters({ ...selectedFilters, [type]: value });
     setFilter(value);
   };
-
-  function categoryHandelChange(category: string) {
-    handleClickFilters(true);
-    const updatedCategories = [...categorySelected];
-    const index = [...categorySelected].indexOf(category);
-    index !== -1 ? updatedCategories.splice(index, 1) : updatedCategories.push(category);
-    setSelectedFilters({
-      ...selectedFilters,
-      categorySelected: updatedCategories,
-    });
-  }
 
   return (
     <div className="filters" data-show={showFilters} data-testid="filterPanel">
@@ -261,7 +238,7 @@ export function SideFilter({ showFilters, onClickHideFilter, handleClickFilters 
                   type="checkbox"
                   checked={selectedFilters.categorySelected.includes(categoryName)}
                   className="category__checkbox"
-                  onChange={() => categoryHandelChange(categoryName)}
+                  onChange={() => handelCategoryChange(categoryName)}
                   data-categories={categoryName}
                 />
               </div>
