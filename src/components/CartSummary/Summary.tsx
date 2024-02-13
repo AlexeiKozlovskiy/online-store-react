@@ -32,18 +32,19 @@ export function Summary() {
     inputRef.current = e.target.value;
   }
 
-  function checkAuth() {
-    if (!authenticated) {
-      setOpenModals((prevOpenModals) => ({
-        ...prevOpenModals,
-        modalSignIN: true,
-      }));
+  function proceedClick() {
+    if (authenticated) {
+      checkAuth('modalPayment');
     } else {
-      setOpenModals((prevOpenModals) => ({
-        ...prevOpenModals,
-        modalPayment: true,
-      }));
+      checkAuth('modalSignIN');
     }
+  }
+
+  function checkAuth(key: string) {
+    setOpenModals((prevOpenModals) => ({
+      ...prevOpenModals,
+      [key]: true,
+    }));
   }
 
   return (
@@ -89,7 +90,7 @@ export function Summary() {
             </div>
           </div>
           <div className="order-container-button">
-            <button className="button-order" onClick={checkAuth} data-testid="button-order">
+            <button className="button-order" onClick={proceedClick} data-testid="button-order">
               Proceed to Checkout
             </button>
           </div>

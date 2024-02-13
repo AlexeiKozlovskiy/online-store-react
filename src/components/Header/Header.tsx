@@ -29,48 +29,34 @@ export function Header() {
   const { modalSignUP, modalSignIN, modalUser } = openModals;
 
   function handleShowBurgerMenu() {
-    showBurgerMenu ? setShowBurgerMenu(false) : setShowBurgerMenu(true);
+    setShowBurgerMenu((prevShowBurgerMenu) => !prevShowBurgerMenu);
     bodyNotScroll();
   }
 
-  function getSignIN() {
+  function modalsUdater(e: React.MouseEvent<HTMLElement>) {
+    const { dataset } = e.target as HTMLElement;
+    const key = dataset.id!;
     setOpenModals((prevOpenModals) => ({
       ...prevOpenModals,
-      modalSignIN: true,
+      [key]: true,
     }));
     setShowBurgerMenu(false);
   }
 
-  function getSignUP() {
-    setOpenModals((prevOpenModals) => ({
-      ...prevOpenModals,
-      modalSignUP: true,
-    }));
-    setShowBurgerMenu(false);
-  }
-
-  function getProfile() {
-    setOpenModals((prevOpenModals) => ({
-      ...prevOpenModals,
-      modalUser: true,
-    }));
-    setShowBurgerMenu(false);
-  }
-
-  function logoClikBurger() {
+  function logoClickBurger() {
     removeAllSelected();
     setShowBurgerMenu(false);
   }
 
-  const userIcon = <UserIcon handleClick={getProfile} />;
+  const userIcon = <UserIcon handleClick={modalsUdater} />;
   const authBar = (
     <>
-      <button className="header-auth__btn-sign-in" onClick={getSignIN}>
+      <button className="header-auth__btn-sign-in" data-id="modalSignIN" onClick={modalsUdater}>
         Sign In
       </button>
       <div className="header-auth-signup">
         <p className="header-auth__text">Not a Member?</p>
-        <button className="header-auth__btn-sign-up" onClick={getSignUP}>
+        <button className="header-auth__btn-sign-up" data-id="modalSignUP" onClick={modalsUdater}>
           Sign up
         </button>
       </div>
@@ -90,7 +76,7 @@ export function Header() {
         </Link>
         <div className="header-nav" data-show={showBurgerMenu}>
           <ButtonCross onClickCross={handleShowBurgerMenu} adittionClassName="close-burger-cross" />
-          <Link to={ROUTE.MAIN} className="header-link" onClick={logoClikBurger}>
+          <Link to={ROUTE.MAIN} className="header-link" onClick={logoClickBurger}>
             <HeaderLogo />
           </Link>
           <div className="header-nav-contents">

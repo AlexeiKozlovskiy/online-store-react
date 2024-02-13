@@ -63,7 +63,7 @@ export function ProductItem({ product }: ProductViewData) {
       >
         <img className="product-item__img" data-id={id} src={images[0]} alt="product image" />
       </Link>
-      <div className="product-item__text-wrapper">{!getIsInCart(id) ? addToCart : inCart}</div>
+      <div className="product-item__text-wrapper">{getIsInCart(id) ? inCart : addToCart}</div>
       <FavoritesStar id={id} add_style={'product-add'} added_style={'product-added'} />
       <div className="product-item__info">
         <div className="item-info__name-price">

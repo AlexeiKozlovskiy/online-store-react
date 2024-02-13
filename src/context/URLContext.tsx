@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
+import { createContext, useState, useContext, ReactNode, useEffect, useLayoutEffect } from 'react';
 import {
   PRICE_MIN,
   PRICE_MAX,
@@ -95,7 +95,7 @@ export const URLContextProvider = ({ children }: { children: ReactNode }) => {
   const [minSize, maxSize] = sizeSelected;
   const [minStock, maxStock] = stockSelected;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function setDataFromUrl() {
       const queryParams = new URLSearchParams(location.search);
       const getQueryParam = (paramName: string) => queryParams.getAll(paramName);

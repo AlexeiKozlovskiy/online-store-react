@@ -1,26 +1,18 @@
 import '@/pages/ProfilePage/ProfilePage.scss';
 import { useMySortingsContext } from '@/context/SortingsContext';
-import { Product } from '@/types/types';
-import { useLayoutEffect, useState } from 'react';
 import { ProductItem } from '@/components/ProductItem/Product';
 import { useMyFavoritesContext } from '@/context/FavoritesContext';
 
 export function FavoritesSection() {
-  const [favoritesProducts, setFavoritesProducts] = useState<Product[]>([]);
   const { sortProducts } = useMySortingsContext();
   const { favoritesData } = useMyFavoritesContext();
 
-  useLayoutEffect(() => {
-    if (favoritesData) {
-      getFavoritProducts(favoritesData.favorites);
-    }
-  }, [favoritesData]);
-
-  function getFavoritProducts(favorites: string[]) {
-    const products = sortProducts.filter(({ id }) => favorites.some((el) => el === id));
-    setFavoritesProducts(products);
+  function getFavoritesProducts() {
+    if (!favoritesData) return [];
+    return sortProducts.filter(({ id }) => favoritesData!.favorites.includes(id));
   }
 
+  const favoritesProducts = getFavoritesProducts();
   const emptyFavorites = <p className="favorites__empty-catalog">You don&#39;t have favorites</p>;
   const favoritesList = (
     <>

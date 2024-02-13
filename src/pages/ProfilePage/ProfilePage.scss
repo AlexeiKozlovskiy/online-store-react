@@ -9,67 +9,9 @@
     text-align: center;
     font-size: 1.5rem;
     padding: 10px 0px;
-    padding-left: 150px;
 
     @media screen and (max-width: 550px) {
       font: 1.2rem $Roboto;
-    }
-  }
-
-  &__container {
-    padding: 30px;
-    display: flex;
-
-    @media screen and (max-width: 1000px) {
-      display: flex;
-      gap: 10px;
-      padding: 15px;
-    }
-  }
-
-  &__panel {
-    width: 180px;
-    background-color: whitesmoke;
-    border-radius: 8px;
-
-    @media screen and (max-width: 1000px) {
-      position: relative;
-    }
-
-    @media screen and (max-width: 550px) {
-      border-radius: 4px;
-    }
-  }
-
-  &__list {
-    list-style-type: none;
-    margin: 8px 8px;
-    min-height: calc(100vh - 300px);
-
-    font-size: 1.2rem;
-
-    @media screen and (max-width: 550px) {
-      font-size: 0.8rem;
-      margin: 3px 3px;
-    }
-
-    li {
-      padding: 3px 6px;
-      margin-bottom: 6px;
-      color: black;
-      border-radius: 6px;
-      transition: 0.3s background-color;
-
-      @media screen and (max-width: 550px) {
-        border-radius: 3px;
-        padding: 2px 4px;
-      }
-
-      &:hover {
-        cursor: pointer;
-        background-color: $olivaHover;
-        transition: 0.3s background-color;
-      }
     }
   }
 
@@ -139,16 +81,10 @@
   font-weight: 700;
 }
 
-.favorites__section {
-  width: 75%;
-  margin: 0 auto;
-}
-
 .favorites {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 20px 10px;
+  gap: 30px 20px;
 
   &__empty-catalog {
     margin: 0 auto;
@@ -160,8 +96,6 @@
 .my-shopping {
   &__section {
     display: flex;
-    width: 75%;
-    margin: 0 auto;
   }
 
   &__developing {
