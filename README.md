@@ -5,6 +5,8 @@ This project is an online store built using React and Nest, designed to provide 
 ## Deploy app in [here](https://online-store-react-94.netlify.app/).
 First fetching data is can take near 1-3 minutes, further is fast.
 
+## Backend part in [here](https://github.com/AlexeiKozlovskiy/online-store-nest).
+
 ## Features for customers
 - Product Catalog: Browse through a diverse range of products neatly organized into categories.
 - User Authentication: Secure sign-up and login functionalities for customers.
