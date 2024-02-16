@@ -69,6 +69,11 @@ You can open profile page, pressed the "My profile" button in profile modal wind
 
  <img src="./public/assets/readme/readme-profile.png" alt="image" width="800">
 
+ ### My favorites
+You can open my favorites page, pressed the "My profile" button and then press My favorites btn on tabs.
+
+ <img src="./public/assets/readme/readme-profile-favorites.png" alt="image" width="800">
+
 ### Profile modal
 You can call the user modal window, pressed the user logo nearby the cart logo. You must be **authorization**. 
  <img src="./public/assets/readme/readme-modal-profile.png" alt="image" width="600">
