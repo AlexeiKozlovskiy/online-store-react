@@ -3,7 +3,7 @@
 This project is an online store built using React and Nest, designed to provide a seamless shopping experience. With its intuitive interface and dynamic functionalities, the Online Store offers a user-friendly platform for customers.
 
 ## Deploy app in [here](https://online-store-react-94.netlify.app/).
-First fetching data is can take near 1-3 minutes, further is fast.
+**First fetching** data is can take near 1-3 minutes, further is fast.
 
 ## Backend part in [here](https://github.com/AlexeiKozlovskiy/online-store-nest).
 
@@ -17,11 +17,12 @@ First fetching data is can take near 1-3 minutes, further is fast.
 - Using [own backend service](https://github.com/AlexeiKozlovskiy/online-store-nest) built on Nest, with using prisma database. Servise deploed in [here](https://render.com/).
 - Standard and google authentication, using bearer token, with opportunity his refreshing. 
 - Forms introduced in all modal windows and profile page, made using React Hook Form, with possibility common validation all fields. 
-- Cart products, and auth state build with Redux Toolkit.
+- Cart products, auth state and some other components builds with Redux Toolkit.
 - Product fetching is developed using RTK Query. Fetching profile user data using React Query + axios. Fetching all app data using axios.
 - Interaction with application components, such as filters, sorting, search, pagination, viewswitcher changes and saves in URL parameters.
 - Product filters have balancers. When you change one or several filters, and the search field, other filters will be changed based on the displayed products.
 - SSR mode, for now work only **locally**. In Netlifae deploy available CSR mode.
+- MUI library for tabs in profile.
 - Using other small libraries, such as: paginate, select, slider, skeleton, persist.
 - Maintaining a list of tasks, pull requests, commits, task board.
 
@@ -41,6 +42,7 @@ First fetching data is can take near 1-3 minutes, further is fast.
 - React Pagination
 - React Select
 - React Slider
+- Material UI
 
 ## Installation
 To run this project locally, follow these steps:
