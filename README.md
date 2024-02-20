@@ -21,7 +21,6 @@ This project is an online store built using React and Nest, designed to provide 
 - Product fetching is developed using RTK Query. Fetching profile user data using React Query + axios. Fetching all app data using axios.
 - Interaction with application components, such as filters, sorting, search, pagination, viewswitcher changes and saves in URL parameters.
 - Product filters have balancers. When you change one or several filters, and the search field, other filters will be changed based on the displayed products.
-- SSR mode, for now work only **locally**. In Netlifae deploy available CSR mode.
 - MUI library for tabs in profile.
 - Using other small libraries, such as: paginate, select, slider, skeleton, persist.
 - Maintaining a list of tasks, pull requests, commits, task board.
@@ -33,7 +32,7 @@ This project is an online store built using React and Nest, designed to provide 
 - Prisma
 - Vite
 - React Router
-- Reduxjs Toolkit
+- Redux Toolkit
 - RTK Query
 - React Query
 - Axios
@@ -43,6 +42,8 @@ This project is an online store built using React and Nest, designed to provide 
 - React Select
 - React Slider
 - Material UI
+- Vitest (frontend)
+- Jest (backend)
 
 ## Installation
 To run this project locally, follow these steps:
