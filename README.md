@@ -2,10 +2,14 @@
 
 This project is an online store built using React and Nest, designed to provide a seamless shopping experience. With its intuitive interface and dynamic functionalities, the Online Store offers a user-friendly platform for customers.
 
-## Deploy app in [here](https://online-store-react-94.netlify.app/).
-**First fetching** data is can take near 1-3 minutes, further is fast.
+In my this [**repo**](https://github.com/AlexeiKozlovskiy/online-store-next) I made a clone of the application using **NextJS**, and his hosted https://www.kozlovsky.space
 
-## Backend part in [here](https://github.com/AlexeiKozlovskiy/online-store-nest).
+Due to the use of a free deployment service for the backend, database, and the application itself, there may be delays in response. For example, a click on a product card, or the first request for a geting list of products.
+**First fetching** data for react deploy is can take near 1-3 minutes, further is fast.
+
+## Netlify deploy this react app in [here](https://online-store-react-94.netlify.app/)
+
+## Backend part in this [repo](https://github.com/AlexeiKozlovskiy/online-store-nest).
 
 ## Features for customers
 - Product Catalog: Browse through a diverse range of products neatly organized into categories.
